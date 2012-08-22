@@ -34,7 +34,7 @@ describe 'swift::storage::mount' do
 
     it { should contain_mount('/srv/node/dans_mount_point').with(
       :device  => '/dev/sda',
-      :options => 'noatime,nodiratime,nobarrier,logbufs=8,loop'
+      :options => 'noatime,nodiratime,nobarrier,loop,logbufs=8'
     )}
 
   end
