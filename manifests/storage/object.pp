@@ -11,11 +11,13 @@ class swift::storage::object(
       ensure    => running,
       enable    => true,
       provider  => $::swift::params::service_provider,
+      require   => Package['swift-object'],
     }
     service { 'swift-object-auditor':
       ensure    => running,
       enable    => true,
       provider  => $::swift::params::service_provider,
+      require   => Package['swift-object'],
     }
   }
 }

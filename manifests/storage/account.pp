@@ -11,12 +11,14 @@ class swift::storage::account(
       ensure    => running,
       enable    => true,
       provider  => $::swift::params::service_provider,
+      require   => Package['swift-account'],
     }
 
     service { 'swift-account-auditor':
       ensure    => running,
       enable    => true,
       provider  => $::swift::params::service_provider,
+      require   => Package['swift-account'],
     }
   }
 }
