@@ -23,6 +23,7 @@ class swift::storage::all(
   $account_port       = '6002',
   $object_pipeline    = undef,
   $container_pipeline = undef,
+  $mount_check        = false,
   $account_pipeline   = undef
 ) {
 
@@ -33,6 +34,7 @@ class swift::storage::all(
   Swift::Storage::Server {
     devices              => $devices,
     storage_local_net_ip => $storage_local_net_ip,
+    mount_check          => $mount_check,
   }
 
   swift::storage::server { $account_port:
