@@ -54,4 +54,9 @@ class swift(
     mode    => 0660,
     content => template('swift/swift.conf.erb'),
   }
+
+  file { '/var/cache/swift':
+    ensure => directory,
+  }
+
 }
