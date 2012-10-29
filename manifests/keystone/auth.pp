@@ -3,14 +3,18 @@ class swift::keystone::auth(
   $password  = 'swift_password',
   $address   = '127.0.0.1',
   $port      = '8080',
+  $tenant    = 'services',
+  $email     = 'swift@localhost',
   $region    = 'RegionOne'
 ) {
 
   keystone_user { $auth_name:
     ensure   => present,
     password => $password,
+    email    => $email,
+    tenant   => $tenant,
   }
-  keystone_user_role { "${auth_name}@services":
+  keystone_user_role { "${auth_name}@${tenant}":
     ensure  => present,
     roles   => 'admin',
     require => Keystone_user[$auth_name]

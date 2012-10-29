@@ -32,25 +32,22 @@
 #
 
 class swift::proxy::authtoken(
-  $admin_token         = undef,
-  $admin_user          = undef,
-  $admin_tenant_name   = undef,
-  $admin_password      = undef,
-  $delay_auth_decision = undef,
-  $auth_host           = undef,
-  $auth_port           = undef,
-  $auth_protocol       = undef
+  $admin_user          = 'swift',
+  $admin_tenant_name   = 'services',
+  $admin_password      = 'password',
+  $auth_host           = '127.0.0.1',
+  $auth_port           = '35357',
+  $auth_protocol       = 'http',
+  $delay_auth_decision = 1,
+  $admin_token         = false
 ) {
 
-  keystone::client::authtoken { '/etc/swift/proxy-server.conf':
-    admin_token         => $admin_token,
-    admin_user          => $admin_user,
-    admin_tenant_name   => $admin_tenant_name,
-    admin_password      => $admin_password,
-    delay_auth_decision => $delay_auth_decision,
-    auth_host           => $auth_host,
-    auth_port           => $auth_port,
-    auth_protocol       => $auth_protocol
+  $auth_uri = "${auth_protocol}://${auth_host}:5000"
+  $fragment_title    = regsubst($name, '/', '_', 'G')
+
+  concat::fragment { "swift_authtoken":
+    target  => '/etc/swift/proxy-server.conf',
+    content => template('swift/proxy/authtoken.conf.erb'),
   }
 
 }
