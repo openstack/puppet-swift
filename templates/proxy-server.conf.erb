@@ -7,6 +7,7 @@ bind_ip = <%= proxy_local_net_ip %>
 <% end %>
 workers = <%= workers %>
 user = swift
+set log_level = <%= log_level %>
 
 [pipeline:main]
 pipeline = <%= pipeline.to_a.join(' ') %>
