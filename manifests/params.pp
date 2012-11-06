@@ -23,6 +23,7 @@ class swift::params {
     }
     'RedHat': {
       $package_name                      = 'openstack-swift'
+      $client_package                    = 'python-swiftclient'
       $proxy_package_name                = 'openstack-swift-proxy'
       $proxy_service_name                = 'openstack-swift-proxy'
       $object_package_name               = 'openstack-swift-object'
