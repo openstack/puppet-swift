@@ -33,6 +33,11 @@ class swift(
     ensure => $package_ensure,
   }
 
+  package { 'swiftclient':
+    name   => $::swift::params::client_package,
+    ensure => $package_ensure,
+  }
+
   File { owner => 'swift', group => 'swift', require => Package['swift'] }
 
   file { '/home/swift':

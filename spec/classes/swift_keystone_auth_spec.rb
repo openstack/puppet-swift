@@ -21,9 +21,8 @@ describe 'swift::keystone::auth' do
       :description => 'Openstack Object-Store Service'
     ) }
 
-    it { should contain_keystone_endpoint('swift').with(
+    it { should contain_keystone_endpoint('RegionOne/swift').with(
       :ensure       => 'present',
-      :region       => 'RegionOne',
       :public_url   => "http://127.0.0.1:8080/v1/AUTH_%(tenant_id)s",
       :admin_url    => "http://127.0.0.1:8080/",
       :internal_url => "http://127.0.0.1:8080/v1/AUTH_%(tenant_id)s"
@@ -35,9 +34,8 @@ describe 'swift::keystone::auth' do
       :description => 'Openstack S3 Service'
     ) }
 
-    it { should contain_keystone_endpoint('swift_s3').with(
+    it { should contain_keystone_endpoint('RegionOne/swift_s3').with(
       :ensure       => 'present',
-      :region       => 'RegionOne',
       :public_url   => 'http://127.0.0.1:8080',
       :admin_url    => 'http://127.0.0.1:8080',
       :internal_url => 'http://127.0.0.1:8080'
@@ -73,11 +71,11 @@ describe 'swift::keystone::auth' do
 
     it { should contain_keystone_service('swifty') }
 
-    it { should contain_keystone_endpoint('swifty') }
+    it { should contain_keystone_endpoint('RegionOne/swifty') }
 
     it { should contain_keystone_service('swifty_s3') }
 
-    it { should contain_keystone_endpoint('swifty_s3') }
+    it { should contain_keystone_endpoint('RegionOne/swifty_s3') }
 
   end
 
@@ -90,17 +88,15 @@ describe 'swift::keystone::auth' do
       }
     end
 
-    it { should contain_keystone_endpoint('swift').with(
+    it { should contain_keystone_endpoint('RegionOne/swift').with(
       :ensure       => 'present',
-      :region       => 'RegionOne',
       :public_url   => "http://192.168.0.1:8081/v1/AUTH_%(tenant_id)s",
       :admin_url    => "http://192.168.0.1:8081/",
       :internal_url => "http://192.168.0.1:8081/v1/AUTH_%(tenant_id)s"
     ) }
 
-    it { should contain_keystone_endpoint('swift_s3').with(
+    it { should contain_keystone_endpoint('RegionOne/swift_s3').with(
       :ensure       => 'present',
-      :region       => 'RegionOne',
       :public_url   => 'http://192.168.0.1:8081',
       :admin_url    => 'http://192.168.0.1:8081',
       :internal_url => 'http://192.168.0.1:8081'

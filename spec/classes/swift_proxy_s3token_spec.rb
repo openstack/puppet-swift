@@ -25,7 +25,7 @@ describe 'swift::proxy::s3token' do
         [
           '[filter:s3token]',
           'paste.filter_factory = keystone.middleware.s3_token:filter_factory',
-          'auth_port = 5000',
+          'auth_port = 35357',
           'auth_protocol = http',
           'auth_host = 127.0.0.1'
         ]

@@ -15,21 +15,39 @@ describe 'swift::proxy::authtoken' do
     '
   end
 
-  let :params do
-    {
-      :admin_token => 'admin_token',
-      :admin_user => 'admin_user',
-      :admin_tenant_name => 'admin_tenant_name',
-      :admin_password => 'admin_password',
-      :delay_auth_decision => 42,
-      :auth_host => '1.2.3.4',
-      :auth_port => 4682,
-      :auth_protocol => 'https'
-    }
+  let :fragment_file do
+    "/var/lib/puppet/concat/_etc_swift_proxy-server.conf/fragments/22_swift_authtoken"
   end
 
-  it { should contain_keystone__client__authtoken('/etc/swift/proxy-server.conf').with(
-    params
-  )}
+  describe "when using default parameters" do
+    it 'should build the fragment with correct parameters' do
+      verify_contents(subject, fragment_file,
+        [
+          '[filter:authtoken]',
+          'paste.filter_factory = keystone.middleware.auth_token:filter_factory',
+          'signing_dir = /etc/swift',
+          'auth_host = 127.0.0.1',
+          'auth_port = 35357',
+          'auth_protocol = http',
+          'auth_uri = http://127.0.0.1:5000',
+          'admin_tenant_name = services',
+          'admin_user = swift',
+          'admin_password = password',
+          'delay_auth_decision = 1',
+        ]
+      )
+    end
+  end
+
+  describe "when override parameters" do
+    let :params do
+      {
+        :admin_token => 'ADMINTOKEN'
+      }
+    end
+
+    it { should contain_file(fragment_file).with_content(/admin_token = ADMINTOKEN/) }
+  end
+
 
 end
