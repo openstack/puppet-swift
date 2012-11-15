@@ -48,6 +48,7 @@ class swift::proxy::authtoken(
   concat::fragment { "swift_authtoken":
     target  => '/etc/swift/proxy-server.conf',
     content => template('swift/proxy/authtoken.conf.erb'),
+    order   => '22',
   }
 
 }
