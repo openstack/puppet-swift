@@ -23,7 +23,7 @@
 #
 class swift::proxy::s3token(
   auth_host = '127.0.0.1',
-  auth_port = 5000,
+  auth_port = '35357',
   auth_protocol = 'http'
 ) {
 

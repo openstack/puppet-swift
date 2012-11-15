@@ -33,6 +33,11 @@ class swift(
     ensure => $package_ensure,
   }
 
+  package { 'swiftclient':
+    name   => $::swift::params::client_package,
+    ensure => $package_ensure,
+  }
+
   File { owner => 'swift', group => 'swift', require => Package['swift'] }
 
   file { '/home/swift':
@@ -54,4 +59,9 @@ class swift(
     mode    => 0660,
     content => template('swift/swift.conf.erb'),
   }
+
+  file { '/var/cache/swift':
+    ensure => directory,
+  }
+
 }

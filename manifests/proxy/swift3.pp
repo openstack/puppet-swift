@@ -8,12 +8,22 @@
 # == Authors
 #
 #   François Charlier fcharlier@ploup.net
+#   Joe Topjian joe@topjian.net
 #
 # == Copyright
 #
 # Copyright 2012 eNovance licensing@enovance.com
 #
-class swift::proxy::swift3() {
+class swift::proxy::swift3(
+  $ensure = 'present'
+) {
+
+  include $::swift::params
+
+  package { 'swift-plugin-s3':
+    name   => $::swift::params::swift3,
+    ensure => $ensure,
+  }
 
   concat::fragment { 'swift_swift3':
     target  => '/etc/swift/proxy-server.conf',

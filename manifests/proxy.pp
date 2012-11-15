@@ -45,6 +45,7 @@ class swift::proxy(
   $workers = $::processorcount,
   $allow_account_management = true,
   $account_autocreate = true,
+  $log_level = 'INFO',
   $package_ensure = 'present'
 ) {
 
