@@ -2,6 +2,9 @@
 #
 [DEFAULT]
 bind_port = <%= port %>
+<% if proxy_local_net_ip %>
+bind_ip = <%= proxy_local_net_ip %>
+<% end %>
 workers = <%= workers %>
 user = swift
 

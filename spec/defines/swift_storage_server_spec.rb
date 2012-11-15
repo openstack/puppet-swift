@@ -72,7 +72,9 @@ describe 'swift::storage::server' do
           describe "when #{k} is set" do
             let :params do req_params.merge({k => v}) end
             it { should contain_file(fragment_file) \
-              .with_content(/^#{k.to_s}\s*=\s*#{v}\s*$/)
+              .with_content(
+                /^#{k.to_s}\s*=\s*#{v.is_a?(Array) ? v.join(' ') : v}\s*$/
+              )
             }
           end
         end

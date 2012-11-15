@@ -3,11 +3,6 @@ describe 'swift::storage::xfs' do
   let :title do
     'foo'
   end
-  describe 'when a device is not specified' do
-    it 'should raise an error' do
-      expect { subject }.to raise_error(Puppet::Error)
-    end
-  end
 
   describe 'when a device is specified' do
     let :default_params do
@@ -38,14 +33,13 @@ describe 'swift::storage::xfs' do
         end
 
         it { should contain_exec("mkfs-foo").with(
-          :command     => "mkfs.xfs -i size=#{param_hash[:byte_size]} #{param_hash[:device]}",
-          :path        => '/sbin/',
-          :refreshonly => true,
+          :command     => "mkfs.xfs -f -i size=#{param_hash[:byte_size]} #{param_hash[:device]}",
+          :path        => ['/sbin/', '/usr/sbin/'],
           :require     => 'Package[xfsprogs]'
         )}
 
         it { should contain_swift__storage__mount('foo').with(
-           :device       => param_hash[:device],
+           :device       => '/dev/foo',
            :mnt_base_dir => param_hash[:mnt_base_dir],
            :loopback     => param_hash[:loopback],
            :subscribe    => 'Exec[mkfs-foo]'
