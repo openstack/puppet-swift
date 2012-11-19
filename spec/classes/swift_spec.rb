@@ -64,6 +64,8 @@ describe 'swift' do
       }.merge(file_defaults)
     )}
     it {should contain_package('swift').with_ensure('present')}
+    it {should contain_user('swift')}
+    it {should contain_file('/var/lib/swift').with_ensure('directory')}
   end
 
   describe 'when overriding package_ensure parameter' do

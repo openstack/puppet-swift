@@ -49,7 +49,13 @@ class swift(
     ensure => directory,
     mode   => 2770,
   }
-
+  user {'swift':
+    ensure => present,
+  }
+  file { '/var/lib/swift':
+    ensure => directory,
+    owner => 'swift'
+  }
   file { '/var/run/swift':
     ensure => directory,
   }
