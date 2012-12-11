@@ -36,6 +36,7 @@ class swift::params {
       $account_service_name              = 'openstack-swift-account'
       $account_replicator_service_name   = undef
       $service_provider                  = undef
+      $swift3                            = 'openstack-swift-plugin-swift3'
     }
     default: {
         fail("Unsupported osfamily: ${osfamily} for os ${operatingsystem}")
