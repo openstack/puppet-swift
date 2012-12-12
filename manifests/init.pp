@@ -28,9 +28,11 @@ class swift(
 
   Class['ssh::server::install'] -> Class['swift']
 
-  package { 'swift':
-    name   => $::swift::params::package_name,
-    ensure => $package_ensure,
+  if !defined(Package['swift']) {
+    package { 'swift':
+      name   => $::swift::params::package_name,
+      ensure => $package_ensure,
+    }
   }
 
   package { 'swiftclient':
