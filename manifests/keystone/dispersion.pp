@@ -26,7 +26,7 @@ class swift::keystone::dispersion(
   $auth_user = 'dispersion',
   $auth_pass = 'dispersion_password',
   $email     = 'swift@localhost',
-  $tenant    = 'services',
+  $tenant    = 'services'
 ) {
 
   keystone_user { $auth_user:
