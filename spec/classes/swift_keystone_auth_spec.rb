@@ -42,6 +42,32 @@ describe 'swift::keystone::auth' do
     ) }
   end
 
+  describe 'when overriding public_port' do
+
+    let :params do
+      {
+        :public_port => '80'
+      }
+    end
+
+    it { should contain_keystone_endpoint('RegionOne/swift').with(
+      :ensure       => 'present',
+      :public_url   => "http://127.0.0.1:80/v1/AUTH_%(tenant_id)s",
+      :admin_url    => "http://127.0.0.1:8080/",
+      :internal_url => "http://127.0.0.1:8080/v1/AUTH_%(tenant_id)s"
+    ) }
+
+    it { should contain_keystone_endpoint('RegionOne/swift_s3').with(
+      :ensure       => 'present',
+      :public_url   => 'http://127.0.0.1:80',
+      :admin_url    => 'http://127.0.0.1:8080',
+      :internal_url => 'http://127.0.0.1:8080'
+    ) }
+
+
+  end
+
+
   describe 'when overriding password' do
 
     let :params do
