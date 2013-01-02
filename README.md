@@ -6,6 +6,8 @@ practices for a typical deployment.
 
 Both single host and clustered configurations are supported.
 
+[![Unit Test Status](https://secure.travis-ci.org/puppetlabs/puppetlabs-swift.png?branch=master)](http://travis-ci.org/puppetlabs/puppetlabs-swift)
+
 ## Tested Environments
   * Ubuntu 12.04; puppet 2.7.16; Swift 1.4.8
 
