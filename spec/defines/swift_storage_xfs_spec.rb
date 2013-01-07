@@ -7,14 +7,14 @@ describe 'swift::storage::xfs' do
   describe 'when a device is specified' do
     let :default_params do
       {
-       :device       => 'some_device',
+       :device       => "/dev/#{title}",
        :byte_size    => '1024',
        :mnt_base_dir => '/srv/node',
        :loopback     => false
       }
     end
 
-    [{:device       => 'some_device'},
+    [{},
      {
        :device       => 'some_device',
        :byte_size    => 1,
@@ -38,8 +38,8 @@ describe 'swift::storage::xfs' do
           :require     => 'Package[xfsprogs]'
         )}
 
-        it { should contain_swift__storage__mount('foo').with(
-           :device       => '/dev/foo',
+        it { should contain_swift__storage__mount(title).with(
+           :device       => param_hash[:device],
            :mnt_base_dir => param_hash[:mnt_base_dir],
            :loopback     => param_hash[:loopback],
            :subscribe    => 'Exec[mkfs-foo]'
