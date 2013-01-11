@@ -29,6 +29,30 @@ describe 'swift::storage::container' do
         param_set
       end
       it { should contain_swift__storage__generic('container').with_package_ensure(param_hash[:package_ensure]) }
+      it 'should have some other services' do
+        ['swift-container-updater', 'swift-container-auditor'].each do |service|
+          should contain_service(service).with(
+            :ensure   => 'running',
+            :enable   => true,
+            :provider => 'upstart',
+            :require  => 'Package[swift-container]'
+          )
+        end
+        should contain_service('swift-container-sync').with(
+          :ensure   => 'running',
+          :enable   => true,
+          :provider => 'upstart',
+          :require  => ['File[/etc/init/swift-container-sync.conf]', 'File[/etc/init.d/swift-container-sync]']
+        )
+        should contain_file('/etc/init/swift-container-sync.conf').with(
+          :source  => 'puppet:///modules/swift/swift-container-sync.conf.upstart',
+          :require => 'Package[swift-container]'
+        )
+        should contain_file('/etc/init.d/swift-container-sync').with(
+          :ensure => 'link',
+          :target => '/lib/init/upstart-job'
+        )
+      end
     end
   end
 end
