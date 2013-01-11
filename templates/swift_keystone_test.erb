@@ -8,9 +8,9 @@ require 'open3'
 require 'fileutils'
 
 # connection variables
-proxy_local_net_ip='127.0.0.1'
-user='openstack:admin'
-password='admin_password'
+proxy_local_net_ip="<%= auth_server %>"
+user='<%= tenant %>:<%= user %>'
+password='<%= password %>'
 
 ## headers for curl requests
 #user_header="-H 'X-Storage-User: #{user}'"
