@@ -141,11 +141,18 @@ cluster, you can have a look at examples/all.pp
 
 This example can be used as follows:
 
-    puppet apply examples/all.pp
+    puppet apply examples/all.pp      # swift specific roles
 
 For an example of how to use this module to build out a multi node swift
 cluster, you can have a look at examples/site.pp. This file assumes you have a
 puppetmaster with storeconfigs enabled.
+
+NOTE: this example file uses hiera to set the configurable data values. Hiera should
+work by default with Puppet 3.0.
+
+Hiera is initiated by the calls to hiera at the beginning of the example file. Feel
+free to comment out these lines and use the commented out regular variable assigments
+if you do not feel like setting up hiera on Puppet < 3.0.
 
 Please note that if you create fewer than 3 storage nodes, you will need to edit
 the `replicas` parameter of the swift::ringbuilder instance in the proxy node
