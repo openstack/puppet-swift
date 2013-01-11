@@ -64,6 +64,7 @@ describe 'swift::proxy' do
             'bind_port = 8080',
             "workers = #{facts[:processorcount]}",
             'user = swift',
+            'log_level = INFO',
             '[pipeline:main]',
             'pipeline = healthcheck cache tempauth proxy-server',
             '[app:proxy-server]',
@@ -89,7 +90,8 @@ describe 'swift::proxy' do
            :workers => 3,
            :pipeline  => ['swauth', 'proxy-server'],
            :allow_account_management => false,
-           :account_autocreate => false
+           :account_autocreate => false,
+           :log_level          => 'DEBUG'
           }
         end
         it 'should build the header file with provided values' do
@@ -99,6 +101,7 @@ describe 'swift::proxy' do
               'bind_port = 80',
               "workers = 3",
               'user = swift',
+              'log_level = DEBUG',
               '[pipeline:main]',
               'pipeline = swauth proxy-server',
               '[app:proxy-server]',
