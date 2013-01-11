@@ -21,25 +21,39 @@
 # this site manifest serves as an example of how to
 # deploy various swift environments
 
-$admin_email          = 'dan@example_company.com'
-$keystone_db_password = 'keystone_db_password'
-$keystone_admin_token = 'keystone_token'
-$admin_password       = 'admin_password'
 
-$swift_user_password  = 'swift_pass'
-# swift specific configurations
-$swift_shared_secret  = 'changeme'
-$swift_local_net_ip   = $ipaddress_eth0
+#$swift_admin_password = 'admin_password'
+$swift_admin_password = hiera('admin_password', 'admin_password')
 
-$swift_proxy_address    = '192.168.101.17'
-$controller_node_public = '192.168.101.17' 
+ # swift specific configurations
+#$swift_shared_secret = 'changeme'
+$swift_shared_secret = hiera('swift_shared_secret', 'changeme')
 
-$verbose                = true
+
+#$swift_local_net_ip   = $ipaddress_eth0
+$swift_local_net_ip = hiera('swift_local_net_ip', $ipaddress_eth0)
+
+#$swift_keystone_node = '172.16.0.21'
+$swift_keystone_node    = hiera('swift_keystone_node', '172.16.0.25')
+#$swift_proxy_node    = '172.168.0.25'
+$swift_proxy_node       = hiera('swift_proxy_node', '172.16.0.21')
+
+$swift_zone = hiera('swift_zone', 1)
+# configurations that need to be applied to all swift nodes
+
+$swift_keystone_db_password    = hiera('keystone_db_password', 'keystone_db_password')
+$keystone_admin_token          = hiera('admin_token', 'service_token')
+$swift_keystone_admin_email    = hiera('admin_email', 'keystone@localhost')
+$swift_keystone_admin_password = hiera('admin_password', 'ChangeMe')
+
+$swift_verbose                 = hiera('verbose', 'True')
+
 
 # This node can be used to deploy a keystone service.
 # This service only contains the credentials for authenticating
 # swift
-node keystone {
+node swift-keystone {
+
   # set up mysql server
   class { 'mysql::server':
     config_hash => {
@@ -49,69 +63,51 @@ node keystone {
       'bind_address'  => '0.0.0.0'
     }
   }
+
+  keystone_config {
+    'DEFAULT/log_config': ensure => absent,
+  }
+
   # set up all openstack databases, users, grants
   class { 'keystone::db::mysql':
-    password => $keystone_db_password,
+    password => $swift_keystone_db_password,
   }
 
-  # in stall and configure the keystone service
-  class { 'keystone':
-    admin_token  => $keystone_admin_token,
-    # we are binding keystone on all interfaces
-    # the end user may want to be more restrictive
-    bind_host    => '0.0.0.0',
-    log_verbose  => $verbose,
-    log_debug    => $verbose,
-    catalog_type => 'sql',
+  class { '::keystone':
+    verbose        => $verbose,
+    debug          => $verbose,
+    catalog_type   => 'sql',
+    admin_token    => $admin_token,
+    enabled        => $enabled,
+    sql_connection => "mysql://keystone_admin:${swift_keystone_db_password}@127.0.0.1/keystone",
   }
 
-  # set up keystone database
-  # set up the keystone config for mysql
-  class { 'keystone::config::mysql':
-    password => $keystone_db_password,
-  }
+  # Setup the Keystone Identity Endpoint
+  class { 'keystone::endpoint': }
+
   # set up keystone admin users
   class { 'keystone::roles::admin':
-    email    => $admin_email,
-    password => $admin_password,
+    email    => $swift_keystone_admin_email,
+    password => $swift_keystone_admin_password,
   }
   # configure the keystone service user and endpoint
   class { 'swift::keystone::auth':
-    password => $swift_user_password,
-    address  => $swift_proxy_address,
+    password => $swift_admin_password,
+    address  => $swift_proxy_node,
   }
+
 }
 
-# configurations that need to be applied to all swift nodes
+
 node swift_base  {
 
   class { 'ssh::server::install': }
 
   class { 'swift':
     # not sure how I want to deal with this shared secret
-    swift_hash_suffix => 'swift_shared_secret',
+    swift_hash_suffix => $swift_shared_secret,
     package_ensure    => latest,
   }
-
-}
-
-# The following specifies 3 swift storage nodes
-node /swift_storage_1/ inherits swift_base {
-
-  $swift_zone = 1
-  include role_swift_storage
-
-}
-node /swift_storage_2/ inherits swift_base {
-
-  $swift_zone = 2
-  include role_swift_storage
-
-}
-node /swift_storage_3/ inherits swift_base {
-
-  $swift_zone = 3
-  include role_swift_storage
 
 }
 
@@ -123,7 +119,7 @@ node /swift_storage_3/ inherits swift_base {
 # they would need to be replaced with something that create and mounts xfs
 # partitions
 #
-class role_swift_storage {
+node /swift-storage/ inherits swift_base {
 
   # create xfs partitions on a loopback device and mount them
   swift::storage::loopback { ['1', '2']:
@@ -174,7 +170,8 @@ class role_swift_storage {
 }
 
 
-node /swift_proxy/ inherits swift_base {
+node /swift-proxy/ inherits swift_base {
+
 
   # curl is only required so that I can run tests
   package { 'curl': ensure => present }
@@ -218,7 +215,7 @@ node /swift_proxy/ inherits swift_base {
   }
   class { 'swift::proxy::s3token':
     # assume that the controller host is the swift api server
-    auth_host     => $controller_node_public,
+    auth_host     => $swift_keystone_node,
     auth_port     => '35357',
   }
   class { 'swift::proxy::keystone':
@@ -227,9 +224,9 @@ node /swift_proxy/ inherits swift_base {
   class { 'swift::proxy::authtoken':
     admin_user        => 'swift',
     admin_tenant_name => 'services',
-    admin_password    => $swift_user_password,
+    admin_password    => $swift_admin_password,
     # assume that the controller host is the swift api server
-    auth_host         => $controller_node_public,
+    auth_host         => $swift_keystone_node,
   }
 
   # collect all of the resources that are needed
@@ -258,8 +255,9 @@ node /swift_proxy/ inherits swift_base {
  }
 
   # deploy a script that can be used for testing
-  file { '/tmp/swift_keystone_test.rb':
-    source => 'puppet:///modules/swift/swift_keystone_test.rb'
+  class { 'swift::test_file':
+    auth_server => $swift_keystone_node,
+    password    => $swift_keystone_admin_password,
   }
 }
 
