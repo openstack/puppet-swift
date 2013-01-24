@@ -14,7 +14,7 @@
 # == Authors
 #
 #  Dan Bode dan@puppetlabs.com
-#  François Charlier fcharlier@ploup.net
+#  Francois Charlier fcharlier@ploup.net
 #
 
 class swift::proxy::keystone(
