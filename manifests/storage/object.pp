@@ -6,18 +6,20 @@ class swift::storage::object(
   }
 
   # Not tested in other distros, safety measure
-  if $operatingsystem == 'Ubuntu' {
-    service { 'swift-object-updater':
-      ensure    => running,
-      enable    => true,
-      provider  => $::swift::params::service_provider,
-      require   => Package['swift-object'],
-    }
-    service { 'swift-object-auditor':
-      ensure    => running,
-      enable    => true,
-      provider  => $::swift::params::service_provider,
-      require   => Package['swift-object'],
+  case $operatingsystem {
+    'Ubuntu','Debian': {
+      service { 'swift-object-updater':
+        ensure    => running,
+        enable    => true,
+        provider  => $::swift::params::service_provider,
+        require   => Package['swift-object'],
+      }
+      service { 'swift-object-auditor':
+        ensure    => running,
+        enable    => true,
+        provider  => $::swift::params::service_provider,
+        require   => Package['swift-object'],
+      }
     }
   }
 }
