@@ -43,7 +43,7 @@ class swift::keystone::auth(
   keystone_endpoint { "${region}/${auth_name}":
     ensure       => present,
     public_url   => "${public_protocol}://${real_public_address}:${real_public_port}/v1/AUTH_%(tenant_id)s",
-    admin_url    => "http://${address}:${port}/",
+    admin_url    => "http://${address}:${port}",
     internal_url => "http://${address}:${port}/v1/AUTH_%(tenant_id)s",
   }
 
