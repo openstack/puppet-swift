@@ -24,7 +24,8 @@ class swift::storage::all(
   $object_pipeline    = undef,
   $container_pipeline = undef,
   $mount_check        = false,
-  $account_pipeline   = undef
+  $account_pipeline   = undef,
+  $log_facility        = 'LOG_LOCAL2'
 ) {
 
   class { 'swift::storage':
@@ -41,17 +42,20 @@ class swift::storage::all(
     type             => 'account',
     config_file_path => 'account-server.conf',
     pipeline         => $account_pipeline,
+    log_facility     => $log_facility,
   }
 
   swift::storage::server { $container_port:
     type             => 'container',
     config_file_path => 'container-server.conf',
     pipeline         => $container_pipeline,
+    log_facility     => $log_facility,
   }
 
   swift::storage::server { $object_port:
     type             => 'object',
     config_file_path => 'object-server.conf',
     pipeline         => $object_pipeline,
+    log_facility     => $log_facility,
   }
 }

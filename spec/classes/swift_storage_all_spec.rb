@@ -23,7 +23,8 @@ describe 'swift::storage::all' do
       :devices => '/srv/node',
       :object_port => '6000',
       :container_port => '6001',
-      :account_port => '6002'
+      :account_port => '6002',
+      :log_facility => 'LOG_LOCAL2'
     }
   end
 
@@ -43,6 +44,7 @@ describe 'swift::storage::all' do
       :object_pipeline => ["1", "2"],
       :container_pipeline => ["3", "4"],
       :account_pipeline => ["5", "6"],
+      :log_facility => ['LOG_LOCAL2', 'LOG_LOCAL3'],
     }
   ].each do |param_set|
 
@@ -79,7 +81,8 @@ describe 'swift::storage::all' do
 
       let :storage_server_defaults do
         {:devices              => param_hash[:devices],
-         :storage_local_net_ip => param_hash[:storage_local_net_ip]
+         :storage_local_net_ip => param_hash[:storage_local_net_ip],
+         :log_facility         => param_hash[:log_facility]
         }
       end
 
