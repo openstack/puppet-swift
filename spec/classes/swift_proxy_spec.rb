@@ -53,7 +53,6 @@ describe 'swift::proxy' do
          :owner   => 'swift',
          :group   => 'swift',
          :mode    => '0660',
-         :require => 'Package[swift-proxy]'
         }
       )}
 

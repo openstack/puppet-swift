@@ -80,10 +80,10 @@ describe 'swift::storage::server' do
         end
         describe "when pipeline is passed an array" do
           let :params do req_params.merge({:pipeline => [1,2,3]})  end
-          it { should contain_file(fragment_file).with({
+          it { should contain_concat__fragment("swift-#{t}-#{title}").with(
             :content => /^pipeline\s*=\s*1 2 3\s*$/,
             :before => ["Swift::Storage::Filter::1[#{t}]", "Swift::Storage::Filter::2[#{t}]", "Swift::Storage::Filter::3[#{t}]"]
-          })}
+          )}
         end
         describe "when pipeline is not passed an array" do
           let :params do req_params.merge({:pipeline => 'not an array'}) end
