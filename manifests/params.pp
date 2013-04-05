@@ -28,13 +28,13 @@ class swift::params {
       $proxy_service_name                = 'openstack-swift-proxy'
       $object_package_name               = 'openstack-swift-object'
       $object_service_name               = 'openstack-swift-object'
-      $object_replicator_service_name    = undef
+      $object_replicator_service_name    = 'openstack-swift-object-replicator'
       $container_package_name            = 'openstack-swift-container'
       $container_service_name            = 'openstack-swift-container'
-      $container_replicator_service_name = undef
+      $container_replicator_service_name = 'openstack-swift-container-replicator'
       $account_package_name              = 'openstack-swift-account'
       $account_service_name              = 'openstack-swift-account'
-      $account_replicator_service_name   = undef
+      $account_replicator_service_name   = 'openstack-swift-account-replicator'
       $service_provider                  = undef
       $swift3                            = 'openstack-swift-plugin-swift3'
     }
