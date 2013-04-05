@@ -14,7 +14,11 @@ class Puppet::Provider::SwiftRingBuilder < Puppet::Provider
     if File.exists?(builder_file_path)
       if rows = swift_ring_builder(builder_file_path).split("\n")[4..-1]
         rows.each do |row|
-          if row =~ /^\s+(\d+)\s+(\d+)\s+(\S+)\s+(\d+)\s+(\S+)\s+(\d+\.\d+)\s+(\d+)\s+(-?\d+\.\d+)\s+(\S*)$/
+           # Swift 1.7+ output example:
+           # Devices:    id  region  zone      ip address  port      name weight partitions balance meta
+           #              0     1     2       127.0.0.1  6022         2   1.00     262144   0.00
+          if row =~ /^\s*(\d+)\s+\d+\s+(\d+)\s+(\S+)\s+(\d+)\s+(\S+)\s+(\d+\.\d+)\s+(\d+)\s+(-?\d+\.\d+)\s*(\S*)/
+
             object_hash["#{$3}:#{$4}/#{$5}"] = {
               :id          => $1,
               :zone        => $2,
@@ -23,6 +27,18 @@ class Puppet::Provider::SwiftRingBuilder < Puppet::Provider
               :balance     => $8,
               :meta        => $9
             }
+           # This regex is for older swift versions
+          elsif row =~ /^\s+(\d+)\s+(\d+)\s+(\S+)\s+(\d+)\s+(\S+)\s+(\d+\.\d+)\s+(\d+)\s+(-?\d+\.\d+)\s+(\S*)$/
+
+            object_hash["#{$3}:#{$4}/#{$5}"] = {
+              :id          => $1,
+              :zone        => $2,
+              :weight      => $6,
+              :partitions  => $7,
+              :balance     => $8,
+              :meta        => $9
+            }
+
           else
             Puppet.warning("Unexpected line: #{row}")
           end
