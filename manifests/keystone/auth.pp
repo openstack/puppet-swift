@@ -7,6 +7,7 @@ class swift::keystone::auth(
   $email     = 'swift@localhost',
   $region    = 'RegionOne',
   $public_protocol = 'http',
+  $public_address = undef,
   $public_port = undef
 ) {
 
@@ -15,6 +16,13 @@ class swift::keystone::auth(
   } else {
 	$real_public_port = $public_port
   }
+
+  if ! $public_address {
+	$real_public_address = $address
+  } else {
+	$real_public_address = $public_address
+  }
+
   keystone_user { $auth_name:
     ensure   => present,
     password => $password,
@@ -34,7 +42,7 @@ class swift::keystone::auth(
   }
   keystone_endpoint { "${region}/${auth_name}":
     ensure       => present,
-    public_url   => "${public_protocol}://${address}:${real_public_port}/v1/AUTH_%(tenant_id)s",
+    public_url   => "${public_protocol}://${real_public_address}:${real_public_port}/v1/AUTH_%(tenant_id)s",
     admin_url    => "http://${address}:${port}/",
     internal_url => "http://${address}:${port}/v1/AUTH_%(tenant_id)s",
   }
@@ -46,7 +54,7 @@ class swift::keystone::auth(
   }
   keystone_endpoint { "${region}/${auth_name}_s3":
     ensure       => present,
-    public_url   => "${public_protocol}://${address}:${real_public_port}",
+    public_url   => "${public_protocol}://${real_public_address}:${real_public_port}",
     admin_url    => "http://${address}:${port}",
     internal_url => "http://${address}:${port}",
   }
