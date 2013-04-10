@@ -1,5 +1,5 @@
 name    'puppetlabs-swift'
-version '0.1.0'
+version '1.0.0'
 source  'https://github.com/puppetlabs/puppetlabs-swift'
 author  'Puppet Labs'
 license 'Apache License 2.0'
@@ -8,10 +8,10 @@ description 'Puppet module to install and configure the OpenStack Swift storage 
 project_page 'https://github.com/puppetlabs/puppetlabs-swift'
 
 ## Add dependencies, if any:
-dependency 'puppetlabs/keystone', '>= 0.1.0'
-dependency 'puppetlabs/mysql', '>= 0.3.0'
+dependency 'puppetlabs/keystone', '>= 1.0.1'
+dependency 'puppetlabs/mysql','>= 0.5.0'
 dependency 'puppetlabs/rsync', '>= 0.1.0'
 dependency 'puppetlabs/stdlib', '>= 2.3.0'
 dependency 'ripienaar/concat', '>= 0.1.0'
-dependency 'saz/memcached', '>= 2.0.1'
+dependency 'saz/memcached', '>= 2.0.2'
 dependency 'saz/ssh', '>= 1.0.2'
