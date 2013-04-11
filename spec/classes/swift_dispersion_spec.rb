@@ -49,7 +49,8 @@ describe 'swift::dispersion' do
       :path      => ['/bin', '/usr/bin'],
       :subscribe => 'File[/etc/swift/dispersion.conf]',
       :onlyif    => "swift -A http://127.0.0.1:5000/v2.0/ -U services:dispersion -K dispersion_password -V 2.0 stat | grep 'Account: '",
-      :unless    => "swift -A http://127.0.0.1:5000/v2.0/ -U services:dispersion -K dispersion_password -V 2.0 list | grep dispersion_"
+      :unless    => "swift -A http://127.0.0.1:5000/v2.0/ -U services:dispersion -K dispersion_password -V 2.0 list | grep dispersion_",
+      :require => 'Package[swiftclient]'
     )}
   end
 

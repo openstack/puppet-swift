@@ -84,6 +84,7 @@ class swift::dispersion (
     timeout   => 0,
     onlyif    => "swift -A ${auth_url} -U ${auth_tenant}:${auth_user} -K ${auth_pass} -V ${auth_version} stat | grep 'Account: '",
     unless    => "swift -A ${auth_url} -U ${auth_tenant}:${auth_user} -K ${auth_pass} -V ${auth_version} list | grep dispersion_",
+    require   => Package["swiftclient"],
   }
 
 }
