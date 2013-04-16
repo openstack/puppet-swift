@@ -19,8 +19,6 @@ describe 'swift::proxy::keystone' do
     '
   end
 
-  it { should include_class('keystone::python') }
-
   it { should contain_file(fragment_file).with_content(/[filter:keystone]/) }
 
   it { should contain_file(fragment_file).with_content(/use = egg:swift#keystoneauth/) }
