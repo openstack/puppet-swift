@@ -45,6 +45,7 @@ describe 'swift::proxy' do
         {:ensure    => 'running',
          :provider  => 'upstart',
          :enable    => true,
+         :hasstatus => true,
          :subscribe => 'Concat[/etc/swift/proxy-server.conf]'
         }
       )}
