@@ -55,4 +55,23 @@ describe 'swift::storage::container' do
       end
     end
   end
+
+  describe 'on rhel' do
+    let :facts do
+      {
+        :operatingsystem => 'RedHat',
+        :osfamily        => 'RedHat'
+      }
+    end
+    it 'should have some support services' do
+      ['swift-container-updater', 'swift-container-auditor'].each do |service|
+        should contain_service(service).with(
+          :name     => "openstack-#{service}",
+          :ensure   => 'running',
+          :enable   => true,
+          :require  => 'Package[swift-container]'
+        )
+      end
+    end
+  end
 end
