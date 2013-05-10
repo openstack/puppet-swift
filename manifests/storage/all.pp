@@ -25,7 +25,7 @@ class swift::storage::all(
   $container_pipeline = undef,
   $mount_check        = false,
   $account_pipeline   = undef,
-  $log_facility        = 'LOG_LOCAL2'
+  $log_facility       = 'LOG_LOCAL2'
 ) {
 
   class { 'swift::storage':

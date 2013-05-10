@@ -11,7 +11,7 @@ define swift::storage::server(
   $group                  = 'swift',
   $max_connections        = 25,
   $pipeline               = ["${type}-server"],
-  $mount_check            = 'false',
+  $mount_check            = false,
   $user                   = 'swift',
   $workers                = '1',
   $replicator_concurrency = $::processorcount,
