@@ -19,8 +19,6 @@ class swift::proxy::ceilometer(
   $ensure = 'present'
 ) inherits swift {
 
-  include $::swift::params
-
   User['swift'] {
     groups +> 'ceilometer',
   }
