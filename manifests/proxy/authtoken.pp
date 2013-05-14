@@ -21,6 +21,12 @@
 #    Defaults to 3557.
 #  [auth_protocol] Protocol to use to communicate with keystone. Optional.
 #    Defaults to https.
+#  [auth_admin_prefix] path part of the auth url. Optional.
+#    This allows admin auth URIs like http://host/keystone/admin/v2.0.
+#    Defaults to false for empty. It defined, should be a string with a leading '/' and no trailing '/'.
+#  [auth_uri] The public auth url to redirect unauthenticated requests.
+#    Defaults to false to be expanded to '${auth_protocol}://${auth_host}:5000'.
+#    Should be set to your public keystone endpoint (without version).
 #
 # == Authors
 #
@@ -38,12 +44,22 @@ class swift::proxy::authtoken(
   $auth_host           = '127.0.0.1',
   $auth_port           = '35357',
   $auth_protocol       = 'http',
+  $auth_admin_prefix   = false,
+  $auth_uri            = false,
   $delay_auth_decision = 1,
   $admin_token         = false
 ) {
 
-  $auth_uri = "${auth_protocol}://${auth_host}:5000"
+  if $auth_uri {
+    $auth_uri_real = $auth_uri
+  } else {
+    $auth_uri_real = "${auth_protocol}://${auth_host}:5000"
+  }
   $fragment_title    = regsubst($name, '/', '_', 'G')
+
+  if $auth_admin_prefix {
+    validate_re($auth_admin_prefix, '^(/.+[^/])?$')
+  }
 
   concat::fragment { "swift_authtoken":
     target  => '/etc/swift/proxy-server.conf',

@@ -4,7 +4,10 @@ signing_dir = /etc/swift
 auth_host = <%= auth_host %>
 auth_port = <%= auth_port %>
 auth_protocol = <%= auth_protocol %>
-auth_uri = <%= auth_uri %>
+<% if auth_admin_prefix -%>
+auth_admin_prefix = <%= auth_admin_prefix %>
+<% end -%>
+auth_uri = <%= auth_uri_real %>
 # if its defined
 <% if admin_token -%>
 admin_token = <%= admin_token %>
