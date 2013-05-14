@@ -21,10 +21,10 @@ class swift::params {
       $account_reaper_service_name       = 'swift-account-reaper'
       $account_replicator_service_name   = 'swift-account-replicator'
       $swift3                            = 'swift-plugin-s3'
-      if $::operatingsystem == 'Debian' {
-        $service_proivider    = 'debian'
+      if $::operatingsystem == 'Ubuntu' {
+        $service_provider = 'upstart'
       } else {
-        $service_provider     = 'upstart'
+        $service_provider = undef
       }
     }
     'RedHat': {
