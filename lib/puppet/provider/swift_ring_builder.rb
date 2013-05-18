@@ -17,7 +17,12 @@ class Puppet::Provider::SwiftRingBuilder < Puppet::Provider
            # Swift 1.7+ output example:
            # Devices:    id  region  zone      ip address  port      name weight partitions balance meta
            #              0     1     2       127.0.0.1  6022         2   1.00     262144   0.00
-          if row =~ /^\s*(\d+)\s+\d+\s+(\d+)\s+(\S+)\s+(\d+)\s+(\S+)\s+(\d+\.\d+)\s+(\d+)\s+(-?\d+\.\d+)\s*(\S*)/
+           #              0     1     3  192.168.101.15  6002         1   1.00     262144   -100.00
+           # Swift 1.8+ output example:
+           # Devices:    id  region  zone      ip address  port      name weight partitions balance meta
+           #              2     1     2  192.168.101.14  6002         1   1.00     262144 200.00  m2
+           #              0     1     3  192.168.101.15  6002         1   1.00     262144-100.00  m2
+          if row =~ /^\s*(\d+)\s+\d+\s+(\d+)\s+(\S+)\s+(\d+)\s+(\S+)\s+(\d+\.\d+)\s+(\d+)\s*((-|\s-?)?\d+\.\d+)\s*(\S*)/
 
             object_hash["#{$3}:#{$4}/#{$5}"] = {
               :id          => $1,
@@ -25,7 +30,7 @@ class Puppet::Provider::SwiftRingBuilder < Puppet::Provider
               :weight      => $6,
               :partitions  => $7,
               :balance     => $8,
-              :meta        => $9
+              :meta        => $10
             }
            # This regex is for older swift versions
           elsif row =~ /^\s+(\d+)\s+(\d+)\s+(\S+)\s+(\d+)\s+(\S+)\s+(\d+\.\d+)\s+(\d+)\s+(-?\d+\.\d+)\s+(\S*)$/
