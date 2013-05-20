@@ -18,11 +18,29 @@ class Puppet::Provider::SwiftRingBuilder < Puppet::Provider
            # Devices:    id  region  zone      ip address  port      name weight partitions balance meta
            #              0     1     2       127.0.0.1  6022         2   1.00     262144   0.00
            #              0     1     3  192.168.101.15  6002         1   1.00     262144   -100.00
-           # Swift 1.8+ output example:
+           #
+           # Swift 1.8.0 output example:
            # Devices:    id  region  zone      ip address  port      name weight partitions balance meta
            #              2     1     2  192.168.101.14  6002         1   1.00     262144 200.00  m2
            #              0     1     3  192.168.101.15  6002         1   1.00     262144-100.00  m2
-          if row =~ /^\s*(\d+)\s+\d+\s+(\d+)\s+(\S+)\s+(\d+)\s+(\S+)\s+(\d+\.\d+)\s+(\d+)\s*((-|\s-?)?\d+\.\d+)\s*(\S*)/
+           #
+           # Swift 1.8+ output example:
+           # Devices:    id  region  zone      ip address  port  replication ip  replication port      name weight partitions balance meta
+           #              0       1     2       127.0.0.1  6021       127.0.0.1              6021         2   1.00     262144    0.00
+          # Swift 1.8+ output example:
+          if row =~ /^\s*(\d+)\s+\d+\s+(\d+)\s+(\S+)\s+(\d+)\s+\S+\s+\d+\s+(\S+)\s+(\d+\.\d+)\s+(\d+)\s*((-|\s-?)?\d+\.\d+)\s*(\S*)/
+
+            object_hash["#{$3}:#{$4}/#{$5}"] = {
+              :id          => $1,
+              :zone        => $2,
+              :weight      => $6,
+              :partitions  => $7,
+              :balance     => $8,
+              :meta        => $10
+            }
+
+          # Swift 1.8.0 output example:
+          elsif row =~ /^\s*(\d+)\s+\d+\s+(\d+)\s+(\S+)\s+(\d+)\s+(\S+)\s+(\d+\.\d+)\s+(\d+)\s*((-|\s-?)?\d+\.\d+)\s*(\S*)/
 
             object_hash["#{$3}:#{$4}/#{$5}"] = {
               :id          => $1,
