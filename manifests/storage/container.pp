@@ -1,5 +1,6 @@
 class swift::storage::container(
-  $package_ensure = 'present'
+  $package_ensure = 'present',
+  $allowed_sync_hosts = ['127.0.0.1'],
 ) {
   swift::storage::generic { 'container':
     package_ensure => $package_ensure
