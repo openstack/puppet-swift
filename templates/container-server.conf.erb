@@ -6,6 +6,7 @@ mount_check = <%= mount_check %>
 user = <%= user %>
 log_facility = <%= log_facility %>
 workers = <%= workers %>
+allowed_sync_hosts = <%= scope.lookupvar("swift::storage::container::allowed_sync_hosts").to_a.join(',') %>
 
 [pipeline:main]
 pipeline = <%= pipeline.to_a.join(' ') %>
