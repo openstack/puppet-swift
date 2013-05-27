@@ -101,7 +101,6 @@ node swift-keystone {
 
 node swift_base  {
 
-  class { 'ssh::server::install': }
 
   class { 'swift':
     # not sure how I want to deal with this shared secret

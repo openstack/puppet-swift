@@ -10,7 +10,6 @@ Exec { logoutput => true }
 
 package { 'curl': ensure => present }
 
-class { 'ssh::server::install': }
 
 class { 'memcached':
   listen_ip => $swift_local_net_ip,

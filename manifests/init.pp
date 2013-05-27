@@ -25,6 +25,7 @@ class swift(
 ) {
 
   include swift::params
+  include ssh::server::install
 
   Class['ssh::server::install'] -> Class['swift']
 
