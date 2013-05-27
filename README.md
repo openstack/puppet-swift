@@ -1,170 +1,253 @@
-# Introduction
+swift
+=======
 
-This module provides a way to install and configure Swift storage clusters using
-puppet. The classes documented in this file will deploy Swift using best
-practices for a typical deployment.
+#### Table of Contents
 
-Both single host and clustered configurations are supported.
+1. [Overview - What is the swift module?](#overview)
+2. [Module Description - What does the module do?](#module-description)
+3. [Setup - The basics of getting started with swift](#setup)
+4. [Reference - The classes, defines,functions and facts available in this module](#reference)
+5. [Implementation - An under-the-hood peek at what the module is doing](#implementation)
+6. [Limitations - OS compatibility, etc.](#limitations)
+7. [Development - Guide for contributing to the module](#development)
+8. [Contributors - Those with commits](#contributors)
+9. [Release Notes - Notes on the most recent updates to the module](#release-notes)
 
-## Tested Environments
-  * Ubuntu 12.04; puppet 2.7.16; Swift 1.7.x
+Overview
+--------
 
-# Requirements
+The swift module is a part of [Stackforge](https://github.com/stackfoge), an effort by the Openstack infrastructure team to provide continuous integration testing and code review for Openstack and Openstack community projects not part of the core software.  The module its self is used to flexibly configure and manage the object storage service for Openstack.
 
-This module uses exported resources to manage Swift rings, so you will need
-to have storeconfigs enabled for this module to work. See:
+Module Description
+------------------
 
-http://projects.puppetlabs.com/projects/1/wiki/using_stored_configuration
-http://docs.puppetlabs.com/guides/exported_resources.html
+The swift module is a thorough attempt to make Puppet capable of managing the entirety of swift.  This includes manifests to provision such things as keystone, stroage backends, proxies, and the ring.  Types are shipped as part of the swift module to assist in manipulation of configuration files.  The classes in this module will deploy Swift using best practices for a typical deployment.
 
-Also, since the module includes custom types and providers, 
-make sure that pluginsync is enabled in master and agent configurations:
+This module is tested in combination with other modules needed to build and leverage an entire Openstack software stack.  These modules can be found, all pulled together in the [openstack module](https://github.com/stackforge/puppet-openstack).  In addition, this module requires Puppet's [exported resources](http://docs.puppetlabs.com/puppet/3/reference/lang_exported.html).
 
-    root@ubuntu:~# cat /etc/puppet/puppet.conf
-    [main]
-    logdir=/var/log/puppet
-    vardir=/var/lib/puppet
-    ssldir=/var/lib/puppet/ssl
-    rundir=/var/run/puppet
-    factpath=$vardir/lib/facter
-    templatedir=$confdir/templates
-    prerun_command=/etc/puppet/etckeeper-commit-pre
-    postrun_command=/etc/puppet/etckeeper-commit-post
-    pluginsync = true
+Setup
+-----
 
-See http://docs.puppetlabs.com/guides/plugins_in_modules.html
+**What the swift module affects**
 
-# Dependencies
+* swift, the object storage service for Openstack.
 
-* https://github.com/saz/puppet-ssh
-* https://github.com/puppetlabs/puppetlabs-rsync
-* https://github.com/saz/puppet-memcached
-* https://github.com/puppetlabs/puppetlabs-stdlib
+### Installing swift
 
-# Usage: #
+    example% puppet module install puppetlabs/swift
 
-## swift: ##
+### Beginning with swift
 
-class that sets up base packages and the base /etc/swift/swift.conf.
+You much first setup [exported resources](http://docs.puppetlabs.com/puppet/3/reference/lang_exported.html).
 
-    class { 'swift':
-      # shared salt used when hashing ring mappings
-      swift_hash_suffix => 'shared_secret',
-    }
+To utilize the swift module's functionality you will need to declare multiple resources.  The following is a modified excerpt from the [openstack module](https://github.com/stackfoge/puppet-openstack).  This is not an exhaustive list of all the components needed, we recommend you consult and understand the [openstack module](https://github.com/stackfoge/puppet-openstack) and the [core openstack](http://docs.openstack.org) documentation.
 
-## swift::proxy: ##
+**Defining a swift storage node**
 
-class that installs and configures the swift proxy server
+```puppet
+class { 'swift':
+  swift_hash_suffix => 'swift_secret',
+}
 
-    class { 'swift::proxy':
-      # specifies that account should be automatically created
-      # this should be set to true when tempauth is used
-      account_autocreate = true,
-      proxy_local_net_ip = $ipaddress_eth1,
-      #proxy_port = '11211',
-      # auth type defaults to tempauth - this is the
-      # only auth that has been tested
-      #auth_type = 'tempauth',
-    }
+swift::storage::loopback { ['1', '2']:
+ require => Class['swift'],
+}
 
-## swift::storage ##
+class { 'swift::storage::all':
+  storage_local_net_ip => $ipaddress_eth0
+}
 
-class that sets up all of the configuration and dependencies for swift storage
-server instances
+@@ring_object_device { "${ipaddress_eth0}:6000/1":
+  zone   => 1,
+  weight => 1,
+}
+@@ring_container_device { "${ipaddress_eth0}:6001/1":
+  zone   => 1,
+  weight => 1,
+}
+@@ring_account_device { "${ipaddress_eth0}:6002/1":
+  zone   => 1,
+  weight => 1,
+}
 
-    class { 'swift::storage':
-      # address that swift should bind to
-      storage_local_net_ip => $ipaddress_eth1,
-      devices              => '/srv/node'
-    }
+@@ring_object_device { "${ipaddress_eth0}:6000/2":
+  zone   => 1,
+  weight => 1,
+}
+@@ring_container_device { "${ipaddress_eth0}:6001/2":
+  zone   => 1,
+  weight => 1,
+}
+@@ring_account_device { "${ipaddress_eth0}:6002/2":
+  zone   => 1,
+  weight => 1,
+}
 
-## swift::storage::server ##
+Swift::Ringsync<<||>>
+```
 
-Defined resource type that can be used to create a swift storage server
-instance. In general, you do not need to explicity specify your server instances
-(as the swift::storage::class will create them for you)
+Usage
+-----
+
+### Class: swift
+
+Class that will set up the base packages and the base /etc/swift/swift.conf
+
+```puppet
+class { 'swift': swift_hash_suffix => 'shared_secret', }
+```
+
+####`swfit_hash_suffix`
+The shared salt used when hashing ring mappings.
+
+### Class swift::proxy
+
+Class that installs and configures the swift proxy server.
+
+```puppet
+class { 'swift::proxy':
+  account_autocreate = true,
+  proxy_local_net_ip = $ipaddress_eth1,
+  port               = '11211',
+}
+```
+
+####`account_autocreate`
+Specifies if the module should manage the automatic creation of the accounts needed for swift.  This should be set to true if tempauth is also being used.
+
+####`proxy_local_net_ip`
+This is the ip that the proxy service will bind to when it starts.
+
+####`port`
+The port for which the proxy service will bind to when it starts.
+
+### Class: swift::storage
+
+Class that sets up all of the configuration and dependencies for swift storage server instances.
+
+```puppet
+class { 'swift::storage': storage_local_net_ip => $ipaddress_eth1, }
+```
+
+####`storage_local_net_ip`
+This is the ip that the storage service will bind to when it starts.
+
+### Class: swift::ringbuilder
+
+A class that knows how to build swift rings.  Creates the initial ring via exported resources and rebalances the ring if it is updated.
+
+```puppet
+class { 'swift::ringbuilder':
+  part_power     => '18',
+  replicas       => '3',
+  min_part_hours => '1',
+}
+```
+
+####`part_power`
+The number of partitions in the swift ring. (specified as the power of 2)
+
+####`replicas`
+The number of replicas to store.
+
+####`min_part_hours`
+Time before a partition can be movied.
+
+### Define: swift::storage::server
+
+Defined resource type that can be used to create a swift storage server instance.  If you keep the sever names unique it is possibly to create multiple swift servers on a single physical node.
 
 This will configure an rsync server instance and swift storage instance to
 manage the all devices in the devices directory.
 
-    # the title for this server and the port where it
-    # will be hosted
-    swift::storage::server { '6010':
-      # the type of device (account/object/container)
-      type => 'object',
-      # directory where device is mounted
-      devices => '/srv/node',
-      # address to bind to
-      storage_local_net_ip => '127.0.0.1'
-    }
-
-## swift::storage::loopback ##
-
-This defined resource was created to test swift by creating loopback devices
-that can be used for testing
-
-It creates a partition of size [$seek] at base_dir/[$name] using dd with
-[$byte_size], formats it to be an xfs filesystem which is mounted at
-[$mnt_base_dir]/[$name]
-
-It then creates swift::storage::devices for each device type using the title as
-the 3rd digit of a four digit port number :60[digit][role] (object = 0,
-container = 1, account = 2)
-
-    swift::storage::loopback { '1':
-      base_dir  => '/srv/loopback-device',
-      mnt_base_dir => '/srv/node',
-      byte_size => '1024',
-      seek      => '25000',
-      storage_local_net_ip => '127.0.0.1'
+```puppet
+swift::storage::server { '6010':
+  type                 => 'object',
+  devices              => '/srv/node',
+  storage_local_net_ip => '127.0.0.1'
 }
+```
 
-## swift::ringbuiler ##
+####`namevar`
+The namevar/title for this type will map to the port where the server is hosted.
 
-class that knows how to build rings.
+####`type`
+The type of device, e.g. account, object, or container.
 
-Creates the initial rings, collects any exported resources, and rebalances the
-ring if it is updated.
+####`device`
+The directory where the physical storage device will be mounted.
 
-      class { 'swift::ringbuilder':
-        part_power     => '18',
-        replicas       => '3',
-        min_part_hours => '1',
-      }
+####`storage_local_net_ip`
+This is the ip that the storage service will bind to when it starts.
 
-# Example #
+### Define: swift::storage::loopback
 
-For an example of how to use this module to build out a single node swift
-cluster, you can have a look at examples/all.pp
+This defined resource type was created to test swfit by creating a loopback device that can be used a storage device in the absent of a dedicated block device.
 
-This example can be used as follows:
+It creates a partition of size [`$seek`] at basedir/[`$name`] using dd with [`$byte_size`], formats is to be a xfs filesystem which is then mounted at [`$mnt_base_dir`]/[`$name`].
 
-    puppet apply examples/all.pp      # swift specific roles
+Then it creates an instance of defined class for the xfs file system that will eventually lead the mounting of the device using the swift::storage::mount define.
 
-For an example of how to use this module to build out a multi node swift
-cluster, you can have a look at examples/site.pp. This file assumes you have a
-puppetmaster with storeconfigs enabled.
+```puppet
+swift::storage::loopback { '1':
+  base_dir  => '/srv/loopback-device',
+  mnt_base_dir => '/srv/node',
+  byte_size => '1024',
+  seek      => '25000',
+}
+```
 
-NOTE: this example file uses hiera to set the configurable data values. Hiera should
-work by default with Puppet 3.0.
+####`base_dir`
+The directory where the flat files will be stored that house the file system to be loop back mounted.
 
-Hiera is initiated by the calls to hiera at the beginning of the example file. Feel
-free to comment out these lines and use the commented out regular variable assigments
-if you do not feel like setting up hiera on Puppet < 3.0.
+####`mnt_base_dir`
+The directory where the flat files that store the file system to be loop back mounted are actually mounted at.
 
-Please note that if you create fewer than 3 storage nodes, you will need to edit
-the `replicas` parameter of the swift::ringbuilder instance in the proxy node
-definition.
+####`byte_size`
+The byte size that dd uses when it creates the file system.
 
-Once your puppetmaster is configured, you can provision your nodes with:
+####`seek`
+The size of the file system that will be created.  Defaults to 25000.
 
-    puppet agent -t --certname my_role
+### Verifying installation
 
-# Verifying installation #
+This modules ships with a simple Ruby script that validates whether or not your swift cluster is functional.
 
-This module also comes with a simple Ruby script that validates rather or not
-your swift cluster is functional.
+THe script can be run as:
 
-The script can be run as:
+`ruby $modulepath/swift/files/swift_tester.rb`
 
-    ruby files/swift_tester.rb
+Implementation
+--------------
+
+### swift
+
+swift is a combination of Puppet manifest and ruby code to delivery configuration and extra functionality through types and providers.
+
+Limitations
+------------
+
+* No explicit support external NAS devices (i.e. Nexenta and LFS) to offload the ring replication requirements.
+
+Development
+-----------
+
+Developer documentation for the entire puppet-openstack project.
+
+* https://wiki.openstack.org/wiki/Puppet-openstack#Developer_documentation
+
+Contributors
+------------
+
+* https://github.com/stackforge/puppet-swift/graphs/contributors
+
+Release Notes
+-------------
+
+**2.0.0**
+
+* Upstream is now part of stackfoge.
+* swift_ring_builder supports replicator.
+* Supports swift 1.8
+* Further Red Hat support.
+* Various cleanups and bug fixes.
