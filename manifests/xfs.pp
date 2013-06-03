@@ -2,7 +2,14 @@
 # package dependencies for creating
 # xfs partitions
 class swift::xfs {
-  package { ['xfsprogs', 'parted']:
-    ensure => 'present'
+  if !defined(Package['xfsprogs']){
+    package { 'xfsprogs':
+      ensure => present
+    }
+  }
+  if !defined(Package['parted']){
+    package { 'parted':
+      ensure => present
+    }
   }
 }
