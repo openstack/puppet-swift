@@ -60,7 +60,8 @@ describe 'swift::storage::container' do
     let :facts do
       {
         :operatingsystem => 'RedHat',
-        :osfamily        => 'RedHat'
+        :osfamily        => 'RedHat',
+        :concat_basedir => '/var/lib/puppet/concat'
       }
     end
     it 'should have some support services' do
@@ -71,6 +72,31 @@ describe 'swift::storage::container' do
           :enable   => true,
           :require  => 'Package[swift-container]'
         )
+      end
+    end
+
+    describe 'configuration file' do
+      let :pre_condition do
+        "class { 'ssh::server::install': }
+         class { 'swift': swift_hash_suffix => 'foo' }
+         class { 'swift::storage::all': storage_local_net_ip => '10.0.0.1' }"
+      end
+
+      let :fragment_file do
+        "/var/lib/puppet/concat/_etc_swift_container-server.conf/fragments/00_swift-container-6001"
+      end
+
+      it { should contain_file(fragment_file).with_content(/^allowed_sync_hosts = 127.0.0.1$/) }
+
+      describe 'with allowed_sync_hosts' do
+
+        let :params do
+          { :allowed_sync_hosts => ['127.0.0.1', '10.1.0.1', '10.1.0.2'], }
+        end
+
+        it {
+          should contain_file(fragment_file).with_content(/^allowed_sync_hosts = 127.0.0.1,10.1.0.1,10.1.0.2$/)
+        }
       end
     end
   end
