@@ -45,7 +45,13 @@ class swift::proxy(
   $workers = $::processorcount,
   $allow_account_management = true,
   $account_autocreate = true,
+  $log_headers = 'False',
+  $log_udp_host = '',
+  $log_udp_port = '',
+  $log_address = '/dev/log',
   $log_level = 'INFO',
+  $log_facility = 'LOG_LOCAL1',
+  $log_handoffs = true,
   $package_ensure = 'present'
 ) {
 
