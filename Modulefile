@@ -9,7 +9,7 @@ project_page 'https://launchpad.net/puppet-openstack'
 
 ## Add dependencies, if any:
 dependency 'puppetlabs/keystone', '>= 2.0.0'
-dependency 'puppetlabs/mysql','>= v0.6.1'
+dependency 'puppetlabs/mysql','>= 0.6.1'
 dependency 'puppetlabs/rsync', '>= 0.1.0'
 dependency 'puppetlabs/stdlib', '>= 2.3.0'
 dependency 'puppetlabs/xinetd', '>= 1.0.1'
