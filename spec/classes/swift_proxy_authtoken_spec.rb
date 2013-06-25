@@ -25,7 +25,6 @@ describe 'swift::proxy::authtoken' do
         [
           '[filter:authtoken]',
           'paste.filter_factory = keystoneclient.middleware.auth_token:filter_factory',
-          'signing_dir = /etc/swift',
           'auth_host = 127.0.0.1',
           'auth_port = 35357',
           'auth_protocol = http',
@@ -51,7 +50,6 @@ describe 'swift::proxy::authtoken' do
         [
           '[filter:authtoken]',
           'paste.filter_factory = keystoneclient.middleware.auth_token:filter_factory',
-          'signing_dir = /etc/swift',
           'auth_host = 127.0.0.1',
           'auth_port = 35357',
           'auth_protocol = http',
@@ -82,7 +80,6 @@ describe 'swift::proxy::authtoken' do
         [
           '[filter:authtoken]',
           'paste.filter_factory = keystoneclient.middleware.auth_token:filter_factory',
-          'signing_dir = /etc/swift',
           'auth_host = some.host',
           'auth_port = 443',
           'auth_protocol = https',
