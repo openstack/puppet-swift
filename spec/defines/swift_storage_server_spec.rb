@@ -145,7 +145,13 @@ describe 'swift::storage::server' do
           .with_content(/^user\s*=\s*swift\s*$/)
         }
         it { should contain_file(fragment_file) \
-          .with_content(/^log_facility\s*=\s*LOG_LOCAL2\s*$/)
+          .with_content(/^set log_facility\s*=\s*LOG_LOCAL2\s*$/)
+        }
+        it { should contain_file(fragment_file) \
+          .with_content(/^set log_level\s*=\s*INFO\s*$/)
+        }
+        it { should contain_file(fragment_file) \
+          .with_content(/^set log_address\s*=\s*\/dev\/log\s*$/)
         }
         it { should contain_file(fragment_file) \
           .with_content(/^workers\s*=\s*1\s*$/)
