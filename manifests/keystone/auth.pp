@@ -14,7 +14,7 @@ class swift::keystone::auth(
 ) {
 
 if $address != '127.0.0.1' {
-  warning("Address parameter for swift::keystone::auth has been deprecated, use public_address instead")
+  warning('Address parameter for swift::keystone::auth has been deprecated, use public_address instead')
   }
 
   if ! $public_port {

@@ -6,7 +6,7 @@
 # this define needs to be sent a refresh signal to do anything
 #
 #
-# [*title*] 
+# [*title*]
 #
 # [*byte_size*] Byte size to use for every inode in the created filesystem.
 #  It is recommened to use 1024 to ensure that the metadata can fit in a single inode.

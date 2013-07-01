@@ -28,13 +28,13 @@ define swift::storage::server(
   # TODO if array does not include type-server, warn
   if(
     (is_array($pipeline) and ! member($pipeline, "${type}-server")) or
-    "$pipeline" != "${type}-server"
+    $pipeline != "${type}-server"
   ) {
       warning("swift storage server ${type} must specify ${type}-server")
   }
 
-  include "swift::storage::$type"
-  include 'concat::setup'
+  include "swift::storage::${type}"
+  include concat::setup
 
   validate_re($name, '^\d+$')
   validate_re($type, '^object|container|account$')
@@ -44,13 +44,13 @@ define swift::storage::server(
 
   $bind_port = $name
 
-  rsync::server::module { "${type}":
-    path => $devices,
-    lock_file => "/var/lock/${type}.lock",
-    uid => $owner,
-    gid => $group,
+  rsync::server::module { $type:
+    path            => $devices,
+    lock_file       => "/var/lock/${type}.lock",
+    uid             => $owner,
+    gid             => $group,
     max_connections => $max_connections,
-    read_only => false,
+    read_only       => false,
   }
 
   concat { "/etc/swift/${config_file_path}":

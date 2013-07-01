@@ -5,7 +5,7 @@
 #
 # == Examples
 #
-#  include 'swift::proxy::tempurl'
+#  include swift::proxy::tempurl
 #
 # == Authors
 #

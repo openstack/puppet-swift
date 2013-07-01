@@ -61,7 +61,7 @@ class swift::proxy::authtoken(
     validate_re($auth_admin_prefix, '^(/.+[^/])?$')
   }
 
-  concat::fragment { "swift_authtoken":
+  concat::fragment { 'swift_authtoken':
     target  => '/etc/swift/proxy-server.conf',
     content => template('swift/proxy/authtoken.conf.erb'),
     order   => '22',

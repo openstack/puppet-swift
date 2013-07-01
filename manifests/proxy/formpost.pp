@@ -5,7 +5,7 @@
 #
 # == Examples
 #
-#  include 'swift::proxy::formpost'
+#  include swift::proxy::formpost
 #
 # == Authors
 #

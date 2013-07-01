@@ -6,7 +6,7 @@ class swift::storage::account(
   }
 
   service { 'swift-account-reaper':
-    name  => $::swift::params::account_reaper_service_name,
+    name      => $::swift::params::account_reaper_service_name,
     ensure    => running,
     enable    => true,
     provider  => $::swift::params::service_provider,
@@ -14,7 +14,7 @@ class swift::storage::account(
   }
 
   service { 'swift-account-auditor':
-    name  => $::swift::params::account_auditor_service_name,
+    name      => $::swift::params::account_auditor_service_name,
     ensure    => running,
     enable    => true,
     provider  => $::swift::params::service_provider,

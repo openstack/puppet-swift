@@ -18,7 +18,7 @@ class swift::proxy::swift3(
   $ensure = 'present'
 ) {
 
-  include $::swift::params
+  include swift::params
 
   package { 'swift-plugin-s3':
     name   => $::swift::params::swift3,

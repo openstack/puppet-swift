@@ -29,12 +29,12 @@ class swift::ringserver(
     use_chroot => 'no',
   }
 
-  rsync::server::module { "swift_server":
-    path => '/etc/swift',
-    lock_file => "/var/lock/swift_server.lock",
-    uid => 'swift',
-    gid => 'swift',
+  rsync::server::module { 'swift_server':
+    path            => '/etc/swift',
+    lock_file       => '/var/lock/swift_server.lock',
+    uid             => 'swift',
+    gid             => 'swift',
     max_connections => $max_connections,
-    read_only => true,
+    read_only       => true,
   }
 }

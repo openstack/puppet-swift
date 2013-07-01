@@ -1,5 +1,5 @@
 class swift::params {
-  case $osfamily {
+  case $::osfamily {
     'Debian': {
       $package_name                      = 'swift'
       $client_package                    = 'python-swiftclient'
@@ -51,7 +51,7 @@ class swift::params {
       $swift3                            = 'openstack-swift-plugin-swift3'
     }
     default: {
-        fail("Unsupported osfamily: ${osfamily} for os ${operatingsystem}")
+        fail("Unsupported osfamily: ${::osfamily} for os ${::operatingsystem}")
     }
   }
 }

@@ -25,7 +25,7 @@
 #$swift_admin_password = 'admin_password'
 $swift_admin_password = hiera('admin_password', 'admin_password')
 
- # swift specific configurations
+# swift specific configurations
 #$swift_shared_secret = 'changeme'
 $swift_shared_secret = hiera('swift_shared_secret', 'changeme')
 
@@ -250,8 +250,8 @@ node /swift-proxy/ inherits swift_base {
 
   # exports rsync gets that can be used to sync the ring files
   @@swift::ringsync { ['account', 'object', 'container']:
-   ring_server => $swift_local_net_ip
- }
+    ring_server => $swift_local_net_ip
+  }
 
   # deploy a script that can be used for testing
   class { 'swift::test_file':

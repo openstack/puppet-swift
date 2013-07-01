@@ -10,7 +10,7 @@ class swift::auth_file (
     owner   => 'root',
     group   => 'root',
     mode    => '0600',
-    content => 
+    content =>
   "
   export ST_USER=${admin_tenant}:${admin_user}
   export ST_KEY=${admin_password}

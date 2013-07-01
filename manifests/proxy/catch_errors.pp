@@ -5,7 +5,7 @@
 #
 # == Examples
 #
-#  include 'swift::proxy::catch_errors'
+#  include swift::proxy::catch_errors
 #
 # == Authors
 #

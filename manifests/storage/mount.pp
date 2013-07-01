@@ -17,9 +17,9 @@ define swift::storage::mount(
   }
 
   if($fstype == 'xfs'){
-     $fsoptions = 'logbufs=8'
+    $fsoptions = 'logbufs=8'
   } else {
-     $fsoptions = 'user_xattr'
+    $fsoptions = 'user_xattr'
   }
 
   # the directory that represents the mount point
@@ -34,7 +34,7 @@ define swift::storage::mount(
     ensure  => present,
     device  => $device,
     fstype  => $fstype,
-    options => "$options,$fsoptions",
+    options => "${options},${fsoptions}",
     require => File["${mnt_base_dir}/${name}"]
   }
 

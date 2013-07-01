@@ -37,7 +37,7 @@ class swift::test_file (
   $user        = 'admin'
 ) {
   file { '/tmp/swift_test_file.rb':
-    mode => '755',
+    mode    => '0755',
     content => template('swift/swift_keystone_test.erb')
   }
 }

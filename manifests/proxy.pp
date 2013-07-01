@@ -55,8 +55,8 @@ class swift::proxy(
   $package_ensure = 'present'
 ) {
 
-  include 'swift::params'
-  include 'concat::setup'
+  include swift::params
+  include concat::setup
 
   validate_bool($account_autocreate)
   validate_bool($allow_account_management)
@@ -77,7 +77,7 @@ class swift::proxy(
   }
 
   if($auth_type == 'tempauth' and ! $account_autocreate ){
-    fail("\$account_autocreate must be set to true when auth type is tempauth")
+    fail('account_autocreate must be set to true when auth_type is tempauth')
   }
 
   package { 'swift-proxy':
@@ -102,7 +102,7 @@ class swift::proxy(
 
   # you can now add your custom fragments at the user level
   concat::fragment { 'swift_proxy':
-    target  => "/etc/swift/proxy-server.conf",
+    target  => '/etc/swift/proxy-server.conf',
     content => template('swift/proxy-server.conf.erb'),
     order   => '00',
     # require classes for each of the elements of the pipeline

@@ -42,6 +42,8 @@ define swift::storage::loopback(
     subscribe    => Exec["create_partition-${name}"],
     loopback     => true,
   }
-  $device_config_hash = {"$name" => $storage_params,}
-  create_resources("swift::storage::$fstype", $device_config_hash)
+  # NOTE(mgagne) Puppet does not allow hash keys to be bare variables.
+  #              Keep double-quotes to avoid parse errors.
+  $device_config_hash = { "${name}" => $storage_params }
+  create_resources("swift::storage::${fstype}", $device_config_hash)
 }
