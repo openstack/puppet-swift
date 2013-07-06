@@ -8,6 +8,7 @@ description 'Puppet module to install and configure the OpenStack Swift object s
 project_page 'https://launchpad.net/puppet-openstack'
 
 ## Add dependencies, if any:
+dependency 'cprice404/inifile', '>= 0.10.3'
 dependency 'puppetlabs/keystone', '>= 2.0.0'
 dependency 'puppetlabs/mysql','>= 0.6.1'
 dependency 'puppetlabs/rsync', '>= 0.1.0'
