@@ -8,9 +8,9 @@ require 'open3'
 require 'fileutils'
 
 # connection variables
-proxy_local_net_ip="<%= auth_server %>"
-user='<%= tenant %>:<%= user %>'
-password='<%= password %>'
+proxy_local_net_ip="<%= @auth_server %>"
+user='<%= @tenant %>:<%= @user %>'
+password='<%= @password %>'
 
 ## headers for curl requests
 #user_header="-H 'X-Storage-User: #{user}'"

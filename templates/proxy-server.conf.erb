@@ -1,19 +1,19 @@
 # This file is managed by puppet.  Do not edit
 #
 [DEFAULT]
-bind_port = <%= port %>
-<% if proxy_local_net_ip %>
-bind_ip = <%= proxy_local_net_ip %>
+bind_port = <%= @port %>
+<% if @proxy_local_net_ip %>
+bind_ip = <%= @proxy_local_net_ip %>
 <% end %>
-workers = <%= workers %>
+workers = <%= @workers %>
 user = swift
-log_level = <%= log_level %>
+log_level = <%= @log_level %>
 
 [pipeline:main]
-pipeline = <%= pipeline.to_a.join(' ') %>
+pipeline = <%= @pipeline.to_a.join(' ') %>
 
 [app:proxy-server]
 use = egg:swift#proxy
-allow_account_management = <%= allow_account_management %>
-account_autocreate = <%= account_autocreate %>
+allow_account_management = <%= @allow_account_management %>
+account_autocreate = <%= @account_autocreate %>
 
