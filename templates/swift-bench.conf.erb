@@ -1,16 +1,16 @@
 [bench]
-auth = <%= auth_url %>
-user = <%= swift_user %>
-key = <%= swift_key %>
-auth_version = <%= auth_version %>
-log-level = <%= log_level %>
-timeout = <%= test_timeout %>
+auth = <%= @auth_url %>
+user = <%= @swift_user %>
+key = <%= @swift_key %>
+auth_version = <%= @auth_version %>
+log-level = <%= @log_level %>
+timeout = <%= @test_timeout %>
 
 # You can configure PUT, GET, and DELETE concurrency independently or set all
 # three with "concurrency"
-put_concurrency = <%= put_concurrency %>
-get_concurrency = <%= get_concurrency %>
-del_concurrency = <%= del_concurrency %>
+put_concurrency = <%= @put_concurrency %>
+get_concurrency = <%= @get_concurrency %>
+del_concurrency = <%= @del_concurrency %>
 # concurrency =
 
 # A space-sep list of files whose contents will be read and randomly chosen
@@ -20,23 +20,23 @@ del_concurrency = <%= del_concurrency %>
 # If object_sources is not set and lower_object_size != upper_object_size,
 # each PUT will randomly select an object size between the two values.  Units
 # are bytes.
-lower_object_size = <%= lower_object_size %>
-upper_object_size = <%= upper_object_size %>
+lower_object_size = <%= @lower_object_size %>
+upper_object_size = <%= @upper_object_size %>
 
 # If object_sources is not set and lower_object_size == upper_object_size,
 # every object PUT will contain this many bytes.
-object_size = <%= object_size %>
+object_size = <%= @object_size %>
 
-num_objects = <%= num_objects %>
-num_gets = <%= num_gets %>
-num_containers = <%= num_containers %>
+num_objects = <%= @num_objects %>
+num_gets = <%= @num_gets %>
+num_containers = <%= @num_containers %>
 
 # The base name for created containers.
 # container_name = (randomly-chosen uuid4)
 
 # Should swift-bench benchmark DELETEing the created objects and then delete
 # all created containers?
-delete = <%= delete %>
+delete = <%= @delete %>
 
 # Without use_proxy, swift-bench will talk directly to the backend Swift
 # servers.  Doing that will require "url", "account", and at least one
