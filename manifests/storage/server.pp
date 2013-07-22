@@ -14,6 +14,7 @@ define swift::storage::server(
   $mount_check            = false,
   $user                   = 'swift',
   $workers                = '1',
+  $allow_versions         = false,
   $replicator_concurrency = $::processorcount,
   $updater_concurrency    = $::processorcount,
   $reaper_concurrency     = $::processorcount,
@@ -38,6 +39,7 @@ define swift::storage::server(
   validate_re($name, '^\d+$')
   validate_re($type, '^object|container|account$')
   validate_array($pipeline)
+  validate_bool($allow_versions)
   # TODO - validate that name is an integer
 
   $bind_port = $name
