@@ -1,4 +1,5 @@
 [filter:authtoken]
+signing_dir=/var/cache/swift
 paste.filter_factory = keystoneclient.middleware.auth_token:filter_factory
 auth_host = <%= @auth_host %>
 auth_port = <%= @auth_port %>
