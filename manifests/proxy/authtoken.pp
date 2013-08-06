@@ -27,6 +27,8 @@
 #  [auth_uri] The public auth url to redirect unauthenticated requests.
 #    Defaults to false to be expanded to '${auth_protocol}://${auth_host}:5000'.
 #    Should be set to your public keystone endpoint (without version).
+#  [signing_dir] The cache directory for signing certificates.
+#    Defaults to '/var/cache/swift'
 #
 # == Authors
 #
@@ -47,7 +49,8 @@ class swift::proxy::authtoken(
   $auth_admin_prefix   = false,
   $auth_uri            = false,
   $delay_auth_decision = 1,
-  $admin_token         = false
+  $admin_token         = false,
+  $signing_dir         = '/var/cache/swift'
 ) {
 
   if $auth_uri {
@@ -59,6 +62,13 @@ class swift::proxy::authtoken(
 
   if $auth_admin_prefix {
     validate_re($auth_admin_prefix, '^(/.+[^/])?$')
+  }
+
+  file { $signing_dir:
+    ensure => directory,
+    mode   => '0700',
+    owner  => 'swift',
+    group  => 'swift',
   }
 
   concat::fragment { 'swift_authtoken':

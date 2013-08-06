@@ -15,6 +15,19 @@ describe 'swift::proxy::authtoken' do
     '
   end
 
+  describe 'when using the default signing directory' do
+    let :file_defaults do
+      {
+        :mode    => '0700',
+        :owner   => 'swift',
+        :group   => 'swift',
+      }
+    end
+    it {should contain_file('/var/cache/swift').with(
+      {:ensure => 'directory'}.merge(file_defaults)
+    )}
+  end
+
   let :fragment_file do
     "/var/lib/puppet/concat/_etc_swift_proxy-server.conf/fragments/22_swift_authtoken"
   end
@@ -24,7 +37,7 @@ describe 'swift::proxy::authtoken' do
       verify_contents(subject, fragment_file,
         [
           '[filter:authtoken]',
-          'signing_dir=/var/cache/swift',
+          'signing_dir = /var/cache/swift',
           'paste.filter_factory = keystoneclient.middleware.auth_token:filter_factory',
           'auth_host = 127.0.0.1',
           'auth_port = 35357',
@@ -50,6 +63,7 @@ describe 'swift::proxy::authtoken' do
       verify_contents(subject, fragment_file,
         [
           '[filter:authtoken]',
+          'signing_dir = /var/cache/swift',
           'paste.filter_factory = keystoneclient.middleware.auth_token:filter_factory',
           'auth_host = 127.0.0.1',
           'auth_port = 35357',
@@ -72,7 +86,8 @@ describe 'swift::proxy::authtoken' do
         :admin_tenant_name   => 'admin',
         :admin_user          => 'swiftuser',
         :admin_password      => 'swiftpassword',
-        :delay_auth_decision => '0'
+        :delay_auth_decision => '0',
+        :signing_dir         => '/home/swift/keystone-signing'
       }
     end
 
@@ -80,6 +95,7 @@ describe 'swift::proxy::authtoken' do
       verify_contents(subject, fragment_file,
         [
           '[filter:authtoken]',
+          'signing_dir = /home/swift/keystone-signing',
           'paste.filter_factory = keystoneclient.middleware.auth_token:filter_factory',
           'auth_host = some.host',
           'auth_port = 443',
