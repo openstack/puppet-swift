@@ -69,8 +69,4 @@ class swift(
     content => template('swift/swift.conf.erb'),
   }
 
-  file { '/var/cache/swift':
-    ensure => directory,
-  }
-
 }
