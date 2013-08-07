@@ -244,6 +244,15 @@ Contributors
 Release Notes
 -------------
 
+**2.1.0**
+
+* Management of swift-bench
+* allow_versions flag for object versioning
+* ini_setting based custom types for configs
+* Configurable log for proxy-server
+* Adds signing directory
+* Puppet lint and warning fixes
+
 **2.0.0**
 
 * Upstream is now part of stackfoge.
