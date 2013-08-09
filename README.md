@@ -106,9 +106,9 @@ Class that installs and configures the swift proxy server.
 
 ```puppet
 class { 'swift::proxy':
-  account_autocreate = true,
-  proxy_local_net_ip = $ipaddress_eth1,
-  port               = '11211',
+  account_autocreate => true,
+  proxy_local_net_ip => $ipaddress_eth1,
+  port               => '11211',
 }
 ```
 
@@ -182,7 +182,7 @@ This is the ip that the storage service will bind to when it starts.
 
 ### Define: swift::storage::loopback
 
-This defined resource type was created to test swfit by creating a loopback device that can be used a storage device in the absent of a dedicated block device.
+This defined resource type was created to test swift by creating a loopback device that can be used a storage device in the absent of a dedicated block device.
 
 It creates a partition of size [`$seek`] at basedir/[`$name`] using dd with [`$byte_size`], formats is to be a xfs filesystem which is then mounted at [`$mnt_base_dir`]/[`$name`].
 
@@ -213,7 +213,7 @@ The size of the file system that will be created.  Defaults to 25000.
 
 This modules ships with a simple Ruby script that validates whether or not your swift cluster is functional.
 
-THe script can be run as:
+The script can be run as:
 
 `ruby $modulepath/swift/files/swift_tester.rb`
 
