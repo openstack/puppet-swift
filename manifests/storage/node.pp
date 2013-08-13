@@ -15,6 +15,8 @@ define swift::storage::node(
   $manage_ring = true
 ) {
 
+  validate_re($zone, '^\d+$', 'The zone parameter must be an integer')
+
   Swift::Storage::Server {
     storage_local_net_ip => $storage_local_net_ip,
     devices              => $mnt_base_dir,
