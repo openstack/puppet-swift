@@ -42,9 +42,6 @@ describe 'swift' do
     it {should contain_file('/var/run/swift').with(
       {:ensure => 'directory'}.merge(file_defaults)
     )}
-    it {should contain_file('/var/cache/swift').with(
-      {:ensure => 'directory'}.merge(file_defaults)
-    )}
     it {should contain_file('/etc/swift/swift.conf').with(
       {:ensure  => 'present',
        :mode    => '0660',
