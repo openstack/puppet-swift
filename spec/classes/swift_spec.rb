@@ -45,12 +45,9 @@ describe 'swift' do
     it {should contain_file('/etc/swift/swift.conf').with(
       {:ensure  => 'present',
        :mode    => '0660',
+       :content => "[swift-hash]\nswift_hash_path_suffix = string\n"
       }.merge(file_defaults)
     )}
-    it 'configures swift.conf' do
-      should contain_swift_config(
-        'swift-hash/swift_hash_path_suffix').with_value('string')
-    end
     it {should contain_package('swift').with_ensure('present')}
     it {should contain_user('swift')}
     it {should contain_file('/var/lib/swift').with_ensure('directory')}
