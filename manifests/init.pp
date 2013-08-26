@@ -66,7 +66,9 @@ class swift(
   file { '/etc/swift/swift.conf':
     ensure  => present,
     mode    => '0660',
-    content => template('swift/swift.conf.erb'),
   }
 
+  swift_config { 'swift-hash/swift_hash_path_suffix':
+    value => $swift_hash_suffix
+  }
 }
