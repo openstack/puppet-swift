@@ -13,15 +13,15 @@ class swift::storage::container(
   }
 
   service { 'swift-container-updater':
-    name      => $::swift::params::container_updater_service_name,
     ensure    => running,
+    name      => $::swift::params::container_updater_service_name,
     enable    => true,
     provider  => $::swift::params::service_provider,
     require   => Package['swift-container'],
   }
   service { 'swift-container-auditor':
-    name      => $::swift::params::container_auditor_service_name,
     ensure    => running,
+    name      => $::swift::params::container_auditor_service_name,
     enable    => true,
     provider  => $::swift::params::service_provider,
     require   => Package['swift-container'],

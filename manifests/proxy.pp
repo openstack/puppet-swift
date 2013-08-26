@@ -81,8 +81,8 @@ class swift::proxy(
   }
 
   package { 'swift-proxy':
-    name   => $::swift::params::proxy_package_name,
     ensure => $package_ensure,
+    name   => $::swift::params::proxy_package_name,
   }
 
   concat { '/etc/swift/proxy-server.conf':
@@ -113,8 +113,8 @@ class swift::proxy(
   }
 
   service { 'swift-proxy':
-    name      => $::swift::params::proxy_service_name,
     ensure    => running,
+    name      => $::swift::params::proxy_service_name,
     enable    => true,
     provider  => $::swift::params::service_provider,
     hasstatus => true,

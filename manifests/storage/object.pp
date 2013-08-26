@@ -6,15 +6,15 @@ class swift::storage::object(
   }
 
   service { 'swift-object-updater':
-    name      => $::swift::params::object_updater_service_name,
     ensure    => running,
+    name      => $::swift::params::object_updater_service_name,
     enable    => true,
     provider  => $::swift::params::service_provider,
     require   => Package['swift-object'],
   }
   service { 'swift-object-auditor':
-    name      => $::swift::params::object_auditor_service_name,
     ensure    => running,
+    name      => $::swift::params::object_auditor_service_name,
     enable    => true,
     provider  => $::swift::params::service_provider,
     require   => Package['swift-object'],

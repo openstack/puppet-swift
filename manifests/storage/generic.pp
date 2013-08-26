@@ -29,10 +29,10 @@ define swift::storage::generic(
   validate_re($name, '^object|container|account$')
 
   package { "swift-${name}":
+    ensure => $package_ensure,
     # this is a way to dynamically build the variables to lookup
     # sorry its so ugly :(
     name   => inline_template("<%= scope.lookupvar('::swift::params::${name}_package_name') %>"),
-    ensure => $package_ensure,
     before => Service["swift-${name}", "swift-${name}-replicator"],
   }
 
@@ -43,8 +43,8 @@ define swift::storage::generic(
   }
 
   service { "swift-${name}":
-    name      => inline_template("<%= scope.lookupvar('::swift::params::${name}_service_name') %>"),
     ensure    => running,
+    name      => inline_template("<%= scope.lookupvar('::swift::params::${name}_service_name') %>"),
     enable    => true,
     hasstatus => true,
     provider  => $service_provider,
@@ -52,8 +52,8 @@ define swift::storage::generic(
   }
 
   service { "swift-${name}-replicator":
-    name      => inline_template("<%= scope.lookupvar('::swift::params::${name}_replicator_service_name') %>"),
     ensure    => running,
+    name      => inline_template("<%= scope.lookupvar('::swift::params::${name}_replicator_service_name') %>"),
     enable    => true,
     hasstatus => true,
     provider  => $service_provider,

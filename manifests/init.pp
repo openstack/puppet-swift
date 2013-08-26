@@ -31,14 +31,14 @@ class swift(
 
   if !defined(Package['swift']) {
     package { 'swift':
-      name   => $::swift::params::package_name,
       ensure => $package_ensure,
+      name   => $::swift::params::package_name,
     }
   }
 
   package { 'swiftclient':
-    name   => $::swift::params::client_package,
     ensure => $package_ensure,
+    name   => $::swift::params::client_package,
   }
 
   File { owner => 'swift', group => 'swift', require => Package['swift'] }
