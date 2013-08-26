@@ -73,7 +73,7 @@ class swift::proxy(
   }
 
   if(! member($pipeline, 'proxy-server')) {
-    warning("swift storage server ${type} must specify ${type}-server")
+    warning('pipeline parameter must contain proxy-server')
   }
 
   if($auth_type == 'tempauth' and ! $account_autocreate ){
