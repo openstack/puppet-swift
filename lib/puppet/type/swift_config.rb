@@ -37,4 +37,10 @@ Puppet::Type.newtype(:swift_config) do
     newvalues(:true, :false)
     defaultto false
   end
+
+  # Require the swift.conf to be present
+  autorequire(:file) do
+    ['/etc/swift/swift.conf']
+  end
+
 end
