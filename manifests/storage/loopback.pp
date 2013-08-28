@@ -22,9 +22,9 @@ define swift::storage::loopback(
 
   if(!defined(File[$mnt_base_dir])) {
     file { $mnt_base_dir:
+      ensure => directory,
       owner  => 'swift',
       group  => 'swift',
-      ensure => directory,
     }
   }
 

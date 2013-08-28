@@ -21,8 +21,8 @@ class swift::proxy::swift3(
   include swift::params
 
   package { 'swift-plugin-s3':
-    name   => $::swift::params::swift3,
     ensure => $ensure,
+    name   => $::swift::params::swift3,
   }
 
   concat::fragment { 'swift_swift3':
