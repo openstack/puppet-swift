@@ -18,9 +18,24 @@ class swift::bench (
   $delete            = 'yes',
 ){
 
-    file {'/etc/swift/swift-bench.conf':
-        ensure  => present,
-        mode    => '0644',
-        content => template('swift/swift-bench.conf.erb')
-    }
+  Package['swift'] -> Swift_bench_config<||>
+
+  swift_bench_config {
+    'bench/auth':              value => $auth_url;
+    'bench/user':              value => $swift_user;
+    'bench/key':               value => $swift_key;
+    'bench/auth_version':      value => $auth_version;
+    'bench/log-level':         value => $log_level;
+    'bench/timeout':           value => $test_timeout;
+    'bench/put_concurrency':   value => $put_concurrency;
+    'bench/get_concurrency':   value => $get_concurrency;
+    'bench/del_concurrency':   value => $del_concurrency;
+    'bench/lower_object_size': value => $lower_object_size;
+    'bench/upper_object_size': value => $upper_object_size;
+    'bench/object_size':       value => $object_size;
+    'bench/num_objects':       value => $num_objects;
+    'bench/num_gets':          value => $num_gets;
+    'bench/num_containers':    value => $num_containers;
+    'bench/delete':            value => $delete;
+  }
 }
