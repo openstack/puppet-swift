@@ -55,27 +55,41 @@
 #
 
 class swift::dispersion (
-  $auth_url = 'http://127.0.0.1:5000/v2.0/',
-  $auth_user = 'dispersion',
-  $auth_tenant = 'services',
-  $auth_pass = 'dispersion_password',
+  $auth_url     = 'http://127.0.0.1:5000/v2.0/',
+  $auth_user    = 'dispersion',
+  $auth_tenant  = 'services',
+  $auth_pass    = 'dispersion_password',
   $auth_version = '2.0',
-  $swift_dir = '/etc/swift',
-  $coverage = 1,
-  $retries = 5,
-  $concurrency = 25,
-  $dump_json = 'no'
+  $swift_dir    = '/etc/swift',
+  $coverage     = 1,
+  $retries      = 5,
+  $concurrency  = 25,
+  $dump_json    = 'no'
 ) {
 
   include swift::params
 
+  Package['swift'] -> Swift_dispersion_config<||>
+  Swift_dispersion_config<||> ~> Exec['swift-dispersion-populate']
+
   file { '/etc/swift/dispersion.conf':
     ensure  => present,
-    content => template('swift/dispersion.conf.erb'),
     owner   => 'swift',
     group   => 'swift',
     mode    => '0660',
     require => Package['swift'],
+  }
+
+  swift_dispersion_config {
+    'dispersion/auth_url':            value => $auth_url;
+    'dispersion/auth_user':           value => "${auth_tenant}:${auth_user}";
+    'dispersion/auth_key':            value => $auth_pass;
+    'dispersion/auth_version':        value => $auth_version;
+    'dispersion/swift_dir':           value => $swift_dir;
+    'dispersion/dispersion_coverage': value => $coverage;
+    'dispersion/retries':             value => $retries;
+    'dispersion/concurrency':         value => $concurrency;
+    'dispersion/dump_json':           value => $dump_json;
   }
 
   exec { 'swift-dispersion-populate':
