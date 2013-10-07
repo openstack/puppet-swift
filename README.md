@@ -244,6 +244,11 @@ Contributors
 Release Notes
 -------------
 
+**2.2.0**
+
+* Improved proxy directory signing support.
+* Various lint, and deprecation fixes.
+
 **2.1.0**
 
 * Management of swift-bench
