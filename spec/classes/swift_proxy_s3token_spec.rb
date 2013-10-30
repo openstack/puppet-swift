@@ -9,7 +9,8 @@ describe 'swift::proxy::s3token' do
   end
 
   let :pre_condition do
-    'concat { "/etc/swift/proxy-server.conf": }'
+    'class { "concat::setup": }
+     concat { "/etc/swift/proxy-server.conf": }'
   end
 
   let :fragment_file do

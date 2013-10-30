@@ -12,7 +12,8 @@ describe 'swift::proxy::cache' do
   end
 
   let :pre_condition do
-    'concat { "/etc/swift/proxy-server.conf": }
+    'class { "concat::setup": }
+     concat { "/etc/swift/proxy-server.conf": }
      class { "memcached": max_memory => 1 }'
   end
 
