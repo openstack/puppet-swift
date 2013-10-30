@@ -56,6 +56,7 @@ class swift::proxy(
 ) {
 
   include swift::params
+  include concat::setup
 
   validate_bool($account_autocreate)
   validate_bool($allow_account_management)
