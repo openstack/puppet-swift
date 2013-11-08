@@ -1,5 +1,5 @@
 name    'puppetlabs-swift'
-version '2.2.0'
+version '2.2.1'
 source  'https://github.com/stackforge/puppet-swift'
 author  'Puppet Labs'
 license 'Apache License 2.0'
