@@ -244,6 +244,11 @@ Contributors
 Release Notes
 -------------
 
+**3.0.0**
+
+* Major release for OpenStack Havana.
+* Fixed Puppet 3.x template variable deprecation warning.
+
 **2.2.0**
 
 * Improved proxy directory signing support.
