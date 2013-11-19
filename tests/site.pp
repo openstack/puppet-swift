@@ -183,6 +183,7 @@ node /swift-proxy/ inherits swift_base {
   class { 'swift::proxy':
     proxy_local_net_ip => $swift_local_net_ip,
     pipeline           => [
+      'bulk',
       'catch_errors',
       'healthcheck',
       'cache',
@@ -209,6 +210,12 @@ node /swift-proxy/ inherits swift_base {
     'swift::proxy::cache',
     'swift::proxy::swift3',
   ]: }
+  class { 'swift::proxy::bulk':
+    max_containers_per_extraction => 10000,
+    max_failed_extractions        => 1000,
+    max_deletes_per_request       => 10000,
+    yield_frequency               => 60,
+  }
   class { 'swift::proxy::ratelimit':
     clock_accuracy         => 1000,
     max_sleep_time_seconds => 60,
