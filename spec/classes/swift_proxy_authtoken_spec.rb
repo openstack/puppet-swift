@@ -37,6 +37,7 @@ describe 'swift::proxy::authtoken' do
       verify_contents(subject, fragment_file,
         [
           '[filter:authtoken]',
+          'log_name = swift',
           'signing_dir = /var/cache/swift',
           'paste.filter_factory = keystoneclient.middleware.auth_token:filter_factory',
           'auth_host = 127.0.0.1',
@@ -47,6 +48,7 @@ describe 'swift::proxy::authtoken' do
           'admin_user = swift',
           'admin_password = password',
           'delay_auth_decision = 1',
+          'cache = swift.cache',
         ]
       )
     end
@@ -63,6 +65,7 @@ describe 'swift::proxy::authtoken' do
       verify_contents(subject, fragment_file,
         [
           '[filter:authtoken]',
+          'log_name = swift',
           'signing_dir = /var/cache/swift',
           'paste.filter_factory = keystoneclient.middleware.auth_token:filter_factory',
           'auth_host = 127.0.0.1',
@@ -71,6 +74,7 @@ describe 'swift::proxy::authtoken' do
           'auth_uri = http://127.0.0.1:5000',
           'admin_token = ADMINTOKEN',
           'delay_auth_decision = 1',
+          'cache = swift.cache',
         ]
       )
     end
@@ -86,6 +90,7 @@ describe 'swift::proxy::authtoken' do
         :admin_tenant_name   => 'admin',
         :admin_user          => 'swiftuser',
         :admin_password      => 'swiftpassword',
+        :cache               => 'foo',
         :delay_auth_decision => '0',
         :signing_dir         => '/home/swift/keystone-signing'
       }
@@ -95,6 +100,7 @@ describe 'swift::proxy::authtoken' do
       verify_contents(subject, fragment_file,
         [
           '[filter:authtoken]',
+          'log_name = swift',
           'signing_dir = /home/swift/keystone-signing',
           'paste.filter_factory = keystoneclient.middleware.auth_token:filter_factory',
           'auth_host = some.host',
@@ -106,6 +112,7 @@ describe 'swift::proxy::authtoken' do
           'admin_user = swiftuser',
           'admin_password = swiftpassword',
           'delay_auth_decision = 0',
+          'cache = foo',
         ]
       )
     end

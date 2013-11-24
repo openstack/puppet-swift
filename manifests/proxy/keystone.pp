@@ -8,8 +8,6 @@
 #    Must be an array of strings
 #  [is_admin] Set to true to allow users to set ACLs on their account.
 #    Optional. Defaults to true.
-#  [cache] the cache backend to use
-#    Optional. Defaults to 'swift.cache'
 #
 # == Authors
 #
@@ -19,8 +17,7 @@
 
 class swift::proxy::keystone(
   $operator_roles      = ['admin', 'SwiftOperator'],
-  $is_admin            = true,
-  $cache               = 'swift.cache'
+  $is_admin            = true
 ) {
 
   concat::fragment { 'swift_keystone':

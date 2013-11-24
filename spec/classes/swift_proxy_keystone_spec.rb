@@ -27,7 +27,6 @@ describe 'swift::proxy::keystone' do
 
     it { should contain_file(fragment_file).with_content(/operator_roles = admin, SwiftOperator/) }
     it { should contain_file(fragment_file).with_content(/is_admin = true/) }
-    it { should contain_file(fragment_file).with_content(/cache = swift.cache/) }
 
   end
 
@@ -37,12 +36,10 @@ describe 'swift::proxy::keystone' do
       {
         :operator_roles => 'foo',
         :is_admin       => 'false',
-        :cache          => 'somecache'
       }
 
       it { should contain_file(fragment_file).with_content(/operator_roles = foo/) }
       it { should contain_file(fragment_file).with_content(/is_admin = false/) }
-      it { should contain_file(fragment_file).with_content(/cache = somecache/) }
 
     end
 
