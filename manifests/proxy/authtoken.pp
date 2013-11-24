@@ -29,6 +29,8 @@
 #    Should be set to your public keystone endpoint (without version).
 #  [signing_dir] The cache directory for signing certificates.
 #    Defaults to '/var/cache/swift'
+#  [cache] the cache backend to use
+#    Optional. Defaults to 'swift.cache'
 #
 # == Authors
 #
@@ -50,7 +52,8 @@ class swift::proxy::authtoken(
   $auth_uri            = false,
   $delay_auth_decision = 1,
   $admin_token         = false,
-  $signing_dir         = '/var/cache/swift'
+  $signing_dir         = '/var/cache/swift',
+  $cache               = 'swift.cache'
 ) {
 
   if $auth_uri {

@@ -1,4 +1,5 @@
 [filter:authtoken]
+log_name = swift
 signing_dir = <%= @signing_dir %>
 paste.filter_factory = keystoneclient.middleware.auth_token:filter_factory
 auth_host = <%= @auth_host %>
@@ -17,4 +18,4 @@ admin_user = <%= @admin_user %>
 admin_password = <%= @admin_password %>
 <% end -%>
 delay_auth_decision = <%= @delay_auth_decision %>
-
+cache = <%= @cache %>
