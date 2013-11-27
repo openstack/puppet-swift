@@ -34,7 +34,7 @@ describe 'swift::proxy::container_quotas' do
   end
 
   let :fragment_file do
-    "/var/lib/puppet/concat/_etc_swift_proxy-server.conf/fragments/81_swift_proxy_container_quotas"
+    "/var/lib/puppet/concat/_etc_swift_proxy-server.conf/fragments/81_swift_container_quotas"
   end
 
   it { should contain_file(fragment_file).with_content(/\[filter:container-quotas\]/) }
