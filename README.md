@@ -97,7 +97,7 @@ Class that will set up the base packages and the base /etc/swift/swift.conf
 class { 'swift': swift_hash_suffix => 'shared_secret', }
 ```
 
-####`swfit_hash_suffix`
+####`swift_hash_suffix`
 The shared salt used when hashing ring mappings.
 
 ### Class swift::proxy
