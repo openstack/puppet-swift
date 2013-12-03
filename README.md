@@ -16,7 +16,7 @@ swift
 Overview
 --------
 
-The swift module is a part of [Stackforge](https://github.com/stackfoge), an effort by the Openstack infrastructure team to provide continuous integration testing and code review for Openstack and Openstack community projects not part of the core software.  The module its self is used to flexibly configure and manage the object storage service for Openstack.
+The swift module is a part of [Stackforge](https://github.com/stackforge), an effort by the Openstack infrastructure team to provide continuous integration testing and code review for Openstack and Openstack community projects not part of the core software.  The module itself is used to flexibly configure and manage the object storage service for Openstack.
 
 Module Description
 ------------------
@@ -40,7 +40,7 @@ Setup
 
 You much first setup [exported resources](http://docs.puppetlabs.com/puppet/3/reference/lang_exported.html).
 
-To utilize the swift module's functionality you will need to declare multiple resources.  The following is a modified excerpt from the [openstack module](https://github.com/stackfoge/puppet-openstack).  This is not an exhaustive list of all the components needed, we recommend you consult and understand the [openstack module](https://github.com/stackfoge/puppet-openstack) and the [core openstack](http://docs.openstack.org) documentation.
+To utilize the swift module's functionality you will need to declare multiple resources.  The following is a modified excerpt from the [openstack module](https://github.com/stackforge/puppet-openstack).  This is not an exhaustive list of all the components needed, we recommend you consult and understand the [openstack module](https://github.com/stackforge/puppet-openstack) and the [core openstack](http://docs.openstack.org) documentation.
 
 **Defining a swift storage node**
 
@@ -151,7 +151,7 @@ The number of partitions in the swift ring. (specified as the power of 2)
 The number of replicas to store.
 
 ####`min_part_hours`
-Time before a partition can be movied.
+Time before a partition can be moved.
 
 ### Define: swift::storage::server
 
@@ -186,7 +186,7 @@ This defined resource type was created to test swift by creating a loopback devi
 
 It creates a partition of size [`$seek`] at basedir/[`$name`] using dd with [`$byte_size`], formats is to be a xfs filesystem which is then mounted at [`$mnt_base_dir`]/[`$name`].
 
-Then it creates an instance of defined class for the xfs file system that will eventually lead the mounting of the device using the swift::storage::mount define.
+Then, it creates an instance of defined class for the xfs file system that will eventually lead the mounting of the device using the swift::storage::mount define.
 
 ```puppet
 swift::storage::loopback { '1':
@@ -260,7 +260,7 @@ Release Notes
 
 **2.0.0**
 
-* Upstream is now part of stackfoge.
+* Upstream is now part of stackforge.
 * swift_ring_builder supports replicator.
 * Supports swift 1.8
 * Further Red Hat support.
