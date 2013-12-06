@@ -49,6 +49,7 @@ describe 'swift::proxy::authtoken' do
           'admin_password = password',
           'delay_auth_decision = 1',
           'cache = swift.cache',
+          'include_service_catalog = False'
         ]
       )
     end
@@ -75,6 +76,7 @@ describe 'swift::proxy::authtoken' do
           'admin_token = ADMINTOKEN',
           'delay_auth_decision = 1',
           'cache = swift.cache',
+          'include_service_catalog = False'
         ]
       )
     end
@@ -113,6 +115,7 @@ describe 'swift::proxy::authtoken' do
           'admin_password = swiftpassword',
           'delay_auth_decision = 0',
           'cache = foo',
+          'include_service_catalog = False'
         ]
       )
     end
