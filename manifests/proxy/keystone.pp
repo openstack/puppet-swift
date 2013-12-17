@@ -4,8 +4,10 @@
 # == Parameters
 #  [operator_roles] a list of keystone roles a user must have to gain
 #    access to Swift.
-#    Optional. Dfeaults to ['admin', 'SwiftOperator']
+#    Optional. Defaults to ['admin', 'SwiftOperator']
 #    Must be an array of strings
+#    Swift operator roles must be defined in swift::keystone::auth because
+#    keystone API access is usually not available on Swift proxy nodes.
 #  [is_admin] Set to true to allow users to set ACLs on their account.
 #    Optional. Defaults to true.
 #
