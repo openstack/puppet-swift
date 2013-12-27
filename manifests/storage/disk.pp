@@ -22,7 +22,7 @@
 #
 # Simply add one disk sdb:
 #
-# swift::storage:disk { "sdb":}
+# swift::storage::disk { "sdb":}
 #
 # Add more than one disks and overwrite byte_size:
 #
