@@ -192,6 +192,8 @@ node /swift-proxy/ inherits swift_base {
       's3token',
       'authtoken',
       'keystone',
+      'account_quotas',
+      'container_quotas',
       'proxy-server'
     ],
     account_autocreate => true,
@@ -201,7 +203,9 @@ node /swift-proxy/ inherits swift_base {
 
   # configure all of the middlewares
   class { [
+    'swift::proxy::account_quotas',
     'swift::proxy::catch_errors',
+    'swift::proxy::container_quotas',
     'swift::proxy::healthcheck',
     'swift::proxy::cache',
     'swift::proxy::swift3',
