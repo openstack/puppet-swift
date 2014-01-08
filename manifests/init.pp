@@ -57,7 +57,6 @@ class swift(
   }
   file { '/var/lib/swift':
     ensure => directory,
-    owner  => 'swift'
   }
   file { '/var/run/swift':
     ensure => directory,

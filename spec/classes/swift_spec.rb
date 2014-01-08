@@ -31,6 +31,7 @@ describe 'swift' do
         :require => 'Package[swift]'
       }
     end
+    it {should contain_user('swift')}
     it {should contain_file('/home/swift').with(
       {:ensure => 'directory', :mode => '0700'
       }.merge(file_defaults)
@@ -40,6 +41,9 @@ describe 'swift' do
       }.merge(file_defaults)
     )}
     it {should contain_file('/var/run/swift').with(
+      {:ensure => 'directory'}.merge(file_defaults)
+    )}
+    it {should contain_file('/var/lib/swift').with(
       {:ensure => 'directory'}.merge(file_defaults)
     )}
     it {should contain_file('/etc/swift/swift.conf').with(
@@ -52,8 +56,6 @@ describe 'swift' do
         'swift-hash/swift_hash_path_suffix').with_value('string')
     end
     it {should contain_package('swift').with_ensure('present')}
-    it {should contain_user('swift')}
-    it {should contain_file('/var/lib/swift').with_ensure('directory')}
   end
 
   describe 'when overriding package_ensure parameter' do
