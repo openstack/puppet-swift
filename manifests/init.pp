@@ -62,6 +62,9 @@ class swift(
   file { '/var/run/swift':
     ensure => directory,
   }
+  file { '/var/cache/swift':
+    ensure => directory,
+  }
 
   file { '/etc/swift/swift.conf':
     ensure  => present,
