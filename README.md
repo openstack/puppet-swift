@@ -248,6 +248,12 @@ Release Notes
 
 * Major release for OpenStack Havana.
 * Fixed Puppet 3.x template variable deprecation warning.
+* Added swift operator roles to Keystone.
+* Defaults include_service_catalog to false for improved performance.
+* Fixed auth_token configuration.
+* Fixed filter name for puppetdb.
+* Added bulk middleware support.
+* Added quota middleware support.
 
 **2.2.0**
 
