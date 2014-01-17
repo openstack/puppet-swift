@@ -29,7 +29,9 @@ class swift::keystone::auth(
   $public_protocol   = 'http',
   $public_address    = undef,
   $public_port       = undef,
+  $admin_protocol    = 'http',
   $admin_address     = undef,
+  $internal_protocol = 'http',
   $internal_address  = undef
 ) {
 
@@ -78,8 +80,8 @@ if $address != '127.0.0.1' {
   keystone_endpoint { "${region}/${auth_name}":
     ensure       => present,
     public_url   => "${public_protocol}://${real_public_address}:${real_public_port}/v1/AUTH_%(tenant_id)s",
-    admin_url    => "http://${real_admin_address}:${port}/",
-    internal_url => "http://${real_internal_address}:${port}/v1/AUTH_%(tenant_id)s",
+    admin_url    => "${admin_protocol}://${real_admin_address}:${port}/",
+    internal_url => "${internal_protocol}://${real_internal_address}:${port}/v1/AUTH_%(tenant_id)s",
   }
 
   keystone_service { "${auth_name}_s3":
@@ -90,8 +92,8 @@ if $address != '127.0.0.1' {
   keystone_endpoint { "${region}/${auth_name}_s3":
     ensure       => present,
     public_url   => "${public_protocol}://${real_public_address}:${real_public_port}",
-    admin_url    => "http://${real_admin_address}:${port}",
-    internal_url => "http://${real_internal_address}:${port}",
+    admin_url    => "${admin_protocol}://${real_admin_address}:${port}",
+    internal_url => "${internal_protocol}://${real_internal_address}:${port}",
   }
   if $operator_roles {
     #Roles like "admin" may be defined elsewhere, so use ensure_resource
