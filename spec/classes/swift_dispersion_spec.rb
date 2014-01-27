@@ -3,16 +3,17 @@ require 'spec_helper'
 describe 'swift::dispersion' do
 
   let :default_params do
-    { :auth_url     => 'http://127.0.0.1:5000/v2.0/',
-      :auth_user    => 'dispersion',
-      :auth_tenant  => 'services',
-      :auth_pass    => 'dispersion_password',
-      :auth_version => '2.0',
-      :swift_dir    => '/etc/swift',
-      :coverage     => 1,
-      :retries      => 5,
-      :concurrency  => 25,
-      :dump_json    => 'no' }
+    { :auth_url      => 'http://127.0.0.1:5000/v2.0/',
+      :auth_user     => 'dispersion',
+      :auth_tenant   => 'services',
+      :auth_pass     => 'dispersion_password',
+      :auth_version  => '2.0',
+      :endpoint_type => 'publicURL',
+      :swift_dir     => '/etc/swift',
+      :coverage      => 1,
+      :retries       => 5,
+      :concurrency   => 25,
+      :dump_json     => 'no' }
   end
 
   let :pre_condition do
@@ -52,6 +53,8 @@ describe 'swift::dispersion' do
       should contain_swift_dispersion_config(
         'dispersion/auth_key').with_value(p[:auth_pass])
       should contain_swift_dispersion_config(
+        'dispersion/endpoint_type').with_value(p[:endpoint_type])
+      should contain_swift_dispersion_config(
         'dispersion/swift_dir').with_value(p[:swift_dir])
       should contain_swift_dispersion_config(
         'dispersion/dispersion_coverage').with_value(p[:coverage])
@@ -81,16 +84,17 @@ describe 'swift::dispersion' do
   describe 'when parameters are overriden' do
     before do
       params.merge!(
-        :auth_url     => 'https://10.0.0.10:7000/auth/v8.0/',
-        :auth_user    => 'foo',
-        :auth_tenant  => 'bar',
-        :auth_pass    => 'dummy',
-        :auth_version => '1.0',
-        :swift_dir    => '/usr/local/etc/swift',
-        :coverage     => 42,
-        :retries      => 51,
-        :concurrency  => 4682,
-        :dump_json    => 'yes'
+        :auth_url      => 'https://10.0.0.10:7000/auth/v8.0/',
+        :auth_user     => 'foo',
+        :auth_tenant   => 'bar',
+        :auth_pass     => 'dummy',
+        :auth_version  => '1.0',
+        :endpoint_type => 'internalURL',
+        :swift_dir     => '/usr/local/etc/swift',
+        :coverage      => 42,
+        :retries       => 51,
+        :concurrency   => 4682,
+        :dump_json     => 'yes'
       )
     end
 
