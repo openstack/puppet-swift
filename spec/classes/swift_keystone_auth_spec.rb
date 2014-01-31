@@ -138,31 +138,6 @@ describe 'swift::keystone::auth' do
 
   end
 
-  describe 'when overriding address' do
-
-    let :params do
-      {
-        :address => '192.168.0.1',
-        :port => '8081'
-      }
-    end
-
-    it { should contain_keystone_endpoint('RegionOne/swift').with(
-      :ensure       => 'present',
-      :public_url   => "http://192.168.0.1:8081/v1/AUTH_%(tenant_id)s",
-      :admin_url    => "http://192.168.0.1:8081/",
-      :internal_url => "http://192.168.0.1:8081/v1/AUTH_%(tenant_id)s"
-    ) }
-
-    it { should contain_keystone_endpoint('RegionOne/swift_s3').with(
-      :ensure       => 'present',
-      :public_url   => 'http://192.168.0.1:8081',
-      :admin_url    => 'http://192.168.0.1:8081',
-      :internal_url => 'http://192.168.0.1:8081'
-    ) }
-
-  end
-
   describe 'when overriding operator_roles' do
 
     let :params do
