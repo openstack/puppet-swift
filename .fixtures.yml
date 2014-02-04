@@ -9,7 +9,9 @@ fixtures:
       repo: "git://github.com/stackforge/puppet-keystone.git"
       ref:  'stable/havana'
     "memcached": "git://github.com/saz/puppet-memcached.git"
-    "rsync": "git://github.com/puppetlabs/puppetlabs-rsync.git"
+    "rsync": 
+      repo: "git://github.com/puppetlabs/puppetlabs-rsync.git"
+      ref: '0.2.0'
     "ssh": "git://github.com/saz/puppet-ssh.git"
     "stdlib": "git://github.com/puppetlabs/puppetlabs-stdlib.git"
     "xinetd": "git://github.com/puppetlabs/puppetlabs-xinetd.git"

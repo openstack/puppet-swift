@@ -254,6 +254,7 @@ Release Notes
 * Fixed filter name for puppetdb.
 * Added bulk middleware support.
 * Added quota middleware support.
+* Allow configuration of admin and internal protocols for keystone endpoint.
 
 **2.2.0**
 
