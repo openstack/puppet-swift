@@ -27,6 +27,9 @@
 #  String. The version to pass to the 'swift' command.
 #  Use '2.0' when using Keystone.
 #  Optional. Defaults to '2.0'
+# [*endpoint_type*]
+#  String. The ability to choose which Swift endpoint to use.
+#  Optional. Defaults to 'publicURL'.
 # [*swift_dir*]
 #  String. The path to swift configuration folder
 #  Optional. Defaults to '/etc/swift'.
@@ -55,16 +58,17 @@
 #
 
 class swift::dispersion (
-  $auth_url     = 'http://127.0.0.1:5000/v2.0/',
-  $auth_user    = 'dispersion',
-  $auth_tenant  = 'services',
-  $auth_pass    = 'dispersion_password',
-  $auth_version = '2.0',
-  $swift_dir    = '/etc/swift',
-  $coverage     = 1,
-  $retries      = 5,
-  $concurrency  = 25,
-  $dump_json    = 'no'
+  $auth_url      = 'http://127.0.0.1:5000/v2.0/',
+  $auth_user     = 'dispersion',
+  $auth_tenant   = 'services',
+  $auth_pass     = 'dispersion_password',
+  $auth_version  = '2.0',
+  $endpoint_type = 'publicURL',
+  $swift_dir     = '/etc/swift',
+  $coverage      = 1,
+  $retries       = 5,
+  $concurrency   = 25,
+  $dump_json     = 'no'
 ) {
 
   include swift::params
@@ -85,6 +89,7 @@ class swift::dispersion (
     'dispersion/auth_user':           value => "${auth_tenant}:${auth_user}";
     'dispersion/auth_key':            value => $auth_pass;
     'dispersion/auth_version':        value => $auth_version;
+    'dispersion/endpoint_type':       value => $endpoint_type;
     'dispersion/swift_dir':           value => $swift_dir;
     'dispersion/dispersion_coverage': value => $coverage;
     'dispersion/retries':             value => $retries;
