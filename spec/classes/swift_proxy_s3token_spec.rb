@@ -17,7 +17,7 @@ describe 'swift::proxy::s3token' do
     "/var/lib/puppet/concat/_etc_swift_proxy-server.conf/fragments/28_swift_s3token"
   end
 
-  it { should include_class('keystone::python') }
+  it { should contain_class('keystone::python') }
 
   describe "when using default parameters" do
     it 'should build the fragment with correct parameters' do
