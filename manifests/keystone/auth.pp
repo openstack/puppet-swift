@@ -18,20 +18,22 @@
 #  Array of strings. List of roles Swift considers as admin.
 #
 class swift::keystone::auth(
-  $auth_name         = 'swift',
-  $password          = 'swift_password',
-  $port              = '8080',
-  $tenant            = 'services',
-  $email             = 'swift@localhost',
-  $region            = 'RegionOne',
-  $operator_roles    = ['admin', 'SwiftOperator'],
-  $public_protocol   = 'http',
-  $public_address    = '127.0.0.1',
-  $public_port       = undef,
-  $admin_protocol    = 'http',
-  $admin_address     = undef,
-  $internal_protocol = 'http',
-  $internal_address  = undef
+  $auth_name              = 'swift',
+  $password               = 'swift_password',
+  $port                   = '8080',
+  $tenant                 = 'services',
+  $email                  = 'swift@localhost',
+  $region                 = 'RegionOne',
+  $operator_roles         = ['admin', 'SwiftOperator'],
+  $public_protocol        = 'http',
+  $public_address         = '127.0.0.1',
+  $public_port            = undef,
+  $admin_protocol         = 'http',
+  $admin_address          = undef,
+  $internal_protocol      = 'http',
+  $internal_address       = undef,
+  $configure_endpoint     = true,
+  $configure_s3_endpoint = true
 ) {
 
   if ! $public_port {
@@ -67,24 +69,31 @@ class swift::keystone::auth(
     type        => 'object-store',
     description => 'Openstack Object-Store Service',
   }
-  keystone_endpoint { "${region}/${auth_name}":
-    ensure       => present,
-    public_url   => "${public_protocol}://${public_address}:${real_public_port}/v1/AUTH_%(tenant_id)s",
-    admin_url    => "${admin_protocol}://${real_admin_address}:${port}/",
-    internal_url => "${internal_protocol}://${real_internal_address}:${port}/v1/AUTH_%(tenant_id)s",
+
+  if $configure_endpoint {
+    keystone_endpoint { "${region}/${auth_name}":
+      ensure       => present,
+      public_url   => "${public_protocol}://${public_address}:${real_public_port}/v1/AUTH_%(tenant_id)s",
+      admin_url    => "${admin_protocol}://${real_admin_address}:${port}/",
+      internal_url => "${internal_protocol}://${real_internal_address}:${port}/v1/AUTH_%(tenant_id)s",
+    }
   }
 
-  keystone_service { "${auth_name}_s3":
-    ensure      => present,
-    type        => 's3',
-    description => 'Openstack S3 Service',
+  if $configure_s3_endpoint {
+    keystone_service { "${auth_name}_s3":
+      ensure      => present,
+      type        => 's3',
+      description => 'Openstack S3 Service',
+    }
+
+    keystone_endpoint { "${region}/${auth_name}_s3":
+      ensure       => present,
+      public_url   => "${public_protocol}://${public_address}:${real_public_port}",
+      admin_url    => "${admin_protocol}://${real_admin_address}:${port}",
+      internal_url => "${internal_protocol}://${real_internal_address}:${port}",
+    }
   }
-  keystone_endpoint { "${region}/${auth_name}_s3":
-    ensure       => present,
-    public_url   => "${public_protocol}://${public_address}:${real_public_port}",
-    admin_url    => "${admin_protocol}://${real_admin_address}:${port}",
-    internal_url => "${internal_protocol}://${real_internal_address}:${port}",
-  }
+
   if $operator_roles {
     #Roles like "admin" may be defined elsewhere, so use ensure_resource
     ensure_resource('keystone_role', $operator_roles, { 'ensure' => 'present' })
