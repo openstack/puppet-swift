@@ -96,7 +96,7 @@ class swift::proxy(
     inline_template(
       "<%=
           (pipeline - ['proxy-server']).collect do |x|
-            'swift::proxy::' + x
+            'swift::proxy::' + x.gsub(/-/){ %q(_) }
           end.join(',')
       %>"), ',')
 
