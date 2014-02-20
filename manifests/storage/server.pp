@@ -63,7 +63,7 @@ define swift::storage::server(
   $required_middlewares = split(
     inline_template(
       "<%=
-        (pipeline - ['${type}-server']).collect do |x|
+        (@pipeline - ['${type}-server']).collect do |x|
           'Swift::Storage::Filter::' + x.capitalize + '[${type}]'
         end.join(',')
       %>"), ',')
