@@ -7,7 +7,7 @@ fixtures:
     "inifile":  "git://github.com/puppetlabs/puppetlabs-inifile"
     "keystone": 
       repo: "git://github.com/stackforge/puppet-keystone.git"
-      ref:  'stable/havana'
+      ref:  'origin/stable/havana'
     "memcached": "git://github.com/saz/puppet-memcached.git"
     "rsync": 
       repo: "git://github.com/puppetlabs/puppetlabs-rsync.git"
