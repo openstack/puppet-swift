@@ -44,6 +44,7 @@ describe 'swift::storage::all' do
       :object_pipeline => ["1", "2"],
       :container_pipeline => ["3", "4"],
       :account_pipeline => ["5", "6"],
+      :allow_versions => true,
       :log_facility => ['LOG_LOCAL2', 'LOG_LOCAL3'],
     }
   ].each do |param_set|
@@ -99,7 +100,8 @@ describe 'swift::storage::all' do
       it { should contain_swift__storage__server(param_hash[:container_port]).with(
         {:type => 'container',
          :config_file_path => 'container-server.conf',
-         :pipeline => param_hash[:container_pipeline] || 'container-server' }.merge(storage_server_defaults)
+         :pipeline => param_hash[:container_pipeline] || 'container-server',
+         :allow_versions => param_hash[:allow_versions] || false }.merge(storage_server_defaults)
       )}
 
       it { should contain_class('rsync::server').with(
