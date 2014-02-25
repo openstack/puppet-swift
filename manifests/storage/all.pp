@@ -9,6 +9,8 @@
 #    Optional. Defaults to /srv/node/
 #  [*object_port*] Port where object storage server should be hosted.
 #    Optional. Defaults to 6000.
+#  [*allow_versions*] Boolean to enable the versioning in swift container
+#    Optional. Default to false.
 #  [*container_port*] Port where the container storage server should be hosted.
 #    Optional. Defaults to 6001.
 #  [*account_port*] Port where the account storage server should be hosted.
@@ -23,6 +25,7 @@ class swift::storage::all(
   $account_port       = '6002',
   $object_pipeline    = undef,
   $container_pipeline = undef,
+  $allow_versions     = false,
   $mount_check        = false,
   $account_pipeline   = undef,
   $log_facility       = 'LOG_LOCAL2'
@@ -50,6 +53,7 @@ class swift::storage::all(
     config_file_path => 'container-server.conf',
     pipeline         => $container_pipeline,
     log_facility     => $log_facility,
+    allow_versions   => $allow_versions,
   }
 
   swift::storage::server { $object_port:
