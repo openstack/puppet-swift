@@ -59,6 +59,23 @@ describe 'swift::keystone::auth' do
         it { should contain_keystone_role(role_name).with_ensure('present') }
       end
     end
+
+    context 'when disabling endpoint configuration' do
+      before do
+        params.merge!(:configure_endpoint => false)
+      end
+
+      it { should_not contain_keystone_endpoint('RegionOne/swift') }
+    end
+
+    context 'when disabling S3 endpoint' do
+      before do
+        params.merge!(:configure_s3_endpoint => false)
+      end
+
+      it { should_not contain_keystone_service('swift_s3') }
+      it { should_not contain_keystone_endpoint('RegionOne/swift_s3') }
+    end
   end
 
   shared_examples_for 'keystone auth configuration' do
