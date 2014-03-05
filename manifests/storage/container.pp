@@ -12,6 +12,8 @@ class swift::storage::container(
     package_ensure => $package_ensure
   }
 
+  include swift::params
+
   service { 'swift-container-updater':
     ensure    => running,
     name      => $::swift::params::container_updater_service_name,
@@ -19,6 +21,7 @@ class swift::storage::container(
     provider  => $::swift::params::service_provider,
     require   => Package['swift-container'],
   }
+
   service { 'swift-container-auditor':
     ensure    => running,
     name      => $::swift::params::container_auditor_service_name,
