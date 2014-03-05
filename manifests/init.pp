@@ -2,10 +2,14 @@
 #
 # == Parameters
 # [*swift_hash_suffix*] string of text to be used
-# as a salt when hashing to determine mappings in the ring.
-# This file should be the same on every node in the cluster.
+#   as a salt when hashing to determine mappings in the ring.
+#   This file should be the same on every node in the cluster.
+#
 # [*package_ensure*] The ensure state for the swift package.
-#   Optional. Defaults to present.
+#   (Optional) Defaults to present.
+#
+# [*client_package_ensure*] The ensure state for the swift client package.
+#   (Optional) Defaults to present.
 #
 # == Dependencies
 #
@@ -21,7 +25,8 @@
 #
 class swift(
   $swift_hash_suffix,
-  $package_ensure = 'present'
+  $package_ensure        = 'present',
+  $client_package_ensure = 'present',
 ) {
 
   include swift::params
@@ -36,9 +41,8 @@ class swift(
     }
   }
 
-  package { 'swiftclient':
-    ensure => $package_ensure,
-    name   => $::swift::params::client_package,
+  class { 'swift::client':
+    ensure => $client_package_ensure;
   }
 
   File { owner => 'swift', group => 'swift', require => Package['swift'] }

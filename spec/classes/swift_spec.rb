@@ -58,9 +58,17 @@ describe 'swift' do
 
   describe 'when overriding package_ensure parameter' do
     it 'should effect ensure state of swift package' do
-      params[:package_ensure] = 'latest'
-      subject.should contain_package('swift').with_ensure('latest')
+      params[:package_ensure] = '1.12.0-1'
+      subject.should contain_package('swift').with_ensure(params[:package_ensure])
     end
   end
+
+  describe 'when overriding client_package_ensure parameter' do
+    it 'should effect ensure state of swift package' do
+      params[:client_package_ensure] = '2.0.2-1'
+      subject.should contain_package('swiftclient').with_ensure(params[:client_package_ensure])
+    end
+  end
+
 
 end
