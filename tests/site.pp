@@ -92,8 +92,8 @@ node swift-keystone {
   }
   # configure the keystone service user and endpoint
   class { 'swift::keystone::auth':
-    password => $swift_admin_password,
-    address  => $swift_proxy_node,
+    password        => $swift_admin_password,
+    public_address  => $swift_proxy_node,
   }
 
 }
