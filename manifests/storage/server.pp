@@ -25,12 +25,13 @@ define swift::storage::server(
   $config_file_path       = "${type}-server/${name}.conf"
 ) {
 
-  # TODO if array does not include type-server, warn
-  if(
-    (is_array($pipeline) and ! member($pipeline, "${type}-server")) or
-    $pipeline != "${type}-server"
-  ) {
+  # Warn if ${type-server} isn't included in the pipeline
+  if is_array($pipeline) {
+    if !member($pipeline, "${type}-server") {
       warning("swift storage server ${type} must specify ${type}-server")
+    }
+  } elsif $pipeline != "${type}-server" {
+    warning("swift storage server ${type} must specify ${type}-server")
   }
 
   include "swift::storage::${type}"
