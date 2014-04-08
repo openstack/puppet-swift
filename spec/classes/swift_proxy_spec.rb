@@ -92,13 +92,16 @@ describe 'swift::proxy' do
       describe 'when more parameters are set' do
         let :params do
           {
-           :proxy_local_net_ip => '10.0.0.2',
-           :port => '80',
-           :workers => 3,
-           :pipeline  => ['swauth', 'proxy-server'],
-           :allow_account_management => false,
-           :account_autocreate => false,
-           :log_level          => 'DEBUG'
+           :proxy_local_net_ip        => '10.0.0.2',
+           :port                      => '80',
+           :workers                   => 3,
+           :pipeline                  => ['swauth', 'proxy-server'],
+           :allow_account_management  => false,
+           :account_autocreate        => false,
+           :log_level                 => 'DEBUG',
+           :read_affinity             => 'r1z1=100, r1=200',
+           :write_affinity            => 'r1',
+           :write_affinity_node_count => '2 * replicas',
           }
         end
         it 'should build the header file with provided values' do
@@ -114,7 +117,10 @@ describe 'swift::proxy' do
               '[app:proxy-server]',
               'use = egg:swift#proxy',
               'allow_account_management = false',
-              'account_autocreate = false'
+              'account_autocreate = false',
+              'read_affinity = r1z1=100, r1=200',
+              'write_affinity = r1',
+              'write_affinity_node_count = 2 * replicas'
             ]
           )
         end
@@ -129,6 +135,17 @@ describe 'swift::proxy' do
             params[param] = 'false'
             expect { subject }.to raise_error(Puppet::Error, /is not a boolean/)
           end
+        end
+
+        let :params do
+          {
+           :proxy_local_net_ip        => '127.0.0.1',
+           :write_affinity_node_count => '2 * replicas'
+          }
+        end
+
+        it "should fail if write_affinity_node_count is used without write_affinity" do
+          expect { subject }.to raise_error(Puppet::Error, /write_affinity_node_count requires write_affinity/)
         end
       end
     end

@@ -25,6 +25,13 @@
 #   delete accounts. Optional. Defaults to true.
 # [*account_autocreate*] Rather accounts should automatically be created.
 #  Has to be set to true for tempauth. Optional. Defaults to true.
+# [*read_affinity*]
+#  Configures the read affinity of proxy-server. Optional. Defaults to undef.
+# [*write_affinity*]
+#  Configures the write affinity of proxy-server. Optional. Defaults to undef.
+# [*write_affinity_node_count*]
+#  Configures write_affinity_node_count for proxy-server.
+#  Optional but requires write_affinity to be set. Defaults to undef.
 # [*package_ensure*] Ensure state of the swift proxy package.
 #   Optional. Defaults to present.
 #
@@ -52,6 +59,9 @@ class swift::proxy(
   $log_level = 'INFO',
   $log_facility = 'LOG_LOCAL1',
   $log_handoffs = true,
+  $read_affinity = undef,
+  $write_affinity = undef,
+  $write_affinity_node_count = undef,
   $package_ensure = 'present'
 ) {
 
@@ -61,6 +71,10 @@ class swift::proxy(
   validate_bool($account_autocreate)
   validate_bool($allow_account_management)
   validate_array($pipeline)
+
+  if($write_affinity_node_count and ! $write_affinity) {
+    fail('Usage of write_affinity_node_count requires write_affinity to be set')
+  }
 
   if(member($pipeline, 'tempauth')) {
     $auth_type = 'tempauth'

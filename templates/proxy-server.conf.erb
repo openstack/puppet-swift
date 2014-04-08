@@ -32,3 +32,12 @@ set log_address = <%= @log_address %>
 log_handoffs = <%= @log_handoffs %>
 allow_account_management = <%= @allow_account_management %>
 account_autocreate = <%= @account_autocreate %>
+<% if @read_affinity -%>
+read_affinity = <%= @read_affinity -%>
+<% end %>
+<% if @write_affinity -%>
+write_affinity = <%= @write_affinity -%>
+<% end %>
+<% if @write_affinity_node_count -%>
+write_affinity_node_count = <%= @write_affinity_node_count -%>
+<% end %>
