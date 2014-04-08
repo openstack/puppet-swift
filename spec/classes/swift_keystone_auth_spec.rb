@@ -21,6 +21,7 @@ describe 'swift::keystone::auth' do
       :admin_address     => '127.0.0.1',
       :internal_protocol => 'http',
       :internal_address  => '127.0.0.1',
+      :endpoint_prefix   => 'AUTH',
     }
   end
 
@@ -50,6 +51,7 @@ describe 'swift::keystone::auth' do
           :admin_address     => 'admin.example.org',
           :internal_protocol => 'https',
           :internal_address  => 'internal.example.org',
+          :endpoint_prefix   => 'KEY_AUTH',
         })
       end
 
@@ -103,9 +105,9 @@ describe 'swift::keystone::auth' do
 
     it { should contain_keystone_endpoint("#{p[:region]}/#{p[:auth_name]}").with(
       :ensure       => 'present',
-      :public_url   => "#{p[:public_protocol]}://#{p[:public_address]}:#{p[:port]}/v1/AUTH_%(tenant_id)s",
+          :public_url   => "#{p[:public_protocol]}://#{p[:public_address]}:#{p[:port]}/v1/#{p[:endpoint_prefix]}_%(tenant_id)s",
       :admin_url    => "#{p[:admin_protocol]}://#{p[:admin_address]}:#{p[:port]}/",
-      :internal_url => "#{p[:internal_protocol]}://#{p[:internal_address]}:#{p[:port]}/v1/AUTH_%(tenant_id)s"
+      :internal_url => "#{p[:internal_protocol]}://#{p[:internal_address]}:#{p[:port]}/v1/#{p[:endpoint_prefix]}_%(tenant_id)s"
     )}
 
     it { should contain_keystone_service("#{p[:auth_name]}_s3").with(

@@ -33,7 +33,8 @@ class swift::keystone::auth(
   $internal_protocol      = 'http',
   $internal_address       = undef,
   $configure_endpoint     = true,
-  $configure_s3_endpoint = true
+  $configure_s3_endpoint  = true,
+  $endpoint_prefix        = 'AUTH',
 ) {
 
   if ! $public_port {
@@ -73,9 +74,9 @@ class swift::keystone::auth(
   if $configure_endpoint {
     keystone_endpoint { "${region}/${auth_name}":
       ensure       => present,
-      public_url   => "${public_protocol}://${public_address}:${real_public_port}/v1/AUTH_%(tenant_id)s",
+      public_url   => "${public_protocol}://${public_address}:${real_public_port}/v1/${endpoint_prefix}_%(tenant_id)s",
       admin_url    => "${admin_protocol}://${real_admin_address}:${port}/",
-      internal_url => "${internal_protocol}://${real_internal_address}:${port}/v1/AUTH_%(tenant_id)s",
+      internal_url => "${internal_protocol}://${real_internal_address}:${port}/v1/${endpoint_prefix}_%(tenant_id)s",
     }
   }
 
