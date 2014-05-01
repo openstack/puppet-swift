@@ -1,6 +1,8 @@
 swift
 =======
 
+4.0.0 - 2013.1.0 - Icehouse (Swift 1.13.1)
+
 #### Table of Contents
 
 1. [Overview - What is the swift module?](#overview)
@@ -243,6 +245,20 @@ Contributors
 
 Release Notes
 -------------
+
+**4.0.0**
+
+* Stable Icehouse release.
+* Added support for parameterizing endpoint prefix.
+* Added read_affinity, write_affinity support to proxy.
+* Added proxyserver gatekeeper middleware.
+* Added swift::proxy::slo class.
+* Added support for allow_versions in Swift containers.
+* Add support for middlewares with hyphens in name.
+* Fixed spurious warning in pipeline check.
+* Fixed test files.
+* Fixed deprecation warnings in inline templates.
+* Updated swift::keystone::auth spec tests.
 
 **3.0.0**
 
