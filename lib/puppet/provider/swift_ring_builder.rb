@@ -28,33 +28,36 @@ class Puppet::Provider::SwiftRingBuilder < Puppet::Provider
            # Devices:    id  region  zone      ip address  port  replication ip  replication port      name weight partitions balance meta
            #              0       1     2       127.0.0.1  6021       127.0.0.1              6021         2   1.00     262144    0.00
           # Swift 1.8+ output example:
-          if row =~ /^\s*(\d+)\s+\d+\s+(\d+)\s+(\S+)\s+(\d+)\s+\S+\s+\d+\s+(\S+)\s+(\d+\.\d+)\s+(\d+)\s*((-|\s-?)?\d+\.\d+)\s*(\S*)/
+          if row =~ /^\s*(\d+)\s+(\d+)\s+(\d+)\s+(\S+)\s+(\d+)\s+\S+\s+\d+\s+(\S+)\s+(\d+\.\d+)\s+(\d+)\s*((-|\s-?)?\d+\.\d+)\s*(\S*)/
 
-            object_hash["#{$3}:#{$4}/#{$5}"] = {
+            object_hash["#{$4}:#{$5}/#{$6}"] = {
               :id          => $1,
-              :zone        => $2,
-              :weight      => $6,
-              :partitions  => $7,
-              :balance     => $8,
-              :meta        => $10
+              :region      => $2,
+              :zone        => $3,
+              :weight      => $7,
+              :partitions  => $8,
+              :balance     => $9,
+              :meta        => $11
             }
 
           # Swift 1.8.0 output example:
-          elsif row =~ /^\s*(\d+)\s+\d+\s+(\d+)\s+(\S+)\s+(\d+)\s+(\S+)\s+(\d+\.\d+)\s+(\d+)\s*((-|\s-?)?\d+\.\d+)\s*(\S*)/
+          elsif row =~ /^\s*(\d+)\s+(\d+)\s+(\d+)\s+(\S+)\s+(\d+)\s+(\S+)\s+(\d+\.\d+)\s+(\d+)\s*((-|\s-?)?\d+\.\d+)\s*(\S*)/
 
-            object_hash["#{$3}:#{$4}/#{$5}"] = {
+            object_hash["#{$4}:#{$5}/#{$6}"] = {
               :id          => $1,
-              :zone        => $2,
-              :weight      => $6,
-              :partitions  => $7,
-              :balance     => $8,
-              :meta        => $10
+              :region      => $2,
+              :zone        => $3,
+              :weight      => $7,
+              :partitions  => $8,
+              :balance     => $9,
+              :meta        => $11
             }
            # This regex is for older swift versions
           elsif row =~ /^\s+(\d+)\s+(\d+)\s+(\S+)\s+(\d+)\s+(\S+)\s+(\d+\.\d+)\s+(\d+)\s+(-?\d+\.\d+)\s+(\S*)$/
 
             object_hash["#{$3}:#{$4}/#{$5}"] = {
               :id          => $1,
+              :region      => 'none',
               :zone        => $2,
               :weight      => $6,
               :partitions  => $7,
@@ -87,12 +90,26 @@ class Puppet::Provider::SwiftRingBuilder < Puppet::Provider
     [:zone, :weight].each do |param|
       raise(Puppet::Error, "#{param} is required") unless resource[param]
     end
-    swift_ring_builder(
-      builder_file_path,
-      'add',
-      "z#{resource[:zone]}-#{resource[:name]}",
-      resource[:weight]
-    )
+
+    if :region == 'none'
+      # Prior to Swift 1.8.0, regions did not exist.
+      swift_ring_builder(
+        builder_file_path,
+        'add',
+        "z#{resource[:zone]}-#{resource[:name]}",
+        resource[:weight]
+      )
+    else
+      # Swift 1.8+
+      # Region defaults to 1 if unspecified
+      resource[:region] ||= 1
+      swift_ring_builder(
+        builder_file_path,
+        'add',
+        "r#{resource[:region]}z#{resource[:zone]}-#{resource[:name]}",
+        resource[:weight]
+      )
+    end
   end
 
   def id
@@ -101,6 +118,14 @@ class Puppet::Provider::SwiftRingBuilder < Puppet::Provider
 
   def id=(id)
     raise(Puppet::Error, "Cannot assign id, it is immutable")
+  end
+
+  def region
+    ring[resource[:name]][:region]
+  end
+
+  def region=(region)
+    raise(Puppet::Error, "Changing the region of a device is not possible.")
   end
 
   def zone
