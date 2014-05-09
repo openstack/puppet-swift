@@ -20,17 +20,33 @@ describe provider_class do
 262144 partitions, 3 replicas, 3 zones, 3 devices, 0.00 balance
 The minimum number of hours before a partition can be reassigned is 1
 Devices:    id  region  zone      ip address  port      replication ip  replication port name weight partitions balance meta
+             1     1     1  192.168.101.13  6002         192.168.101.13  6002            1   1.00     262144 0.00
              2     1     2  192.168.101.14  6002         192.168.101.14  6002            1   1.00     262144 200.00  m2
              0     1     3  192.168.101.15  6002         192.168.101.15  6002            1   1.00     262144-100.00  m2
              3     1     1  192.168.101.16  6002         192.168.101.16  6002            1   1.00     262144-100.00
-             1     1     1  192.168.101.13  6002         192.168.101.13  6002            1   1.00     262144 0.00
 '
     )
-    resources = provider_class.lookup_ring.inspect
-    resources['192.168.101.15:6002/1'].should_not be_nil
+    resources = provider_class.lookup_ring
     resources['192.168.101.13:6002/1'].should_not be_nil
     resources['192.168.101.14:6002/1'].should_not be_nil
+    resources['192.168.101.15:6002/1'].should_not be_nil
     resources['192.168.101.16:6002/1'].should_not be_nil
+
+    resources['192.168.101.13:6002/1'][:id].should eql '1'
+    resources['192.168.101.13:6002/1'][:region].should eql '1'
+    resources['192.168.101.13:6002/1'][:zone].should eql '1'
+    resources['192.168.101.13:6002/1'][:weight].should eql '1.00'
+    resources['192.168.101.13:6002/1'][:partitions].should eql '262144'
+    resources['192.168.101.13:6002/1'][:balance].should eql '0.00'
+    resources['192.168.101.13:6002/1'][:meta].should eql ''
+
+    resources['192.168.101.14:6002/1'][:id].should eql '2'
+    resources['192.168.101.14:6002/1'][:region].should eql '1'
+    resources['192.168.101.14:6002/1'][:zone].should eql '2'
+    resources['192.168.101.14:6002/1'][:weight].should eql '1.00'
+    resources['192.168.101.14:6002/1'][:partitions].should eql '262144'
+    resources['192.168.101.14:6002/1'][:balance].should eql '200.00'
+    resources['192.168.101.14:6002/1'][:meta].should eql 'm2'
   end
 
   it 'should be able to lookup the local ring and build an object 1.8.0' do
@@ -42,17 +58,33 @@ Devices:    id  region  zone      ip address  port      replication ip  replicat
 262144 partitions, 3 replicas, 3 zones, 3 devices, 0.00 balance
 The minimum number of hours before a partition can be reassigned is 1
 Devices:    id  region  zone      ip address  port      name weight partitions balance meta
+             1     1     1  192.168.101.13  6002         1   1.00     262144 0.00
              2     1     2  192.168.101.14  6002         1   1.00     262144 200.00  m2
              0     1     3  192.168.101.15  6002         1   1.00     262144-100.00  m2
              3     1     1  192.168.101.16  6002         1   1.00     262144-100.00
-             1     1     1  192.168.101.13  6002         1   1.00     262144 0.00
 '
     )
-    resources = provider_class.lookup_ring.inspect
-    resources['192.168.101.15:6002/1'].should_not be_nil
+    resources = provider_class.lookup_ring
     resources['192.168.101.13:6002/1'].should_not be_nil
     resources['192.168.101.14:6002/1'].should_not be_nil
+    resources['192.168.101.15:6002/1'].should_not be_nil
     resources['192.168.101.16:6002/1'].should_not be_nil
+
+    resources['192.168.101.13:6002/1'][:id].should eql '1'
+    resources['192.168.101.13:6002/1'][:region].should eql '1'
+    resources['192.168.101.13:6002/1'][:zone].should eql '1'
+    resources['192.168.101.13:6002/1'][:weight].should eql '1.00'
+    resources['192.168.101.13:6002/1'][:partitions].should eql '262144'
+    resources['192.168.101.13:6002/1'][:balance].should eql '0.00'
+    resources['192.168.101.13:6002/1'][:meta].should eql ''
+
+    resources['192.168.101.14:6002/1'][:id].should eql '2'
+    resources['192.168.101.14:6002/1'][:region].should eql '1'
+    resources['192.168.101.14:6002/1'][:zone].should eql '2'
+    resources['192.168.101.14:6002/1'][:weight].should eql '1.00'
+    resources['192.168.101.14:6002/1'][:partitions].should eql '262144'
+    resources['192.168.101.14:6002/1'][:balance].should eql '200.00'
+    resources['192.168.101.14:6002/1'][:meta].should eql 'm2'
   end
 
   it 'should be able to lookup the local ring and build an object 1.7' do
@@ -64,15 +96,31 @@ Devices:    id  region  zone      ip address  port      name weight partitions b
 262144 partitions, 3 replicas, 3 zones, 3 devices, 0.00 balance
 The minimum number of hours before a partition can be reassigned is 1
 Devices:    id  region  zone      ip address  port      name weight partitions balance meta
-             2     1     2  192.168.101.14  6002         1   1.00     262144    0.00 
-             0     1     3  192.168.101.15  6002         1   1.00     262144    0.00 
-             1     1     1  192.168.101.13  6002         1   1.00     262144    0.00 
+             1     1     1  192.168.101.13  6002         1   1.00     262144    0.00
+             2     1     2  192.168.101.14  6002         1   1.00     262144    0.00
+             0     1     3  192.168.101.15  6002         1   1.00     262144    0.00
 '
     )
-    resources = provider_class.lookup_ring.inspect
-    resources['192.168.101.15:6002/1'].should_not be_nil
+    resources = provider_class.lookup_ring
     resources['192.168.101.13:6002/1'].should_not be_nil
     resources['192.168.101.14:6002/1'].should_not be_nil
+    resources['192.168.101.15:6002/1'].should_not be_nil
+
+    resources['192.168.101.13:6002/1'][:id].should eql '1'
+    resources['192.168.101.13:6002/1'][:region].should eql '1'
+    resources['192.168.101.13:6002/1'][:zone].should eql '1'
+    resources['192.168.101.13:6002/1'][:weight].should eql '1.00'
+    resources['192.168.101.13:6002/1'][:partitions].should eql '262144'
+    resources['192.168.101.13:6002/1'][:balance].should eql '0.00'
+    resources['192.168.101.13:6002/1'][:meta].should eql ''
+
+    resources['192.168.101.14:6002/1'][:id].should eql '2'
+    resources['192.168.101.14:6002/1'][:region].should eql '1'
+    resources['192.168.101.14:6002/1'][:zone].should eql '2'
+    resources['192.168.101.14:6002/1'][:weight].should eql '1.00'
+    resources['192.168.101.14:6002/1'][:partitions].should eql '262144'
+    resources['192.168.101.14:6002/1'][:balance].should eql '0.00'
+    resources['192.168.101.14:6002/1'][:meta].should eql ''
   end
 
   it 'should be able to lookup the local ring and build an object legacy' do
@@ -88,10 +136,25 @@ Devices:    id  zone      ip address  port      name weight partitions balance m
              1     1  192.168.101.13  6002         1   1.00     262144    0.00 
 '
     )
-    resources = provider_class.lookup_ring.inspect
+    resources = provider_class.lookup_ring
     resources['192.168.101.15:6002/1'].should_not be_nil
     resources['192.168.101.13:6002/1'].should_not be_nil
     resources['192.168.101.14:6002/1'].should_not be_nil
-  end
 
+    resources['192.168.101.13:6002/1'][:id].should eql '1'
+    resources['192.168.101.13:6002/1'][:region].should eql 'none'
+    resources['192.168.101.13:6002/1'][:zone].should eql '1'
+    resources['192.168.101.13:6002/1'][:weight].should eql '1.00'
+    resources['192.168.101.13:6002/1'][:partitions].should eql '262144'
+    resources['192.168.101.13:6002/1'][:balance].should eql '0.00'
+    resources['192.168.101.13:6002/1'][:meta].should eql ''
+
+    resources['192.168.101.14:6002/1'][:id].should eql '2'
+    resources['192.168.101.14:6002/1'][:region].should eql 'none'
+    resources['192.168.101.14:6002/1'][:zone].should eql '2'
+    resources['192.168.101.14:6002/1'][:weight].should eql '1.00'
+    resources['192.168.101.14:6002/1'][:partitions].should eql '262144'
+    resources['192.168.101.14:6002/1'][:balance].should eql '0.00'
+    resources['192.168.101.14:6002/1'][:meta].should eql ''
+  end
 end

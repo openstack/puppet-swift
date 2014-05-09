@@ -60,6 +60,7 @@ class { 'swift::storage::all':
 }
 
 @@ring_object_device { "${ipaddress_eth0}:6000/1":
+  region => 1, # optional, defaults to 1
   zone   => 1,
   weight => 1,
 }
@@ -73,14 +74,17 @@ class { 'swift::storage::all':
 }
 
 @@ring_object_device { "${ipaddress_eth0}:6000/2":
+  region => 2,
   zone   => 1,
   weight => 1,
 }
 @@ring_container_device { "${ipaddress_eth0}:6001/2":
+  region => 2,
   zone   => 1,
   weight => 1,
 }
 @@ring_account_device { "${ipaddress_eth0}:6002/2":
+  region => 2,
   zone   => 1,
   weight => 1,
 }
