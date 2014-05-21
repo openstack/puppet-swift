@@ -13,6 +13,8 @@ Puppet::Type.newtype(:ring_container_device) do
     end
   end
 
+  newproperty(:region)
+
   newproperty(:zone)
 
   newproperty(:weight) do
