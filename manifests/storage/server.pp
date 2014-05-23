@@ -58,6 +58,7 @@ define swift::storage::server(
     owner   => $owner,
     group   => $group,
     notify  => Service["swift-${type}", "swift-${type}-replicator"],
+    require => Package['swift'],
     mode    => 640,
   }
 
@@ -79,5 +80,6 @@ define swift::storage::server(
     # does not specify the backends for every specified element of
     # the pipeline
     before  => $required_middlewares,
+    require => Package['swift'],
   }
 }
