@@ -1,16 +1,20 @@
 require 'spec_helper'
 
 describe 'swift::client' do
-
-  describe "with default parameters" do
-    it { should contain_package('swiftclient').with_ensure('present') }
+  it { should contain_package('swiftclient').with(
+    :ensure => 'present',
+    :name => 'python-swiftclient'
+  )}
+  let :facts do
+    {:osfamily => 'Debian'}
   end
-
-  describe "with specified version" do
+  context 'with params' do
     let :params do
-      {:ensure => '2.0.2-1'}
+      {:ensure => 'latest'}
     end
-
-    it { should contain_package('swiftclient').with_ensure(params[:ensure]) }
+    it { should contain_package('swiftclient').with(
+      :ensure => 'latest',
+      :name   => 'python-swiftclient'
+    )}
   end
 end
