@@ -54,4 +54,21 @@ define swift::storage::mount(
     subscribe   => Exec["mount_${name}"],
     refreshonly => true,
   }
+
+  # mounting in linux and puppet is broken and non-atomic
+  # we have to mount, check mount with executing command,
+  # fix ownership and on selinux systems fix context.
+  # It would be definetly nice if passing options uid=,gid=
+  # would be possible as context is. But, as there already is
+  # chown command we'll just restorecon on selinux enabled
+  # systems :(
+  if ($::selinux) {
+    exec { "restorecon_mount_${name}":
+      command     => "restorecon ${mnt_base_dir}/${name}",
+      path        => ['/usr/sbin', '/bin'],
+      subscribe   => Exec["mount_${name}"],
+      before      =>  Exec["fix_mount_permissions_${name}"],
+      refreshonly => true,
+    }
+  }
 }
