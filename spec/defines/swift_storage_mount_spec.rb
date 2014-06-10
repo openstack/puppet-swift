@@ -48,7 +48,7 @@ describe 'swift::storage::mount' do
 
     let :facts do
       {
-        :selinux => true,
+        :selinux => 'true',
       }
     end
 

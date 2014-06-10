@@ -62,7 +62,7 @@ define swift::storage::mount(
   # would be possible as context is. But, as there already is
   # chown command we'll just restorecon on selinux enabled
   # systems :(
-  if ($::selinux) {
+  if ($::selinux == 'true') {
     exec { "restorecon_mount_${name}":
       command     => "restorecon ${mnt_base_dir}/${name}",
       path        => ['/usr/sbin', '/bin'],
