@@ -54,7 +54,7 @@ describe 'swift::storage::mount' do
 
     it { should contain_exec("restorecon_mount_dans_mount_point").with(
       {:command     => "restorecon /srv/node/dans_mount_point",
-       :path        => ['/usr/sbin', '/bin'],
+       :path        => ['/usr/sbin', '/sbin'],
        :refreshonly => true}
     )}
 

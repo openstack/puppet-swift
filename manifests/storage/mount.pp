@@ -65,7 +65,7 @@ define swift::storage::mount(
   if ($::selinux == 'true') {
     exec { "restorecon_mount_${name}":
       command     => "restorecon ${mnt_base_dir}/${name}",
-      path        => ['/usr/sbin', '/bin'],
+      path        => ['/usr/sbin', '/sbin'],
       subscribe   => Exec["mount_${name}"],
       before      =>  Exec["fix_mount_permissions_${name}"],
       refreshonly => true,
