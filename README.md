@@ -250,6 +250,17 @@ Contributors
 Release Notes
 -------------
 
+**4.1.0**
+
+* Added swift-ring-builder multi-region support.
+* Added swift::proxy::crossdomain class.
+* Added support for RHEL 7.
+* Fixed Swift quota filter names.
+* Fixed config dependency bugs.
+* Fixed resource conflict when ringserver and storage are on same node.
+* Fixed selinux bugs.
+* Pinned major gems.
+
 **4.0.0**
 
 * Stable Icehouse release.
