@@ -3,9 +3,7 @@ require 'spec_helper'
 describe 'swift::proxy::keystone' do
 
   let :facts do
-    {
-      :concat_basedir => '/var/lib/puppet/concat',
-    }
+    {}
   end
 
   let :fragment_file do

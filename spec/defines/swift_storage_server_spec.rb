@@ -5,8 +5,7 @@ describe 'swift::storage::server' do
     {
       :operatingsystem => 'Ubuntu',
       :osfamily        => 'Debian',
-      :processorcount  => 1,
-      :concat_basedir  => '/var/lib/puppet/concat',
+      :processorcount  => 1
     }
 
   end

@@ -5,8 +5,7 @@ describe 'swift::ringbuilder' do
     {
       :operatingsystem => 'Ubuntu',
       :osfamily        => 'Debian',
-      :processorcount  => 1,
-      :concat_basedir  => '/tmp/foo'
+      :processorcount  => 1
     }
   end
   describe 'when swift class is not included' do
