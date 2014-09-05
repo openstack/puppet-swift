@@ -27,6 +27,7 @@ describe 'swift::proxy::keystone' do
 
     it { should contain_file(fragment_file).with_content(/operator_roles = admin, SwiftOperator/) }
     it { should contain_file(fragment_file).with_content(/is_admin = true/) }
+    it { should contain_file(fragment_file).with_content(/reseller_prefix = AUTH_/) }
 
   end
 
@@ -34,12 +35,14 @@ describe 'swift::proxy::keystone' do
 
     let :params do
       {
-        :operator_roles => 'foo',
-        :is_admin       => 'false',
+        :operator_roles  => 'foo',
+        :is_admin        => 'false',
+        :reseller_prefix => 'SWIFT_'
       }
 
       it { should contain_file(fragment_file).with_content(/operator_roles = foo/) }
       it { should contain_file(fragment_file).with_content(/is_admin = false/) }
+      it { should contain_file(fragment_file).with_content(/reseller_prefix = SWIFT_/) }
 
     end
 
