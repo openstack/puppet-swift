@@ -151,6 +151,80 @@ describe 'swift::proxy' do
         end
       end
     end
+  end
 
+  shared_examples_for 'swift-proxy' do
+    let :params do
+      { :proxy_local_net_ip => '127.0.0.1' }
+    end
+
+    [{ :enabled => true, :manage_service => true },
+     { :enabled => false, :manage_service => true }].each do |param_hash|
+      context "when service should be #{param_hash[:enabled] ? 'enabled' : 'disabled'}" do
+        before do
+          params.merge!(param_hash)
+        end
+
+        it 'configures swift-proxy service' do
+          should contain_service('swift-proxy').with(
+            :ensure    => (param_hash[:manage_service] && param_hash[:enabled]) ? 'running' : 'stopped',
+            :name      => platform_params[:service_name],
+            :provider  => platform_params[:service_provider],
+            :enable    => param_hash[:enabled],
+            :hasstatus => true,
+            :subscribe => 'Concat[/etc/swift/proxy-server.conf]'
+          )
+        end
+      end
+    end
+
+    context 'with disabled service managing' do
+      before do
+        params.merge!({
+          :manage_service => false,
+          :enabled        => false })
+      end
+
+      it 'configures swift-proxy service' do
+        should contain_service('swift-proxy').with(
+          :ensure    => nil,
+          :name      => platform_params[:service_name],
+          :provider  => platform_params[:service_provider],
+          :enable    => false,
+          :hasstatus => true,
+          :subscribe => 'Concat[/etc/swift/proxy-server.conf]'
+        )
+      end
+    end
+  end
+
+  context 'on Debian platforms' do
+    let :facts do
+      { :operatingsystem => 'Ubuntu',
+        :osfamily        => 'Debian',
+        :concat_basedir  => '/var/lib/puppet/concat' }
+    end
+
+    let :platform_params do
+      { :service_name     => 'swift-proxy',
+        :service_provider => 'upstart' }
+    end
+
+    it_configures 'swift-proxy'
+  end
+
+  context 'on RedHat platforms' do
+    let :facts do
+      { :osfamily        => 'RedHat',
+        :operatingsystem => 'RedHat',
+        :concat_basedir  => '/var/lib/puppet/concat' }
+    end
+
+    let :platform_params do
+      { :service_name     => 'openstack-swift-proxy',
+        :service_provider => nil }
+    end
+
+    it_configures 'swift-proxy'
   end
 end
