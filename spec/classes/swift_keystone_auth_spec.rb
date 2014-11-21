@@ -94,7 +94,6 @@ describe 'swift::keystone::auth' do
     it { should contain_keystone_user_role("#{p[:auth_name]}@#{p[:tenant]}").with(
       :ensure  => 'present',
       :roles   => 'admin',
-      :require => "Keystone_user[#{p[:auth_name]}]"
     )}
 
     it { should contain_keystone_service(p[:auth_name]).with(
