@@ -1,7 +1,7 @@
 swift
 =======
 
-4.0.0 - 2013.1.0 - Icehouse (Swift 1.13.1)
+5.0.0 - 2014.2.0 - Juno
 
 #### Table of Contents
 
@@ -249,6 +249,24 @@ Contributors
 
 Release Notes
 -------------
+
+**5.0.0**
+
+* Stable Juno release
+* Updated s3token.conf template for Juno
+* Added parameter log_name to swift::proxy and swift::storage::server
+* Bumped stdlib dependency to >=4.0.0
+
+**4.1.0**
+
+* Added swift-ring-builder multi-region support.
+* Added swift::proxy::crossdomain class.
+* Added support for RHEL 7.
+* Fixed Swift quota filter names.
+* Fixed config dependency bugs.
+* Fixed resource conflict when ringserver and storage are on same node.
+* Fixed selinux bugs.
+* Pinned major gems.
 
 **4.0.0**
 
