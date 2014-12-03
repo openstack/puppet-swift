@@ -53,51 +53,38 @@ class swift::keystone::auth(
     $real_internal_address = $internal_address
   }
 
-  keystone_user { $auth_name:
-    ensure   => present,
-    password => $password,
-    email    => $email,
-    tenant   => $tenant,
-  }
-  keystone_user_role { "${auth_name}@${tenant}":
-    ensure  => present,
-    roles   => 'admin',
-    require => Keystone_user[$auth_name]
-  }
-
-  keystone_service { $auth_name:
-    ensure      => present,
-    type        => 'object-store',
-    description => 'Openstack Object-Store Service',
+  keystone::resource::service_identity { $auth_name:
+    configure_endpoint  => $configure_endpoint,
+    service_type        => 'object-store',
+    service_description => 'Openstack Object-Store Service',
+    region              => $region,
+    password            => $password,
+    email               => $email,
+    tenant              => $tenant,
+    public_url          => "${public_protocol}://${public_address}:${real_public_port}/v1/${endpoint_prefix}_%(tenant_id)s",
+    admin_url           => "${admin_protocol}://${real_admin_address}:${port}/",
+    internal_url        => "${internal_protocol}://${real_internal_address}:${port}/v1/${endpoint_prefix}_%(tenant_id)s",
   }
 
-  if $configure_endpoint {
-    keystone_endpoint { "${region}/${auth_name}":
-      ensure       => present,
-      public_url   => "${public_protocol}://${public_address}:${real_public_port}/v1/${endpoint_prefix}_%(tenant_id)s",
-      admin_url    => "${admin_protocol}://${real_admin_address}:${port}/",
-      internal_url => "${internal_protocol}://${real_internal_address}:${port}/v1/${endpoint_prefix}_%(tenant_id)s",
-    }
-  }
-
-  if $configure_s3_endpoint {
-    keystone_service { "${auth_name}_s3":
-      ensure      => present,
-      type        => 's3',
-      description => 'Openstack S3 Service',
-    }
-
-    keystone_endpoint { "${region}/${auth_name}_s3":
-      ensure       => present,
-      public_url   => "${public_protocol}://${public_address}:${real_public_port}",
-      admin_url    => "${admin_protocol}://${real_admin_address}:${port}",
-      internal_url => "${internal_protocol}://${real_internal_address}:${port}",
-    }
+  keystone::resource::service_identity { "${auth_name}_s3":
+    configure_user      => false,
+    configure_user_role => false,
+    configure_endpoint  => $configure_s3_endpoint,
+    configure_service   => $configure_s3_endpoint,
+    service_type        => 's3',
+    service_description => 'Openstack S3 Service',
+    region              => $region,
+    public_url          => "${public_protocol}://${public_address}:${real_public_port}",
+    admin_url           => "${admin_protocol}://${real_admin_address}:${port}",
+    internal_url        => "${internal_protocol}://${real_internal_address}:${port}",
   }
 
   if $operator_roles {
     #Roles like "admin" may be defined elsewhere, so use ensure_resource
     ensure_resource('keystone_role', $operator_roles, { 'ensure' => 'present' })
   }
+
+  # Backward compatibility
+  Keystone_user["$auth_name"] -> Keystone_user_role["${auth_name}@${tenant}"]
 
 }
