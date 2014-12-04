@@ -23,9 +23,7 @@ require 'spec_helper'
 describe 'swift::proxy::container_quotas' do
 
   let :facts do
-    {
-      :concat_basedir => '/var/lib/puppet/concat'
-    }
+    {}
   end
 
   let :pre_condition do

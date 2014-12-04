@@ -107,8 +107,7 @@ describe 'swift::storage::container' do
   context 'on RedHat platforms' do
     let :facts do
       { :osfamily        => 'RedHat',
-        :operatingsystem => 'RedHat',
-        :concat_basedir => '/var/lib/puppet/concat' }
+        :operatingsystem => 'RedHat' }
     end
 
     let :platform_params do

@@ -4,7 +4,6 @@ describe 'swift::proxy::ceilometer' do
 
   let :facts do
     {
-      :concat_basedir => '/var/lib/puppet/concat',
       :osfamily => 'Debian'
     }
   end

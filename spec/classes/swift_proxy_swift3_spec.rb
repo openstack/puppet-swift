@@ -3,8 +3,7 @@ require 'spec_helper'
 describe 'swift::proxy::swift3' do
 
   let :facts do
-    { :concat_basedir  => '/var/lib/puppet/concat',
-      :osfamily        => 'Debian',
+    { :osfamily        => 'Debian',
       :operatingsystem => 'Ubuntu' }
   end
 

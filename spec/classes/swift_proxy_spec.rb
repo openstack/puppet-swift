@@ -12,8 +12,7 @@ describe 'swift::proxy' do
   let :facts do
     {:operatingsystem => 'Ubuntu',
      :osfamily        => 'Debian',
-     :processorcount  => 1,
-     :concat_basedir  => '/var/lib/puppet/concat',
+     :processorcount  => 1
     }
   end
 

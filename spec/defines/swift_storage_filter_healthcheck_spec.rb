@@ -6,9 +6,7 @@ describe 'swift::storage::filter::healthcheck' do
   end
 
   let :facts do
-    {
-      :concat_basedir => '/var/lib/puppet/concat'
-    }
+    {}
   end
 
   let :pre_condition do
