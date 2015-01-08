@@ -7,12 +7,12 @@
 #    for authenticating. If this is choosen if is used instead of a user,tenant,password.
 #    Optional. Defaults to false.
 #  [admin_user] User used to authenticate service.
-#    Optional. Defaults to admin
+#    Optional. Defaults to 'swift'.
 #  [admin_tenant_name] Tenant used to authenticate service.
-#    Optional. Defaults to openstack.
+#    Optional. Defaults to 'services'.
 #  [admin_password] Password used with user to authenticate service.
-#    Optional. Defaults to ChangeMe.
-#  [delay_decision] Set to 1 to support token-less access (anonymous access,
+#    Optional. Defaults to 'password'.
+#  [delay_auth_decision] Set to 1 to support token-less access (anonymous access,
 #    tempurl, ...)
 #    Optional, Defaults to 0
 #  [auth_host] Host providing the keystone service API endpoint. Optional.
