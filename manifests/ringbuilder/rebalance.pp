@@ -6,12 +6,19 @@
 #
 # [*name*] Type of ring to rebalance. The ring file is assumed to be at the path
 #   /etc/swift/${name}.builder
-define swift::ringbuilder::rebalance() {
+#
+# [*seed*] Optional. Seed value used to seed pythons pseudo-random for ringbuilding.
+define swift::ringbuilder::rebalance(
+  $seed = undef
+) {
 
   validate_re($name, '^object|container|account$')
+  if $seed {
+    validate_re($seed, '^\d+$')
+  }
 
   exec { "rebalance_${name}":
-    command     => "swift-ring-builder /etc/swift/${name}.builder rebalance",
+    command     => strip("swift-ring-builder /etc/swift/${name}.builder rebalance ${seed}"),
     path        => ['/usr/bin'],
     refreshonly => true,
   }
