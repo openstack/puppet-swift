@@ -25,5 +25,6 @@ describe 'swift::proxy::ceilometer' do
   it { should contain_file(fragment_file).with_content(/use = egg:ceilometer#swift/) }
   it { should contain_concat__fragment('swift_ceilometer').with_require('Class[::Ceilometer]') }
   it { should contain_user('swift').with_groups('ceilometer') }
+  it { should contain_file('/var/log/ceilometer/swift-proxy-server.log').with(:owner => 'swift', :group => 'swift', :mode => '0664') }
 
 end
