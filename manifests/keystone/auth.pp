@@ -17,6 +17,16 @@
 # [*operator_roles*]
 #  Array of strings. List of roles Swift considers as admin.
 #
+# [*service_name*]
+#   (optional) Name of the service.
+#   Defaults to the value of auth_name, but must differ from the value
+#   of service_name_s3.
+#
+# [*service_name_s3*]
+#   (optional) Name of the s3 service.
+#   Defaults to the value of auth_name_s3, but must differ from the value
+#   of service_name.
+#
 class swift::keystone::auth(
   $auth_name              = 'swift',
   $password               = 'swift_password',
@@ -25,6 +35,8 @@ class swift::keystone::auth(
   $email                  = 'swift@localhost',
   $region                 = 'RegionOne',
   $operator_roles         = ['admin', 'SwiftOperator'],
+  $service_name           = undef,
+  $service_name_s3        = undef,
   $public_protocol        = 'http',
   $public_address         = '127.0.0.1',
   $public_port            = undef,
@@ -36,6 +48,12 @@ class swift::keystone::auth(
   $configure_s3_endpoint  = true,
   $endpoint_prefix        = 'AUTH',
 ) {
+  $real_service_name    = pick($service_name, $auth_name)
+  $real_service_name_s3 = pick($service_name_s3, "${auth_name}_s3")
+
+  if $real_service_name == $real_service_name_s3 {
+      fail('cinder::keystone::auth parameters service_name and service_name_s3 must be different.')
+  }
 
   if ! $public_port {
     $real_public_port = $port
@@ -53,11 +71,13 @@ class swift::keystone::auth(
     $real_internal_address = $internal_address
   }
 
-  keystone::resource::service_identity { $auth_name:
+  keystone::resource::service_identity { 'swift':
     configure_endpoint  => $configure_endpoint,
+    service_name        => $real_service_name,
     service_type        => 'object-store',
     service_description => 'Openstack Object-Store Service',
     region              => $region,
+    auth_name           => $auth_name,
     password            => $password,
     email               => $email,
     tenant              => $tenant,
@@ -66,11 +86,12 @@ class swift::keystone::auth(
     internal_url        => "${internal_protocol}://${real_internal_address}:${port}/v1/${endpoint_prefix}_%(tenant_id)s",
   }
 
-  keystone::resource::service_identity { "${auth_name}_s3":
+  keystone::resource::service_identity { "swift_s3":
     configure_user      => false,
     configure_user_role => false,
     configure_endpoint  => $configure_s3_endpoint,
     configure_service   => $configure_s3_endpoint,
+    service_name        => $real_service_name_s3,
     service_type        => 's3',
     service_description => 'Openstack S3 Service',
     region              => $region,
