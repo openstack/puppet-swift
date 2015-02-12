@@ -23,7 +23,7 @@ The swift module is a part of [Stackforge](https://github.com/stackforge), an ef
 Module Description
 ------------------
 
-The swift module is a thorough attempt to make Puppet capable of managing the entirety of swift.  This includes manifests to provision such things as keystone, stroage backends, proxies, and the ring.  Types are shipped as part of the swift module to assist in manipulation of configuration files.  The classes in this module will deploy Swift using best practices for a typical deployment.
+The swift module is a thorough attempt to make Puppet capable of managing the entirety of swift.  This includes manifests to provision such things as keystone, storage backends, proxies, and the ring.  Types are shipped as part of the swift module to assist in manipulation of configuration files.  The classes in this module will deploy Swift using best practices for a typical deployment.
 
 This module is tested in combination with other modules needed to build and leverage an entire Openstack software stack.  These modules can be found, all pulled together in the [openstack module](https://github.com/stackforge/puppet-openstack).  In addition, this module requires Puppet's [exported resources](http://docs.puppetlabs.com/puppet/3/reference/lang_exported.html).
 
