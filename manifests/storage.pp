@@ -5,7 +5,7 @@
 #   - installs required packages
 #
 # == Parameters
-#  [*storeage_local_net_ip*] ip address that the swift servers should
+#  [*storage_local_net_ip*] ip address that the swift servers should
 #    bind to. Required.
 # == Dependencies
 #
