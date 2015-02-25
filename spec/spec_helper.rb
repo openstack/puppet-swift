@@ -4,4 +4,5 @@ require 'shared_examples'
 RSpec.configure do |c|
   c.alias_it_should_behave_like_to :it_configures, 'configures'
   c.alias_it_should_behave_like_to :it_raises, 'raises'
+  c.default_facts = { :concat_basedir => '/var/lib/puppet/concat' }
 end
