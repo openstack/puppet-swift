@@ -1,7 +1,7 @@
 [filter:authtoken]
 log_name = swift
 signing_dir = <%= @signing_dir %>
-paste.filter_factory = keystoneclient.middleware.auth_token:filter_factory
+paste.filter_factory = keystonemiddleware.auth_token:filter_factory
 auth_host = <%= @auth_host %>
 auth_port = <%= @auth_port %>
 auth_protocol = <%= @auth_protocol %>
