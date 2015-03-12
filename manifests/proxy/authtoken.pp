@@ -45,15 +45,17 @@ class swift::proxy::authtoken(
   $admin_user          = 'swift',
   $admin_tenant_name   = 'services',
   $admin_password      = 'password',
+  $auth_uri            = false,
+  $identity_uri        = false,
+  $delay_auth_decision = 1,
+  $admin_token         = false,
+  $signing_dir         = '/var/cache/swift',
+  $cache               = 'swift.cache',
+  # DEPRECATED PARAMETERS
   $auth_host           = '127.0.0.1',
   $auth_port           = '35357',
   $auth_protocol       = 'http',
   $auth_admin_prefix   = false,
-  $auth_uri            = false,
-  $delay_auth_decision = 1,
-  $admin_token         = false,
-  $signing_dir         = '/var/cache/swift',
-  $cache               = 'swift.cache'
 ) {
 
   if $auth_uri {
@@ -63,8 +65,21 @@ class swift::proxy::authtoken(
   }
   $fragment_title    = regsubst($name, '/', '_', 'G')
 
-  if $auth_admin_prefix {
-    validate_re($auth_admin_prefix, '^(/.+[^/])?$')
+  # if both auth_uri and identity_uri are set we skip these deprecated warnings
+  if !$auth_uri or !$identity_uri {
+    if $auth_host {
+      warning('The auth_host parameter is deprecated. Please use auth_uri and identity_uri instead.')
+    }
+    if $auth_port {
+      warning('The auth_port parameter is deprecated. Please use auth_uri and identity_uri instead.')
+    }
+    if $auth_protocol {
+      warning('The auth_protocol parameter is deprecated. Please use auth_uri and identity_uri instead.')
+    }
+    if $auth_admin_prefix {
+      warning('The auth_admin_prefix parameter is deprecated. Please use auth_uri and identity_uri instead.')
+      validate_re($auth_admin_prefix, '^(/.+[^/])?$')
+    }
   }
 
   file { $signing_dir:

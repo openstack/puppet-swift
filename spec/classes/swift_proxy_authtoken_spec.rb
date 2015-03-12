@@ -145,6 +145,58 @@ describe 'swift::proxy::authtoken' do
     end
   end
 
+  describe "when identity_uri is set" do
+    let :params do
+      {
+        :identity_uri => 'https://foo.bar:35357/'
+      }
+    end
 
+    it 'should build the fragment with correct parameters' do
+      verify_contents(subject, fragment_file,
+        [
+          '[filter:authtoken]',
+          'log_name = swift',
+          'signing_dir = /var/cache/swift',
+          'paste.filter_factory = keystonemiddleware.auth_token:filter_factory',
+          'auth_host = 127.0.0.1',
+          'auth_port = 35357',
+          'auth_protocol = http',
+          'auth_uri = http://127.0.0.1:5000',
+          'identity_uri = https://foo.bar:35357/',
+          'delay_auth_decision = 1',
+          'cache = swift.cache',
+          'include_service_catalog = False'
+        ]
+      )
+    end
+  end
+
+
+
+  describe "when both auth_uri and identity_uri are set" do
+    let :params do
+      {
+        :auth_uri => 'https://foo.bar:5000/v2.0/',
+        :identity_uri => 'https://foo.bar:35357/'
+      }
+    end
+
+    it 'should build the fragment with correct parameters' do
+      verify_contents(subject, fragment_file,
+        [
+          '[filter:authtoken]',
+          'log_name = swift',
+          'signing_dir = /var/cache/swift',
+          'paste.filter_factory = keystonemiddleware.auth_token:filter_factory',
+          'auth_uri = https://foo.bar:5000/v2.0/',
+          'identity_uri = https://foo.bar:35357/',
+          'delay_auth_decision = 1',
+          'cache = swift.cache',
+          'include_service_catalog = False'
+        ]
+      )
+    end
+  end
 
 end
