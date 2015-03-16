@@ -61,7 +61,6 @@ class swift::proxy::authtoken(
   } else {
     $auth_uri_real = "${auth_protocol}://${auth_host}:5000"
   }
-  $fragment_title    = regsubst($name, '/', '_', 'G')
 
   if $auth_admin_prefix {
     validate_re($auth_admin_prefix, '^(/.+[^/])?$')
