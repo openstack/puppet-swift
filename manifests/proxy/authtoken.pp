@@ -63,7 +63,6 @@ class swift::proxy::authtoken(
   } else {
     $auth_uri_real = "${auth_protocol}://${auth_host}:5000"
   }
-  $fragment_title    = regsubst($name, '/', '_', 'G')
 
   # if both auth_uri and identity_uri are set we skip these deprecated warnings
   if !$auth_uri or !$identity_uri {
