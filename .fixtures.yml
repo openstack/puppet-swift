@@ -5,6 +5,7 @@ fixtures:
     "inifile":  "git://github.com/puppetlabs/puppetlabs-inifile"
     "keystone": "git://github.com/stackforge/puppet-keystone.git"
     "memcached": "git://github.com/saz/puppet-memcached.git"
+    "openstacklib": "git://github.com/stackforge/puppet-openstacklib.git"
     "rsync": "git://github.com/puppetlabs/puppetlabs-rsync.git"
     "ssh": "git://github.com/saz/puppet-ssh.git"
     "stdlib": "git://github.com/puppetlabs/puppetlabs-stdlib.git"
