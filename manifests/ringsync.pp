@@ -1,3 +1,5 @@
+# == Define: swift::ringsync
+#
 define swift::ringsync(
   $ring_server
 ) {

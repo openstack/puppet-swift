@@ -1,6 +1,15 @@
+# == Class: swift::ringserver
+#
 # Used to create an rsync server to serve up the ring databases via rsync
 #
-# == Parameters
+# === Parameters
+#
+# [*local_net_ip*]
+#   (required) ip address that the swift servers should bind to.
+#
+# [*max_connections*]
+#   (optional) maximum connections to rsync server
+#   Defaults to 5
 #
 # == Dependencies
 #

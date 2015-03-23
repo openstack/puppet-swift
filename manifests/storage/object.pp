@@ -35,18 +35,18 @@ class swift::storage::object(
   }
 
   service { 'swift-object-updater':
-    ensure    => $service_ensure,
-    name      => $::swift::params::object_updater_service_name,
-    enable    => $enabled,
-    provider  => $::swift::params::service_provider,
-    require   => Package['swift-object'],
+    ensure   => $service_ensure,
+    name     => $::swift::params::object_updater_service_name,
+    enable   => $enabled,
+    provider => $::swift::params::service_provider,
+    require  => Package['swift-object'],
   }
 
   service { 'swift-object-auditor':
-    ensure    => $service_ensure,
-    name      => $::swift::params::object_auditor_service_name,
-    enable    => $enabled,
-    provider  => $::swift::params::service_provider,
-    require   => Package['swift-object'],
+    ensure   => $service_ensure,
+    name     => $::swift::params::object_auditor_service_name,
+    enable   => $enabled,
+    provider => $::swift::params::service_provider,
+    require  => Package['swift-object'],
   }
 }

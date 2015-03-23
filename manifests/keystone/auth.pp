@@ -5,8 +5,9 @@
 #
 # The user is given the admin role in the services tenant.
 #
-# === Parameters
-# [*auth_user*]
+# === Parameters:
+#
+# [*auth_name*]
 #  String. The name of the user.
 #  Optional. Defaults to 'swift'.
 #
@@ -14,8 +15,64 @@
 #  String. The user's password.
 #  Optional. Defaults to 'swift_password'.
 #
+# [*port*]
+#   (Optional) Port for endpoint.
+#   Defaults to '8080'.
+#
+# [*public_port*]
+#   (Optional) Port for endpoint.
+#   Defaults to '8080'.
+#
+# [*tenant*]
+#   (Optional) The tenant to use for the swift service user
+#   Defaults to 'services'
+#
+# [*email*]
+#   (Optional) The email address for the swift service user
+#   Defaults to 'swift@localhost'
+#
+# [*region*]
+#   (Optional) The region in which to place the endpoints
+#   Defaults to 'RegionOne'
+#
 # [*operator_roles*]
-#  Array of strings. List of roles Swift considers as admin.
+#  (Optional) Array of strings. List of roles Swift considers as admin.
+#  Defaults to '['admin', 'SwiftOperator']'
+#
+# [*public_protocol*]
+#   (Optional) Protocol to use for the public endpoint. Can be http or https.
+#   Defaults to 'http'
+#
+# [*public_address*]
+#   (Optional) Public address for endpoint.
+#   Defaults to '127.0.0.1'.
+#
+# [*admin_protocol*]
+#   (Optional) Protocol for admin endpoints.
+#   Defaults to 'http'.
+#
+# [*admin_address*]
+#   (Optional) Admin address for endpoint.
+#   Defaults to '127.0.0.1'.
+#
+# [*internal_protocol*]
+#   Protocol for internal endpoints. Defaults to 'http'.
+#
+# [*internal_address*]
+#   (Optional) Internal address for endpoint.
+#   Defaults to '127.0.0.1'.
+#
+# [*configure_endpoint*]
+#   (optional) Whether to create the endpoint.
+#   Defaults to true
+#
+# [*configure_s3_endpoint*]
+#   (optional) Whether to create the S3 endpoint.
+#   Defaults to true
+#
+# [*endpoint_prefix*]
+#   (optional) The prefix endpoint, used for endpoint URL.
+#   Defaults to 'AUTH'
 #
 # [*service_name*]
 #   (optional) Name of the service.
@@ -86,7 +143,7 @@ class swift::keystone::auth(
     internal_url        => "${internal_protocol}://${real_internal_address}:${port}/v1/${endpoint_prefix}_%(tenant_id)s",
   }
 
-  keystone::resource::service_identity { "swift_s3":
+  keystone::resource::service_identity { 'swift_s3':
     configure_user      => false,
     configure_user_role => false,
     configure_endpoint  => $configure_s3_endpoint,
@@ -106,6 +163,6 @@ class swift::keystone::auth(
   }
 
   # Backward compatibility
-  Keystone_user["$auth_name"] -> Keystone_user_role["${auth_name}@${tenant}"]
+  Keystone_user[$auth_name] -> Keystone_user_role["${auth_name}@${tenant}"]
 
 }

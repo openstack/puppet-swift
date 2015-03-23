@@ -35,18 +35,18 @@ class swift::storage::account(
   }
 
   service { 'swift-account-reaper':
-    ensure    => $service_ensure,
-    name      => $::swift::params::account_reaper_service_name,
-    enable    => $enabled,
-    provider  => $::swift::params::service_provider,
-    require   => Package['swift-account'],
+    ensure   => $service_ensure,
+    name     => $::swift::params::account_reaper_service_name,
+    enable   => $enabled,
+    provider => $::swift::params::service_provider,
+    require  => Package['swift-account'],
   }
 
   service { 'swift-account-auditor':
-    ensure    => $service_ensure,
-    name      => $::swift::params::account_auditor_service_name,
-    enable    => $enabled,
-    provider  => $::swift::params::service_provider,
-    require   => Package['swift-account'],
+    ensure   => $service_ensure,
+    name     => $::swift::params::account_auditor_service_name,
+    enable   => $enabled,
+    provider => $::swift::params::service_provider,
+    require  => Package['swift-account'],
   }
 }
