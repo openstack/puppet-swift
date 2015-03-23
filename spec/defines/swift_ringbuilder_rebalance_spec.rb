@@ -6,7 +6,7 @@ describe 'swift::ringbuilder::rebalance' do
         let :title do
           type
         end
-        it { should contain_exec("rebalance_#{type}").with(
+        it { is_expected.to contain_exec("rebalance_#{type}").with(
           {:command     => "swift-ring-builder /etc/swift/#{type}.builder rebalance",
            :path        => '/usr/bin',
            :refreshonly => true}
@@ -21,7 +21,7 @@ describe 'swift::ringbuilder::rebalance' do
     let :title do
       'object'
     end
-    it { should contain_exec("rebalance_object").with(
+    it { is_expected.to contain_exec("rebalance_object").with(
       {:command     => "swift-ring-builder /etc/swift/object.builder rebalance 999",
        :path        => '/usr/bin',
        :refreshonly => true}
@@ -35,7 +35,7 @@ describe 'swift::ringbuilder::rebalance' do
       { :seed => 'invalid' }
     end
     it 'should raise an error' do
-      expect { subject }.to raise_error(Puppet::Error)
+      expect { catalogue }.to raise_error(Puppet::Error)
     end
   end
   describe 'with an invalid title' do
@@ -43,7 +43,7 @@ describe 'swift::ringbuilder::rebalance' do
       'invalid'
     end
     it 'should raise an error' do
-      expect { subject }.to raise_error(Puppet::Error)
+      expect { catalogue }.to raise_error(Puppet::Error)
     end
   end
 

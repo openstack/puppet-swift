@@ -17,7 +17,7 @@ describe 'swift::proxy::gatekeeper' do
 
   describe "when using default parameters" do
     it 'should build the fragment with correct parameters' do
-      verify_contents(subject, fragment_file,
+      verify_contents(catalogue, fragment_file,
         [
           '[filter:gatekeeper]',
           'use = egg:swift#gatekeeper',
@@ -40,7 +40,7 @@ describe 'swift::proxy::gatekeeper' do
       }
     end
     it 'should build the fragment with correct parameters' do
-      verify_contents(subject, fragment_file,
+      verify_contents(catalogue, fragment_file,
         [
           '[filter:gatekeeper]',
           'use = egg:swift#gatekeeper',

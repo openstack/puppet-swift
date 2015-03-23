@@ -34,9 +34,7 @@ describe 'swift::storage::server' do
     let :title do
       'foo'
     end
-    it 'should fail' do
-      expect { subject }.to raise_error(Puppet::Error, /does not match/)
-    end
+    it_raises 'a Puppet::Error', /does not match/
   end
 
   ['account', 'object', 'container'].each do |t|
@@ -54,8 +52,8 @@ describe 'swift::storage::server' do
         req_params
       end
 
-      it { should contain_package("swift-#{t}").with_ensure('present') }
-      it { should contain_service("swift-#{t}").with(
+      it { is_expected.to contain_package("swift-#{t}").with_ensure('present') }
+      it { is_expected.to contain_service("swift-#{t}").with(
         :ensure    => 'running',
         :enable    => true,
         :hasstatus => true
@@ -74,7 +72,7 @@ describe 'swift::storage::server' do
         }.each do |k,v|
           describe "when #{k} is set" do
             let :params do req_params.merge({k => v}) end
-            it { should contain_file(fragment_file) \
+            it { is_expected.to contain_file(fragment_file) \
               .with_content(
                 /^#{k.to_s}\s*=\s*#{v.is_a?(Array) ? v.join(' ') : v}\s*$/
               )
@@ -83,35 +81,33 @@ describe 'swift::storage::server' do
         end
         describe "when pipeline is passed an array" do
           let :params do req_params.merge({:pipeline => ['healthcheck','recon','test']})  end
-          it { should contain_concat__fragment("swift-#{t}-#{title}").with(
+          it { is_expected.to contain_concat__fragment("swift-#{t}-#{title}").with(
             :content => /^pipeline\s*=\s*healthcheck recon test\s*$/,
             :before => ["Swift::Storage::Filter::Healthcheck[#{t}]", "Swift::Storage::Filter::Recon[#{t}]", "Swift::Storage::Filter::Test[#{t}]"]
           )}
         end
         describe "when pipeline is not passed an array" do
           let :params do req_params.merge({:pipeline => 'not an array'}) end
-          it "should fail" do
-            expect { subject }.to raise_error(Puppet::Error, /is not an Array/)
-          end
+          it_raises 'a Puppet::Error', /is not an Array/
         end
 
         describe "when replicator_concurrency is set" do
           let :params do req_params.merge({:replicator_concurrency => 42}) end
-          it { should contain_file(fragment_file) \
+          it { is_expected.to contain_file(fragment_file) \
             .with_content(/\[#{t}-replicator\]\nconcurrency\s*=\s*42\s*$/m)
           }
         end
         if t != 'account'
           describe "when updater_concurrency is set" do
             let :params do req_params.merge({:updater_concurrency => 73}) end
-            it { should contain_file(fragment_file) \
+            it { is_expected.to contain_file(fragment_file) \
               .with_content(/\[#{t}-updater\]\nconcurrency\s*=\s*73\s*$/m)
             }
           end
         else
           describe "when reaper_concurrency is set" do
             let :params do req_params.merge({:reaper_concurrency => 4682}) end
-            it { should contain_file(fragment_file) \
+            it { is_expected.to contain_file(fragment_file) \
               .with_content(/\[#{t}-reaper\]\nconcurrency\s*=\s*4682\s*$/m)
             }
           end
@@ -119,7 +115,7 @@ describe 'swift::storage::server' do
         if t == 'container'
           describe "when allow_versioning is set" do
            let :params do req_params.merge({ :allow_versions => false, }) end
-            it { should contain_file(fragment_file).with_content(/\[app:container-server\]\nallow_versions\s*=\s*false\s*$/m)}
+            it { is_expected.to contain_file(fragment_file).with_content(/\[app:container-server\]\nallow_versions\s*=\s*false\s*$/m)}
           end
         end
       end
@@ -129,7 +125,7 @@ describe 'swift::storage::server' do
           req_params
         end
 
-        it { should contain_rsync__server__module("#{t}").with(
+        it { is_expected.to contain_rsync__server__module("#{t}").with(
           :path            => '/srv/node',
           :lock_file       => "/var/lock/#{t}.lock",
           :uid             => 'swift',
@@ -141,42 +137,18 @@ describe 'swift::storage::server' do
         )}
 
         # verify template lines
-        it { should contain_file(fragment_file) \
-          .with_content(/^devices\s*=\s*\/srv\/node\s*$/)
-        }
-        it { should contain_file(fragment_file) \
-          .with_content(/^bind_ip\s*=\s*10\.0\.0\.1\s*$/)
-        }
-        it { should contain_file(fragment_file) \
-          .with_content(/^bind_port\s*=\s*#{title}\s*$/)
-        }
-        it { should contain_file(fragment_file) \
-          .with_content(/^mount_check\s*=\s*false\s*$/)
-        }
-        it { should contain_file(fragment_file) \
-          .with_content(/^user\s*=\s*swift\s*$/)
-        }
-        it { should contain_file(fragment_file) \
-          .with_content(/^set log_name\s*=\s*#{t}-server\s*$/)
-        }
-        it { should contain_file(fragment_file) \
-          .with_content(/^set log_facility\s*=\s*LOG_LOCAL2\s*$/)
-        }
-        it { should contain_file(fragment_file) \
-          .with_content(/^set log_level\s*=\s*INFO\s*$/)
-        }
-        it { should contain_file(fragment_file) \
-          .with_content(/^set log_address\s*=\s*\/dev\/log\s*$/)
-        }
-        it { should contain_file(fragment_file) \
-          .with_content(/^workers\s*=\s*1\s*$/)
-        }
-        it { should contain_file(fragment_file) \
-          .with_content(/^concurrency\s*=\s*1\s*$/)
-        }
-        it { should contain_file(fragment_file) \
-          .with_content(/^pipeline\s*=\s*#{t}-server\s*$/)
-        }
+        it { is_expected.to contain_file(fragment_file).with_content(/^devices\s*=\s*\/srv\/node\s*$/) }
+        it { is_expected.to contain_file(fragment_file).with_content(/^bind_ip\s*=\s*10\.0\.0\.1\s*$/) }
+        it { is_expected.to contain_file(fragment_file).with_content(/^bind_port\s*=\s*#{title}\s*$/) }
+        it { is_expected.to contain_file(fragment_file).with_content(/^mount_check\s*=\s*false\s*$/) }
+        it { is_expected.to contain_file(fragment_file).with_content(/^user\s*=\s*swift\s*$/) }
+        it { is_expected.to contain_file(fragment_file).with_content(/^set log_name\s*=\s*#{t}-server\s*$/) }
+        it { is_expected.to contain_file(fragment_file).with_content(/^set log_facility\s*=\s*LOG_LOCAL2\s*$/) }
+        it { is_expected.to contain_file(fragment_file).with_content(/^set log_level\s*=\s*INFO\s*$/) }
+        it { is_expected.to contain_file(fragment_file).with_content(/^set log_address\s*=\s*\/dev\/log\s*$/) }
+        it { is_expected.to contain_file(fragment_file).with_content(/^workers\s*=\s*1\s*$/) }
+        it { is_expected.to contain_file(fragment_file).with_content(/^concurrency\s*=\s*1\s*$/) }
+        it { is_expected.to contain_file(fragment_file).with_content(/^pipeline\s*=\s*#{t}-server\s*$/) }
       end
     end
   end

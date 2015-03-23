@@ -17,7 +17,7 @@ describe 'swift::proxy::ratelimit' do
 
   describe "when using default parameters" do
     it 'should build the fragment with correct parameters' do
-      verify_contents(subject, fragment_file,
+      verify_contents(catalogue, fragment_file,
         [
           '[filter:ratelimit]',
           'use = egg:swift#ratelimit',
@@ -42,7 +42,7 @@ describe 'swift::proxy::ratelimit' do
       }
     end
     it 'should build the fragment with correct parameters' do
-      verify_contents(subject, fragment_file,
+      verify_contents(catalogue, fragment_file,
         [
           '[filter:ratelimit]',
           'use = egg:swift#ratelimit',

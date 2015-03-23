@@ -35,7 +35,7 @@ describe 'swift::proxy::account_quotas' do
     "/var/lib/puppet/concat/_etc_swift_proxy-server.conf/fragments/80_swift_account_quotas"
   end
 
-  it { should contain_file(fragment_file).with_content(/\[filter:account_quotas\]/) }
-  it { should contain_file(fragment_file).with_content(/use = egg:swift#account_quotas/) }
+  it { is_expected.to contain_file(fragment_file).with_content(/\[filter:account_quotas\]/) }
+  it { is_expected.to contain_file(fragment_file).with_content(/use = egg:swift#account_quotas/) }
 
 end

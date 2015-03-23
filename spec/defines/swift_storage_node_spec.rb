@@ -26,9 +26,9 @@ describe 'swift::storage::node' do
   end
 
   it {
-    should contain_ring_object_device("127.0.0.1:6010/1")
-    should contain_ring_container_device("127.0.0.1:6011/1")
-    should contain_ring_account_device("127.0.0.1:6012/1")
+    is_expected.to contain_ring_object_device("127.0.0.1:6010/1")
+    is_expected.to contain_ring_container_device("127.0.0.1:6011/1")
+    is_expected.to contain_ring_account_device("127.0.0.1:6012/1")
   }
 
   context 'when zone is not a number' do
@@ -38,10 +38,6 @@ describe 'swift::storage::node' do
        :mnt_base_dir => '/srv/node' }
      end
 
-    it 'should raise an error' do
-      expect {
-        subject
-      }.to raise_error(Puppet::Error, /The zone parameter must be an integer/)
-    end
+    it_raises 'a Puppet::Error', /The zone parameter must be an integer/
   end
 end

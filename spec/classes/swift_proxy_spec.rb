@@ -4,7 +4,7 @@ describe 'swift::proxy' do
 
   describe 'without memcached being included' do
     it 'should raise an error' do
-      expect { subject }.to raise_error(Puppet::Error)
+      expect { catalogue }.to raise_error(Puppet::Error)
     end
   end
 
@@ -28,9 +28,7 @@ describe 'swift::proxy' do
     end
 
     describe 'without the proxy local network ip address being specified' do
-      it "should fail" do
-        expect { subject }.to raise_error(Puppet::Error, /Must pass proxy_local_net_ip/)
-      end
+      it_raises 'a Puppet::Error', /Must pass proxy_local_net_ip/
     end
 
     describe 'when proxy_local_net_ip is set' do
@@ -39,7 +37,7 @@ describe 'swift::proxy' do
         {:proxy_local_net_ip => '127.0.0.1'}
       end
 
-      it { should contain_service('swift-proxy').with(
+      it { is_expected.to contain_service('swift-proxy').with(
         {:ensure    => 'running',
          :provider  => 'upstart',
          :enable    => true,
@@ -47,7 +45,7 @@ describe 'swift::proxy' do
          :subscribe => 'Concat[/etc/swift/proxy-server.conf]'
         }
       )}
-      it { should contain_file('/etc/swift/proxy-server.conf').with(
+      it { is_expected.to contain_file('/etc/swift/proxy-server.conf').with(
         {:ensure  => 'present',
          :owner   => 'swift',
          :group   => 'swift',
@@ -56,7 +54,7 @@ describe 'swift::proxy' do
       )}
 
       it 'should build the header file with all of the default contents' do
-        verify_contents(subject, fragment_path,
+        verify_contents(catalogue, fragment_path,
           [
             '[DEFAULT]',
             'bind_port = 8080',
@@ -80,7 +78,7 @@ describe 'swift::proxy' do
           ]
         )
       end
-      it { should contain_concat__fragment('swift_proxy').with_before(
+      it { is_expected.to contain_concat__fragment('swift_proxy').with_before(
         [
           'Class[Swift::Proxy::Healthcheck]',
           'Class[Swift::Proxy::Cache]',
@@ -105,7 +103,7 @@ describe 'swift::proxy' do
           }
         end
         it 'should build the header file with provided values' do
-          verify_contents(subject, fragment_path,
+          verify_contents(catalogue, fragment_path,
             [
               '[DEFAULT]',
               'bind_port = 80',
@@ -125,7 +123,7 @@ describe 'swift::proxy' do
             ]
           )
         end
-        it { should contain_concat__fragment('swift_proxy').with_before(
+        it { is_expected.to contain_concat__fragment('swift_proxy').with_before(
           'Class[Swift::Proxy::Swauth]'
         )}
       end
@@ -134,7 +132,7 @@ describe 'swift::proxy' do
         [:account_autocreate, :allow_account_management].each do |param|
           it "should fail when #{param} is not passed a boolean" do
             params[param] = 'false'
-            expect { subject }.to raise_error(Puppet::Error, /is not a boolean/)
+            expect { catalogue }.to raise_error(Puppet::Error, /is not a boolean/)
           end
         end
 
@@ -146,7 +144,7 @@ describe 'swift::proxy' do
         end
 
         it "should fail if write_affinity_node_count is used without write_affinity" do
-          expect { subject }.to raise_error(Puppet::Error, /write_affinity_node_count requires write_affinity/)
+          expect { catalogue }.to raise_error(Puppet::Error, /write_affinity_node_count requires write_affinity/)
         end
       end
     end
@@ -159,13 +157,13 @@ describe 'swift::proxy' do
 
     [{ :enabled => true, :manage_service => true },
      { :enabled => false, :manage_service => true }].each do |param_hash|
-      context "when service should be #{param_hash[:enabled] ? 'enabled' : 'disabled'}" do
+      context "when service is_expected.to be #{param_hash[:enabled] ? 'enabled' : 'disabled'}" do
         before do
           params.merge!(param_hash)
         end
 
         it 'configures swift-proxy service' do
-          should contain_service('swift-proxy').with(
+          is_expected.to contain_service('swift-proxy').with(
             :ensure    => (param_hash[:manage_service] && param_hash[:enabled]) ? 'running' : 'stopped',
             :name      => platform_params[:service_name],
             :provider  => platform_params[:service_provider],
@@ -185,7 +183,7 @@ describe 'swift::proxy' do
       end
 
       it 'configures swift-proxy service' do
-        should contain_service('swift-proxy').with(
+        is_expected.to contain_service('swift-proxy').with(
           :ensure    => nil,
           :name      => platform_params[:service_name],
           :provider  => platform_params[:service_provider],

@@ -20,7 +20,7 @@ describe 'swift::storage::filter::recon' do
 
   describe 'when passing default parameters' do
     it 'should build the fragment with correct content' do
-      verify_contents(subject, fragment_file,
+      verify_contents(catalogue, fragment_file,
         [
           '[filter:recon]',
           'use = egg:swift#recon',
@@ -37,7 +37,7 @@ describe 'swift::storage::filter::recon' do
       }
     end
     it 'should build the fragment with correct content' do
-      verify_contents(subject, fragment_file,
+      verify_contents(catalogue, fragment_file,
         [
           '[filter:recon]',
           'use = egg:swift#recon',
