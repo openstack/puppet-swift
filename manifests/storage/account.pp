@@ -24,7 +24,7 @@ class swift::storage::account(
     package_ensure => $package_ensure,
   }
 
-  include swift::params
+  include ::swift::params
 
   if $manage_service {
     if $enabled {

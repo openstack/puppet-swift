@@ -60,7 +60,7 @@ class swift::storage::all(
   $log_facility       = 'LOG_LOCAL2'
 ) {
 
-  class { 'swift::storage':
+  class { '::swift::storage':
     storage_local_net_ip => $storage_local_net_ip,
   }
 

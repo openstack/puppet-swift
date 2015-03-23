@@ -33,7 +33,7 @@ class swift::ringserver(
   Class['ringbuilder'] -> Class['swift::ringserver']
 
   if !defined(Class['rsync::server']) {
-    class { 'rsync::server':
+    class { '::rsync::server':
       use_xinetd => true,
       address    => $local_net_ip,
       use_chroot => 'no',

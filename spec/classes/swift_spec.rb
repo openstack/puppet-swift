@@ -47,8 +47,8 @@ describe 'swift' do
       {:ensure => 'directory'}.merge(file_defaults)
     )}
     it {is_expected.to contain_file('/etc/swift/swift.conf').with(
-      {:ensure  => 'present',
-       :mode    => '0660',
+      { :ensure => 'file',
+        :mode   => '0660'
       }.merge(file_defaults)
     )}
     it 'configures swift.conf' do

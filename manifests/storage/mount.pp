@@ -35,7 +35,7 @@ define swift::storage::mount(
     device  => $device,
     fstype  => $fstype,
     options => "${options},${fsoptions}",
-    require => File["${mnt_base_dir}/${name}"]
+    require => File["${mnt_base_dir}/${name}"],
   }
 
   # double checks to make sure that things are mounted

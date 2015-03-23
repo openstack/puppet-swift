@@ -30,8 +30,8 @@ class swift(
   $client_package_ensure = 'present',
 ) {
 
-  include swift::params
-  include ssh::server
+  include ::swift::params
+  include ::ssh::server
 
   Class['ssh::server::install'] -> Class['swift']
 
@@ -42,7 +42,7 @@ class swift(
     }
   }
 
-  class { 'swift::client':
+  class { '::swift::client':
     ensure => $client_package_ensure;
   }
 
@@ -68,11 +68,11 @@ class swift(
   }
 
   file { '/etc/swift/swift.conf':
-    ensure => present,
+    ensure => file,
     mode   => '0660',
   }
 
   swift_config { 'swift-hash/swift_hash_path_suffix':
-    value => $swift_hash_suffix
+    value => $swift_hash_suffix,
   }
 }

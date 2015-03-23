@@ -12,7 +12,7 @@ class swift::client (
   $ensure = 'present'
 ) {
 
-  include swift::params
+  include ::swift::params
 
   package { 'swiftclient':
     ensure => $ensure,

@@ -60,8 +60,8 @@ define swift::storage::server(
     warning("swift storage server ${type} must specify ${type}-server")
   }
 
-  include "swift::storage::${type}"
-  include concat::setup
+  include "::swift::storage::${type}"
+  include ::concat::setup
 
   validate_re($name, '^\d+$')
   validate_re($type, '^object|container|account$')

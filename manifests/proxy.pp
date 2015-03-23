@@ -127,8 +127,8 @@ class swift::proxy(
   $package_ensure            = 'present'
 ) {
 
-  include swift::params
-  include concat::setup
+  include ::swift::params
+  include ::concat::setup
 
   validate_bool($account_autocreate)
   validate_bool($allow_account_management)
