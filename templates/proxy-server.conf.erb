@@ -41,3 +41,6 @@ write_affinity = <%= @write_affinity -%>
 <% if @write_affinity_node_count -%>
 write_affinity_node_count = <%= @write_affinity_node_count -%>
 <% end %>
+<% if @node_timeout -%>
+node_timeout = <%= @node_timeout -%>
+<% end %>

@@ -50,6 +50,10 @@
 #    Optional but requires write_affinity to be set.
 #    Defaults to undef.
 #
+#  [*node_timeout*]
+#    (optional) Configures node_timeout for swift proxy-server
+#    Defaults to undef.
+#
 #  [*enabled*]
 #    (optional) Should the service be enabled.
 #    Defaults to true
@@ -89,6 +93,7 @@ class swift::proxy(
   $read_affinity             = undef,
   $write_affinity            = undef,
   $write_affinity_node_count = undef,
+  $node_timeout              = undef,
   $manage_service            = true,
   $enabled                   = true,
   $package_ensure            = 'present'
