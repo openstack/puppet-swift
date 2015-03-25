@@ -102,6 +102,7 @@ describe 'swift::proxy' do
            :read_affinity             => 'r1z1=100, r1=200',
            :write_affinity            => 'r1',
            :write_affinity_node_count => '2 * replicas',
+           :node_timeout              => '20',
           }
         end
         it 'should build the header file with provided values' do
@@ -121,7 +122,8 @@ describe 'swift::proxy' do
               'account_autocreate = false',
               'read_affinity = r1z1=100, r1=200',
               'write_affinity = r1',
-              'write_affinity_node_count = 2 * replicas'
+              'write_affinity_node_count = 2 * replicas',
+              'node_timeout = 20'
             ]
           )
         end
