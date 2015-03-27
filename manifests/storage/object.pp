@@ -21,10 +21,10 @@ class swift::storage::object(
   swift::storage::generic { 'object':
     manage_service => $manage_service,
     enabled        => $enabled,
-    package_ensure => $package_ensure
+    package_ensure => $package_ensure,
   }
 
-  include swift::params
+  include ::swift::params
 
   if $manage_service {
     if $enabled {

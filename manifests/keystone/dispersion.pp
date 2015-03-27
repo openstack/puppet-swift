@@ -46,6 +46,6 @@ class swift::keystone::dispersion(
   keystone_user_role { "${auth_user}@${tenant}":
     ensure  => present,
     roles   => 'admin',
-    require => Keystone_user[$auth_user]
+    require => Keystone_user[$auth_user],
   }
 }

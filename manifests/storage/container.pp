@@ -26,10 +26,10 @@ class swift::storage::container(
   swift::storage::generic { 'container':
     manage_service => $manage_service,
     enabled        => $enabled,
-    package_ensure => $package_ensure
+    package_ensure => $package_ensure,
   }
 
-  include swift::params
+  include ::swift::params
 
   if $manage_service {
     if $enabled {
@@ -69,7 +69,7 @@ class swift::storage::container(
       ensure   => $service_ensure,
       enable   => $enabled,
       provider => $::swift::params::service_provider,
-      require  => File['/etc/init/swift-container-sync.conf', '/etc/init.d/swift-container-sync']
+      require  => File['/etc/init/swift-container-sync.conf', '/etc/init.d/swift-container-sync'],
     }
   }
 }

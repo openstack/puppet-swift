@@ -29,7 +29,7 @@ describe 'swift::dispersion' do
   end
 
   it { is_expected.to contain_file('/etc/swift/dispersion.conf').with(
-    :ensure  => 'present',
+    :ensure  => 'file',
     :owner   => 'swift',
     :group   => 'swift',
     :mode    => '0660',

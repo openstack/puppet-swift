@@ -34,7 +34,7 @@ class swift::proxy::ceilometer(
   }
 
   file { '/var/log/ceilometer/swift-proxy-server.log':
-    ensure => present,
+    ensure => file,
     mode   => '0664',
     owner  => 'swift',
     group  => 'swift',
@@ -44,7 +44,7 @@ class swift::proxy::ceilometer(
     target  => '/etc/swift/proxy-server.conf',
     content => template('swift/proxy/ceilometer.conf.erb'),
     order   => '33',
-    require => Class['::ceilometer']
+    require => Class['::ceilometer'],
   }
 
 }

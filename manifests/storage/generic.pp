@@ -35,7 +35,7 @@ define swift::storage::generic(
   $service_provider = $::swift::params::service_provider
 ) {
 
-  include swift::params
+  include ::swift::params
 
   Class['swift::storage'] -> Swift::Storage::Generic[$name]
 

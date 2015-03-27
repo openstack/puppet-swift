@@ -26,7 +26,7 @@ class swift::auth_file (
 ) {
 
   file { '/root/swiftrc':
-    ensure  => present,
+    ensure  => file,
     owner   => 'root',
     group   => 'root',
     mode    => '0600',
@@ -35,6 +35,6 @@ class swift::auth_file (
   export ST_USER=${admin_tenant}:${admin_user}
   export ST_KEY=${admin_password}
   export ST_AUTH=${auth_url}
-  "
+  ",
   }
 }

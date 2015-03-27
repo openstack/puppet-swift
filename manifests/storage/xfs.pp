@@ -22,7 +22,7 @@ define swift::storage::xfs(
   $loopback     = false
 ) {
 
-  include swift::xfs
+  include ::swift::xfs
 
   if $device == '' {
     $target_device = "/dev/${name}"
