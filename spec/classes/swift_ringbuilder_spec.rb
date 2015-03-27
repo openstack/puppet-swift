@@ -10,7 +10,7 @@ describe 'swift::ringbuilder' do
   end
   describe 'when swift class is not included' do
     it 'should fail' do
-      expect { subject }.to raise_error(Puppet::Error)
+      expect { catalogue }.to raise_error(Puppet::Error)
     end
   end
   describe 'when swift class is included' do
@@ -21,14 +21,14 @@ describe 'swift::ringbuilder' do
     end
 
     it 'should rebalance the ring for all ring types' do
-      should contain_swift__ringbuilder__rebalance('object')
-      should contain_swift__ringbuilder__rebalance('account')
-      should contain_swift__ringbuilder__rebalance('container')
+      is_expected.to contain_swift__ringbuilder__rebalance('object')
+      is_expected.to contain_swift__ringbuilder__rebalance('account')
+      is_expected.to contain_swift__ringbuilder__rebalance('container')
     end
 
     describe 'with default parameters' do
       ['object', 'account', 'container'].each do |type|
-        it { should contain_swift__ringbuilder__create(type).with(
+        it { is_expected.to contain_swift__ringbuilder__create(type).with(
           :part_power     => '18',
           :replicas       => '3',
           :min_part_hours => '24'
@@ -46,7 +46,7 @@ describe 'swift::ringbuilder' do
       end
 
       ['object', 'account', 'container'].each do |type|
-        it { should contain_swift__ringbuilder__create(type).with(
+        it { is_expected.to contain_swift__ringbuilder__create(type).with(
           :part_power     => '19',
           :replicas       => '3',
           :min_part_hours => '2'
@@ -75,22 +75,22 @@ describe 'swift::ringbuilder' do
       end
 
       it 'should set up all of the correct dependencies' do
-        should contain_swift__ringbuilder__create('object').with(
+        is_expected.to contain_swift__ringbuilder__create('object').with(
           {:before => 'Ring_object_device[127.0.0.1:6000/1]'}
         )
-        should contain_swift__ringbuilder__create('container').with(
+        is_expected.to contain_swift__ringbuilder__create('container').with(
         {:before => 'Ring_container_device[127.0.0.1:6001/1]'}
         )
-        should contain_swift__ringbuilder__create('account').with(
+        is_expected.to contain_swift__ringbuilder__create('account').with(
         {:before => 'Ring_account_device[127.0.0.1:6002/1]'}
         )
-        should contain_ring_object_device('127.0.0.1:6000/1').with(
+        is_expected.to contain_ring_object_device('127.0.0.1:6000/1').with(
         {:notify => 'Swift::Ringbuilder::Rebalance[object]'}
         )
-        should contain_ring_container_device('127.0.0.1:6001/1').with(
+        is_expected.to contain_ring_container_device('127.0.0.1:6001/1').with(
         {:notify => 'Swift::Ringbuilder::Rebalance[container]'}
         )
-        should contain_ring_account_device('127.0.0.1:6002/1').with(
+        is_expected.to contain_ring_account_device('127.0.0.1:6002/1').with(
         {:notify => 'Swift::Ringbuilder::Rebalance[account]'}
         )
       end

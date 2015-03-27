@@ -21,7 +21,7 @@ describe 'swift::proxy::authtoken' do
         :group   => 'swift',
       }
     end
-    it {should contain_file('/var/cache/swift').with(
+    it {is_expected.to contain_file('/var/cache/swift').with(
       {:ensure => 'directory'}.merge(file_defaults)
     )}
   end
@@ -32,7 +32,7 @@ describe 'swift::proxy::authtoken' do
 
   describe "when using default parameters" do
     it 'should build the fragment with correct parameters' do
-      verify_contents(subject, fragment_file,
+      verify_contents(catalogue, fragment_file,
         [
           '[filter:authtoken]',
           'log_name = swift',
@@ -61,7 +61,7 @@ describe 'swift::proxy::authtoken' do
     end
 
     it 'should build the fragment with correct parameters' do
-      verify_contents(subject, fragment_file,
+      verify_contents(catalogue, fragment_file,
         [
           '[filter:authtoken]',
           'log_name = swift',
@@ -97,7 +97,7 @@ describe 'swift::proxy::authtoken' do
     end
 
     it 'should build the fragment with correct parameters' do
-      verify_contents(subject, fragment_file,
+      verify_contents(catalogue, fragment_file,
         [
           '[filter:authtoken]',
           'log_name = swift',
@@ -124,7 +124,7 @@ describe 'swift::proxy::authtoken' do
       { :auth_uri => 'http://public.host/keystone/main' }
     end
 
-    it { should contain_file(fragment_file).with_content(/auth_uri = http:\/\/public.host\/keystone\/main/)}
+    it { is_expected.to contain_file(fragment_file).with_content(/auth_uri = http:\/\/public.host\/keystone\/main/)}
   end
 
   [
@@ -140,7 +140,7 @@ describe 'swift::proxy::authtoken' do
         { :auth_admin_prefix => auth_admin_prefix }
       end
 
-      it { expect { should contain_file(fragment_file).with_content(/auth_admin_prefix = #{auth_admin_prefix}/) }.to \
+      it { expect { is_expected.to contain_file(fragment_file).with_content(/auth_admin_prefix = #{auth_admin_prefix}/) }.to \
         raise_error(Puppet::Error, /validate_re\(\): "#{auth_admin_prefix}" does not match/) }
     end
   end
@@ -153,7 +153,7 @@ describe 'swift::proxy::authtoken' do
     end
 
     it 'should build the fragment with correct parameters' do
-      verify_contents(subject, fragment_file,
+      verify_contents(catalogue, fragment_file,
         [
           '[filter:authtoken]',
           'log_name = swift',
@@ -183,7 +183,7 @@ describe 'swift::proxy::authtoken' do
     end
 
     it 'should build the fragment with correct parameters' do
-      verify_contents(subject, fragment_file,
+      verify_contents(catalogue, fragment_file,
         [
           '[filter:authtoken]',
           'log_name = swift',

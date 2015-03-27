@@ -24,7 +24,7 @@ describe 'swift::storage' do
         }
       end
 
-      it { should contain_class('rsync::server').with(
+      it { is_expected.to contain_class('rsync::server').with(
         {:use_xinetd => true,
          :address    => params[:storage_local_net_ip],
          :use_chroot => 'no'
@@ -32,14 +32,12 @@ describe 'swift::storage' do
       )}
     end
     describe 'when local net ip is not specified' do
-      it 'should fail' do
-        expect { subject }.to raise_error(Puppet::Error, /Must pass storage_local_net_ip/)
-      end
+      it_raises 'a Puppet::Error', /Must pass storage_local_net_ip/
     end
   end
   describe 'when the dependencies are not specified' do
     it 'should fail' do
-      expect { subject }.to raise_error(Puppet::Error)
+      expect { catalogue }.to raise_error(Puppet::Error)
     end
   end
 end

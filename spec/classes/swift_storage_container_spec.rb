@@ -22,21 +22,21 @@ describe 'swift::storage::container' do
           params.merge!(param_set)
         end
 
-        it { should contain_swift__storage__generic('container').with_package_ensure(params[:package_ensure]) }
+        it { is_expected.to contain_swift__storage__generic('container').with_package_ensure(params[:package_ensure]) }
       end
     end
 
 
     [{ :enabled => true, :manage_service => true },
      { :enabled => false, :manage_service => true }].each do |param_hash|
-      context "when service should be #{param_hash[:enabled] ? 'enabled' : 'disabled'}" do
+      context "when service is_expected.to be #{param_hash[:enabled] ? 'enabled' : 'disabled'}" do
         before do
           params.merge!(param_hash)
         end
 
         it 'configures services' do
           platform_params[:service_names].each do |service_alias, service_name|
-            should contain_service(service_alias).with(
+            is_expected.to contain_service(service_alias).with(
               :name    => service_name,
               :ensure  => (param_hash[:manage_service] && param_hash[:enabled]) ? 'running' : 'stopped',
               :enable  => param_hash[:enabled]
@@ -55,7 +55,7 @@ describe 'swift::storage::container' do
 
       it 'configures services' do
         platform_params[:service_names].each do |service_alias, service_name|
-          should contain_service(service_alias).with(
+          is_expected.to contain_service(service_alias).with(
             :ensure    => nil,
             :name      => service_name,
             :enable    => false
@@ -86,17 +86,17 @@ describe 'swift::storage::container' do
 
     context 'Ubuntu specific resources' do
       it 'configures sync' do
-        should contain_service('swift-container-sync').with(
+        is_expected.to contain_service('swift-container-sync').with(
           :ensure   => 'running',
           :enable   => true,
           :provider => 'upstart',
           :require  => ['File[/etc/init/swift-container-sync.conf]', 'File[/etc/init.d/swift-container-sync]']
         )
-        should contain_file('/etc/init/swift-container-sync.conf').with(
+        is_expected.to contain_file('/etc/init/swift-container-sync.conf').with(
           :source  => 'puppet:///modules/swift/swift-container-sync.conf.upstart',
           :require => 'Package[swift-container]'
         )
-        should contain_file('/etc/init.d/swift-container-sync').with(
+        is_expected.to contain_file('/etc/init.d/swift-container-sync').with(
           :ensure => 'link',
           :target => '/lib/init/upstart-job'
         )
@@ -138,7 +138,7 @@ describe 'swift::storage::container' do
       end
 
       it {
-        should contain_file(fragment_file).with_content(/^allowed_sync_hosts = 127.0.0.1,10.1.0.1,10.1.0.2$/)
+        is_expected.to contain_file(fragment_file).with_content(/^allowed_sync_hosts = 127.0.0.1,10.1.0.1,10.1.0.2$/)
       }
     end
   end

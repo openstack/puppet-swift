@@ -15,11 +15,11 @@ describe 'swift::proxy::s3token' do
     "/var/lib/puppet/concat/_etc_swift_proxy-server.conf/fragments/28_swift_s3token"
   end
 
-  it { should contain_class('keystone::python') }
+  it { is_expected.to contain_class('keystone::python') }
 
   describe "when using default parameters" do
     it 'should build the fragment with correct parameters' do
-      verify_contents(subject, fragment_file,
+      verify_contents(catalogue, fragment_file,
         [
           '[filter:s3token]',
           'paste.filter_factory = keystonemiddleware.s3_token:filter_factory',
@@ -40,7 +40,7 @@ describe 'swift::proxy::s3token' do
       }
     end
     it 'should build the fragment with correct parameters' do
-      verify_contents(subject, fragment_file,
+      verify_contents(catalogue, fragment_file,
         [
           '[filter:s3token]',
           'paste.filter_factory = keystonemiddleware.s3_token:filter_factory',

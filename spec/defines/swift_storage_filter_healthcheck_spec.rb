@@ -19,7 +19,7 @@ describe 'swift::storage::filter::healthcheck' do
   end
 
 it 'should build the fragment with correct content' do
-  verify_contents(subject, fragment_file,
+  verify_contents(catalogue, fragment_file,
     [
       '[filter:healthcheck]',
       'use = egg:swift#healthcheck'

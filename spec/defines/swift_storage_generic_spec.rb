@@ -28,9 +28,7 @@ describe 'swift::storage::generic' do
     let :title do
       'foo'
     end
-    it 'should fail' do
-      expect { subject }.to raise_error(Puppet::Error, /does not match/)
-    end
+    it_raises 'a Puppet::Error', /does not match/
   end
 
   ['account', 'object', 'container'].each do |t|
@@ -48,20 +46,20 @@ describe 'swift::storage::generic' do
         let :params do
           param_set
         end
-        it { should contain_package("swift-#{t}").with_ensure(param_hash[:package_ensure]) }
-        it { should contain_service("swift-#{t}").with(
+        it { is_expected.to contain_package("swift-#{t}").with_ensure(param_hash[:package_ensure]) }
+        it { is_expected.to contain_service("swift-#{t}").with(
           :ensure    => 'running',
           :enable    => true,
           :hasstatus => true,
           :provider  => param_hash[:service_provider]
         )}
-        it { should contain_service("swift-#{t}-replicator").with(
+        it { is_expected.to contain_service("swift-#{t}-replicator").with(
           :ensure    => 'running',
           :enable    => true,
           :hasstatus => true,
           :provider  => param_hash[:service_provider]
         )}
-        it { should contain_file("/etc/swift/#{t}-server/").with(
+        it { is_expected.to contain_file("/etc/swift/#{t}-server/").with(
           :ensure => 'directory',
           :owner  => 'swift',
           :group  => 'swift'

@@ -17,15 +17,15 @@ describe 'swift::proxy::keystone' do
     '
   end
 
-  it { should contain_file(fragment_file).with_content(/[filter:keystone]/) }
+  it { is_expected.to contain_file(fragment_file).with_content(/[filter:keystone]/) }
 
-  it { should contain_file(fragment_file).with_content(/use = egg:swift#keystoneauth/) }
+  it { is_expected.to contain_file(fragment_file).with_content(/use = egg:swift#keystoneauth/) }
 
   describe 'with defaults' do
 
-    it { should contain_file(fragment_file).with_content(/operator_roles = admin, SwiftOperator/) }
-    it { should contain_file(fragment_file).with_content(/is_admin = true/) }
-    it { should contain_file(fragment_file).with_content(/reseller_prefix = AUTH_/) }
+    it { is_expected.to contain_file(fragment_file).with_content(/operator_roles = admin, SwiftOperator/) }
+    it { is_expected.to contain_file(fragment_file).with_content(/is_admin = true/) }
+    it { is_expected.to contain_file(fragment_file).with_content(/reseller_prefix = AUTH_/) }
 
   end
 
@@ -38,9 +38,9 @@ describe 'swift::proxy::keystone' do
         :reseller_prefix => 'SWIFT_'
       }
 
-      it { should contain_file(fragment_file).with_content(/operator_roles = foo/) }
-      it { should contain_file(fragment_file).with_content(/is_admin = false/) }
-      it { should contain_file(fragment_file).with_content(/reseller_prefix = SWIFT_/) }
+      it { is_expected.to contain_file(fragment_file).with_content(/operator_roles = foo/) }
+      it { is_expected.to contain_file(fragment_file).with_content(/is_admin = false/) }
+      it { is_expected.to contain_file(fragment_file).with_content(/reseller_prefix = SWIFT_/) }
 
     end
 

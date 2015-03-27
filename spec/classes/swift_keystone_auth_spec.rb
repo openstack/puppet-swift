@@ -30,7 +30,7 @@ describe 'swift::keystone::auth' do
       it_configures 'keystone auth configuration'
 
       ['admin', 'SwiftOperator'].each do |role_name|
-        it { should contain_keystone_role(role_name).with_ensure('present') }
+        it { is_expected.to contain_keystone_role(role_name).with_ensure('present') }
       end
     end
 
@@ -58,7 +58,7 @@ describe 'swift::keystone::auth' do
       it_configures 'keystone auth configuration'
 
       ['admin', 'SwiftOperator', 'Gopher'].each do |role_name|
-        it { should contain_keystone_role(role_name).with_ensure('present') }
+        it { is_expected.to contain_keystone_role(role_name).with_ensure('present') }
       end
     end
 
@@ -67,7 +67,7 @@ describe 'swift::keystone::auth' do
         params.merge!(:configure_endpoint => false)
       end
 
-      it { should_not contain_keystone_endpoint('RegionOne/swift') }
+      it { is_expected.to_not contain_keystone_endpoint('RegionOne/swift') }
     end
 
     context 'when disabling S3 endpoint' do
@@ -75,8 +75,8 @@ describe 'swift::keystone::auth' do
         params.merge!(:configure_s3_endpoint => false)
       end
 
-      it { should_not contain_keystone_service('swift_s3') }
-      it { should_not contain_keystone_endpoint('RegionOne/swift_s3') }
+      it { is_expected.to_not contain_keystone_service('swift_s3') }
+      it { is_expected.to_not contain_keystone_endpoint('RegionOne/swift_s3') }
     end
   end
 
@@ -85,37 +85,37 @@ describe 'swift::keystone::auth' do
       default_params.merge( params )
     end
 
-    it { should contain_keystone_user(p[:auth_name]).with(
+    it { is_expected.to contain_keystone_user(p[:auth_name]).with(
       :ensure   => 'present',
       :password => p[:password],
       :email    => p[:email]
     )}
 
-    it { should contain_keystone_user_role("#{p[:auth_name]}@#{p[:tenant]}").with(
+    it { is_expected.to contain_keystone_user_role("#{p[:auth_name]}@#{p[:tenant]}").with(
       :ensure  => 'present',
       :roles   => 'admin',
     )}
 
-    it { should contain_keystone_service(p[:auth_name]).with(
+    it { is_expected.to contain_keystone_service(p[:auth_name]).with(
       :ensure      => 'present',
       :type        => 'object-store',
       :description => 'Openstack Object-Store Service'
     )}
 
-    it { should contain_keystone_endpoint("#{p[:region]}/#{p[:auth_name]}").with(
+    it { is_expected.to contain_keystone_endpoint("#{p[:region]}/#{p[:auth_name]}").with(
       :ensure       => 'present',
           :public_url   => "#{p[:public_protocol]}://#{p[:public_address]}:#{p[:port]}/v1/#{p[:endpoint_prefix]}_%(tenant_id)s",
       :admin_url    => "#{p[:admin_protocol]}://#{p[:admin_address]}:#{p[:port]}/",
       :internal_url => "#{p[:internal_protocol]}://#{p[:internal_address]}:#{p[:port]}/v1/#{p[:endpoint_prefix]}_%(tenant_id)s"
     )}
 
-    it { should contain_keystone_service("#{p[:auth_name]}_s3").with(
+    it { is_expected.to contain_keystone_service("#{p[:auth_name]}_s3").with(
     :ensure      => 'present',
     :type        => 's3',
     :description => 'Openstack S3 Service'
     )}
 
-    it { should contain_keystone_endpoint("#{p[:region]}/#{p[:auth_name]}_s3").with(
+    it { is_expected.to contain_keystone_endpoint("#{p[:region]}/#{p[:auth_name]}_s3").with(
       :ensure       => 'present',
       :public_url   => "#{p[:public_protocol]}://#{p[:public_address]}:#{p[:port]}",
       :admin_url    => "#{p[:admin_protocol]}://#{p[:admin_address]}:#{p[:port]}",

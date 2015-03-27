@@ -24,7 +24,7 @@ describe 'swift::storage::object' do
           params.merge!(param_set)
         end
 
-        it { should contain_swift__storage__generic('object').with_package_ensure(params[:package_ensure]) }
+        it { is_expected.to contain_swift__storage__generic('object').with_package_ensure(params[:package_ensure]) }
       end
     end
 
@@ -37,7 +37,7 @@ describe 'swift::storage::object' do
 
         it 'configures services' do
           platform_params[:service_names].each do |service_alias, service_name|
-            should contain_service(service_alias).with(
+            is_expected.to contain_service(service_alias).with(
               :name    => service_name,
               :ensure  => (param_hash[:manage_service] && param_hash[:enabled]) ? 'running' : 'stopped',
               :enable  => param_hash[:enabled]
@@ -56,7 +56,7 @@ describe 'swift::storage::object' do
 
       it 'configures services' do
         platform_params[:service_names].each do |service_alias, service_name|
-          should contain_service(service_alias).with(
+          is_expected.to contain_service(service_alias).with(
             :ensure    => nil,
             :name      => service_name,
             :enable    => false
