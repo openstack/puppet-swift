@@ -2,20 +2,49 @@
 # configures all storage types
 # on the same node
 #
-#  [*storeage_local_net_ip*] ip address that the swift servers should
+#  [*storage_local_net_ip*] ip address that the swift servers should
 #    bind to. Required
+#
 #  [*devices*] The path where the managed volumes can be found.
 #    This assumes that all servers use the same path.
 #    Optional. Defaults to /srv/node/
+#
 #  [*object_port*] Port where object storage server should be hosted.
 #    Optional. Defaults to 6000.
+#
 #  [*allow_versions*] Boolean to enable the versioning in swift container
 #    Optional. Default to false.
+#
 #  [*container_port*] Port where the container storage server should be hosted.
 #    Optional. Defaults to 6001.
+#
 #  [*account_port*] Port where the account storage server should be hosted.
 #    Optional. Defaults to 6002.
 #
+#  [*object_pipeline*]
+#    (optional) Specify the object pipeline
+#    Defaults to undef
+#
+#  [*container_pipeline*]
+#    (optional) Specify the container pipeline
+#    Defaults to undef
+#
+#  [*allow_versions*]
+#    (optional) Enable/Disable object versioning feature
+#    Defaults to false
+#
+#  [*mount_check*]
+#    (optional) Whether or not check if the devices are mounted
+#    to prevent accidentally writing to the root device
+#    Defaults to false
+#
+#  [*account_pipeline*]
+#    (optional) Specify the account pipeline
+#    Defaults to undef
+#
+#  [*log_facility*]
+#    (optional) Syslog log facility
+#    Defaults to 'LOG_LOCAL2'
 #
 class swift::storage::all(
   $storage_local_net_ip,

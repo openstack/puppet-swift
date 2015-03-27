@@ -1,5 +1,6 @@
 #
 # === Parameters
+#
 #  [*enabled*]
 #    (optional) Should the service be enabled.
 #    Defaults to true
@@ -39,19 +40,19 @@ class swift::storage::container(
   }
 
   service { 'swift-container-updater':
-    ensure    => $service_ensure,
-    name      => $::swift::params::container_updater_service_name,
-    enable    => $enabled,
-    provider  => $::swift::params::service_provider,
-    require   => Package['swift-container'],
+    ensure   => $service_ensure,
+    name     => $::swift::params::container_updater_service_name,
+    enable   => $enabled,
+    provider => $::swift::params::service_provider,
+    require  => Package['swift-container'],
   }
 
   service { 'swift-container-auditor':
-    ensure    => $service_ensure,
-    name      => $::swift::params::container_auditor_service_name,
-    enable    => $enabled,
-    provider  => $::swift::params::service_provider,
-    require   => Package['swift-container'],
+    ensure   => $service_ensure,
+    name     => $::swift::params::container_auditor_service_name,
+    enable   => $enabled,
+    provider => $::swift::params::service_provider,
+    require  => Package['swift-container'],
   }
 
   if $::operatingsystem == 'Ubuntu' {
@@ -65,10 +66,10 @@ class swift::storage::container(
       target => '/lib/init/upstart-job',
     }
     service { 'swift-container-sync':
-      ensure    => $service_ensure,
-      enable    => $enabled,
-      provider  => $::swift::params::service_provider,
-      require   => File['/etc/init/swift-container-sync.conf', '/etc/init.d/swift-container-sync']
+      ensure   => $service_ensure,
+      enable   => $enabled,
+      provider => $::swift::params::service_provider,
+      require  => File['/etc/init/swift-container-sync.conf', '/etc/init.d/swift-container-sync']
     }
   }
 }

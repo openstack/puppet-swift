@@ -3,6 +3,12 @@
 #
 # == Dependencies
 #
+# == Parameters
+#
+# [*ensure*]
+#   Enable or not ceilometer fragment
+#   Defaults to 'present'
+#
 # == Examples
 #
 # == Authors

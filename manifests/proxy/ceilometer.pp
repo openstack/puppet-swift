@@ -5,6 +5,12 @@
 #
 # puppet-ceilometer (http://github.com/enovance/puppet-ceilometer)
 #
+# == Parameters
+#
+# [*ensure*]
+#   Enable or not ceilometer fragment
+#   Defaults to 'present'
+#
 # == Examples
 #
 # == Authors

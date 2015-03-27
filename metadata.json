@@ -3,7 +3,7 @@
   "version": "5.0.0",
   "author": "Puppet Labs and StackForge Contributors",
   "summary": "Puppet module for OpenStack Swift",
-  "license": "Apache License 2.0",
+  "license": "Apache-2.0",
   "source": "git://github.com/stackforge/puppet-swift.git",
   "project_page": "https://launchpad.net/puppet-swift",
   "issues_url": "https://bugs.launchpad.net/puppet-swift",

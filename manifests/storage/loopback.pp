@@ -29,10 +29,10 @@ define swift::storage::loopback(
   }
 
   exec { "create_partition-${name}":
-    command     => "dd if=/dev/zero of=${base_dir}/${name} bs=${byte_size} count=0 seek=${seek}",
-    path        => ['/usr/bin/', '/bin'],
-    unless      => "test -f ${base_dir}/${name}",
-    require     => File[$base_dir],
+    command => "dd if=/dev/zero of=${base_dir}/${name} bs=${byte_size} count=0 seek=${seek}",
+    path    => ['/usr/bin/', '/bin'],
+    unless  => "test -f ${base_dir}/${name}",
+    require => File[$base_dir],
   }
 
   $storage_params = {

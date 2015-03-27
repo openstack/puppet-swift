@@ -37,6 +37,34 @@
 #    Has to be set to true for tempauth.
 #    Defaults to true.
 #
+#  [*log_headers*]
+#    (optional) If True, log headers in each request
+#    Defaults to False.
+#
+#  [*log_udp_host*]
+#    (optional) If not set, the UDP receiver for syslog is disabled.
+#    Defaults to an empty string
+#
+#  [*log_udp_port*]
+#    (optional) Port value for UDP receiver, if enabled.
+#    Defaults to an empty string
+#
+#  [*log_address*]
+#    (optional) Location where syslog sends the logs to.
+#    Defaults to '/dev/log'.
+#
+#  [*log_level*]
+#    (optional) Log level.
+#    Defaults to 'INFO'.
+#
+#  [*log_facility*]
+#    (optional) Log level
+#    Defaults to 'LOG_LOCAL1'.
+#
+#  [*log_handoffs*]
+#     (optional) If True, the proxy will log whenever it has to failover to a handoff node
+#     Defaults to true.
+#
 #  [*read_affinity*]
 #    (optional) Configures the read affinity of proxy-server.
 #    Defaults to undef.
