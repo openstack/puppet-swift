@@ -46,6 +46,7 @@ define swift::storage::generic(
     # this is a way to dynamically build the variables to lookup
     # sorry its so ugly :(
     name   => inline_template("<%= scope.lookupvar('::swift::params::${name}_package_name') %>"),
+    tag    => 'openstack',
     before => Service["swift-${name}", "swift-${name}-replicator"],
   }
 

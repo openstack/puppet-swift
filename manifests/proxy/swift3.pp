@@ -29,6 +29,7 @@ class swift::proxy::swift3(
   package { 'swift-plugin-s3':
     ensure => $ensure,
     name   => $::swift::params::swift3,
+    tag    => 'openstack',
   }
 
   concat::fragment { 'swift_swift3':

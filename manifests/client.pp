@@ -17,6 +17,7 @@ class swift::client (
   package { 'swiftclient':
     ensure => $ensure,
     name   => $::swift::params::client_package,
+    tag    => 'openstack',
   }
 
 }

@@ -39,6 +39,7 @@ class swift(
     package { 'swift':
       ensure => $package_ensure,
       name   => $::swift::params::package_name,
+      tag    => 'openstack',
     }
   }
 
