@@ -150,18 +150,18 @@ describe 'swift::keystone::auth' do
       })
     end
     it 'configures correct user name' do
-      should contain_keystone_user('swift')
+      is_expected.to contain_keystone_user('swift')
     end
     it 'configures correct user role' do
-      should contain_keystone_user_role('swift@services')
+      is_expected.to contain_keystone_user_role('swift@services')
     end
     it 'configures correct service name' do
-      should contain_keystone_service('swift_service')
-      should contain_keystone_service('swift_service_s3')
+      is_expected.to contain_keystone_service('swift_service')
+      is_expected.to contain_keystone_service('swift_service_s3')
     end
     it 'configures correct endpoint name' do
-      should contain_keystone_endpoint('RegionOne/swift_service')
-      should contain_keystone_endpoint('RegionOne/swift_service_s3')
+      is_expected.to contain_keystone_endpoint('RegionOne/swift_service')
+      is_expected.to contain_keystone_endpoint('RegionOne/swift_service_s3')
     end
   end
 
