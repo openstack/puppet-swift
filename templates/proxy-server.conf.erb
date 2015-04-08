@@ -33,6 +33,7 @@ log_handoffs = <%= @log_handoffs %>
 allow_account_management = <%= @allow_account_management %>
 account_autocreate = <%= @account_autocreate %>
 <% if @read_affinity -%>
+sorting_method = affinity
 read_affinity = <%= @read_affinity -%>
 <% end %>
 <% if @write_affinity -%>
