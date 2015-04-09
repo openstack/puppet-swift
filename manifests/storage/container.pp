@@ -23,6 +23,10 @@ class swift::storage::container(
   $package_ensure     = 'present',
   $allowed_sync_hosts = ['127.0.0.1'],
 ) {
+
+  Swift_config<| |> ~> Service['swift-container-updater']
+  Swift_config<| |> ~> Service['swift-container-auditor']
+
   swift::storage::generic { 'container':
     manage_service => $manage_service,
     enabled        => $enabled,
@@ -71,5 +75,6 @@ class swift::storage::container(
       provider => $::swift::params::service_provider,
       require  => File['/etc/init/swift-container-sync.conf', '/etc/init.d/swift-container-sync'],
     }
+    Swift_config<| |> ~> Service['swift-container-sync']
   }
 }

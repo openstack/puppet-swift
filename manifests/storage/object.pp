@@ -18,6 +18,10 @@ class swift::storage::object(
   $enabled        = true,
   $package_ensure = 'present'
 ) {
+
+  Swift_config<| |> ~> Service['swift-object-updater']
+  Swift_config<| |> ~> Service['swift-object-auditor']
+
   swift::storage::generic { 'object':
     manage_service => $manage_service,
     enabled        => $enabled,

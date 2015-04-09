@@ -18,6 +18,10 @@ class swift::storage::account(
   $enabled        = true,
   $package_ensure = 'present'
 ) {
+
+  Swift_config<| |> ~> Service['swift-account-reaper']
+  Swift_config<| |> ~> Service['swift-account-auditor']
+
   swift::storage::generic { 'account':
     manage_service => $manage_service,
     enabled        => $enabled,

@@ -38,6 +38,7 @@ define swift::storage::generic(
   include ::swift::params
 
   Class['swift::storage'] -> Swift::Storage::Generic[$name]
+  Swift_config<| |> ~> Service["swift-${name}"]
 
   validate_re($name, '^object|container|account$')
 
