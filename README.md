@@ -126,6 +126,28 @@ This is the ip that the proxy service will bind to when it starts.
 ####`port`
 The port for which the proxy service will bind to when it starts.
 
+### Class swift::proxy::dlo
+
+Configures [DLO middleware](http://docs.openstack.org/developer/swift/middleware.html#module-swift.common.middleware.dlo) for swift proxy.
+
+```puppet
+class { '::swift::proxy::dlo':
+  rate_limit_after_segment    => '10',
+  rate_limit_segments_per_sec => '1',
+  max_get_time                => '86400'
+}
+```
+
+####`rate_limit_after_segment`
+Start rate-limiting DLO segment serving after the Nth segment of a segmented object.
+
+####`rate_limit_segments_per_sec`
+Once segment rate-limiting kicks in for an object, limit segments served to N per second.
+0 means no rate-limiting.
+
+####`max_get_time`
+Time limit on GET requests (seconds).
+
 ### Class: swift::storage
 
 Class that sets up all of the configuration and dependencies for swift storage server instances.
