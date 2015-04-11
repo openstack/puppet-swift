@@ -166,6 +166,7 @@ class swift::proxy(
   package { 'swift-proxy':
     ensure => $package_ensure,
     name   => $::swift::params::proxy_package_name,
+    tag    => 'openstack',
   }
 
   concat { '/etc/swift/proxy-server.conf':

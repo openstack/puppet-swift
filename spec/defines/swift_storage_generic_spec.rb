@@ -46,7 +46,10 @@ describe 'swift::storage::generic' do
         let :params do
           param_set
         end
-        it { is_expected.to contain_package("swift-#{t}").with_ensure(param_hash[:package_ensure]) }
+        it { is_expected.to contain_package("swift-#{t}").with(
+          :ensure => param_hash[:package_ensure],
+          :tag    => 'openstack'
+        )}
         it { is_expected.to contain_service("swift-#{t}").with(
           :ensure    => 'running',
           :enable    => true,
