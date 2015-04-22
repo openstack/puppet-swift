@@ -11,7 +11,6 @@ describe 'swift::proxy::ceilometer' do
   let :pre_condition do
     'class { "concat::setup": }
      concat { "/etc/swift/proxy-server.conf": }
-     class { "ssh::server::install": }
      class { "swift":
         swift_hash_suffix => "dummy"
      }'
