@@ -32,10 +32,6 @@ describe 'swift' do
       }
     end
     it {is_expected.to contain_user('swift')}
-    it {is_expected.to contain_file('/home/swift').with(
-      {:ensure => 'directory', :mode => '0700'
-      }.merge(file_defaults)
-    )}
     it {is_expected.to contain_file('/etc/swift').with(
       {:ensure => 'directory', :mode => '2770'
       }.merge(file_defaults)
