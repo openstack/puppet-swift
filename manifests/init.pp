@@ -49,11 +49,6 @@ class swift(
 
   File { owner => 'swift', group => 'swift', require => Package['swift'] }
 
-  file { '/home/swift':
-    ensure => directory,
-    mode   => '0700',
-  }
-
   file { '/etc/swift':
     ensure => directory,
     mode   => '2770',
