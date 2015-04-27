@@ -14,7 +14,7 @@
 #
 # == Dependencies
 #
-#   Class['ssh::server::install']
+# None
 #
 # == Authors
 #
@@ -31,9 +31,6 @@ class swift(
 ) {
 
   include ::swift::params
-  include ::ssh::server
-
-  Class['ssh::server::install'] -> Class['swift']
 
   if !defined(Package['swift']) {
     package { 'swift':

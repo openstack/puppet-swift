@@ -2,8 +2,7 @@ require 'spec_helper'
 
 describe 'swift::storage::container' do
   let :pre_condition do
-    "class { 'ssh::server::install': }
-     class { 'swift': swift_hash_suffix => 'foo' }
+    "class { 'swift': swift_hash_suffix => 'foo' }
      class { 'swift::storage': storage_local_net_ip => '10.0.0.1' }"
   end
 
@@ -128,8 +127,7 @@ describe 'swift::storage::container' do
       end
 
       let :pre_condition do
-        "class { 'ssh::server::install': }
-         class { 'swift': swift_hash_suffix => 'foo' }
+         "class { 'swift': swift_hash_suffix => 'foo' }
          class { 'swift::storage::all': storage_local_net_ip => '10.0.0.1' }"
       end
 
