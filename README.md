@@ -235,6 +235,18 @@ Limitations
 
 * No explicit support external NAS devices (i.e. Nexenta and LFS) to offload the ring replication requirements.
 
+Beaker-Rspec
+------------
+
+This module has beaker-rspec tests
+
+To run:
+
+``shell
+bundle install
+bundle exec rspec spec/acceptance
+``
+
 Development
 -----------
 
