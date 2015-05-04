@@ -46,6 +46,18 @@
 #    (optional) Syslog log facility
 #    Defaults to 'LOG_LOCAL2'
 #
+#  [*log_level*]
+#    (optional) Log level.
+#    Defaults to 'INFO'.
+#
+#  [*log_udp_host*]
+#    (optional) If not set, the UDP receiver for syslog is disabled.
+#    Defaults to undef.
+#
+#  [*log_udp_port*]
+#    (optional) Port value for UDP receiver, if enabled.
+#    Defaults to undef.
+#
 class swift::storage::all(
   $storage_local_net_ip,
   $devices            = '/srv/node',
@@ -57,7 +69,10 @@ class swift::storage::all(
   $allow_versions     = false,
   $mount_check        = false,
   $account_pipeline   = undef,
-  $log_facility       = 'LOG_LOCAL2'
+  $log_facility       = 'LOG_LOCAL2',
+  $log_level          = 'INFO',
+  $log_udp_host       = undef,
+  $log_udp_port       = undef,
 ) {
 
   class { '::swift::storage':
@@ -68,6 +83,9 @@ class swift::storage::all(
     devices              => $devices,
     storage_local_net_ip => $storage_local_net_ip,
     mount_check          => $mount_check,
+    log_level            => $log_level,
+    log_udp_host         => $log_udp_host,
+    log_udp_port         => $log_udp_port,
   }
 
   swift::storage::server { $account_port:

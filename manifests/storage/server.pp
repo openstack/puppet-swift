@@ -18,6 +18,14 @@
 #   *NOTE*: Recommended parameter: 'Du=rwx,g=rx,o=rx,Fu=rw,g=r,o=r'
 #    This mask translates to 0755 for directories and 0644 for files.
 #
+#  [*log_udp_host*]
+#    (optional) If not set, the UDP receiver for syslog is disabled.
+#    Defaults to undef.
+#
+#  [*log_udp_port*]
+#    (optional) Port value for UDP receiver, if enabled.
+#    Defaults to undef.
+#
 define swift::storage::server(
   $type,
   $storage_local_net_ip,
@@ -39,6 +47,8 @@ define swift::storage::server(
   $log_level              = 'INFO',
   $log_address            = '/dev/log',
   $log_name               = "${type}-server",
+  $log_udp_host           = undef,
+  $log_udp_port           = undef,
   # this parameters needs to be specified after type and name
   $config_file_path       = "${type}-server/${name}.conf"
 ) {
@@ -58,6 +68,10 @@ define swift::storage::server(
     }
   } elsif $pipeline != "${type}-server" {
     warning("swift storage server ${type} must specify ${type}-server")
+  }
+
+  if ($log_udp_port and !$log_udp_host) {
+    fail ('log_udp_port requires log_udp_host to be set')
   }
 
   include "::swift::storage::${type}"

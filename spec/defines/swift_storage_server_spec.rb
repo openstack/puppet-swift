@@ -67,7 +67,7 @@ describe 'swift::storage::server' do
           :user        => 'dan',
           :mount_check => true,
           :workers     => 7,
-          :pipeline    => ['foo']
+          :pipeline    => ['foo'],
         }.each do |k,v|
           describe "when #{k} is set" do
             let :params do req_params.merge({k => v}) end
@@ -115,6 +115,20 @@ describe 'swift::storage::server' do
           describe "when allow_versioning is set" do
            let :params do req_params.merge({ :allow_versions => false, }) end
             it { is_expected.to contain_file(fragment_file).with_content(/\[app:container-server\]\nallow_versions\s*=\s*false\s*$/m)}
+          end
+        end
+        describe "when log_udp_port is set" do
+          context 'and log_udp_host is not set' do
+            let :params do req_params.merge({ :log_udp_port => 514}) end
+             it_raises 'a Puppet::Error', /log_udp_port requires log_udp_host to be set/
+            end
+          context 'and log_udp_host is set' do
+            let :params do req_params.merge(
+              { :log_udp_host => '127.0.0.1',
+                :log_udp_port => '514'})
+            end
+            it { is_expected.to contain_file(fragment_file).with_content(/^log_udp_host\s*=\s*127\.0\.0\.1\s*$/) }
+            it { is_expected.to contain_file(fragment_file).with_content(/^log_udp_port\s*=\s*514\s*$/) }
           end
         end
       end

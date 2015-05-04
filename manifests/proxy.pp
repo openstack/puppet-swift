@@ -116,8 +116,8 @@ class swift::proxy(
   $allow_account_management  = true,
   $account_autocreate        = true,
   $log_headers               = 'False',
-  $log_udp_host              = '',
-  $log_udp_port              = '',
+  $log_udp_host              = undef,
+  $log_udp_port              = undef,
   $log_address               = '/dev/log',
   $log_level                 = 'INFO',
   $log_facility              = 'LOG_LOCAL1',
@@ -161,6 +161,10 @@ class swift::proxy(
 
   if($auth_type == 'tempauth' and ! $account_autocreate ){
     fail('account_autocreate must be set to true when auth_type is tempauth')
+  }
+
+  if ($log_udp_port and !$log_udp_host) {
+    fail ('log_udp_port requires log_udp_host to be set')
   }
 
   package { 'swift-proxy':
