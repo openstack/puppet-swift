@@ -76,22 +76,22 @@ describe 'swift::ringbuilder' do
 
       it 'should set up all of the correct dependencies' do
         is_expected.to contain_swift__ringbuilder__create('object').with(
-          {:before => 'Ring_object_device[127.0.0.1:6000/1]'}
+          {:before => ['Ring_object_device[127.0.0.1:6000/1]']}
         )
         is_expected.to contain_swift__ringbuilder__create('container').with(
-        {:before => 'Ring_container_device[127.0.0.1:6001/1]'}
+        {:before => ['Ring_container_device[127.0.0.1:6001/1]']}
         )
         is_expected.to contain_swift__ringbuilder__create('account').with(
-        {:before => 'Ring_account_device[127.0.0.1:6002/1]'}
+        {:before => ['Ring_account_device[127.0.0.1:6002/1]']}
         )
         is_expected.to contain_ring_object_device('127.0.0.1:6000/1').with(
-        {:notify => 'Swift::Ringbuilder::Rebalance[object]'}
+        {:notify => ['Swift::Ringbuilder::Rebalance[object]']}
         )
         is_expected.to contain_ring_container_device('127.0.0.1:6001/1').with(
-        {:notify => 'Swift::Ringbuilder::Rebalance[container]'}
+        {:notify => ['Swift::Ringbuilder::Rebalance[container]']}
         )
         is_expected.to contain_ring_account_device('127.0.0.1:6002/1').with(
-        {:notify => 'Swift::Ringbuilder::Rebalance[account]'}
+        {:notify => ['Swift::Ringbuilder::Rebalance[account]']}
         )
       end
     end

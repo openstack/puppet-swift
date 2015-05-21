@@ -125,9 +125,11 @@ describe 'swift::proxy' do
             ]
           )
         end
-        it { is_expected.to contain_concat__fragment('swift_proxy').with_before(
-          'Class[Swift::Proxy::Swauth]'
-        )}
+        if Puppet.version.to_f < 4.0
+          it { is_expected.to contain_concat__fragment('swift_proxy').with_before('Class[Swift::Proxy::Swauth]')}
+        else
+          it { is_expected.to contain_concat__fragment('swift_proxy').with_before(['Class[Swift::Proxy::Swauth]'])}
+        end
        end
       describe "when log udp port is set" do
         context 'and log_udp_host is not set' do

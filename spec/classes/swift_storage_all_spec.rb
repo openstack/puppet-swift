@@ -84,17 +84,17 @@ describe 'swift::storage::all' do
       it { is_expected.to contain_swift__storage__server(param_hash[:account_port]).with(
         {:type => 'account',
          :config_file_path => 'account-server.conf',
-         :pipeline => param_hash[:account_pipeline] || 'account-server' }.merge(storage_server_defaults)
+         :pipeline => param_hash[:account_pipeline] || ['account-server'] }.merge(storage_server_defaults)
       )}
       it { is_expected.to contain_swift__storage__server(param_hash[:object_port]).with(
         {:type => 'object',
          :config_file_path => 'object-server.conf',
-         :pipeline => param_hash[:object_pipeline] || 'object-server' }.merge(storage_server_defaults)
+         :pipeline => param_hash[:object_pipeline] || ['object-server'] }.merge(storage_server_defaults)
       )}
       it { is_expected.to contain_swift__storage__server(param_hash[:container_port]).with(
         {:type => 'container',
          :config_file_path => 'container-server.conf',
-         :pipeline => param_hash[:container_pipeline] || 'container-server',
+         :pipeline => param_hash[:container_pipeline] || ['container-server'],
          :allow_versions => param_hash[:allow_versions] || false }.merge(storage_server_defaults)
       )}
 

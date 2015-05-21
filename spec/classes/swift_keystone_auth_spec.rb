@@ -93,7 +93,7 @@ describe 'swift::keystone::auth' do
 
     it { is_expected.to contain_keystone_user_role("#{p[:auth_name]}@#{p[:tenant]}").with(
       :ensure  => 'present',
-      :roles   => 'admin',
+      :roles   => ['admin'],
     )}
 
     it { is_expected.to contain_keystone_service(p[:auth_name]).with(
