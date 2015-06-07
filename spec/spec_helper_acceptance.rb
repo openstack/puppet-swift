@@ -28,13 +28,12 @@ RSpec.configure do |c|
       # install library modules from the forge
       on host, puppet('module','install','puppetlabs-mysql'), { :acceptable_exit_codes => 0 }
       on host, puppet('module','install','puppetlabs-concat','--version','1.2.2'), { :acceptable_exit_codes => 0 }
+      # pin apt module until openstack_extras use >= 2.0.0 version
       on host, puppet('module','install','puppetlabs-apt', '--version', '1.8.0'), { :acceptable_exit_codes => 0 }
       on host, puppet('module','install','puppetlabs-inifile'), { :acceptable_exit_codes => 0 }
       on host, puppet('module','install','puppetlabs-rsync'), { :acceptable_exit_codes => 0 }
       on host, puppet('module','install','saz-memcached'), { :acceptable_exit_codes => 0 }
       on host, puppet('module','install','stahnma-epel'), { :acceptable_exit_codes => 0 }
-      # pin apt module until openstack_extras use >= 2.0.0 version
-      on host, puppet('module','install','puppetlabs-apt','--version','1.8.0'), { :acceptable_exit_codes => 0 }
 
       # install puppet modules from git, use master
       shell('git clone https://git.openstack.org/stackforge/puppet-openstacklib /etc/puppet/modules/openstacklib')
