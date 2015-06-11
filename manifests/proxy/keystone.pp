@@ -19,7 +19,8 @@
 
 class swift::proxy::keystone(
   $operator_roles      = ['admin', 'SwiftOperator'],
-  $is_admin            = true
+  $is_admin            = true,
+  $reseller_prefix     = 'AUTH_'
 ) {
 
   concat::fragment { 'swift_keystone':
