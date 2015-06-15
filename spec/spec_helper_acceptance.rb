@@ -36,9 +36,9 @@ RSpec.configure do |c|
       on host, puppet('module','install','stahnma-epel'), { :acceptable_exit_codes => 0 }
 
       # install puppet modules from git, use master
-      shell('git clone https://git.openstack.org/stackforge/puppet-openstacklib /etc/puppet/modules/openstacklib')
-      shell('git clone https://git.openstack.org/stackforge/puppet-openstack_extras /etc/puppet/modules/openstack_extras')
-      shell('git clone https://git.openstack.org/stackforge/puppet-keystone /etc/puppet/modules/keystone')
+      shell('git clone https://git.openstack.org/openstack/puppet-openstacklib /etc/puppet/modules/openstacklib')
+      shell('git clone https://git.openstack.org/openstack/puppet-openstack_extras /etc/puppet/modules/openstack_extras')
+      shell('git clone https://git.openstack.org/openstack/puppet-keystone /etc/puppet/modules/keystone')
 
       # Install the module being tested
       puppet_module_install(:source => proj_root, :module_name => 'swift')
