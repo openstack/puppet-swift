@@ -1,7 +1,7 @@
 swift
 =======
 
-5.0.0 - 2014.2.0 - Juno
+5.1.0 - 2014.2 - Juno
 
 #### Table of Contents
 
@@ -261,6 +261,32 @@ Contributors
 
 Release Notes
 -------------
+
+**5.1.0**
+
+* Update .gitreview file for project rename
+* mount.pp: fix lint issue
+* Fix concat file mode
+* Handle both string and array for memcache param.
+* read_affinity requires affinity sorting_method
+* Remove unused fragment_title variable
+* Fix ipv6 support
+* doc spelling corrections
+* Add base `swift` class name to call
+* Swift proxy won't start if using proxy:ceilometer
+* Add seed parameter to ringbuilder::rebalance.
+* Correct proxy::authtoken docs
+* Allow setting reseller_prefix for keystone filter
+* Pin puppetlabs-concat to 1.2.1 in fixtures
+* Update ssh module version
+* Notify services if swift.conf is modified
+* Add node_timeout parameter for proxy-server.conf
+* Provide a mean to change the default rsync chmod
+* Pin fixtures for stables branches
+* Use keystonemiddleware instead of client
+* Add manage_service feature
+* Remove non-ASCII characters from puppet doc
+* Fix spec tests in stable/juno branch
 
 **5.0.0**
 
