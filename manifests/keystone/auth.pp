@@ -49,6 +49,14 @@
 #   Defaults to the value of auth_name_s3, but must differ from the value
 #   of service_name.
 #
+# [*service_description*]
+#   (optional) Description for keystone service.
+#   Defaults to 'Openstack Object-Store Service'.
+#
+# [*service_description_s3*]
+#   (optional) Description for keystone s3 service.
+#   Defaults to 'Openstack S3 Service'.
+#
 # [*public_url*]
 #   (optional) The endpoint's public url. (Defaults to 'http://127.0.0.1:8080/v1/AUTH_%(tenant_id)s')
 #   This url should *not* contain any trailing '/'.
@@ -143,6 +151,8 @@ class swift::keystone::auth(
   $operator_roles         = ['admin', 'SwiftOperator'],
   $service_name           = undef,
   $service_name_s3        = undef,
+  $service_description    = 'Openstack Object-Store Service',
+  $service_description_s3 = 'Openstack S3 Service',
   $configure_endpoint     = true,
   $configure_s3_endpoint  = true,
   $public_url             = 'http://127.0.0.1:8080/v1/AUTH_%(tenant_id)s',
@@ -266,7 +276,7 @@ class swift::keystone::auth(
     configure_endpoint  => $configure_endpoint,
     service_name        => $real_service_name,
     service_type        => 'object-store',
-    service_description => 'Openstack Object-Store Service',
+    service_description => $service_description,
     region              => $region,
     auth_name           => $auth_name,
     password            => $password,
@@ -284,7 +294,7 @@ class swift::keystone::auth(
     configure_service   => $configure_s3_endpoint,
     service_name        => $real_service_name_s3,
     service_type        => 's3',
-    service_description => 'Openstack S3 Service',
+    service_description => $service_description_s3,
     region              => $region,
     public_url          => $public_url_s3_real,
     admin_url           => $admin_url_s3_real,
