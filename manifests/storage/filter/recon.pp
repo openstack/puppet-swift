@@ -2,7 +2,7 @@
 # Configure swift recon.
 #
 # == Parameters
-#  [cache_path] The path for recon cache
+#  [*cache_path*] The path for recon cache
 #    Optional. Defaults to '/var/cache/swift/'
 #
 # == Dependencies

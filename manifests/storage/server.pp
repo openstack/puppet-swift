@@ -8,23 +8,103 @@
 #   Mandatory. Usually 6000, 6001 and 6002 for respectively
 #   object, container and account.
 #
+# [*type*]
+#   (required) The type of device, e.g. account, object, or container.
+#
+# [*storage_local_net_ip*]
+#   (required) This is the ip that the storage service will bind to when it starts.
+#
+# [*devices*]
+#   (optional) The directory where the physical storage device will be mounted.
+#   Defaults to '/srv/node'.
+#
+# [*owner*]
+#   (optional) Owner (uid) of rsync server.
+#   Defaults to 'swift'.
+#
+# [*group*]
+#   (optional) Group (gid) of rsync server.
+#   Defaults to 'swift'.
+#
+# [*max_connections*]
+#   (optional) maximum number of simultaneous connections allowed.
+#   Defaults to 25.
+#
 # [*incoming_chmod*] Incoming chmod to set in the rsync server.
 #   Optional. Defaults to 0644 for maintaining backwards compatibility.
 #   *NOTE*: Recommended parameter: 'Du=rwx,g=rx,o=rx,Fu=rw,g=r,o=r'
-#    This mask translates to 0755 for directories and 0644 for files.
+#   This mask translates to 0755 for directories and 0644 for files.
 #
 # [*outgoing_chmod*] Outgoing chmod to set in the rsync server.
 #   Optional. Defaults to 0644 for maintaining backwards compatibility.
 #   *NOTE*: Recommended parameter: 'Du=rwx,g=rx,o=rx,Fu=rw,g=r,o=r'
-#    This mask translates to 0755 for directories and 0644 for files.
+#   This mask translates to 0755 for directories and 0644 for files.
 #
-#  [*log_udp_host*]
-#    (optional) If not set, the UDP receiver for syslog is disabled.
-#    Defaults to undef.
+
+# [*pipeline*]
+#   (optional) Pipeline of applications.
+#   Defaults to ["${type}-server"].
 #
-#  [*log_udp_port*]
-#    (optional) Port value for UDP receiver, if enabled.
-#    Defaults to undef.
+# [*mount_check*]
+#   (optional) Whether or not check if the devices are mounted to prevent accidentally
+#   writing to the root device
+#   Defaults to false.
+#
+# [*user*]
+#   (optional) User to run as
+#   Defaults to 'swift'.
+#
+# [*workers*]
+#   (optional) Override the number of pre-forked workers that will accept
+#   connections. If set it should be an integer, zero means no fork. If unset,
+#   it will try to default to the number of effective cpu cores and fallback to
+#   one. Increasing the number of workers may reduce the possibility of slow file
+#   system operations in one request from negatively impacting other requests.
+#   See http://docs.openstack.org/developer/swift/deployment_guide.html#general-service-tuning
+#   Defaults to '1'.
+#
+# [*allow_versions*]
+#   (optional) Enable/Disable object versioning feature
+#   Defaults to 'false'.
+#
+# [*replicator_concurrency*]
+#   (optional) Number of replicator workers to spawn.
+#   Defaults to $::processorcount.
+#
+# [*updater_concurrency*]
+#   (optional) Number of updater workers to spawn.
+#   Defaults to $::processorcount.
+#
+# [*reaper_concurrency*]
+#   (optional) Number of reaper workers to spawn.
+#   Defaults to $::processorcount.
+#
+# [*log_facility*]
+#   (optional) Syslog log facility.
+#   Defaults to 'LOG_LOCAL2'.
+#
+# [*log_level*]
+#   (optional) Logging level.
+#   Defaults to 'INFO'.
+#
+# [*log_address*]
+#   Deprecated, this parameter does nothing.
+#
+# [*log_name*]
+#   (optional) Label used when logging.
+#   Defaults to "${type}-server".
+
+# [*log_udp_host*]
+#   (optional) If not set, the UDP receiver for syslog is disabled.
+#   Defaults to undef.
+#
+# [*log_udp_port*]
+#   (optional) Port value for UDP receiver, if enabled.
+#   Defaults to undef.
+#
+# [*config_file_path*]
+#   (optional) The configuration file name.
+#   Defaults to "${type}-server/${name}.conf".
 #
 define swift::storage::server(
   $type,

@@ -3,6 +3,24 @@
 #   swift::storage::mount
 #
 #
+# === Parameters:
+#
+# [*device*]
+#   (mandatory) An array of devices (prefixed or not by /dev)
+#
+# [*mnt_base_dir*]
+#   (optional) The directory where the flat files that store the file system
+#   to be loop back mounted are actually mounted at.
+#   Defaults to '/srv/node', base directory where disks are mounted to
+#
+# [*loopback*]
+#   (optional) Define if the device must be mounted as a loopback or not
+#   Defaults to false.
+#
+# [*fstype*]
+#   (optional) The filesystem type.
+#   Defaults to 'xfs'.
+#
 define swift::storage::mount(
   $device,
   $mnt_base_dir = '/srv/node',

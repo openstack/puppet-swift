@@ -1,5 +1,8 @@
 # == Define: swift::ringsync
 #
+# [*ring_server*]
+#   (required) IP or hostname of ring servers
+#
 define swift::ringsync(
   $ring_server
 ) {
