@@ -35,7 +35,7 @@ Setup
 
 ### Installing swift
 
-    example% puppet module install puppetlabs/swift
+    example% puppet module install openstack/swift
 
 ### Beginning with swift
 
