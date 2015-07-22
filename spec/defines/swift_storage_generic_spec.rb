@@ -47,19 +47,21 @@ describe 'swift::storage::generic' do
         end
         it { is_expected.to contain_package("swift-#{t}").with(
           :ensure => param_hash[:package_ensure],
-          :tag    => 'openstack'
+          :tag    => ['openstack', 'swift-package'],
         )}
         it { is_expected.to contain_service("swift-#{t}").with(
           :ensure    => 'running',
           :enable    => true,
           :hasstatus => true,
-          :provider  => param_hash[:service_provider]
+          :provider  => param_hash[:service_provider],
+          :tag       => 'swift-service',
         )}
         it { is_expected.to contain_service("swift-#{t}-replicator").with(
           :ensure    => 'running',
           :enable    => true,
           :hasstatus => true,
-          :provider  => param_hash[:service_provider]
+          :provider  => param_hash[:service_provider],
+          :tag       => 'swift-service',
         )}
         it { is_expected.to contain_file("/etc/swift/#{t}-server/").with(
           :ensure => 'directory',
