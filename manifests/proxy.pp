@@ -200,6 +200,8 @@ class swift::proxy(
     before  => Class[$required_classes],
   }
 
+  Concat['/etc/swift/proxy-server.conf'] -> Swift_proxy_config <||>
+
   if $manage_service {
     if $enabled {
       $service_ensure = 'running'
