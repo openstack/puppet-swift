@@ -31,11 +31,11 @@ Setup
 
 **What the swift module affects**
 
-* swift, the object storage service for Openstack.
+* [Swift](https://wiki.openstack.org/wiki/Swift), the object storage service for Openstack.
 
 ### Installing swift
 
-    example% puppet module install openstack/swift
+    puppet module install openstack/swift
 
 ### Beginning with swift
 
