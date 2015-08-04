@@ -62,7 +62,7 @@ class { '::swift::proxy':
 class { ['::swift::proxy::healthcheck', '::swift::proxy::cache']: }
 
 class { '::swift::proxy::tempauth':
-  account_user_list  => [
+  account_user_list => [
     {
       'user'    => 'admin',
       'account' => 'admin',
