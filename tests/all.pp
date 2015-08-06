@@ -59,4 +59,33 @@ class { '::swift::proxy':
   account_autocreate => true,
   require            => Class['swift::ringbuilder'],
 }
-class { ['::swift::proxy::healthcheck', '::swift::proxy::cache', '::swift::proxy::tempauth']: }
+class { ['::swift::proxy::healthcheck', '::swift::proxy::cache']: }
+
+class { '::swift::proxy::tempauth':
+  account_user_list  => [
+    {
+      'user'    => 'admin',
+      'account' => 'admin',
+      'key'     => 'admin',
+      'groups'  => [ 'admin', 'reseller_admin' ],
+    },
+    {
+      'user'    => 'tester',
+      'account' => 'test',
+      'key'     => 'testing',
+      'groups'  => ['admin'],
+    },
+    {
+      'user'    => 'tester2',
+      'account' => 'test2',
+      'key'     => 'testing2',
+      'groups'  => ['admin'],
+    },
+    {
+      'user'    => 'tester',
+      'account' => 'test',
+      'key'     => 'testing3',
+      'groups'  => [],
+    },
+  ]
+}
