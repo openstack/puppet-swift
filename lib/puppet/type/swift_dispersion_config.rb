@@ -37,4 +37,9 @@ Puppet::Type.newtype(:swift_dispersion_config) do
     newvalues(:true, :false)
     defaultto false
   end
+
+  autorequire(:package) do
+    'swift'
+  end
+
 end

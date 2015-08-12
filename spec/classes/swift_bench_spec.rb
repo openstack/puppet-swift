@@ -37,10 +37,6 @@ describe 'swift::bench' do
   shared_examples 'swift::bench' do
     let (:p) { default_params.merge!(params) }
 
-    it 'depends on swift package' do
-      is_expected.to contain_package('swift').with_before(/Swift_bench_config\[.+\]/)
-    end
-
     it 'configures swift-bench.conf' do
       is_expected.to contain_swift_bench_config(
         'bench/auth').with_value(p[:auth_url])
