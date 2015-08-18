@@ -37,8 +37,6 @@ class swift(
 
   include ::swift::params
 
-  File['/etc/swift/swift.conf'] -> Swift_config <||>
-
   if !defined(Package['swift']) {
     package { 'swift':
       ensure => $package_ensure,

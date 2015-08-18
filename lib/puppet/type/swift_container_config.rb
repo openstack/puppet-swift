@@ -37,4 +37,9 @@ Puppet::Type.newtype(:swift_container_config) do
     newvalues(:true, :false)
     defaultto false
   end
+
+  autorequire(:package) do
+    'swift-container'
+  end
+
 end

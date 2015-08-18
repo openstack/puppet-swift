@@ -84,8 +84,6 @@ class swift::bench (
   $delete            = 'yes',
 ){
 
-  Package['swift'] -> Swift_bench_config<||>
-
   swift_bench_config {
     'bench/auth':              value => $auth_url;
     'bench/user':              value => $swift_user;
