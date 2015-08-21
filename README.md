@@ -229,6 +229,61 @@ Implementation
 
 swift is a combination of Puppet manifest and ruby code to delivery configuration and extra functionality through types and providers.
 
+### Types
+
+#### swift_config
+
+The `swift_config` provider is a children of the ini_setting provider. It allows one to write an entry in the `/etc/swift/swift.conf` file.
+
+```puppet
+swift_config { 'DEFAULT/verbose' :
+  value => true,
+}
+```
+
+This will write `verbose=true` in the `[DEFAULT]` section.
+
+##### name
+
+Section/setting name to manage from `swift.conf`
+
+##### value
+
+The value of the setting to be defined.
+
+##### secret
+
+Whether to hide the value from Puppet logs. Defaults to `false`.
+
+##### ensure_absent_val
+
+If value is equal to ensure_absent_val then the resource will behave as if `ensure => absent` was specified. Defaults to `<SERVICE DEFAULT>`
+
+#### swift_account_config
+
+Same as `swift_config`, but path is `/etc/swift/account-server.conf`
+
+#### swift_bench_config
+
+Same as `swift_config`, but path is `/etc/swift/swift-bench.conf`
+
+#### swift_container_config
+
+Same as `swift_config`, but path is `/etc/swift/container-server.conf`
+
+#### swift_dispersion_config
+
+Same as `swift_config`, but path is `/etc/swift/dispersion.conf`
+
+#### swift_object_config
+
+Same as `swift_config`, but path is `/etc/swift/object-server.conf`
+
+#### swift_proxy_config
+
+Same as `swift_config`, but path is `/etc/swift/proxy-server.conf`
+
+
 Limitations
 ------------
 
