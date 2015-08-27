@@ -20,7 +20,9 @@ describe 'swift::storage::all' do
       :object_port => '6000',
       :container_port => '6001',
       :account_port => '6002',
-      :log_facility => 'LOG_LOCAL2'
+      :log_facility => 'LOG_LOCAL2',
+      :incoming_chmod => '0644',
+      :outgoing_chmod => '0644'
     }
   end
 
@@ -40,6 +42,8 @@ describe 'swift::storage::all' do
       :account_pipeline => ["5", "6"],
       :allow_versions => true,
       :log_facility => ['LOG_LOCAL2', 'LOG_LOCAL3'],
+      :incoming_chmod => 'Du=rwx,g=rx,o=rx,Fu=rw,g=r,o=r',
+      :outgoing_chmod => 'Du=rwx,g=rx,o=rx,Fu=rw,g=r,o=r',
     }
   ].each do |param_set|
 
@@ -77,6 +81,8 @@ describe 'swift::storage::all' do
       let :storage_server_defaults do
         {:devices              => param_hash[:devices],
          :storage_local_net_ip => param_hash[:storage_local_net_ip],
+         :incoming_chmod       => param_hash[:incoming_chmod],
+         :outgoing_chmod       => param_hash[:outgoing_chmod],
          :log_facility         => param_hash[:log_facility]
         }
       end
@@ -84,16 +90,22 @@ describe 'swift::storage::all' do
       it { is_expected.to contain_swift__storage__server(param_hash[:account_port]).with(
         {:type => 'account',
          :config_file_path => 'account-server.conf',
+         :incoming_chmod => param_hash[:incoming_chmod],
+         :outgoing_chmod => param_hash[:outgoing_chmod],
          :pipeline => param_hash[:account_pipeline] || ['account-server'] }.merge(storage_server_defaults)
       )}
       it { is_expected.to contain_swift__storage__server(param_hash[:object_port]).with(
         {:type => 'object',
          :config_file_path => 'object-server.conf',
+         :incoming_chmod => param_hash[:incoming_chmod],
+         :outgoing_chmod => param_hash[:outgoing_chmod],
          :pipeline => param_hash[:object_pipeline] || ['object-server'] }.merge(storage_server_defaults)
       )}
       it { is_expected.to contain_swift__storage__server(param_hash[:container_port]).with(
         {:type => 'container',
          :config_file_path => 'container-server.conf',
+         :incoming_chmod => param_hash[:incoming_chmod],
+         :outgoing_chmod => param_hash[:outgoing_chmod],
          :pipeline => param_hash[:container_pipeline] || ['container-server'],
          :allow_versions => param_hash[:allow_versions] || false }.merge(storage_server_defaults)
       )}
