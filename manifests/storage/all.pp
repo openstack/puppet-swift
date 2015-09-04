@@ -58,6 +58,16 @@
 #    (optional) Port value for UDP receiver, if enabled.
 #    Defaults to undef.
 #
+# [*incoming_chmod*] Incoming chmod to set in the rsync server.
+#   Optional. Defaults to 0644 for maintaining backwards compatibility.
+#   *NOTE*: Recommended parameter: 'Du=rwx,g=rx,o=rx,Fu=rw,g=r,o=r'
+#   This mask translates to 0755 for directories and 0644 for files.
+#
+# [*outgoing_chmod*] Outgoing chmod to set in the rsync server.
+#   Optional. Defaults to 0644 for maintaining backwards compatibility.
+#   *NOTE*: Recommended parameter: 'Du=rwx,g=rx,o=rx,Fu=rw,g=r,o=r'
+#   This mask translates to 0755 for directories and 0644 for files.
+#
 class swift::storage::all(
   $storage_local_net_ip,
   $devices            = '/srv/node',
@@ -73,6 +83,8 @@ class swift::storage::all(
   $log_level          = 'INFO',
   $log_udp_host       = undef,
   $log_udp_port       = undef,
+  $incoming_chmod     = '0644',
+  $outgoing_chmod     = '0644',
 ) {
 
   class { '::swift::storage':
@@ -93,6 +105,8 @@ class swift::storage::all(
     config_file_path => 'account-server.conf',
     pipeline         => $account_pipeline,
     log_facility     => $log_facility,
+    incoming_chmod   => $incoming_chmod,
+    outgoing_chmod   => $outgoing_chmod,
   }
 
   swift::storage::server { $container_port:
@@ -101,6 +115,8 @@ class swift::storage::all(
     pipeline         => $container_pipeline,
     log_facility     => $log_facility,
     allow_versions   => $allow_versions,
+    incoming_chmod   => $incoming_chmod,
+    outgoing_chmod   => $outgoing_chmod,
   }
 
   swift::storage::server { $object_port:
@@ -108,5 +124,7 @@ class swift::storage::all(
     config_file_path => 'object-server.conf',
     pipeline         => $object_pipeline,
     log_facility     => $log_facility,
+    incoming_chmod   => $incoming_chmod,
+    outgoing_chmod   => $outgoing_chmod,
   }
 }
