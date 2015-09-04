@@ -102,6 +102,11 @@
 #   (optional) Port value for UDP receiver, if enabled.
 #   Defaults to undef.
 #
+# [*log_requests*]
+#   (optional) Whether or not log every request. reduces logging output if false,
+#   good for seeing errors if true
+#   Defaults to true.
+#
 # [*config_file_path*]
 #   (optional) The configuration file name.
 #   Defaults to "${type}-server/${name}.conf".
@@ -129,6 +134,7 @@ define swift::storage::server(
   $log_name               = "${type}-server",
   $log_udp_host           = undef,
   $log_udp_port           = undef,
+  $log_requests           = true,
   # this parameters needs to be specified after type and name
   $config_file_path       = "${type}-server/${name}.conf"
 ) {
