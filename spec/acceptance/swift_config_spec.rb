@@ -175,11 +175,14 @@ describe 'basic swift_config resource' do
 
     $swift_files.each do |swift_conf_file|
       describe file(swift_conf_file) do
-        it { should exist }
-        it { should contain('thisshouldexist=foo') }
-        it { should contain('thisshouldexist2=<SERVICE DEFAULT>') }
+        it { is_expected.to exist }
+        it { is_expected.to contain('thisshouldexist=foo') }
+        it { is_expected.to contain('thisshouldexist2=<SERVICE DEFAULT>') }
 
-        its(:content) { should_not match /thisshouldnotexist/ }
+        describe '#content' do
+          subject { super().content }
+          it { is_expected.to_not match /thisshouldnotexist/ }
+        end
       end
     end
 
