@@ -236,6 +236,15 @@ The byte size that dd uses when it creates the file system.
 ####`seek`
 The size of the file system that will be created.  Defaults to 25000.
 
+### Class: swift::objectexpirer
+Class that will set Swift object expirer, for scheduled deletion of objects.
+
+```puppet
+class { 'swift::objectexpirer': }
+```
+
+It is assumed that the object expirer service will usually be installed in a proxy node. On Red Hat-based distributions, if the class is included in a non-proxy node, the openstack-swift-proxy package will need to be installed.
+
 ### Verifying installation
 
 This modules ships with a simple Ruby script that validates whether or not your swift cluster is functional.

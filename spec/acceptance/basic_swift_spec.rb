@@ -116,6 +116,9 @@ describe 'basic swift' do
       class { '::swift::proxy::authtoken':
         admin_password => 'a_big_secret',
       }
+      class {'::swift::objectexpirer':
+        interval => 600,
+      }
       class {
         [ '::swift::proxy::healthcheck', '::swift::proxy::cache',
         '::swift::proxy::tempauth', '::swift::proxy::dlo' ]:
