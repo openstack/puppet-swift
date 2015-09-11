@@ -204,4 +204,12 @@ define swift::storage::server(
     before  => $required_middlewares,
     require => Package['swift'],
   }
+
+  case $type {
+    'object':    { Concat["/etc/swift/${config_file_path}"] -> Swift_object_config <||> }
+    'container': { Concat["/etc/swift/${config_file_path}"] -> Swift_container_config <||> }
+    'account':   { Concat["/etc/swift/${config_file_path}"] -> Swift_account_config <||> }
+    default  :   { warning("swift storage server ${type} must specify ${type}-server") }
+
+  }
 }

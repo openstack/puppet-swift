@@ -79,6 +79,7 @@ describe 'swift::proxy' do
           ]
         )
       end
+
       it { is_expected.to contain_concat__fragment('swift_proxy').with_before(
         [
           'Class[Swift::Proxy::Healthcheck]',
@@ -86,6 +87,17 @@ describe 'swift::proxy' do
           'Class[Swift::Proxy::Tempauth]'
         ]
       )}
+
+      describe "when using swift_proxy_config resource" do
+        let :pre_condition do
+          "
+            class { memcached: max_memory => 1}
+            class { swift: swift_hash_suffix => string }
+            swift_proxy_config { 'foo/bar': value => 'foo' }
+          "
+        end
+        it { is_expected.to contain_concat("/etc/swift/proxy-server.conf").that_comes_before("Swift_proxy_config[foo/bar]") }
+      end
 
       describe 'when more parameters are set' do
         let :params do

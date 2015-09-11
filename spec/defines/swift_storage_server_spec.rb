@@ -131,6 +131,17 @@ describe 'swift::storage::server' do
             it { is_expected.to contain_file(fragment_file).with_content(/^log_udp_port\s*=\s*514\s*$/) }
           end
         end
+
+        describe "when using swift_#{t}_config resource" do
+          let :pre_condition do
+            "
+            class { 'swift': swift_hash_suffix => 'foo' }
+            class { 'swift::storage': storage_local_net_ip => '10.0.0.1' }
+            swift_#{t}_config { 'foo/bar': value => 'foo' }
+            "
+          end
+          it { is_expected.to contain_concat("/etc/swift/#{t}-server/#{title}.conf").that_comes_before("Swift_#{t}_config[foo/bar]") }
+        end
       end
 
       describe 'with all allowed defaults' do
