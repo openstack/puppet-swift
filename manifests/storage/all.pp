@@ -58,6 +58,11 @@
 #    (optional) Port value for UDP receiver, if enabled.
 #    Defaults to undef.
 #
+# [*log_requests*]
+#   (optional) Whether or not log every request. reduces logging output if false,
+#   good for seeing errors if true
+#   Defaults to true.
+#
 # [*incoming_chmod*] Incoming chmod to set in the rsync server.
 #   Optional. Defaults to 0644 for maintaining backwards compatibility.
 #   *NOTE*: Recommended parameter: 'Du=rwx,g=rx,o=rx,Fu=rw,g=r,o=r'
@@ -83,6 +88,7 @@ class swift::storage::all(
   $log_level          = 'INFO',
   $log_udp_host       = undef,
   $log_udp_port       = undef,
+  $log_requests       = true,
   $incoming_chmod     = '0644',
   $outgoing_chmod     = '0644',
 ) {
@@ -105,6 +111,7 @@ class swift::storage::all(
     config_file_path => 'account-server.conf',
     pipeline         => $account_pipeline,
     log_facility     => $log_facility,
+    log_requests     => $log_requests,
     incoming_chmod   => $incoming_chmod,
     outgoing_chmod   => $outgoing_chmod,
   }
@@ -115,6 +122,7 @@ class swift::storage::all(
     pipeline         => $container_pipeline,
     log_facility     => $log_facility,
     allow_versions   => $allow_versions,
+    log_requests     => $log_requests,
     incoming_chmod   => $incoming_chmod,
     outgoing_chmod   => $outgoing_chmod,
   }
@@ -124,6 +132,7 @@ class swift::storage::all(
     config_file_path => 'object-server.conf',
     pipeline         => $object_pipeline,
     log_facility     => $log_facility,
+    log_requests     => $log_requests,
     incoming_chmod   => $incoming_chmod,
     outgoing_chmod   => $outgoing_chmod,
   }
