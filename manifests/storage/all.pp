@@ -36,7 +36,7 @@
 #  [*mount_check*]
 #    (optional) Whether or not check if the devices are mounted
 #    to prevent accidentally writing to the root device
-#    Defaults to false
+#    Defaults to false. Soon to be changed to 'true' to match Swift defaults.
 #
 #  [*account_pipeline*]
 #    (optional) Specify the account pipeline
@@ -82,7 +82,7 @@ class swift::storage::all(
   $object_pipeline    = undef,
   $container_pipeline = undef,
   $allow_versions     = false,
-  $mount_check        = false,
+  $mount_check        = undef,
   $account_pipeline   = undef,
   $log_facility       = 'LOG_LOCAL2',
   $log_level          = 'INFO',
@@ -93,6 +93,14 @@ class swift::storage::all(
   $outgoing_chmod     = '0644',
 ) {
 
+  if (!$mount_check) {
+    warning('The default for the mount_check parameter will change from false to true in the next release to match upstream. To disable this warning, set mount_check=false.')
+    $mount_check_real = false
+  }
+  else {
+    $mount_check_real = $mount_check
+  }
+
   class { '::swift::storage':
     storage_local_net_ip => $storage_local_net_ip,
   }
@@ -100,7 +108,7 @@ class swift::storage::all(
   Swift::Storage::Server {
     devices              => $devices,
     storage_local_net_ip => $storage_local_net_ip,
-    mount_check          => $mount_check,
+    mount_check          => $mount_check_real,
     log_level            => $log_level,
     log_udp_host         => $log_udp_host,
     log_udp_port         => $log_udp_port,

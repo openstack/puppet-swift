@@ -47,8 +47,8 @@
 #
 # [*mount_check*]
 #   (optional) Whether or not check if the devices are mounted to prevent accidentally
-#   writing to the root device
-#   Defaults to false.
+#   writing to the root device.
+#   Defaults to false. Soon to be changed to 'true' to match Swift defaults.
 #
 # [*user*]
 #   (optional) User to run as
@@ -121,7 +121,7 @@ define swift::storage::server(
   $outgoing_chmod         = '0644',
   $max_connections        = 25,
   $pipeline               = ["${type}-server"],
-  $mount_check            = false,
+  $mount_check            = undef,
   $user                   = 'swift',
   $workers                = '1',
   $allow_versions         = false,
@@ -145,6 +145,14 @@ define swift::storage::server(
 
   if ($outgoing_chmod == '0644') {
     warning('The default outgoing_chmod set to 0644 may yield in error prone directories and will be changed in a later release.')
+  }
+
+  if (!$mount_check) {
+    warning('The default for the mount_check parameter will change from false to true in the next release to match upstream. To disable this warning, set mount_check=false.')
+    $mount_check_real = false
+  }
+  else {
+    $mount_check_real = $mount_check
   }
 
   # Warn if ${type-server} isn't included in the pipeline
