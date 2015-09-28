@@ -39,7 +39,8 @@ describe 'swift' do
       {:ensure => 'directory'}.merge(file_defaults)
     )}
     it {is_expected.to contain_file('/var/run/swift').with(
-      {:ensure => 'directory'}.merge(file_defaults)
+      {:ensure                  => 'directory',
+       :selinux_ignore_defaults => true}.merge(file_defaults)
     )}
     it {is_expected.to contain_file('/var/lib/swift').with(
       {:ensure => 'directory'}.merge(file_defaults)

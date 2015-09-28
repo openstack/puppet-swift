@@ -22,7 +22,8 @@ describe 'swift::proxy::authtoken' do
       }
     end
     it {is_expected.to contain_file('/var/cache/swift').with(
-      {:ensure => 'directory'}.merge(file_defaults)
+      {:ensure                  => 'directory',
+       :selinux_ignore_defaults => true}.merge(file_defaults)
     )}
   end
 

@@ -53,8 +53,6 @@ define swift::storage::generic(
 
   file { "/etc/swift/${name}-server/":
     ensure => directory,
-    owner  => 'swift',
-    group  => 'swift',
   }
 
   if $manage_service {

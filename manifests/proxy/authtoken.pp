@@ -111,10 +111,11 @@ class swift::proxy::authtoken(
   }
 
   file { $signing_dir:
-    ensure => directory,
-    mode   => '0700',
-    owner  => 'swift',
-    group  => 'swift',
+    ensure                  => directory,
+    mode                    => '0700',
+    owner                   => 'swift',
+    group                   => 'swift',
+    selinux_ignore_defaults => true,
   }
 
   concat::fragment { 'swift_authtoken':

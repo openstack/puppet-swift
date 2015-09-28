@@ -74,9 +74,7 @@ describe 'swift::storage::all' do
           }
         )}
         it { is_expected.to contain_file("/etc/swift/#{type}-server/").with(
-          {:ensure => 'directory',
-           :owner  => 'swift',
-           :group  => 'swift'}
+          {:ensure => 'directory'}
         )}
       end
 

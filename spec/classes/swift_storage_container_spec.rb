@@ -91,15 +91,11 @@ describe 'swift::storage::container' do
           :ensure   => 'running',
           :enable   => true,
           :provider => 'upstart',
-          :require  => ['File[/etc/init/swift-container-sync.conf]', 'File[/etc/init.d/swift-container-sync]']
+          :require  => 'File[/etc/init/swift-container-sync.conf]',
         )
         is_expected.to contain_file('/etc/init/swift-container-sync.conf').with(
           :source  => 'puppet:///modules/swift/swift-container-sync.conf.upstart',
           :require => 'Package[swift-container]'
-        )
-        is_expected.to contain_file('/etc/init.d/swift-container-sync').with(
-          :ensure => 'link',
-          :target => '/lib/init/upstart-job'
         )
       end
     end

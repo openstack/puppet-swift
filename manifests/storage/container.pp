@@ -67,15 +67,11 @@ class swift::storage::container(
       source  => 'puppet:///modules/swift/swift-container-sync.conf.upstart',
       require => Package['swift-container'],
     }
-    file { '/etc/init.d/swift-container-sync':
-      ensure => link,
-      target => '/lib/init/upstart-job',
-    }
     service { 'swift-container-sync':
       ensure   => $service_ensure,
       enable   => $enabled,
       provider => $::swift::params::service_provider,
-      require  => File['/etc/init/swift-container-sync.conf', '/etc/init.d/swift-container-sync'],
+      require  => File['/etc/init/swift-container-sync.conf'],
     }
     Swift_config<| |> ~> Service['swift-container-sync']
   }

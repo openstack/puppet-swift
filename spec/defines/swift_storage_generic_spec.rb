@@ -65,8 +65,6 @@ describe 'swift::storage::generic' do
         )}
         it { is_expected.to contain_file("/etc/swift/#{t}-server/").with(
           :ensure => 'directory',
-          :owner  => 'swift',
-          :group  => 'swift'
         )}
       end
       # TODO - I do not want to add tests for the upstart stuff

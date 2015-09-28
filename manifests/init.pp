@@ -61,7 +61,8 @@ class swift(
     ensure => directory,
   }
   file { '/var/run/swift':
-    ensure => directory,
+    ensure                  => directory,
+    selinux_ignore_defaults => true,
   }
 
   file { '/etc/swift/swift.conf':
