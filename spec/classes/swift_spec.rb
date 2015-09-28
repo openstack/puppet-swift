@@ -59,6 +59,7 @@ describe 'swift' do
         'swift-constraints/max_header_size').with_value('16384')
     end
     it { is_expected.to contain_package('swift').with_ensure('present') }
+    it { is_expected.to contain_file('/etc/swift/swift.conf').with_before(/Swift_config\[.+\]/) }
   end
 
   describe 'when overriding package_ensure parameter' do

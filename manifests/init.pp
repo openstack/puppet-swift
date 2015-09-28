@@ -70,6 +70,8 @@ class swift(
     mode   => '0660',
   }
 
+  File['/etc/swift/swift.conf'] -> Swift_config<||>
+
   swift_config { 'swift-hash/swift_hash_path_suffix':
     value => $swift_hash_suffix,
   }
