@@ -11,6 +11,12 @@
 #   Enable or not ceilometer fragment
 #   Defaults to 'present'
 #
+# [*group*]
+#   Group name to add to 'swift' user.
+#   ceilometer/eventlet: set 'ceilometer' (default)
+#   ceilometer/wsgi: set $::apache::group
+#   Defaults to 'ceilometer'
+#
 # == Examples
 #
 # == Authors
@@ -22,11 +28,12 @@
 # Copyright 2013 eNovance licensing@enovance.com
 #
 class swift::proxy::ceilometer(
-  $ensure = 'present'
+  $ensure = 'present',
+  $group  = 'ceilometer',
 ) inherits swift {
 
   User['swift'] {
-    groups +> 'ceilometer',
+    groups +> $group,
   }
 
   if defined(Service['swift-proxy']) {
