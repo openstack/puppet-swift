@@ -53,7 +53,6 @@ class swift(
 
   file { '/etc/swift':
     ensure => directory,
-    mode   => '2770',
   }
   user {'swift':
     ensure => present,
@@ -67,7 +66,6 @@ class swift(
 
   file { '/etc/swift/swift.conf':
     ensure => file,
-    mode   => '0660',
   }
 
   File['/etc/swift/swift.conf'] -> Swift_config<||>

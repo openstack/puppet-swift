@@ -50,7 +50,6 @@ describe 'swift::proxy' do
         {:ensure  => 'present',
          :owner   => 'swift',
          :group   => 'swift',
-         :mode    => '0660',
         }
       )}
 

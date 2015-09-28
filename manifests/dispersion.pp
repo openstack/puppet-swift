@@ -88,7 +88,6 @@ class swift::dispersion (
     ensure  => file,
     owner   => 'swift',
     group   => 'swift',
-    mode    => '0660',
     require => Package['swift'],
   }
 

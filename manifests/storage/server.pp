@@ -195,7 +195,6 @@ define swift::storage::server(
     group   => $group,
     notify  => Service["swift-${type}", "swift-${type}-replicator"],
     require => Package['swift'],
-    mode    => '0640',
   }
 
   $required_middlewares = split(

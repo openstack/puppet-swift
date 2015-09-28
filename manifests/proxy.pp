@@ -176,7 +176,6 @@ class swift::proxy(
   concat { '/etc/swift/proxy-server.conf':
     owner   => 'swift',
     group   => 'swift',
-    mode    => '0660',
     require => Package['swift-proxy'],
   }
 
