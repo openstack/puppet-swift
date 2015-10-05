@@ -60,20 +60,29 @@ describe 'swift::storage::generic' do
               end
               it do
                 is_expected.to contain_service("swift-#{t}-server").with(
-                  :name    => platform_params["swift-#{t}-server"],
-                  :ensure  => (param_hash_manage[:manage_service] && param_hash_manage[:enabled]) ? 'running' : 'stopped',
-                  :enable  => param_hash_manage[:enabled],
+                  :name     => platform_params["swift-#{t}-server"],
+                  :ensure   => (param_hash_manage[:manage_service] && param_hash_manage[:enabled]) ? 'running' : 'stopped',
+                  :enable   => param_hash_manage[:enabled],
                   :provider => platform_params['service_provider'],
-                  :tag     => 'swift-service'
+                  :tag      => 'swift-service'
                 )
               end
               it do
                 is_expected.to contain_service("swift-#{t}-replicator").with(
-                  :name    => platform_params["swift-#{t}-replicator"],
-                  :ensure  => (param_hash_manage[:manage_service] && param_hash_manage[:enabled]) ? 'running' : 'stopped',
-                  :enable  => param_hash_manage[:enabled],
+                  :name     => platform_params["swift-#{t}-replicator"],
+                  :ensure   => (param_hash_manage[:manage_service] && param_hash_manage[:enabled]) ? 'running' : 'stopped',
+                  :enable   => param_hash_manage[:enabled],
                   :provider => platform_params['service_provider'],
-                  :tag => 'swift-service'
+                  :tag      => 'swift-service'
+                )
+              end
+              it do
+                is_expected.to contain_service("swift-#{t}-auditor").with(
+                  :name     => platform_params["swift-#{t}-auditor"],
+                  :ensure   => (param_hash_manage[:manage_service] && param_hash_manage[:enabled]) ? 'running' : 'stopped',
+                  :enable   => param_hash_manage[:enabled],
+                  :provider => platform_params['service_provider'],
+                  :tag      => 'swift-service'
                 )
               end
               it do
@@ -97,10 +106,13 @@ describe 'swift::storage::generic' do
     let :platform_params do
       {  'swift-account-server'       => 'swift-account',
          'swift-account-replicator'   => 'swift-account-replicator',
+         'swift-account-auditor'      => 'swift-account-auditor',
          'swift-container-server'     => 'swift-container',
          'swift-container-replicator' => 'swift-container-replicator',
+         'swift-container-auditor'    => 'swift-container-auditor',
          'swift-object-server'        => 'swift-object',
          'swift-object-replicator'    => 'swift-object-replicator',
+         'swift-object-auditor'       => 'swift-object-auditor',
          'service_provider'           => 'upstart'
       }
     end
@@ -115,11 +127,14 @@ describe 'swift::storage::generic' do
       let :platform_params do
         {  'swift-account-server'       => 'swift-account-server',
            'swift-account-replicator'   => 'swift-account-replicator',
+           'swift-account-auditor'      => 'swift-account-auditor',
            'swift-container-server'     => 'swift-container-server',
            'swift-container-replicator' => 'swift-container-replicator',
+           'swift-container-auditor'    => 'swift-container-auditor',
            'swift-object-server'        => 'swift-object-server',
            'swift-object-replicator'    => 'swift-object-replicator',
-           'service_provider'           => 'swiftinit'
+           'swift-object-auditor'       => 'swift-object-auditor',
+           'service_provider'           => 'swiftinit',
         }
       end
 
@@ -136,10 +151,13 @@ describe 'swift::storage::generic' do
     let :platform_params do
       {  'swift-account-server'       => 'openstack-swift-account',
          'swift-account-replicator'   => 'openstack-swift-account-replicator',
+         'swift-account-auditor'      => 'openstack-swift-account-auditor',
          'swift-container-server'     => 'openstack-swift-container',
          'swift-container-replicator' => 'openstack-swift-container-replicator',
+         'swift-container-auditor'    => 'openstack-swift-container-auditor',
          'swift-object-server'        => 'openstack-swift-object',
-         'swift-object-replicator'    => 'openstack-swift-object-replicator'
+         'swift-object-replicator'    => 'openstack-swift-object-replicator',
+         'swift-object-auditor'       => 'openstack-swift-object-auditor',
       }
     end
 
@@ -153,11 +171,14 @@ describe 'swift::storage::generic' do
       let :platform_params do
         {  'swift-account-server'       => 'swift-account-server',
            'swift-account-replicator'   => 'swift-account-replicator',
+           'swift-account-auditor'      => 'swift-account-auditor',
            'swift-container-server'     => 'swift-container-server',
            'swift-container-replicator' => 'swift-container-replicator',
+           'swift-container-auditor'    => 'swift-container-auditor',
            'swift-object-server'        => 'swift-object-server',
            'swift-object-replicator'    => 'swift-object-replicator',
-           'service_provider'           => 'swiftinit'
+           'swift-object-auditor'       => 'swift-object-auditor',
+           'service_provider'           => 'swiftinit',
         }
       end
 

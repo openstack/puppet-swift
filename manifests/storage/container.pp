@@ -41,7 +41,6 @@ class swift::storage::container(
 ) inherits ::swift::params {
 
   Swift_config<| |> ~> Service['swift-container-updater']
-  Swift_config<| |> ~> Service['swift-container-auditor']
 
   swift::storage::generic { 'container':
     manage_service   => $manage_service,
@@ -61,15 +60,6 @@ class swift::storage::container(
 
   swift::service { 'swift-container-updater':
     os_family_service_name => $::swift::params::container_updater_service_name,
-    service_ensure         => $service_ensure,
-    enabled                => $enabled,
-    config_file_name       => $config_file_name,
-    service_provider       => $service_provider,
-    require                => Package['swift-container'],
-  }
-
-  swift::service { 'swift-container-auditor':
-    os_family_service_name => $::swift::params::container_auditor_service_name,
     service_ensure         => $service_ensure,
     enabled                => $enabled,
     config_file_name       => $config_file_name,
