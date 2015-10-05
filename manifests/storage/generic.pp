@@ -42,6 +42,8 @@ define swift::storage::generic(
 
   Class['swift::storage'] -> Swift::Storage::Generic[$name]
   Swift_config<| |> ~> Service["swift-${name}-server"]
+  Swift_config<| |> ~> Service["swift-${name}-auditor"]
+  Swift_config<| |> ~> Service["swift-${name}-replicator"]
 
   validate_re($name, '^object|container|account$')
 
@@ -78,6 +80,15 @@ define swift::storage::generic(
 
   swift::service { "swift-${name}-replicator":
     os_family_service_name => getvar("::swift::params::${name}_replicator_service_name"),
+    service_ensure         => $service_ensure,
+    enabled                => $enabled,
+    config_file_name       => $config_file_name,
+    service_provider       => $service_provider,
+    subscribe              => Package["swift-${name}"],
+  }
+
+  swift::service { "swift-${name}-auditor":
+    os_family_service_name => getvar("::swift::params::${name}_auditor_service_name"),
     service_ensure         => $service_ensure,
     enabled                => $enabled,
     config_file_name       => $config_file_name,

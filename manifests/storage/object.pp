@@ -35,7 +35,6 @@ class swift::storage::object(
 ) inherits ::swift::params {
 
   Swift_config<| |> ~> Service['swift-object-updater']
-  Swift_config<| |> ~> Service['swift-object-auditor']
 
   swift::storage::generic { 'object':
     manage_service   => $manage_service,
@@ -55,15 +54,6 @@ class swift::storage::object(
 
   swift::service { 'swift-object-updater':
     os_family_service_name => $::swift::params::object_updater_service_name,
-    service_ensure         => $service_ensure,
-    enabled                => $enabled,
-    config_file_name       => $config_file_name,
-    service_provider       => $service_provider,
-    require                => Package['swift-object'],
-  }
-
-  swift::service { 'swift-object-auditor':
-    os_family_service_name => $::swift::params::object_auditor_service_name,
     service_ensure         => $service_ensure,
     enabled                => $enabled,
     config_file_name       => $config_file_name,
