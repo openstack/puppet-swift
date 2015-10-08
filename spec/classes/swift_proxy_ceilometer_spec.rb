@@ -24,7 +24,7 @@ describe 'swift::proxy::ceilometer' do
     it { is_expected.to contain_file(fragment_file).with_content(/[filter:ceilometer]/) }
     it { is_expected.to contain_file(fragment_file).with_content(/use = egg:ceilometer#swift/) }
     if Puppet.version.to_f < 4.0
-      it { is_expected.to contain_concat__fragment('swift_ceilometer').with_require('Class[::Ceilometer]')}
+      it { is_expected.to contain_concat__fragment('swift_ceilometer').with_require('Class[Ceilometer]')}
     else
       it { is_expected.to contain_concat__fragment('swift_ceilometer').with_require('Class[Ceilometer]')}
     end
