@@ -22,7 +22,7 @@ The swift module is a part of [OpenStack](https://github.com/openstack), an effo
 Module Description
 ------------------
 
-The swift module is a thorough attempt to make Puppet capable of managing the entirety of swift.  This includes manifests to provision such things as keystone, storage backends, proxies, and the ring.  Types are shipped as part of the swift module to assist in manipulation of configuration files.  The classes in this module will deploy Swift using best practices for a typical deployment.
+The swift module is a thorough attempt to make Puppet capable of managing the entirety of swift.  This includes manifests to provision such things as keystone, storage backends, proxies, and the ring.  Types are shipped as part of the swift module to assist in manipulation of configuration files.  A custom service provider built around the swift-init tool is also provided as an option for enhanced swift service management. The classes in this module will deploy Swift using best practices for a typical deployment.
 
 This module is tested in combination with other modules needed to build and leverage an entire Openstack software stack.  These modules can be found, all pulled together in the [openstack module](https://github.com/stackforge/puppet-openstack).  In addition, this module requires Puppet's [exported resources](http://docs.puppetlabs.com/puppet/3/reference/lang_exported.html).
 
@@ -88,8 +88,7 @@ class { 'swift::storage::all':
   weight => 1,
 }
 
-Swift::Ringsync<<||>>
-```
+Swift::Ringsync<<||>>```
 
 Usage
 -----
@@ -245,6 +244,76 @@ class { 'swift::objectexpirer': }
 
 It is assumed that the object expirer service will usually be installed in a proxy node. On Red Hat-based distributions, if the class is included in a non-proxy node, the openstack-swift-proxy package will need to be installed.
 
+
+##Swiftinit service provider
+
+The 'swiftinit' provider is a custom provider of the service type.
+
+"Swift services are generally managed with swift-init. the general usage is swift-init <service> <command>, where service is the swift service to manage (for example object, container, account, proxy)"
+From http://docs.openstack.org/developer/swift/admin_guide.html#managing-services
+
+This new provider is intended to improve puppet-swift deployments in the following ways:
+
+* The default service provider for puppet-swift is to use distribution specific service providers such as systemd and upstart.  If distribution provided init scripts do not specify the full range of service commands, puppet will fall back to methods such as process name matching which is not very reliable.  For example, if you were to tail a log file with the same name as a swift process, puppet will interpret that process table match as the swift-proxy service running and fail to start the swift service.
+* Minimize customer impact: Using the swiftinit service provider enables more specific and targeted control of swift services.  Swift-init provides grateful stop/start reload/restart of swift services which will allow swift processes to finish any current requests before completely stopping the old processes.
+* Specific control of services starting at boot is implemented by adding or removing
+a templated init or services file. This is managed by this provider.  For EL and non Ubuntu Debian OS types, this provider will also make calls out to systemctl reload and systemctl enable/disable.
+* Future use of the swiftinit provider is planed to allow for starting multiple servers using swift-init and multiple configuration files, to support a dedicated replication network.
+
+
+### Using the swiftinit service provider
+* To use the swiftinit service provider set "service_provider" on the supported components you have defined in your config manifest.
+
+Setting: `service_provider => 'swiftinit'`
+Is supported on the following components:
+
+* swift::storage:all
+* swift::storage:node
+* swift::storage:server
+* swift::storage::(account|container|object)
+* swift::proxy
+
+Moving from the default service providers to the swiftinit service provider is supported.  On the next puppet run after setting the swiftinit service provider swift services are stopped on the old provider and immediately started using swift-init.  This provides a supported upgrade path with no down time.
+
+The swiftinit service provider uses the following service type parameters to
+manage swift services in a non standard way.
+
+* `manifest` is used to pass in the config file the service should be
+configured with. Ex `object-server.conf`
+* `pattern` is used to pass in the debian/redhat osfamily specific service names as found in params.pp. Used to match names on services files as provided by distro packages.  Debian/Ubuntu service names already match names used by swift-init.
+
+To aid with input validation to the swiftinit provider there is a defined type swift::service
+
+### Class: swift::service
+
+This is a wrapper defined type for the swift service providers.
+It provides a centraziled location to manage and validate in put for use to the default
+as well as the swiftinit service providers.
+
+####`namevar`
+The namevar/title of swift::service must be one of the swift_init_service_names listed in swift::params.pp.
+These names are parsed by the swiftinit provider to provide service management as well as template boot files.
+
+####`os_family_service_name`
+The distribution specific service name from swift::params.  This name is passed to the default service provider.
+This name is used by the swiftinit provider to match on default provider service names when moving from a default
+provider to the swiftinit provider.  The swiftinit provider also uses the service_name to manage service and init files.
+
+####`config_file_name`
+The swift service configuration file name.  It must be one of the following:
+object-server.conf, account-server.conf, container-server.conf, proxy-server.conf, object-expirer.conf.
+
+####`service_ensure`
+The state of the service to ensure, running or stopped.
+
+####`enabled`
+Should the service be enabled to start at boot.
+
+####`service_provider`
+To use the swiftinit service provider to manage swift services, set service_provider to "swiftinit".  When enable is true the provider
+will populate boot files that start swift using swift-init at boot. Defaults to $::swift::params::service_provider.
+
+
 ### Verifying installation
 
 This modules ships with a simple Ruby script that validates whether or not your swift cluster is functional.
@@ -258,7 +327,7 @@ Implementation
 
 ### swift
 
-swift is a combination of Puppet manifest and ruby code to delivery configuration and extra functionality through types and providers.
+puppet-swift is a combination of Puppet manifest and ruby code to deliver configuration and extra functionality through types and providers.
 
 ### Types
 

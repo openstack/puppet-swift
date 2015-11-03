@@ -56,7 +56,14 @@
 #    (optional) Report interval, in seconds.
 #    Defaults to 300.
 #
-
+#  [*service_provider*]
+#    (optional)
+#    To use the swiftinit service provider to manage swift services, set
+#    service_provider to "swiftinit".  When enable is true the provider
+#    will populate boot files that start swift using swift-init at boot.
+#    See README for more details.
+#    Defaults to $::swift::params::service_provider.
+#
 class swift::objectexpirer(
   $manage_service                = true,
   $enabled                       = true,
@@ -71,9 +78,8 @@ class swift::objectexpirer(
   $reclaim_age                   = 604800,
   $recon_cache_path              = '/var/cache/swift',
   $report_interval               = 300,
-) {
-
-  include ::swift::params
+  $service_provider              = $::swift::params::service_provider
+) inherits ::swift::params {
 
   Swift_config<| |> ~> Service['swift-object-expirer']
   Swift_object_expirer_config<||> ~> Service['swift-object-expirer']
@@ -109,12 +115,11 @@ class swift::objectexpirer(
     }
   }
 
-  service { 'swift-object-expirer':
-    ensure   => $service_ensure,
-    name     => $::swift::params::object_expirer_service_name,
-    enable   => $enabled,
-    provider => $::swift::params::service_provider,
-    tag      => 'swift-service',
+  swift::service { 'swift-object-expirer':
+    os_family_service_name => $::swift::params::object_expirer_service_name,
+    service_ensure         => $service_ensure,
+    enabled                => $enabled,
+    config_file_name       => 'object-expirer.conf',
+    service_provider       => $service_provider,
   }
 }
-

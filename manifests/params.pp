@@ -6,21 +6,22 @@ class swift::params {
       $package_name                      = 'swift'
       $client_package                    = 'python-swiftclient'
       $proxy_package_name                = 'swift-proxy'
-      $proxy_service_name                = 'swift-proxy'
+      $proxy_server_service_name         = 'swift-proxy'
       $object_package_name               = 'swift-object'
-      $object_service_name               = 'swift-object'
+      $object_server_service_name        = 'swift-object'
       $object_auditor_service_name       = 'swift-object-auditor'
       $object_replicator_service_name    = 'swift-object-replicator'
       $object_updater_service_name       = 'swift-object-updater'
       $object_expirer_package_name       = 'swift-object-expirer'
       $object_expirer_service_name       = 'swift-object-expirer'
       $container_package_name            = 'swift-container'
-      $container_service_name            = 'swift-container'
+      $container_server_service_name     = 'swift-container'
       $container_auditor_service_name    = 'swift-container-auditor'
       $container_replicator_service_name = 'swift-container-replicator'
       $container_updater_service_name    = 'swift-container-updater'
+      $container_sync_service_name       = 'swift-container-sync'
       $account_package_name              = 'swift-account'
-      $account_service_name              = 'swift-account'
+      $account_server_service_name       = 'swift-account'
       $account_auditor_service_name      = 'swift-account-auditor'
       $account_reaper_service_name       = 'swift-account-reaper'
       $account_replicator_service_name   = 'swift-account-replicator'
@@ -35,21 +36,22 @@ class swift::params {
       $package_name                      = 'openstack-swift'
       $client_package                    = 'python-swiftclient'
       $proxy_package_name                = 'openstack-swift-proxy'
-      $proxy_service_name                = 'openstack-swift-proxy'
+      $proxy_server_service_name         = 'openstack-swift-proxy'
       $object_package_name               = 'openstack-swift-object'
-      $object_service_name               = 'openstack-swift-object'
+      $object_server_service_name        = 'openstack-swift-object'
       $object_auditor_service_name       = 'openstack-swift-object-auditor'
       $object_replicator_service_name    = 'openstack-swift-object-replicator'
       $object_updater_service_name       = 'openstack-swift-object-updater'
       $object_expirer_package_name       = 'openstack-swift-proxy'
       $object_expirer_service_name       = 'openstack-swift-object-expirer'
       $container_package_name            = 'openstack-swift-container'
-      $container_service_name            = 'openstack-swift-container'
+      $container_server_service_name     = 'openstack-swift-container'
       $container_auditor_service_name    = 'openstack-swift-container-auditor'
       $container_replicator_service_name = 'openstack-swift-container-replicator'
       $container_updater_service_name    = 'openstack-swift-container-updater'
+      $container_sync_service_name       = 'openstack-swift-container-sync'
       $account_package_name              = 'openstack-swift-account'
-      $account_service_name              = 'openstack-swift-account'
+      $account_server_service_name       = 'openstack-swift-account'
       $account_auditor_service_name      = 'openstack-swift-account-auditor'
       $account_reaper_service_name       = 'openstack-swift-account-reaper'
       $account_replicator_service_name   = 'openstack-swift-account-replicator'
@@ -60,4 +62,21 @@ class swift::params {
         fail("Unsupported osfamily: ${::osfamily} for os ${::operatingsystem}")
     }
   }
+  $swift_init_service_names = [
+    'swift-proxy-server',
+    'swift-object-auditor',
+    'swift-object-expirer',
+    'swift-object-replicator',
+    'swift-object-server',
+    'swift-object-updater',
+    'swift-account-auditor',
+    'swift-account-reaper',
+    'swift-account-replicator',
+    'swift-account-server',
+    'swift-container-auditor',
+    'swift-container-replicator',
+    'swift-container-server',
+    'swift-container-sync',
+    'swift-container-updater',
+  ]
 }

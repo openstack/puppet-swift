@@ -37,13 +37,13 @@ describe 'swift::proxy' do
         {:proxy_local_net_ip => '127.0.0.1'}
       end
 
-      it { is_expected.to contain_service('swift-proxy').with(
-        {:ensure    => 'running',
-         :provider  => 'upstart',
-         :enable    => true,
-         :hasstatus => true,
-         :subscribe => 'Concat[/etc/swift/proxy-server.conf]',
-         :tag       => 'swift-service',
+      it { is_expected.to contain_service('swift-proxy-server').with(
+        {:ensure     => 'running',
+         :provider   => 'upstart',
+         :enable     => true,
+         :hasstatus  => true,
+         :subscribe  => 'Concat[/etc/swift/proxy-server.conf]',
+         :tag        => 'swift-service',
         }
       )}
       it { is_expected.to contain_file('/etc/swift/proxy-server.conf').with(
@@ -232,7 +232,7 @@ describe 'swift::proxy' do
     end
   end
 
-  shared_examples_for 'swift-proxy' do
+  shared_examples_for 'swift-proxy-server' do
     let :params do
       { :proxy_local_net_ip => '127.0.0.1' }
     end
@@ -244,14 +244,13 @@ describe 'swift::proxy' do
           params.merge!(param_hash)
         end
 
-        it 'configures swift-proxy service' do
-          is_expected.to contain_service('swift-proxy').with(
-            :ensure    => (param_hash[:manage_service] && param_hash[:enabled]) ? 'running' : 'stopped',
-            :name      => platform_params[:service_name],
-            :provider  => platform_params[:service_provider],
-            :enable    => param_hash[:enabled],
-            :hasstatus => true,
-            :subscribe => 'Concat[/etc/swift/proxy-server.conf]'
+        it 'configures swift-proxy-server service' do
+          is_expected.to contain_service('swift-proxy-server').with(
+            :name     => platform_params['swift-proxy-server'],
+            :ensure   => (param_hash[:manage_service] && param_hash[:enabled]) ? 'running' : 'stopped',
+            :enable   => param_hash[:enabled],
+            :provider => platform_params['service_provider'],
+            :tag      => 'swift-service',
           )
         end
       end
@@ -264,14 +263,15 @@ describe 'swift::proxy' do
           :enabled        => false })
       end
 
-      it 'configures swift-proxy service' do
-        is_expected.to contain_service('swift-proxy').with(
-          :ensure    => nil,
-          :name      => platform_params[:service_name],
-          :provider  => platform_params[:service_provider],
-          :enable    => false,
-          :hasstatus => true,
-          :subscribe => 'Concat[/etc/swift/proxy-server.conf]'
+      it 'configures swift-proxy-server service' do
+
+        is_expected.to contain_service('swift-proxy-server').with(
+          :ensure     => nil,
+          :name       => platform_params['swift-proxy-server'],
+          :provider   => platform_params['service_provider'],
+          :enable     => false,
+          :hasstatus  => true,
+          :subscribe  => 'Concat[/etc/swift/proxy-server.conf]'
         )
       end
     end
@@ -285,11 +285,24 @@ describe 'swift::proxy' do
     end
 
     let :platform_params do
-      { :service_name     => 'swift-proxy',
-        :service_provider => 'upstart' }
+      {   'swift-proxy-server' => 'swift-proxy',
+          'service_provider'   => 'upstart'
+      }
     end
+    it_configures 'swift-proxy-server'
 
-    it_configures 'swift-proxy'
+    context 'on Debian platforms using swiftinit service provider' do
+      before do
+        params.merge!({ :service_provider => 'swiftinit' })
+      end
+
+      let :platform_params do
+        {   'swift-proxy-server' => 'swift-proxy-server',
+            'service_provider'   => 'swiftinit'
+        }
+      end
+      it_configures 'swift-proxy-server'
+    end
   end
 
   context 'on RedHat platforms' do
@@ -300,10 +313,23 @@ describe 'swift::proxy' do
     end
 
     let :platform_params do
-      { :service_name     => 'openstack-swift-proxy',
-        :service_provider => nil }
+      {
+        'swift-proxy-server' => 'openstack-swift-proxy',
+      }
     end
+    it_configures 'swift-proxy-server'
 
-    it_configures 'swift-proxy'
+    context 'on Redhat platforms using swiftinit service provider' do
+      before do
+        params.merge!({ :service_provider => 'swiftinit' })
+      end
+
+      let :platform_params do
+        {   'swift-proxy-server' => 'swift-proxy-server',
+            'service_provider'   => 'swiftinit'
+        }
+      end
+      it_configures 'swift-proxy-server'
+    end
   end
 end
