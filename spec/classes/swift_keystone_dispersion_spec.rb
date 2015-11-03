@@ -8,7 +8,6 @@ describe 'swift::keystone::dispersion' do
       :ensure   => 'present',
       :password => 'dispersion_password',
       :email    => 'swift@localhost',
-      :tenant   => 'services'
     ) }
 
     it { is_expected.to contain_keystone_user_role('dispersion@services').with(
@@ -33,7 +32,6 @@ describe 'swift::keystone::dispersion' do
       :ensure   => 'present',
       :password => 'foo',
       :email    => 'bar@example.com',
-      :tenant   => 'dummyTenant'
     ) }
 
     it { is_expected.to contain_keystone_user_role('bar@dummyTenant') }

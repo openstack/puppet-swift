@@ -40,7 +40,6 @@ class swift::keystone::dispersion(
     ensure   => present,
     password => $auth_pass,
     email    => $email,
-    tenant   => $tenant,
   }
 
   keystone_user_role { "${auth_user}@${tenant}":
