@@ -82,4 +82,83 @@ describe 'basic swift' do
     end
 
   end
+
+  context 'Using swiftinit service provider' do
+
+    it 'should work with no errors' do
+      swiftinit_pp= <<-EOS
+      include ::openstack_integration
+      include ::openstack_integration::repos
+      include ::openstack_integration::rabbitmq
+      include ::openstack_integration::mysql
+      include ::openstack_integration::keystone
+
+      package { 'curl': ensure => present }
+
+      class { '::memcached':
+        listen_ip => '127.0.0.1',
+      }
+
+      # Swift resources
+      class { '::swift':
+        # not sure how I want to deal with this shared secret
+        swift_hash_suffix => 'secrete',
+        package_ensure    => latest,
+      }
+      class { '::swift::keystone::auth':
+        password => 'a_big_secret',
+      }
+      # === Configure Storage
+      class { '::swift::storage':
+        storage_local_net_ip => '127.0.0.1',
+      }
+      # create xfs partitions on a loopback device and mounts them
+      swift::storage::loopback { '2':
+        require => Class['swift'],
+      }
+      # sets up storage nodes which is composed of a single
+      # device that contains an endpoint for an object, account, and container
+      swift::storage::node { '2':
+        mnt_base_dir         => '/srv/node',
+        weight               => 1,
+        manage_ring          => true,
+        zone                 => '2',
+        storage_local_net_ip => '127.0.0.1',
+        require              => Swift::Storage::Loopback[2] ,
+        service_provider     => 'swiftinit',
+      }
+      class { '::swift::ringbuilder':
+        part_power     => '18',
+        replicas       => '1',
+        min_part_hours => 1,
+        require        => Class['swift'],
+      }
+      class { '::swift::proxy':
+        proxy_local_net_ip => '127.0.0.1',
+        pipeline           => ['healthcheck', 'cache', 'tempauth', 'proxy-server'],
+        account_autocreate => true,
+        require            => Class['swift::ringbuilder'],
+        service_provider   => 'swiftinit',
+      }
+      class { '::swift::proxy::authtoken':
+        admin_password => 'a_big_secret',
+      }
+      class {'::swift::objectexpirer':
+        interval         => 600,
+        service_provider => 'swiftinit',
+      }
+      class { ['::swift::proxy::healthcheck', '::swift::proxy::cache', '::swift::proxy::tempauth']: }
+      EOS
+
+      # Run one time to catch any errors upgrading to swiftinit service provider
+      apply_manifest(swiftinit_pp, :catch_failures => true)
+      # The second run tests idempotency
+      apply_manifest(swiftinit_pp, :catch_changes => true)
+
+    end
+
+    describe port(8080) do
+      it { is_expected.to be_listening.with('tcp') }
+    end
+  end
 end

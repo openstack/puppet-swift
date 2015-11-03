@@ -85,6 +85,18 @@ describe 'swift::objectexpirer' do
 
       it_configures 'swift-object-expirer'
     end
+
+    context 'on debian using swiftinit service provider' do
+      before do
+        params.merge!({ :service_provider => 'swiftinit' })
+      end
+
+      before do
+        platform_params.merge!({ :service_provider => 'swiftinit' })
+      end
+
+      it_configures 'swift-object-expirer'
+    end
   end
 
   context 'on RedHat platforms' do
@@ -107,6 +119,20 @@ describe 'swift::objectexpirer' do
           :reclaim_age     => '10000',
           :concurrency     => '3',
         )
+      end
+
+      it_configures 'swift-object-expirer'
+    end
+
+    context 'on redhat using swiftinit service provider' do
+      before do
+        params.merge!({ :service_provider => 'swiftinit' })
+      end
+
+      let :platform_params do
+        { :object_expirer_package_name => 'openstack-swift-proxy',
+          :service_name                => 'swift-object-expirer',
+          :service_provider            => 'swiftinit' }
       end
 
       it_configures 'swift-object-expirer'

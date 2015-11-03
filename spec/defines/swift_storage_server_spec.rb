@@ -53,13 +53,13 @@ describe 'swift::storage::server' do
       end
 
       it { is_expected.to contain_package("swift-#{t}").with_ensure('present') }
-      it { is_expected.to contain_service("swift-#{t}").with(
-        :ensure    => 'running',
-        :enable    => true,
-        :hasstatus => true
+      it { is_expected.to contain_service("swift-#{t}-server").with(
+        :ensure     => 'running',
+        :enable     => true,
+        :hasstatus  => true,
       )}
       let :fragment_file do
-        "/var/lib/puppet/concat/_etc_swift_#{t}-server_#{title}.conf/fragments/00_swift-#{t}-#{title}"
+        "/var/lib/puppet/concat/_etc_swift_#{t}-server.conf/fragments/00_swift-#{t}-#{title}"
       end
 
       describe 'when parameters are overridden' do
@@ -141,7 +141,7 @@ describe 'swift::storage::server' do
             swift_#{t}_config { 'foo/bar': value => 'foo' }
             "
           end
-          it { is_expected.to contain_concat("/etc/swift/#{t}-server/#{title}.conf").that_comes_before("Swift_#{t}_config[foo/bar]") }
+          it { is_expected.to contain_concat("/etc/swift/#{t}-server.conf").that_comes_before("Swift_#{t}_config[foo/bar]") }
         end
         describe "when log_requests is turned off" do
           let :params do req_params.merge({:log_requests => false}) end
