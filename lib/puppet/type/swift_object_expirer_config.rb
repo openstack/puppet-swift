@@ -44,12 +44,10 @@ Puppet::Type.newtype(:swift_object_expirer_config) do
   end
 
   # Require the package providing object-expirer to be present
-  if Facter['osfamily'].value == 'Debian'
-    autorequire(:package) do
+  autorequire(:package) do
+    if Facter.value(:osfamily) == 'Debian'
       'swift-object-expirer'
-    end
-  elsif Facter['osfamily'].value == 'RedHat'
-    autorequire(:package) do
+    elsif Facter.value(:osfamily) == 'RedHat'
       'openstack-swift-proxy'
     end
   end
