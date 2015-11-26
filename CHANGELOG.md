@@ -1,3 +1,43 @@
+##2015-11-25 - 7.0.0
+###Summary
+
+This is a backwards-incompatible major release for OpenStack Liberty.
+
+####Backwards-incompatible changes
+- remove tenant parameter from keystone_user
+
+####Features
+- add tag to package and service resources
+- add swift::config class
+- reflect provider change in puppet-openstacklib
+- keystone/auth: make service description configurable
+- add support for swift-object-expirer service
+- drop useless comment in authtoken.conf.erb
+- improve File resources idempotency
+- proxy: ceilometer httpd support
+- stop managing file modes
+- add support for DLO configuration
+- warn that object storage parameter mount_check changes next release
+- provide means to disable log_requests in config templates
+- add incoming/outgoing chmod params to storage/all
+- rely on autorequire for config resource ordering
+- add tempauth middleware options
+- add tempurl middleware options
+- config resources applied after config template
+
+####Bugfixes
+- fix swift.conf / Swift_config ordering
+- make sure Facter is only executed on agent
+- add a blank line to the beginning of each filter
+
+####Maintenance
+- initial msync run for all Puppet OpenStack modules
+- spec: Enable webmock connect to IPv4 link-local
+- try to use zuul-cloner to prepare fixtures
+- remove class_parameter_defaults puppet-lint check
+- acceptance: use common bits from puppet-openstack-integration
+- fix rspec 3.x syntax
+
 ##2015-10-10 - 6.1.0
 ###Summary
 

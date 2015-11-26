@@ -1,7 +1,7 @@
 swift
 =======
 
-6.1.0 - 2015.1 - Kilo
+7.0.0 - 2015.2 - Liberty
 
 #### Table of Contents
 
