@@ -24,7 +24,7 @@ Module Description
 
 The swift module is a thorough attempt to make Puppet capable of managing the entirety of swift.  This includes manifests to provision such things as keystone, storage backends, proxies, and the ring.  Types are shipped as part of the swift module to assist in manipulation of configuration files.  A custom service provider built around the swift-init tool is also provided as an option for enhanced swift service management. The classes in this module will deploy Swift using best practices for a typical deployment.
 
-This module is tested in combination with other modules needed to build and leverage an entire Openstack software stack.  These modules can be found, all pulled together in the [openstack module](https://github.com/stackforge/puppet-openstack).  In addition, this module requires Puppet's [exported resources](http://docs.puppetlabs.com/puppet/3/reference/lang_exported.html).
+This module is tested in combination with other modules needed to build and leverage an entire Openstack software stack. In addition, this module requires Puppet's [exported resources](http://docs.puppetlabs.com/puppet/3/reference/lang_exported.html).
 
 Setup
 -----
@@ -41,7 +41,7 @@ Setup
 
 You much first setup [exported resources](http://docs.puppetlabs.com/puppet/3/reference/lang_exported.html).
 
-To utilize the swift module's functionality you will need to declare multiple resources.  The following is a modified excerpt from the [openstack module](https://github.com/stackforge/puppet-openstack).  This is not an exhaustive list of all the components needed, we recommend you consult and understand the [openstack module](https://github.com/stackforge/puppet-openstack) and the [core openstack](http://docs.openstack.org) documentation.
+To utilize the swift module's functionality you will need to declare multiple resources. This is not an exhaustive list of all the components needed, we recommend you consult and understand the [core openstack](http://docs.openstack.org) documentation.
 
 **Defining a swift storage node**
 
