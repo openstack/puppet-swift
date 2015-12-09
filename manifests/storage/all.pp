@@ -73,14 +73,6 @@
 #   *NOTE*: Recommended parameter: 'Du=rwx,g=rx,o=rx,Fu=rw,g=r,o=r'
 #   This mask translates to 0755 for directories and 0644 for files.
 #
-#  [*service_provider*]
-#    (optional)
-#    To use the swiftinit service provider to manage swift services, set
-#    service_provider to "swiftinit".  When set to 'swiftinit' the
-#    "manage_boot" defined type is used to populate boot files that start
-#    swift using swift-init at boot. See README for more details.
-#    Defaults to $::swift::params::service_provider.
-#
 class swift::storage::all(
   $storage_local_net_ip,
   $devices            = '/srv/node',
@@ -99,8 +91,7 @@ class swift::storage::all(
   $log_requests       = true,
   $incoming_chmod     = '0644',
   $outgoing_chmod     = '0644',
-  $service_provider   = $::swift::params::service_provider,
-) inherits ::swift::params {
+) {
 
   if (!$mount_check) {
     warning('The default for the mount_check parameter will change from false to true in the next release to match upstream. To disable this warning, set mount_check=false.')
@@ -121,7 +112,6 @@ class swift::storage::all(
     log_level            => $log_level,
     log_udp_host         => $log_udp_host,
     log_udp_port         => $log_udp_port,
-    service_provider     => $service_provider,
   }
 
   swift::storage::server { $account_port:

@@ -38,14 +38,6 @@
 #   (optional) The IP address of the storage server.
 #   Defaults to '127.0.0.1'.
 #
-#  [*service_provider*]
-#    (optional)
-#    To use the swiftinit service provider to manage swift services, set
-#    service_provider to "swiftinit".  When set to 'swiftinit' the
-#    "manage_boot" defined type is used to populate boot files that start
-#    swift using swift-init at boot. See README for more details.
-#    Defaults to $::swift::params::service_provider.
-#
 # ==== DEPRECATED PARAMETERS
 #
 # [*manage_ring*]
@@ -59,7 +51,6 @@ define swift::storage::node(
   $group  = 'swift',
   $max_connections = 25,
   $storage_local_net_ip = '127.0.0.1',
-  $service_provider = $::swift::params::service_provider,
   # DEPRECATED PARAMETERS
   $manage_ring = true
 ) {
@@ -72,7 +63,6 @@ define swift::storage::node(
     max_connections      => $max_connections,
     owner                => $owner,
     group                => $group,
-    service_provider     => $service_provider
   }
 
   swift::storage::server { "60${name}0":
