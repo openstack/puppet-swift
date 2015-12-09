@@ -125,7 +125,15 @@ describe 'basic swift' do
         zone                 => '2',
         storage_local_net_ip => '127.0.0.1',
         require              => Swift::Storage::Loopback[2] ,
-        service_provider     => 'swiftinit',
+      }
+      class { '::swift::storage::account':
+        service_provider   => 'swiftinit',
+      }
+      class { '::swift::storage::container':
+        service_provider   => 'swiftinit',
+      }
+      class { '::swift::storage::object':
+        service_provider   => 'swiftinit',
       }
       class { '::swift::ringbuilder':
         part_power     => '18',
