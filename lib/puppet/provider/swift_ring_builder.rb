@@ -20,19 +20,41 @@ class Puppet::Provider::SwiftRingBuilder < Puppet::Provider
   def self.lookup_ring
     object_hash = {}
     if File.exists?(builder_file_path)
+      # Swift < 2.2.2 Skip first 4 info lines from swift-ring-builder output
       if rows = swift_ring_builder(builder_file_path).split("\n")[4..-1]
+        # Swift 2.2.2+ Skip additional line to account for Overload info
+        if !rows[0].nil? and rows[0].start_with?('Devices:')
+             rows.shift
+        end
         rows.each do |row|
            # Swift 1.7+ output example:
+           # /etc/swift/object.builder, build version 1
+           # 262144 partitions, 1.000000 replicas, 1 regions, 1 zones, 1 devices, 0.00 balance, 0.00 dispersion
+           # The minimum number of hours before a partition can be reassigned is 1
            # Devices:    id  region  zone      ip address  port      name weight partitions balance meta
            #              0     1     2       127.0.0.1  6022         2   1.00     262144   0.00
            #              0     1     3  192.168.101.15  6002         1   1.00     262144   -100.00
            #
            # Swift 1.8.0 output example:
+           # /etc/swift/object.builder, build version 1
+           # 262144 partitions, 1.000000 replicas, 1 regions, 1 zones, 1 devices, 0.00 balance, 0.00 dispersion
+           # The minimum number of hours before a partition can be reassigned is 1
            # Devices:    id  region  zone      ip address  port      name weight partitions balance meta
            #              2     1     2  192.168.101.14  6002         1   1.00     262144 200.00  m2
            #              0     1     3  192.168.101.15  6002         1   1.00     262144-100.00  m2
            #
            # Swift 1.8+ output example:
+           # /etc/swift/object.builder, build version 1
+           # 262144 partitions, 1.000000 replicas, 1 regions, 1 zones, 1 devices, 0.00 balance, 0.00 dispersion
+           # The minimum number of hours before a partition can be reassigned is 1
+           # Devices:    id  region  zone      ip address  port  replication ip  replication port      name weight partitions balance meta
+           #              0       1     2       127.0.0.1  6021       127.0.0.1              6021         2   1.00     262144    0.00
+           #
+           # Swift 2.2.2+ output example:
+           # /etc/swift/object.builder, build version 1
+           # 262144 partitions, 1.000000 replicas, 1 regions, 1 zones, 1 devices, 0.00 balance, 0.00 dispersion
+           # The minimum number of hours before a partition can be reassigned is 1
+           # The overload factor is 0.00% (0.000000)
            # Devices:    id  region  zone      ip address  port  replication ip  replication port      name weight partitions balance meta
            #              0       1     2       127.0.0.1  6021       127.0.0.1              6021         2   1.00     262144    0.00
           # Swift 1.8+ output example:
