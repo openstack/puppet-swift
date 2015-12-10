@@ -194,6 +194,34 @@ swift::storage::server { '6010':
 }
 ```
 
+### Define: swift::storage::filter::recon
+Configure the swift recon middleware on a swift:storage::server
+Can be configured on: account, container, object servers.
+
+### Define: swift::storage::filter::healthcheck
+Configure the swift health check middleware on a swift:storage::server
+Can be configured on: account, container, object servers.
+
+Declaring either the recon or health check middleware in a node manifest is required when specifying the recon or healthcheck middleware in an (account|container|object)_pipeline.
+
+example manifest:
+
+```
+
+class { 'swift::storage::all':
+  storage_local_net_ip => $swift_local_net_ip,
+  account_pipeline     => ['healthcheck', 'recon', 'account-server'],
+  container_pipeline   => ['healthcheck', 'recon', 'container-server'],
+  object_pipeline      => ['healthcheck', 'recon', 'object-server'],
+}
+$rings = [
+  'account',
+  'object',
+  'container']
+swift::storage::filter::recon { $rings: }
+swift::storage::filter::healthcheck { $rings: }
+```
+
 ####`namevar`
 The namevar/title for this type will map to the port where the server is hosted.
 
