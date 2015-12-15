@@ -33,6 +33,24 @@ $swift_shared_secret = hiera('swift_shared_secret', 'changeme')
 #$swift_local_net_ip   = $ipaddress_eth0
 $swift_local_net_ip = hiera('swift_local_net_ip', $ipaddress_eth0)
 
+# Swift storage configurations
+$rings = [
+  'account',
+  'object',
+  'container']
+$account_pipeline = [
+  'healthcheck',
+  'recon',
+  'account-server']
+$container_pipeline = [
+  'healthcheck',
+  'recon',
+  'container-server']
+$object_pipeline = [
+  'healthcheck',
+  'recon',
+  'object-server']
+
 #$swift_keystone_node = '172.16.0.21'
 $swift_keystone_node    = hiera('swift_keystone_node', '172.16.0.25')
 #$swift_proxy_node    = '172.168.0.25'
@@ -121,9 +139,16 @@ node /swift-storage/ {
     require      => Class['swift'],
   }
 
+  # configure account/container/object server middlewares
+  swift::storage::filter::recon { $rings: }
+  swift::storage::filter::healthcheck { $rings: }
+
   # install all swift storage servers together
   class { '::swift::storage::all':
     storage_local_net_ip => $swift_local_net_ip,
+    object_pipeline      => $object_pipeline,
+    container_pipeline   => $container_pipeline,
+    account_pipeline     => $account_pipeline,
   }
 
   # specify endpoints per device to be added to the ring specification
