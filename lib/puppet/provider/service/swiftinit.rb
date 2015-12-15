@@ -53,11 +53,16 @@ Puppet::Type.type(:service).provide :swiftinit, :parent => :service do
     end
   end
 
-  # Returns service enabled status using systemctl on Redhat/Debian
-  # and using presence of init file on Ubuntu.
+  # Returns service enabled status first checking for init/systemd file
+  # presence then checking if file content matches this provider and not
+  # distro provided.  Also on Redhat/Debian checks systemctl status.
   def enabled?
     if Facter.value(:operatingsystem) != 'Ubuntu'
       if Puppet::FileSystem.exist?("/etc/systemd/system/#{resource[:pattern]}.service")
+        current_conf = File.read("/etc/systemd/system/#{resource[:pattern]}.service")
+        if !current_conf.eql? systemd_template
+          return :false
+        end
         if systemctl_run('is-enabled', [resource[:pattern]], false).exitstatus == 0
           return :true
         end
@@ -66,7 +71,10 @@ Puppet::Type.type(:service).provide :swiftinit, :parent => :service do
       end
     elsif Facter.value(:operatingsystem) == 'Ubuntu'
       if Puppet::FileSystem.exist?("/etc/init/#{resource[:pattern]}.conf")
-        return :true
+        current_conf = File.read("/etc/init/#{resource[:pattern]}.conf")
+        if current_conf.eql? upstart_template
+          return :true
+        end
       else
         return :false
       end
