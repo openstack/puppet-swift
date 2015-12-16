@@ -129,7 +129,7 @@ class Puppet::Provider::SwiftRingBuilder < Puppet::Provider
       swift_ring_builder(
         builder_file_path,
         'add',
-        "z#{resource[:zone]}-#{resource[:name]}",
+        "z#{resource[:zone]}-#{resource[:name]}_#{resource[:meta]}",
         resource[:weight]
       )
     else
@@ -139,7 +139,7 @@ class Puppet::Provider::SwiftRingBuilder < Puppet::Provider
       swift_ring_builder(
         builder_file_path,
         'add',
-        "r#{resource[:region]}z#{resource[:zone]}-#{resource[:name]}",
+        "r#{resource[:region]}z#{resource[:zone]}-#{resource[:name]}_#{resource[:meta]}",
         resource[:weight]
       )
     end
@@ -206,7 +206,12 @@ class Puppet::Provider::SwiftRingBuilder < Puppet::Provider
   end
 
   def meta=(meta)
-    raise(Puppet::Error, "Cannot set meta, I am not sure if it makes sense or what it is for")
+    swift_ring_builder(
+      builder_file_path,
+      'set_info',
+      "d#{ring[resource[:name]][:id]}",
+      "_#{resource[:meta]}"
+    )
   end
 
 end
