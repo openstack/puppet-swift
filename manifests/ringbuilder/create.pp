@@ -11,13 +11,17 @@
 #    Optional. Defaults to 3
 #  [*min_part_hours*] Time before a partition can be moved.
 #    Optional. Defaults to 24.
+#  [*user*] User to run as
+#    Optional. Defaults to 'swift'
 #
+
 # == Examples
 #
 #   swift::ringbuilder::create { 'account':
 #     part_power     => 19,
 #     replicas       => 5,
 #     min_part_hours => 1,
+#     user           => 'swift',
 #   }
 #
 # == Authors
@@ -31,7 +35,8 @@
 define swift::ringbuilder::create(
   $part_power = 18,
   $replicas = 3,
-  $min_part_hours = 24
+  $min_part_hours = 24,
+  $user = 'swift'
 ) {
 
   validate_re($name, '^object|container|account$')
@@ -39,6 +44,7 @@ define swift::ringbuilder::create(
   exec { "create_${name}":
     command => "swift-ring-builder /etc/swift/${name}.builder create ${part_power} ${replicas} ${min_part_hours}",
     path    => ['/usr/bin'],
+    user    => $user,
     creates => "/etc/swift/${name}.builder",
   }
 

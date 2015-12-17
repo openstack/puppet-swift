@@ -4,7 +4,8 @@ describe 'swift::ringbuilder::create' do
   let :default_params do
     {:part_power => 18,
     :replicas => 3,
-    :min_part_hours => 24}
+    :min_part_hours => 24,
+    :user => 'swift'}
   end
 
   describe 'with allowed titles' do
@@ -17,7 +18,8 @@ describe 'swift::ringbuilder::create' do
         [{},
           {:part_power => 19,
           :replicas => 6,
-          :min_part_hours => 2}].each do |param_set|
+          :min_part_hours => 2,
+          :user => 'root'}].each do |param_set|
 
           describe "when #{param_set == {} ? "using default" : "specifying"} class parame
       ters" do
@@ -32,6 +34,7 @@ describe 'swift::ringbuilder::create' do
             it { is_expected.to contain_exec("create_#{type}").with(
               {:command => "swift-ring-builder /etc/swift/#{type}.builder create #{param_hash[:part_power]} #{param_hash[:replicas]} #{param_hash[:min_part_hours]}",
                :path    =>  ['/usr/bin'],
+               :user    => param_hash[:user],
                :creates => "/etc/swift/#{type}.builder" }
             )}
           end
