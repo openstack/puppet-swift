@@ -64,13 +64,11 @@
 #   Defaults to true.
 #
 # [*incoming_chmod*] Incoming chmod to set in the rsync server.
-#   Optional. Defaults to 0644 for maintaining backwards compatibility.
-#   *NOTE*: Recommended parameter: 'Du=rwx,g=rx,o=rx,Fu=rw,g=r,o=r'
+#   Optional. Defaults to 'Du=rwx,g=rx,o=rx,Fu=rw,g=r,o=r'
 #   This mask translates to 0755 for directories and 0644 for files.
 #
 # [*outgoing_chmod*] Outgoing chmod to set in the rsync server.
-#   Optional. Defaults to 0644 for maintaining backwards compatibility.
-#   *NOTE*: Recommended parameter: 'Du=rwx,g=rx,o=rx,Fu=rw,g=r,o=r'
+#   Optional. Defaults to 'Du=rwx,g=rx,o=rx,Fu=rw,g=r,o=r'
 #   This mask translates to 0755 for directories and 0644 for files.
 #
 class swift::storage::all(
@@ -89,8 +87,8 @@ class swift::storage::all(
   $log_udp_host       = undef,
   $log_udp_port       = undef,
   $log_requests       = true,
-  $incoming_chmod     = '0644',
-  $outgoing_chmod     = '0644',
+  $incoming_chmod     = 'Du=rwx,g=rx,o=rx,Fu=rw,g=r,o=r',
+  $outgoing_chmod     = 'Du=rwx,g=rx,o=rx,Fu=rw,g=r,o=r',
 ) {
 
   if (!$mount_check) {
