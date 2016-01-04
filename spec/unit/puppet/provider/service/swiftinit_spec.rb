@@ -34,23 +34,23 @@ describe provider_class do
 
   end
 
-  it "should have an status method" do
+  it "should have a status method" do
     expect(@provider).to respond_to(:status)
   end
 
-  it "should have an start method" do
+  it "should have a start method" do
     expect(@provider).to respond_to(:start)
   end
 
-  it "should have an stop method" do
+  it "should have a stop method" do
     expect(@provider).to respond_to(:stop)
   end
 
-  it "should have an restart method" do
+  it "should have a restart method" do
     expect(@provider).to respond_to(:restart)
   end
 
-  it "should have an refresh method" do
+  it "should have a refresh method" do
     expect(@provider).to respond_to(:refresh)
   end
 
