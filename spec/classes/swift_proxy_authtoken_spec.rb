@@ -7,10 +7,7 @@ describe 'swift::proxy::authtoken' do
   end
 
   let :pre_condition do
-    '
-      include concat::setup
-      concat { "/etc/swift/proxy-server.conf": }
-    '
+    'concat { "/etc/swift/proxy-server.conf": }'
   end
 
   describe 'when using the default signing directory' do

@@ -11,10 +11,7 @@ describe 'swift::proxy::keystone' do
   end
 
   let :pre_condition do
-    '
-      include concat::setup
-      concat { "/etc/swift/proxy-server.conf": }
-    '
+    'concat { "/etc/swift/proxy-server.conf": }'
   end
 
   it { is_expected.to contain_file(fragment_file).with_content(/[filter:keystone]/) }
