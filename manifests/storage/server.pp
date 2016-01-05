@@ -31,13 +31,11 @@
 #   Defaults to 25.
 #
 # [*incoming_chmod*] Incoming chmod to set in the rsync server.
-#   Optional. Defaults to 0644 for maintaining backwards compatibility.
-#   *NOTE*: Recommended parameter: 'Du=rwx,g=rx,o=rx,Fu=rw,g=r,o=r'
+#   Optional. Defaults to 'Du=rwx,g=rx,o=rx,Fu=rw,g=r,o=r'
 #   This mask translates to 0755 for directories and 0644 for files.
 #
 # [*outgoing_chmod*] Outgoing chmod to set in the rsync server.
-#   Optional. Defaults to 0644 for maintaining backwards compatibility.
-#   *NOTE*: Recommended parameter: 'Du=rwx,g=rx,o=rx,Fu=rw,g=r,o=r'
+#   Optional. Defaults to 'Du=rwx,g=rx,o=rx,Fu=rw,g=r,o=r'
 #   This mask translates to 0755 for directories and 0644 for files.
 #
 # [*pipeline*]
@@ -117,8 +115,8 @@ define swift::storage::server(
   $devices                = '/srv/node',
   $owner                  = 'swift',
   $group                  = 'swift',
-  $incoming_chmod         = '0644',
-  $outgoing_chmod         = '0644',
+  $incoming_chmod         = 'Du=rwx,g=rx,o=rx,Fu=rw,g=r,o=r',
+  $outgoing_chmod         = 'Du=rwx,g=rx,o=rx,Fu=rw,g=r,o=r',
   $max_connections        = 25,
   $pipeline               = ["${type}-server"],
   $mount_check            = undef,
@@ -138,14 +136,6 @@ define swift::storage::server(
   # this parameters needs to be specified after type and name
   $config_file_path       = "${type}-server.conf",
 ) {
-
-  if ($incoming_chmod == '0644') {
-    warning('The default incoming_chmod set to 0644 may yield in error prone directories and will be changed in a later release.')
-  }
-
-  if ($outgoing_chmod == '0644') {
-    warning('The default outgoing_chmod set to 0644 may yield in error prone directories and will be changed in a later release.')
-  }
 
   if (!$mount_check) {
     warning('The default for the mount_check parameter will change from false to true in the next release to match upstream. To disable this warning, set mount_check=false.')
