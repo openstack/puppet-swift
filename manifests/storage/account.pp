@@ -35,7 +35,6 @@ class swift::storage::account(
 ) inherits ::swift::params {
 
   Swift_config<| |> ~> Service['swift-account-reaper']
-  Swift_config<| |> ~> Service['swift-account-auditor']
 
   swift::storage::generic { 'account':
     manage_service   => $manage_service,
@@ -43,7 +42,7 @@ class swift::storage::account(
     package_ensure   => $package_ensure,
     config_file_name => $config_file_name,
     service_provider => $service_provider
-}
+  }
 
   if $manage_service {
     if $enabled {
@@ -55,15 +54,6 @@ class swift::storage::account(
 
   swift::service { 'swift-account-reaper':
     os_family_service_name => $::swift::params::account_reaper_service_name,
-    service_ensure         => $service_ensure,
-    enabled                => $enabled,
-    config_file_name       => $config_file_name,
-    service_provider       => $service_provider,
-    require                => Package['swift-account'],
-  }
-
-  swift::service { 'swift-account-auditor':
-    os_family_service_name => $::swift::params::account_auditor_service_name,
     service_ensure         => $service_ensure,
     enabled                => $enabled,
     config_file_name       => $config_file_name,
