@@ -264,14 +264,23 @@ a templated init or services file. This is managed by this provider.  For EL and
 ### Using the swiftinit service provider
 * To use the swiftinit service provider set "service_provider" on the supported components you have defined in your config manifest.
 
-Setting: `service_provider => 'swiftinit'`
-Is supported on the following components:
-
-* swift::storage:all
-* swift::storage:node
-* swift::storage:server
-* swift::storage::(account|container|object)
-* swift::proxy
+```
+  class { '::swift::storage::account':
+    service_provider => 'swiftinit',
+  }
+  class { '::swift::storage::container':
+    service_provider => 'swiftinit',
+  }
+  class { '::swift::storage::object':
+    service_provider => 'swiftinit',
+  }
+  class {'::swift::objectexpirer':
+    service_provider => 'swiftinit',
+  }
+  class { '::swift::proxy':
+    service_provider => 'swiftinit',
+  }
+```
 
 Moving from the default service providers to the swiftinit service provider is supported.  On the next puppet run after setting the swiftinit service provider swift services are stopped on the old provider and immediately started using swift-init.  This provides a supported upgrade path with no down time.
 

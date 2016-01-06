@@ -111,14 +111,6 @@
 #    Starting at the path "/etc/swift/"
 #    Defaults to "${type}-server.conf"
 #
-#  [*service_provider*]
-#    (optional)
-#    To use the swiftinit service provider to manage swift services, set
-#    service_provider to "swiftinit".  When enable is true the provider
-#    will populate boot files that start swift using swift-init at boot.
-#    See README for more details.
-#    Defaults to $::swift::params::service_provider.
-#
 define swift::storage::server(
   $type,
   $storage_local_net_ip,
@@ -145,7 +137,6 @@ define swift::storage::server(
   $log_requests           = true,
   # this parameters needs to be specified after type and name
   $config_file_path       = "${type}-server.conf",
-  $service_provider       = $::swift::params::service_provider
 ) {
 
   if ($incoming_chmod == '0644') {
@@ -177,12 +168,9 @@ define swift::storage::server(
     fail ('log_udp_port requires log_udp_host to be set')
   }
 
-  class { "::swift::storage::${type}" :
-    service_provider => $service_provider
-  }
+  include "::swift::storage::${type}"
 
   include ::concat::setup
-  include ::swift::params
 
   validate_re($name, '^\d+$')
   validate_re($type, '^object|container|account$')
