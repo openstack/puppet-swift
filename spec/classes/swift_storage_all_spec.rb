@@ -60,7 +60,7 @@ describe 'swift::storage::all' do
 
       ['object', 'container', 'account'].each do |type|
         it { is_expected.to contain_package("swift-#{type}").with_ensure('present') }
-        it { is_expected.to contain_service("swift-#{type}").with(
+        it { is_expected.to contain_service("swift-#{type}-server").with(
           {:provider  => 'upstart',
            :ensure    => 'running',
            :enable    => true,
@@ -147,7 +147,7 @@ describe 'swift::storage::all' do
         end
         ['object', 'container', 'account'].each do |type|
           it { is_expected.to contain_package("swift-#{type}").with_ensure('present') }
-          it { is_expected.to contain_service("swift-#{type}").with(
+          it { is_expected.to contain_service("swift-#{type}-server").with(
             {:provider  => nil,
               :ensure    => 'running',
               :enable    => true,

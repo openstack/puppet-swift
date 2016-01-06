@@ -98,6 +98,14 @@
 #    Configures log_name for swift proxy-server.
 #    Optional. Defaults to proxy-server
 #
+#  [*service_provider*]
+#    (optional)
+#    To use the swiftinit service provider to manage swift services, set
+#    service_provider to "swiftinit".  When enable is true the provider
+#    will populate boot files that start swift using swift-init at boot.
+#    See README for more details.
+#    Defaults to $::swift::params::service_provider.
+#
 # == Examples
 #
 # == Authors
@@ -129,13 +137,13 @@ class swift::proxy(
   $node_timeout              = undef,
   $manage_service            = true,
   $enabled                   = true,
-  $package_ensure            = 'present'
-) {
+  $package_ensure            = 'present',
+  $service_provider          = $::swift::params::service_provider
+) inherits ::swift::params {
 
-  include ::swift::params
   include ::concat::setup
 
-  Swift_config<| |> ~> Service['swift-proxy']
+  Swift_config<| |> ~> Service['swift-proxy-server']
 
   validate_bool($account_autocreate)
   validate_bool($allow_account_management)
@@ -209,13 +217,12 @@ class swift::proxy(
     }
   }
 
-  service { 'swift-proxy':
-    ensure    => $service_ensure,
-    name      => $::swift::params::proxy_service_name,
-    enable    => $enabled,
-    provider  => $::swift::params::service_provider,
-    hasstatus => true,
-    subscribe => Concat['/etc/swift/proxy-server.conf'],
-    tag       => 'swift-service',
+  swift::service { 'swift-proxy-server':
+    os_family_service_name => $::swift::params::proxy_server_service_name,
+    service_ensure         => $service_ensure,
+    enabled                => $enabled,
+    config_file_name       => 'proxy-server.conf',
+    service_provider       => $service_provider,
+    subscribe              => Concat['/etc/swift/proxy-server.conf'],
   }
 }

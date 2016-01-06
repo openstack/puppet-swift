@@ -37,10 +37,11 @@ describe 'swift::storage::object' do
         it 'configures services' do
           platform_params[:service_names].each do |service_alias, service_name|
             is_expected.to contain_service(service_alias).with(
-              :name    => service_name,
-              :ensure  => (param_hash[:manage_service] && param_hash[:enabled]) ? 'running' : 'stopped',
-              :enable  => param_hash[:enabled],
-              :tag     => 'swift-service',
+              :name     => service_name,
+              :ensure   => (param_hash[:manage_service] && param_hash[:enabled]) ? 'running' : 'stopped',
+              :enable   => param_hash[:enabled],
+              :provider => platform_params[:service_provider],
+              :tag      => 'swift-service',
             )
           end
         end
@@ -76,15 +77,37 @@ describe 'swift::storage::object' do
 
     let :platform_params do
       { :service_names => {
-          'swift-object'            => 'swift-object',
+          'swift-object-server'     => 'swift-object',
           'swift-object-replicator' => 'swift-object-replicator',
           'swift-object-updater'    => 'swift-object-updater',
           'swift-object-auditor'    => 'swift-object-auditor'
-        }
+        },
+        :service_provider => 'upstart'
       }
     end
 
     it_configures 'swift-storage-object'
+    context 'on debian using swiftinit service provider' do
+
+      before do
+        params.merge!({ :service_provider => 'swiftinit' })
+      end
+
+      let :platform_params do
+        { :service_names => {
+            'swift-object-server'     => 'swift-object-server',
+            'swift-object-replicator' => 'swift-object-replicator',
+            'swift-object-updater'    => 'swift-object-updater',
+            'swift-object-auditor'    => 'swift-object-auditor',
+          },
+          :service_provider => 'swiftinit'
+        }
+      end
+
+      it_configures 'swift-storage-object'
+    end
+
+
   end
 
   context 'on RedHat platforms' do
@@ -95,7 +118,7 @@ describe 'swift::storage::object' do
 
     let :platform_params do
       { :service_names => {
-          'swift-object'            => 'openstack-swift-object',
+          'swift-object-server'     => 'openstack-swift-object',
           'swift-object-replicator' => 'openstack-swift-object-replicator',
           'swift-object-updater'    => 'openstack-swift-object-updater',
           'swift-object-auditor'    => 'openstack-swift-object-auditor'
@@ -104,5 +127,24 @@ describe 'swift::storage::object' do
     end
 
     it_configures 'swift-storage-object'
+    context 'on redhat using swiftinit service provider' do
+
+      before do
+        params.merge!({ :service_provider => 'swiftinit' })
+      end
+
+      let :platform_params do
+        { :service_names => {
+            'swift-object-server'     => 'swift-object-server',
+            'swift-object-replicator' => 'swift-object-replicator',
+            'swift-object-updater'    => 'swift-object-updater',
+            'swift-object-auditor'    => 'swift-object-auditor',
+          },
+          :service_provider => 'swiftinit'
+        }
+      end
+
+      it_configures 'swift-storage-object'
+    end
   end
 end

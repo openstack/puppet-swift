@@ -39,6 +39,7 @@ describe 'swift::storage::account' do
               :name    => service_name,
               :ensure  => (param_hash[:manage_service] && param_hash[:enabled]) ? 'running' : 'stopped',
               :enable  => param_hash[:enabled],
+              :provider => platform_params[:service_provider],
               :tag     => 'swift-service',
             )
           end
@@ -75,15 +76,35 @@ describe 'swift::storage::account' do
 
     let :platform_params do
       { :service_names => {
-          'swift-account'            => 'swift-account',
+          'swift-account-server'     => 'swift-account',
           'swift-account-replicator' => 'swift-account-replicator',
           'swift-account-reaper'     => 'swift-account-reaper',
           'swift-account-auditor'    => 'swift-account-auditor'
-        }
+        },
+        :service_provider => 'upstart'
       }
     end
 
     it_configures 'swift-storage-account'
+    context 'on Debian platforms using swiftinit service provider' do
+
+      before do
+        params.merge!({ :service_provider => 'swiftinit' })
+      end
+
+      let :platform_params do
+        { :service_names => {
+            'swift-account-server'     => 'swift-account-server',
+            'swift-account-replicator' => 'swift-account-replicator',
+            'swift-account-reaper'     => 'swift-account-reaper',
+            'swift-account-auditor'    => 'swift-account-auditor',
+          },
+          :service_provider => 'swiftinit'
+        }
+      end
+
+      it_configures 'swift-storage-account'
+    end
   end
 
   context 'on RedHat platforms' do
@@ -94,14 +115,34 @@ describe 'swift::storage::account' do
 
     let :platform_params do
       { :service_names => {
-          'swift-account'            => 'openstack-swift-account',
+          'swift-account-server'     => 'openstack-swift-account',
           'swift-account-replicator' => 'openstack-swift-account-replicator',
           'swift-account-reaper'     => 'openstack-swift-account-reaper',
           'swift-account-auditor'    => 'openstack-swift-account-auditor'
-        }
+        },
+
       }
     end
 
     it_configures 'swift-storage-account'
+    context 'on redhat using swiftinit service provider' do
+
+      before do
+        params.merge!({ :service_provider => 'swiftinit' })
+      end
+
+      let :platform_params do
+        { :service_names => {
+            'swift-account-server'     => 'swift-account-server',
+            'swift-account-replicator' => 'swift-account-replicator',
+            'swift-account-reaper'     => 'swift-account-reaper',
+            'swift-account-auditor'    => 'swift-account-auditor',
+          },
+          :service_provider => 'swiftinit'
+        }
+      end
+
+      it_configures 'swift-storage-account'
+    end
   end
 end

@@ -1,9 +1,10 @@
+# Class swift::storage::container
 #
 # === Parameters
 #
 #  [*enabled*]
-#    (optional) Should the service be enabled.
-#    Defaults to true
+#    (optional) Should the service be enabled to start
+#    at boot. Defaults to true
 #
 #  [*manage_service*]
 #    (optional) Whether the service should be managed by Puppet.
@@ -17,23 +18,38 @@
 #    (optional) A list of hosts allowed in the X-Container-Sync-To
 #    field for containers. Defaults to one entry list '127.0.0.1'.
 #
+#  [*config_file_name*]
+#    (optional) The configuration file name.
+#    Starting at the path "/etc/swift/"
+#    Defaults to "object-server.conf"
+#
+#  [*service_provider*]
+#    (optional)
+#    To use the swiftinit service provider to manage swift services, set
+#    service_provider to "swiftinit".  When enable is true the provider
+#    will populate boot files that start swift using swift-init at boot.
+#    See README for more details.
+#    Defaults to $::swift::params::service_provider.
+#
 class swift::storage::container(
   $manage_service     = true,
   $enabled            = true,
   $package_ensure     = 'present',
   $allowed_sync_hosts = ['127.0.0.1'],
-) {
+  $config_file_name   = 'container-server.conf',
+  $service_provider = $::swift::params::service_provider
+) inherits ::swift::params {
 
   Swift_config<| |> ~> Service['swift-container-updater']
   Swift_config<| |> ~> Service['swift-container-auditor']
 
   swift::storage::generic { 'container':
-    manage_service => $manage_service,
-    enabled        => $enabled,
-    package_ensure => $package_ensure,
+    manage_service   => $manage_service,
+    enabled          => $enabled,
+    package_ensure   => $package_ensure,
+    config_file_name => $config_file_name,
+    service_provider => $service_provider
   }
-
-  include ::swift::params
 
   if $manage_service {
     if $enabled {
@@ -43,35 +59,32 @@ class swift::storage::container(
     }
   }
 
-  service { 'swift-container-updater':
-    ensure   => $service_ensure,
-    name     => $::swift::params::container_updater_service_name,
-    enable   => $enabled,
-    provider => $::swift::params::service_provider,
-    require  => Package['swift-container'],
-    tag      => 'swift-service',
+  swift::service { 'swift-container-updater':
+    os_family_service_name => $::swift::params::container_updater_service_name,
+    service_ensure         => $service_ensure,
+    enabled                => $enabled,
+    config_file_name       => $config_file_name,
+    service_provider       => $service_provider,
+    require                => Package['swift-container'],
   }
 
-  service { 'swift-container-auditor':
-    ensure   => $service_ensure,
-    name     => $::swift::params::container_auditor_service_name,
-    enable   => $enabled,
-    provider => $::swift::params::service_provider,
-    require  => Package['swift-container'],
-    tag      => 'swift-service',
+  swift::service { 'swift-container-auditor':
+    os_family_service_name => $::swift::params::container_auditor_service_name,
+    service_ensure         => $service_ensure,
+    enabled                => $enabled,
+    config_file_name       => $config_file_name,
+    service_provider       => $service_provider,
+    require                => Package['swift-container'],
   }
 
-  if $::operatingsystem == 'Ubuntu' {
-    # The following service conf is missing in Ubunty 12.04
-    file { '/etc/init/swift-container-sync.conf':
-      source  => 'puppet:///modules/swift/swift-container-sync.conf.upstart',
-      require => Package['swift-container'],
-    }
-    service { 'swift-container-sync':
-      ensure   => $service_ensure,
-      enable   => $enabled,
-      provider => $::swift::params::service_provider,
-      require  => File['/etc/init/swift-container-sync.conf'],
+  if $::osfamily == 'Debian' {
+    swift::service { 'swift-container-sync':
+      os_family_service_name => $::swift::params::container_sync_service_name,
+      service_ensure         => $service_ensure,
+      enabled                => $enabled,
+      config_file_name       => $config_file_name,
+      service_provider       => $service_provider,
+      require                => Package['swift-container'],
     }
     Swift_config<| |> ~> Service['swift-container-sync']
   }
