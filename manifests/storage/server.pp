@@ -182,7 +182,7 @@ define swift::storage::server(
   concat { "/etc/swift/${config_file_path}":
     owner   => $owner,
     group   => $group,
-    notify  => Service["swift-${type}-server", "swift-${type}-replicator"],
+    notify  => Service["swift-${type}-server", "swift-${type}-replicator", "swift-${type}-auditor"],
     require => Package['swift'],
   }
 

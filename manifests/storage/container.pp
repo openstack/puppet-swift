@@ -65,6 +65,7 @@ class swift::storage::container(
     config_file_name       => $config_file_name,
     service_provider       => $service_provider,
     require                => Package['swift-container'],
+    subscribe              => File["/etc/swift/${config_file_name}"],
   }
 
   if $::osfamily == 'Debian' {
@@ -75,6 +76,7 @@ class swift::storage::container(
       config_file_name       => $config_file_name,
       service_provider       => $service_provider,
       require                => Package['swift-container'],
+      subscribe              => File["/etc/swift/${config_file_name}"],
     }
     Swift_config<| |> ~> Service['swift-container-sync']
   }
