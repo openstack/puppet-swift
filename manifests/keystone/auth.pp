@@ -39,6 +39,14 @@
 #   (optional) Whether to create the S3 endpoint.
 #   Defaults to true
 #
+# [*configure_user*]
+#   (Optional) Whether to create the service user.
+#   Defaults to 'true'.
+#
+# [*configure_user_role*]
+#   (Optional) Whether to configure the admin role for the service user.
+#   Defaults to 'true'.
+#
 # [*service_name*]
 #   (optional) Name of the service.
 #   Defaults to the value of auth_name, but must differ from the value
@@ -155,6 +163,8 @@ class swift::keystone::auth(
   $service_description_s3 = 'Openstack S3 Service',
   $configure_endpoint     = true,
   $configure_s3_endpoint  = true,
+  $configure_user         = true,
+  $configure_user_role    = true,
   $public_url             = 'http://127.0.0.1:8080/v1/AUTH_%(tenant_id)s',
   $admin_url              = 'http://127.0.0.1:8080',
   $internal_url           = 'http://127.0.0.1:8080/v1/AUTH_%(tenant_id)s',
@@ -274,6 +284,8 @@ class swift::keystone::auth(
 
   keystone::resource::service_identity { 'swift':
     configure_endpoint  => $configure_endpoint,
+    configure_user      => $configure_user,
+    configure_user_role => $configure_user_role,
     service_name        => $real_service_name,
     service_type        => 'object-store',
     service_description => $service_description,
@@ -307,6 +319,8 @@ class swift::keystone::auth(
   }
 
   # Backward compatibility
-  Keystone_user[$auth_name] -> Keystone_user_role["${auth_name}@${tenant}"]
+  if $configure_user {
+    Keystone_user[$auth_name] -> Keystone_user_role["${auth_name}@${tenant}"]
+  }
 
 }

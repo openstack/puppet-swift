@@ -135,28 +135,63 @@ describe 'swift::keystone::auth' do
       default_params.merge( params )
     end
 
-    it { is_expected.to contain_keystone_user(p[:auth_name]).with(
-      :ensure   => 'present',
-      :password => p[:password],
-      :email    => p[:email]
-    )}
+    context 'when user configuration is set to default' do
+      it { is_expected.to contain_keystone_user(p[:auth_name]).with(
+        :ensure   => 'present',
+        :password => p[:password],
+        :email    => p[:email]
+      )}
 
-    it { is_expected.to contain_keystone_user_role("#{p[:auth_name]}@#{p[:tenant]}").with(
-      :ensure  => 'present',
-      :roles   => ['admin'],
-    )}
+      it { is_expected.to contain_keystone_user_role("#{p[:auth_name]}@#{p[:tenant]}").with(
+        :ensure  => 'present',
+        :roles   => ['admin'],
+      )}
 
-    it { is_expected.to contain_keystone_service("#{p[:auth_name]}::object-store").with(
-      :ensure      => 'present',
-      :type        => 'object-store',
-      :description => 'Openstack Object-Store Service'
-    )}
+      it { is_expected.to contain_keystone_service("#{p[:auth_name]}::object-store").with(
+        :ensure      => 'present',
+        :type        => 'object-store',
+        :description => 'Openstack Object-Store Service'
+      )}
 
-    it { is_expected.to contain_keystone_service("#{p[:auth_name]}_s3::s3").with(
-    :ensure      => 'present',
-    :type        => 's3',
-    :description => 'Openstack S3 Service'
-    )}
+      it { is_expected.to contain_keystone_service("#{p[:auth_name]}_s3::s3").with(
+        :ensure      => 'present',
+        :type        => 's3',
+        :description => 'Openstack S3 Service'
+      )}
+    end
+
+    context 'when user configuration is disabled' do
+      before do
+        params.merge!( :configure_user => false )
+      end
+
+      it { is_expected.to_not contain_keystone_user(p[:auth_name]) }
+      it { is_expected.to contain_keystone_user_role("#{p[:auth_name]}@#{p[:tenant]}") }
+
+      it { is_expected.to contain_keystone_service("#{p[:auth_name]}::object-store").with(
+        :ensure       => 'present',
+        :type         => 'object-store',
+        :description  => 'Openstack Object-Store Service'
+        )}
+    end
+
+    context 'when disabling user and role configuration' do
+      before do
+        params.merge!(
+          :configure_user       => false,
+          :configure_user_role  => false
+        )
+      end
+
+        it { is_expected.to_not contain_keystone_user(p[:auth_name]) }
+        it { is_expected.to_not contain_keystone_user_role("#{p[:auth_name]}@#{p[:tenant]}") }
+
+        it { is_expected.to contain_keystone_service("#{p[:auth_name]}::object-store").with(
+          :ensure       => 'present',
+          :type         => 'object-store',
+          :description  => 'Openstack Object-Store Service'
+        )}
+     end
   end
 
   context 'on Debian platforms' do
