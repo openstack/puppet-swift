@@ -25,7 +25,6 @@ describe 'swift' do
     end
   end
 
-
   describe 'when using the default value for package_ensure' do
     let :file_defaults do
       {
@@ -64,6 +63,19 @@ describe 'swift' do
     it 'should effect ensure state of swift package' do
       params[:package_ensure] = '1.12.0-1'
       is_expected.to contain_package('swift').with_ensure(params[:package_ensure])
+    end
+  end
+
+  describe 'when providing swift_hash_path_prefix and swift_hash_path_suffix' do
+    let (:params) do
+        { :swift_hash_path_suffix => 'mysuffix',
+          :swift_hash_path_prefix => 'myprefix' }
+    end
+    it 'should configure swift.conf' do
+      is_expected.to contain_swift_config(
+        'swift-hash/swift_hash_path_suffix').with_value('mysuffix')
+      is_expected.to contain_swift_config(
+        'swift-hash/swift_hash_path_prefix').with_value('myprefix')
     end
   end
 
