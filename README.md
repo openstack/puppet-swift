@@ -88,7 +88,8 @@ class { 'swift::storage::all':
   weight => 1,
 }
 
-Swift::Ringsync<<||>>```
+Swift::Ringsync<<||>>
+```
 
 Usage
 -----
@@ -206,8 +207,7 @@ Declaring either the recon or health check middleware in a node manifest is requ
 
 example manifest:
 
-```
-
+```puppet
 class { 'swift::storage::all':
   storage_local_net_ip => $swift_local_net_ip,
   account_pipeline     => ['healthcheck', 'recon', 'account-server'],
@@ -292,7 +292,7 @@ a templated init or services file. This is managed by this provider.  For EL and
 ### Using the swiftinit service provider
 * To use the swiftinit service provider set "service_provider" on the supported components you have defined in your config manifest.
 
-```
+```puppet
   class { '::swift::storage::account':
     service_provider => 'swiftinit',
   }
