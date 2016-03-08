@@ -39,7 +39,7 @@ Setup
 
 ### Beginning with swift
 
-You much first setup [exported resources](http://docs.puppetlabs.com/puppet/3/reference/lang_exported.html).
+You must first setup [exported resources](http://docs.puppetlabs.com/puppet/3/reference/lang_exported.html).
 
 To utilize the swift module's functionality you will need to declare multiple resources. This is not an exhaustive list of all the components needed, we recommend you consult and understand the [core openstack](http://docs.openstack.org) documentation.
 
@@ -118,7 +118,7 @@ class { 'swift::proxy':
 ```
 
 ####`account_autocreate`
-Specifies if the module should manage the automatic creation of the accounts needed for swift.  This should be set to true if tempauth is also being used.
+Specifies if the module should manage the automatic creation of the accounts needed for swift.  This should also be set to true if tempauth is being used.
 
 ####`proxy_local_net_ip`
 This is the ip that the proxy service will bind to when it starts.
@@ -172,7 +172,7 @@ class { 'swift::ringbuilder':
 ```
 
 ####`part_power`
-The number of partitions in the swift ring. (specified as the power of 2)
+The number of partitions in the swift ring. (specified as a power of 2)
 
 ####`replicas`
 The number of replicas to store.
@@ -182,10 +182,10 @@ Time before a partition can be moved.
 
 ### Define: swift::storage::server
 
-Defined resource type that can be used to create a swift storage server instance.  If you keep the sever names unique it is possibly to create multiple swift servers on a single physical node.
+Defined resource type that can be used to create a swift storage server instance.  If you keep the server names unique it is possible to create multiple swift servers on a single physical node.
 
-This will configure an rsync server instance and swift storage instance to
-manage the all devices in the devices directory.
+This will configure an rsync server instance and a swift storage instance to
+manage all the devices in the devices directory.
 
 ```puppet
 swift::storage::server { '6010':
@@ -196,14 +196,14 @@ swift::storage::server { '6010':
 ```
 
 ### Define: swift::storage::filter::recon
-Configure the swift recon middleware on a swift:storage::server
+Configure the swift recon middleware on a swift:storage::server instance.
 Can be configured on: account, container, object servers.
 
 ### Define: swift::storage::filter::healthcheck
-Configure the swift health check middleware on a swift:storage::server
+Configure the swift healthcheck middleware on a swift:storage::server instance.
 Can be configured on: account, container, object servers.
 
-Declaring either the recon or health check middleware in a node manifest is required when specifying the recon or healthcheck middleware in an (account|container|object)_pipeline.
+Declaring either the recon or healthcheck middleware in a node manifest is required when specifying the recon or healthcheck middleware in an (account|container|object)_pipeline.
 
 example manifest:
 
@@ -236,9 +236,9 @@ This is the ip that the storage service will bind to when it starts.
 
 ### Define: swift::storage::loopback
 
-This defined resource type was created to test swift by creating a loopback device that can be used a storage device in the absent of a dedicated block device.
+This defined resource type was created to test swift by creating a loopback device that can be used a storage device in the absence of a dedicated block device.
 
-It creates a partition of size [`$seek`] at basedir/[`$name`] using dd with [`$byte_size`], formats is to be a xfs filesystem which is then mounted at [`$mnt_base_dir`]/[`$name`].
+It creates a partition of size [`$seek`] at basedir/[`$name`] using dd with [`$byte_size`], formats it to be an xfs filesystem which is then mounted at [`$mnt_base_dir`]/[`$name`].
 
 Then, it creates an instance of defined class for the xfs file system that will eventually lead the mounting of the device using the swift::storage::mount define.
 
@@ -252,25 +252,25 @@ swift::storage::loopback { '1':
 ```
 
 ####`base_dir`
-The directory where the flat files will be stored that house the file system to be loop back mounted.
+The directory where the flat files will be stored that house the filesystem to be loopback mounted.
 
 ####`mnt_base_dir`
-The directory where the flat files that store the file system to be loop back mounted are actually mounted at.
+The directory where the flat files that store the filesystem to be loopback mounted are actually mounted at.
 
 ####`byte_size`
-The byte size that dd uses when it creates the file system.
+The byte size that dd uses when it creates the filesystem.
 
 ####`seek`
-The size of the file system that will be created.  Defaults to 25000.
+The size of the filesystem that will be created.  Defaults to 25000.
 
 ### Class: swift::objectexpirer
-Class that will set Swift object expirer, for scheduled deletion of objects.
+Class that will configure the swift object expirer service, for the scheduled deletion of objects.
 
 ```puppet
 class { 'swift::objectexpirer': }
 ```
 
-It is assumed that the object expirer service will usually be installed in a proxy node. On Red Hat-based distributions, if the class is included in a non-proxy node, the openstack-swift-proxy package will need to be installed.
+It is assumed that the object expirer service will be installed on a proxy node. On Red Hat-based distributions, if the class is included in a non-proxy node, the openstack-swift-proxy package will need to be installed.
 
 
 ##Swiftinit service provider
@@ -283,10 +283,10 @@ From http://docs.openstack.org/developer/swift/admin_guide.html#managing-service
 This new provider is intended to improve puppet-swift deployments in the following ways:
 
 * The default service provider for puppet-swift is to use distribution specific service providers such as systemd and upstart.  If distribution provided init scripts do not specify the full range of service commands, puppet will fall back to methods such as process name matching which is not very reliable.  For example, if you were to tail a log file with the same name as a swift process, puppet will interpret that process table match as the swift-proxy service running and fail to start the swift service.
-* Minimize customer impact: Using the swiftinit service provider enables more specific and targeted control of swift services.  Swift-init provides grateful stop/start reload/restart of swift services which will allow swift processes to finish any current requests before completely stopping the old processes.
+* Minimize customer impact: Using the swiftinit service provider enables more specific and targeted control of swift services.  Swift-init provides graceful stop/start and reload/restart of swift services which will allow swift processes to finish any current requests before completely stopping the old processes.
 * Specific control of services starting at boot is implemented by adding or removing
 a templated init or services file. This is managed by this provider.  For EL and non Ubuntu Debian OS types, this provider will also make calls out to systemctl reload and systemctl enable/disable.
-* Future use of the swiftinit provider is planed to allow for starting multiple servers using swift-init and multiple configuration files, to support a dedicated replication network.
+* Future use of the swiftinit provider is planned to allow for starting multiple servers using swift-init and multiple configuration files, to support a dedicated replication network.
 
 
 ### Using the swiftinit service provider
@@ -310,7 +310,7 @@ a templated init or services file. This is managed by this provider.  For EL and
   }
 ```
 
-Moving from the default service providers to the swiftinit service provider is supported.  On the next puppet run after setting the swiftinit service provider swift services are stopped on the old provider and immediately started using swift-init.  This provides a supported upgrade path with no down time.
+Moving from the default service providers to the swiftinit service provider is supported.  On the next puppet run after setting the swiftinit service provider swift services are stopped on the old provider and immediately started using swift-init.  This provides a supported upgrade path with no downtime.
 
 The swiftinit service provider uses the following service type parameters to
 manage swift services in a non standard way.
@@ -324,12 +324,12 @@ To aid with input validation to the swiftinit provider there is a defined type s
 ### Class: swift::service
 
 This is a wrapper defined type for the swift service providers.
-It provides a centraziled location to manage and validate in put for use to the default
-as well as the swiftinit service providers.
+It provides a centraziled location to manage and validate input for use to the default
+and  swiftinit service providers.
 
 ####`namevar`
 The namevar/title of swift::service must be one of the swift_init_service_names listed in swift::params.pp.
-These names are parsed by the swiftinit provider to provide service management as well as template boot files.
+These names are parsed by the swiftinit provider to provide service management in addition to template boot files.
 
 ####`os_family_service_name`
 The distribution specific service name from swift::params.  This name is passed to the default service provider.
@@ -344,7 +344,7 @@ object-server.conf, account-server.conf, container-server.conf, proxy-server.con
 The state of the service to ensure, running or stopped.
 
 ####`enabled`
-Should the service be enabled to start at boot.
+Whether the service should be enabled to start at boot.
 
 ####`service_provider`
 To use the swiftinit service provider to manage swift services, set service_provider to "swiftinit".  When enable is true the provider
