@@ -1,0 +1,9 @@
+---
+features:
+  - Update Ceilometer proxy to support Oslo Messaging.
+  - Allow to manage Swift service with swiftinit service provider.
+    This is an initial step towards using swift-init to manage
+    multiple swift services out of different configuration files such
+    as is needed to run a separate replication network.
+  - swift-ring-builder 2.2.2+ output parsing support.
+  - Add support to change meta entry for ring devices.

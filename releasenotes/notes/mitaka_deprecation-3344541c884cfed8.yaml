@@ -1,0 +1,9 @@
+---
+deprecations:
+  - Create ring builders under swift user instead of root.
+  - Change defaults fro incoming/outgoing chmod for rsync.
+    Defaults are now Du=rwx,g=rx,o=rx,Fu=rw,g=r,o=r.
+  - Set mount_check to True by default.
+  - Stop calling ::concat::setup, that is a deprecate class.
+  - swift_hash_suffix is now deprecated and swift_hash_path_suffix
+    with swift_hash_path_prefix should be used.
