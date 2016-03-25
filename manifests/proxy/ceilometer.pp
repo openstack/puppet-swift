@@ -78,6 +78,10 @@ class swift::proxy::ceilometer(
   $group               = 'ceilometer',
 ) inherits swift {
 
+  if(is_array($rabbit_hosts)) {
+    $rabbit_hosts_with_creds = prefix($rabbit_hosts, "${rabbit_user}:${rabbit_password}@")
+  }
+
   User['swift'] {
     groups +> $group,
   }
