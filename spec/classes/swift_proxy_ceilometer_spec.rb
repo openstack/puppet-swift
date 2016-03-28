@@ -64,7 +64,7 @@ describe 'swift::proxy::ceilometer' do
       it { is_expected.to contain_user('swift').with_groups('www-data') }
       it { is_expected.to contain_file(fragment_file).with_content(/[filter:ceilometer]/) }
       it { is_expected.to contain_file(fragment_file).with_content(/paste.filter_factory = ceilometermiddleware.swift:filter_factory/) }
-      it { is_expected.to contain_file(fragment_file).with_content(/url = rabbit:\/\/user_1:user_1_passw@127.0.0.1:5672,127.0.0.2:5672\/rabbit/) }
+      it { is_expected.to contain_file(fragment_file).with_content(/url = rabbit:\/\/user_1:user_1_passw@127.0.0.1:5672,user_1:user_1_passw@127.0.0.2:5672\/rabbit/) }
       it { is_expected.to contain_file(fragment_file).with_content(/driver = messagingv2/) }
       it { is_expected.to contain_file(fragment_file).with_content(/topic = notifications/) }
       it { is_expected.to contain_file(fragment_file).with_content(/control_exchange = swift/) }
