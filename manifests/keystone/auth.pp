@@ -282,6 +282,15 @@ class swift::keystone::auth(
       fail('cinder::keystone::auth parameters service_name and service_name_s3 must be different.')
   }
 
+  # Establish that keystone auth and endpoints are properly setup before
+  # managing any type of swift related service.
+  if $configure_endpoint {
+    Keystone_endpoint["${region}/${real_service_name}::object-store"] -> Swift::Service<||>
+  }
+  if $configure_s3_endpoint {
+    Keystone_endpoint["${region}/${real_service_name_s3}::s3"] -> Swift::Service<||>
+  }
+
   keystone::resource::service_identity { 'swift':
     configure_endpoint  => $configure_endpoint,
     configure_user      => $configure_user,
