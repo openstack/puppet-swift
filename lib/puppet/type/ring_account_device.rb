@@ -6,14 +6,26 @@ Puppet::Type.newtype(:ring_account_device) do
 
   newparam(:name, :namevar => true) do
     validate do |value|
-      # we have to have URI Scheme so we just add http:// and ignore it later
-      uri = URI('http://' + value)
-      address = uri.host
-      port_device = uri.port
-      if ['','/'].include?(uri.path)
-        raise(Puppet::Error, "namevar should contain a device")
+      if value["R"]
+        storuri = URI("http://" + value.split('R')[0])
+        address = storuri.host
+        port_device = storuri.port
+       
+        repluri = URI("http://" + value.split('R')[1])
+        if ['','/'].include?(repluri.path)
+          raise(Puppet::Error, "namevar should contain a device")
+        end
+        IPAddr.new(address)
+      else
+        # we have to have URI Scheme so we just add http:// and ignore it later
+        uri = URI('http://' + value)
+        address = uri.host
+        port_device = uri.port
+        if ['','/'].include?(uri.path)
+          raise(Puppet::Error, "namevar should contain a device")
+        end
+        IPAddr.new(address)
       end
-      IPAddr.new(address)
     end
   end
 
