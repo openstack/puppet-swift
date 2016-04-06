@@ -58,18 +58,32 @@ class Puppet::Provider::SwiftRingBuilder < Puppet::Provider
            # Devices:    id  region  zone      ip address  port  replication ip  replication port      name weight partitions balance meta
            #              0       1     2       127.0.0.1  6021       127.0.0.1              6021         2   1.00     262144    0.00
           # Swift 1.8+ output example:
-          if row =~ /^\s*(\d+)\s+(\d+)\s+(\d+)\s+(\S+)\s+(\d+)\s+\S+\s+\d+\s+(\S+)\s+(\d+\.\d+)\s+(\d+)\s*((-|\s-?)?\d+\.\d+)\s*(\S*)/
+          if row =~ /^\s*(\d+)\s+(\d+)\s+(\d+)\s+(\S+)\s+(\d+)\s+(\S+)\s+(\d+)\s+(\S+)\s+(\d+\.\d+)\s+(\d+)\s*((-|\s-?)?\d+\.\d+)\s*(\S*)/
 
             address = address_string("#{$4}")
-            object_hash["#{address}:#{$5}/#{$6}"] = {
-              :id          => $1,
-              :region      => $2,
-              :zone        => $3,
-              :weight      => $7,
-              :partitions  => $8,
-              :balance     => $9,
-              :meta        => $11
-            }
+            raddress = address_string("#{$6}")
+            if address != raddress
+              # we have a replication network
+              object_hash["#{address}:#{$5}R#{raddress}:#{$7}/#{$8}"] = {
+                :id          => $1,
+                :region      => $2,
+                :zone        => $3,
+                :weight      => $9,
+                :partitions  => $10,
+                :balance     => $11,
+                :meta        => $13
+              }
+            else
+              object_hash["#{address}:#{$5}/#{$8}"] = {
+                :id          => $1,
+                :region      => $2,
+                :zone        => $3,
+                :weight      => $9,
+                :partitions  => $10,
+                :balance     => $11,
+                :meta        => $13
+              }
+            end
 
           # Swift 1.8.0 output example:
           elsif row =~ /^\s*(\d+)\s+(\d+)\s+(\d+)\s+(\S+)\s+(\d+)\s+(\S+)\s+(\d+\.\d+)\s+(\d+)\s*((-|\s-?)?\d+\.\d+)\s*(\S*)/
