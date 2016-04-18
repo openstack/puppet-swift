@@ -59,6 +59,6 @@ class swift::storage::object(
     config_file_name       => $config_file_name,
     service_provider       => $service_provider,
     require                => Package['swift-object'],
-    subscribe              => File["/etc/swift/${config_file_name}"],
+    subscribe              => Concat["/etc/swift/${config_file_name}"],
   }
 }
