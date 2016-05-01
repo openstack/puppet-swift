@@ -1,5 +1,5 @@
 # == class: swift::proxy::tempauth
-# This class manage tempauth middleware
+# This class manages tempauth middleware
 #
 #  [*reseller_prefix*]
 #    The naming scope for the auth service. Swift storage accounts and

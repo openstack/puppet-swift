@@ -1,5 +1,6 @@
 #
-# Configure swift cache_errors.
+# Configure swift staticweb, see documentation for Swift staticweb middleware
+# to understand more about configuration.
 #
 # == Dependencies
 #

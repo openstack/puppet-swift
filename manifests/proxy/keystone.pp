@@ -1,5 +1,5 @@
 #
-# This class can be sed to manage keystone middleware for swift proxy
+# This class can be set to manage keystone middleware for swift proxy
 #
 # == Parameters
 #
