@@ -20,7 +20,7 @@ Puppet::Type.type(:service).provide :swiftinit, :parent => :service do
       # Transition block for systemd systems.  If swift-init reports service is
       # not running then send stop to systemctl so that service can be started
       # with swift-init and fully managed by this provider.
-      if Facter.value(:operatingsystem) != 'Ubuntu'
+      if !default_provider_upstart?
         systemctl_run('stop', [resource[:pattern]], false)
         systemctl_run('disable', [resource[:pattern]], false)
       end
@@ -57,19 +57,7 @@ Puppet::Type.type(:service).provide :swiftinit, :parent => :service do
   # presence then checking if file content matches this provider and not
   # distro provided.  Also on Redhat/Debian checks systemctl status.
   def enabled?
-    if Facter.value(:operatingsystem) != 'Ubuntu'
-      if Puppet::FileSystem.exist?("/etc/systemd/system/#{resource[:pattern]}.service")
-        current_conf = File.read("/etc/systemd/system/#{resource[:pattern]}.service")
-        if !current_conf.eql? systemd_template
-          return :false
-        end
-        if systemctl_run('is-enabled', [resource[:pattern]], false).exitstatus == 0
-          return :true
-        end
-      else
-        return :false
-      end
-    elsif Facter.value(:operatingsystem) == 'Ubuntu'
+    if default_provider_upstart?
       if Puppet::FileSystem.exist?("/etc/init/#{resource[:pattern]}.conf")
         current_conf = File.read("/etc/init/#{resource[:pattern]}.conf")
         if current_conf.eql? upstart_template
@@ -78,13 +66,31 @@ Puppet::Type.type(:service).provide :swiftinit, :parent => :service do
       else
         return :false
       end
+    elsif Puppet::FileSystem.exist?("/etc/systemd/system/#{resource[:pattern]}.service")
+      current_conf = File.read("/etc/systemd/system/#{resource[:pattern]}.service")
+      if !current_conf.eql? systemd_template
+        return :false
+      end
+      if systemctl_run('is-enabled', [resource[:pattern]], false).exitstatus == 0
+        return :true
+      end
+    else
+      return :false
     end
   end
 
   # Enable the service at boot.  For Redhat and Debian create services
-  # file and notify systemctl.  For Ubuntu create init file.
+  # file and notify systemctl.  For Ubuntu < 16.04 create init file.
   def enable
-    if Facter.value(:operatingsystem) != 'Ubuntu'
+    if default_provider_upstart?
+      file = Puppet::Type.type(:file).new(
+        :name    => "/etc/init/#{resource[:pattern]}.conf",
+        :ensure  => :present,
+        :content => upstart_template,
+        :mode    => '0644'
+      )
+      file.write(file)
+    else
       file = Puppet::Type.type(:file).new(
         :name    => "/etc/systemd/system/#{resource[:pattern]}.service",
         :ensure  => :present,
@@ -94,27 +100,19 @@ Puppet::Type.type(:service).provide :swiftinit, :parent => :service do
       file.write(file)
       systemctl_run('daemon-reload', nil, true)
       systemctl_run('enable', [resource[:pattern]], false)
-    elsif Facter.value(:operatingsystem) == 'Ubuntu'
-      file = Puppet::Type.type(:file).new(
-        :name    => "/etc/init/#{resource[:pattern]}.conf",
-        :ensure  => :present,
-        :content => upstart_template,
-        :mode    => '0644'
-      )
-      file.write(file)
     end
   end
 
   # Disable the service at boot. For Redhat and Debain,
-  # delete services file and notify systemctl.  For Ubuntu
+  # delete services file and notify systemctl.  For Ubuntu < 16.04
   # remove init file.
   def disable
-    if Facter.value(:operatingsystem) != 'Ubuntu'
+    if default_provider_upstart?
+      File.delete("/etc/init/#{resource[:pattern]}.conf")
+    else
       systemctl_run('disable', [resource[:pattern]], false)
       File.delete("/etc/systemd/system/#{resource[:pattern]}.service")
       systemctl_run('daemon-reload', nil, true)
-    elsif Facter.value(:operatingsystem) == 'Ubuntu'
-      File.delete("/etc/init/#{resource[:pattern]}.conf")
     end
   end
 
@@ -168,6 +166,15 @@ Puppet::Type.type(:service).provide :swiftinit, :parent => :service do
     elsif "#{resource[:manifest]}" == 'object-expirer.conf'
       return nil
     else return ".#{resource[:manifest].split('.conf')[1]}"
+    end
+  end
+
+  # If OS is ubuntu and < 16 then assume upstart default provider.
+  def default_provider_upstart?
+    if Facter.value(:operatingsystem) == 'Ubuntu' && Facter.value(:operatingsystemmajrelease) < '16'
+      return true
+    else
+      return false
     end
   end
 
