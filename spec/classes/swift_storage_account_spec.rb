@@ -81,7 +81,7 @@ describe 'swift::storage::account' do
           'swift-account-reaper'     => 'swift-account-reaper',
           'swift-account-auditor'    => 'swift-account-auditor'
         },
-        :service_provider => 'upstart'
+        :service_provider => nil
       }
     end
 

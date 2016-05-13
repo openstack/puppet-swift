@@ -69,7 +69,7 @@ describe 'swift::objectexpirer' do
     let :platform_params do
       { :object_expirer_package_name => 'swift-object-expirer',
         :service_name                => 'swift-object-expirer',
-        :service_provider            => 'upstart' }
+        :service_provider            => nil }
     end
 
     it_configures 'swift-object-expirer'

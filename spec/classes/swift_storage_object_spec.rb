@@ -82,7 +82,7 @@ describe 'swift::storage::object' do
           'swift-object-updater'    => 'swift-object-updater',
           'swift-object-auditor'    => 'swift-object-auditor'
         },
-        :service_provider => 'upstart'
+        :service_provider => nil
       }
     end
 

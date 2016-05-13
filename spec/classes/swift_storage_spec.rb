@@ -1,8 +1,6 @@
 require 'spec_helper'
 
 describe 'swift::storage' do
-  # TODO I am not testing the upstart code b/c it should be temporary
-
   let :facts do
     {
       :operatingsystem => 'Ubuntu',

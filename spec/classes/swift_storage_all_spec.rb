@@ -1,7 +1,6 @@
 require 'spec_helper'
 
 describe 'swift::storage::all' do
-  # TODO I am not testing the upstart code b/c it should be temporary
 
   let :facts do
     {
@@ -65,13 +64,13 @@ describe 'swift::storage::all' do
       ['object', 'container', 'account'].each do |type|
         it { is_expected.to contain_package("swift-#{type}").with_ensure('present') }
         it { is_expected.to contain_service("swift-#{type}-server").with(
-          {:provider  => 'upstart',
+          {:provider  => nil,
            :ensure    => 'running',
            :enable    => true,
            :hasstatus => true
           })}
         it { is_expected.to contain_service("swift-#{type}-replicator").with(
-          {:provider  => 'upstart',
+          {:provider  => nil,
            :ensure    => 'running',
            :enable    => true,
            :hasstatus => true

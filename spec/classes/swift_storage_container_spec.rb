@@ -81,7 +81,7 @@ describe 'swift::storage::container' do
           'swift-container-updater'    => 'swift-container-updater',
           'swift-container-auditor'    => 'swift-container-auditor'
         },
-        :service_provider => 'upstart'
+        :service_provider => nil
       }
     end
 

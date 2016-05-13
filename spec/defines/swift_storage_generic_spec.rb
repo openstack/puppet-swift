@@ -113,7 +113,7 @@ describe 'swift::storage::generic' do
          'swift-object-server'        => 'swift-object',
          'swift-object-replicator'    => 'swift-object-replicator',
          'swift-object-auditor'       => 'swift-object-auditor',
-         'service_provider'           => 'upstart'
+         'service_provider'           => nil
       }
     end
 

@@ -43,7 +43,7 @@ describe 'swift::proxy' do
 
       it { is_expected.to contain_service('swift-proxy-server').with(
         {:ensure     => 'running',
-         :provider   => 'upstart',
+         :provider   => nil,
          :enable     => true,
          :hasstatus  => true,
          :subscribe  => 'Concat[/etc/swift/proxy-server.conf]',
@@ -290,7 +290,7 @@ describe 'swift::proxy' do
 
     let :platform_params do
       {   'swift-proxy-server' => 'swift-proxy',
-          'service_provider'   => 'upstart'
+          'service_provider'   => nil
       }
     end
     it_configures 'swift-proxy-server'
