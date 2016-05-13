@@ -22,6 +22,10 @@ class Puppet::Provider::SwiftRingBuilder < Puppet::Provider
     if File.exists?(builder_file_path)
       # Swift < 2.2.2 Skip first 4 info lines from swift-ring-builder output
       if rows = swift_ring_builder(builder_file_path).split("\n")[4..-1]
+        # Skip "Ring file ... is up-to-date" message, if printed.
+        if !rows[0].nil? and rows[0] =~ /Ring file\b.*\bis up-to-date/
+             rows.shift
+        end
         # Swift 2.2.2+ Skip additional line to account for Overload info
         if !rows[0].nil? and rows[0].start_with?('Devices:')
              rows.shift
