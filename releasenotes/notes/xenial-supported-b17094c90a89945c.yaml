@@ -1,0 +1,10 @@
+---
+prelude: >
+    puppet-swift supports Ubuntu 16.04 xenial
+features:
+  - Previous version of puppet-swift hard coded
+    upstart for ubuntu, that restriction is removed
+    for ubuntu now.  xenial will use systemd by default.
+    'swiftinit' service provider now also supports
+    xenial using systemd for service start at boot
+    control.
