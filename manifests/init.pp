@@ -14,8 +14,8 @@
 #
 # [*swift_hash_path_prefix*]
 #   (Required)String. A prefix used by hash_path to offer a bit more security
-#   when generating hashes for paths. It simply appends this value to all paths;
-#   if someone knows this suffix, it's easier for them to guess the hash a path
+#   when generating hashes for paths. It simply prepends this value to all paths;
+#   if someone knows this prefix, it's easier for them to guess the hash a path
 #   will end up with. New installations are advised to set this parameter to a
 #   random secret, which would not be disclosed ouside the organization. The
 #   same secret needs to be used by all swift servers of the same cluster.
