@@ -38,6 +38,7 @@ define swift::storage::generic(
   $service_provider = $::swift::params::service_provider
 ) {
 
+  include ::swift::deps
   include ::swift::params
 
   Class['swift::storage'] -> Swift::Storage::Generic[$name]
@@ -55,10 +56,10 @@ define swift::storage::generic(
   }
 
   file { "/etc/swift/${name}-server/":
-    ensure  => directory,
-    owner   => 'swift',
-    group   => 'swift',
-    require => Package["swift-${name}"],
+    ensure => directory,
+    owner  => 'swift',
+    group  => 'swift',
+    tag    => 'swift-file',
   }
 
   if $manage_service {

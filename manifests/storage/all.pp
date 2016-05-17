@@ -91,6 +91,8 @@ class swift::storage::all(
   $outgoing_chmod     = 'Du=rwx,g=rx,o=rx,Fu=rw,g=r,o=r',
 ) {
 
+  include ::swift::deps
+
   class { '::swift::storage':
     storage_local_net_ip => $storage_local_net_ip,
   }

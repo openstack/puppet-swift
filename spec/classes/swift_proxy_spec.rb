@@ -37,6 +37,9 @@ describe 'swift::proxy' do
         {:proxy_local_net_ip => '127.0.0.1'}
       end
 
+      it { is_expected.to contain_package('swift-proxy').that_requires('Anchor[swift::install::begin]')
+           is_expected.to contain_package('swift-proxy').that_notifies('Anchor[swift::install::end]') }
+
       it { is_expected.to contain_service('swift-proxy-server').with(
         {:ensure     => 'running',
          :provider   => nil,
@@ -44,6 +47,12 @@ describe 'swift::proxy' do
          :hasstatus  => true,
          :subscribe  => 'Concat[/etc/swift/proxy-server.conf]',
          :tag        => 'swift-service',
+        }
+      )}
+      it { is_expected.to contain_concat('/etc/swift/proxy-server.conf').with(
+        {:ensure  => 'present',
+         :owner   => 'swift',
+         :group   => 'swift',
         }
       )}
 

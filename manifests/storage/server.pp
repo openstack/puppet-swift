@@ -137,6 +137,8 @@ define swift::storage::server(
   $config_file_path       = "${type}-server.conf",
 ) {
 
+  include ::swift::deps
+
   if ($incoming_chmod == '0644') {
     warning('The default incoming_chmod set to 0644 may yield in error prone directories and will be changed in a later release.')
   }

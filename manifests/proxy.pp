@@ -141,6 +141,7 @@ class swift::proxy(
   $service_provider          = $::swift::params::service_provider
 ) inherits ::swift::params {
 
+  include ::swift::deps
   Swift_config<| |> ~> Service['swift-proxy-server']
 
   validate_bool($account_autocreate)

@@ -62,6 +62,7 @@ class swift(
   $swift_hash_suffix      = undef,
 ) {
 
+  include ::swift::deps
   include ::swift::params
 
   if ($swift_hash_suffix == undef and $swift_hash_path_suffix == undef) {
@@ -85,7 +86,11 @@ class swift(
     ensure => $client_package_ensure;
   }
 
-  File { owner => 'swift', group => 'swift', require => Package['swift'] }
+  File {
+    owner   => 'swift',
+    group   => 'swift',
+    tag     => 'swift-file',
+  }
 
   file { '/etc/swift':
     ensure => directory,

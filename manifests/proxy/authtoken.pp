@@ -87,6 +87,8 @@ class swift::proxy::authtoken(
   $auth_admin_prefix   = false,
 ) {
 
+  include ::swift::deps
+
   if $auth_uri {
     $auth_uri_real = $auth_uri
   } else {
@@ -116,6 +118,8 @@ class swift::proxy::authtoken(
     owner                   => 'swift',
     group                   => 'swift',
     selinux_ignore_defaults => true,
+    require                 => Anchor['swift::config::begin'],
+    before                  => Anchor['swift::config::end'],
   }
 
   concat::fragment { 'swift_authtoken':

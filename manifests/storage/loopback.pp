@@ -38,17 +38,23 @@ define swift::storage::loopback(
   $fstype       = 'xfs'
 ) {
 
+  include ::swift::deps
+
   if(!defined(File[$base_dir])) {
     file { $base_dir:
-      ensure => directory,
+      ensure  => directory,
+      require => Anchor['swift::config::begin'],
+      before  => Anchor['swift::config::end'],
     }
   }
 
   if(!defined(File[$mnt_base_dir])) {
     file { $mnt_base_dir:
-      ensure => directory,
-      owner  => 'swift',
-      group  => 'swift',
+      ensure  => directory,
+      owner   => 'swift',
+      group   => 'swift',
+      require => Anchor['swift::config::begin'],
+      before  => Anchor['swift::config::end'],
     }
   }
 
@@ -57,6 +63,7 @@ define swift::storage::loopback(
     path    => ['/usr/bin/', '/bin'],
     unless  => "test -f ${base_dir}/${name}",
     require => File[$base_dir],
+    before  => Anchor['swift::config::end'],
   }
 
   $storage_params = {

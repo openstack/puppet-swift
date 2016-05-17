@@ -55,7 +55,8 @@ describe 'swift::storage::generic' do
               it do
                 is_expected.to contain_package("swift-#{t}").with(
                   :ensure => params[:package_ensure],
-                  :tag    => ['openstack', 'swift-package']
+                  :tag    => ['openstack', 'swift-package'],
+                  :notify => ['Anchor[swift::install::end]']
                 )
               end
               it do

@@ -43,6 +43,9 @@ class swift::proxy::bulk(
   $max_deletes_per_request       = '10000',
   $yield_frequency               = '60',
 ) {
+
+  include ::swift::deps
+
   concat::fragment { 'swift_bulk':
     target  => '/etc/swift/proxy-server.conf',
     content => template('swift/proxy/bulk.conf.erb'),

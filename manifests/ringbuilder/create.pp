@@ -39,6 +39,8 @@ define swift::ringbuilder::create(
   $user = 'swift'
 ) {
 
+  include ::swift::deps
+
   validate_re($name, '^object|container|account$')
 
   exec { "create_${name}":
@@ -46,6 +48,7 @@ define swift::ringbuilder::create(
     path    => ['/usr/bin'],
     user    => $user,
     creates => "/etc/swift/${name}.builder",
+    before  => Anchor['swift::config::end'],
   }
 
 }

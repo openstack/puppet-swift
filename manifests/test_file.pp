@@ -36,8 +36,12 @@ class swift::test_file (
   $tenant      = 'openstack',
   $user        = 'admin'
 ) {
+
+  include ::swift::deps
+
   file { '/tmp/swift_test_file.rb':
     mode    => '0755',
     content => template('swift/swift_keystone_test.erb'),
+    tag     => 'swift-file',
   }
 }

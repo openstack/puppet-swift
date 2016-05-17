@@ -34,6 +34,8 @@ class swift::proxy::dlo (
   $max_get_time                = '86400'
 ) {
 
+  include ::swift::deps
+
   concat::fragment { 'swift_dlo':
     target  => '/etc/swift/proxy-server.conf',
     content => template('swift/proxy/dlo.conf.erb'),

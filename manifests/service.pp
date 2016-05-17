@@ -39,6 +39,7 @@ define swift::service(
   $service_provider = $::swift::params::service_provider,
 ) {
 
+  include ::swift::deps
   include ::swift::params
 
   if(! member($::swift::params::swift_init_service_names, $name)) {

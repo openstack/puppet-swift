@@ -81,6 +81,7 @@ class swift::objectexpirer(
   $service_provider              = $::swift::params::service_provider
 ) inherits ::swift::params {
 
+  include ::swift::deps
   Swift_config<| |> ~> Service['swift-object-expirer']
   Swift_object_expirer_config<||> ~> Service['swift-object-expirer']
 

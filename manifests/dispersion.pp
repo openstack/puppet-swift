@@ -80,15 +80,15 @@ class swift::dispersion (
   $dump_json     = 'no'
 ) {
 
+  include ::swift::deps
   include ::swift::params
 
   Swift_dispersion_config<||> ~> Exec['swift-dispersion-populate']
 
   file { '/etc/swift/dispersion.conf':
-    ensure  => file,
-    owner   => 'swift',
-    group   => 'swift',
-    require => Package['swift'],
+    ensure => file,
+    owner  => 'swift',
+    group  => 'swift',
   }
 
   swift_dispersion_config {

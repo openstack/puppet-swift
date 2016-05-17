@@ -34,6 +34,8 @@ class swift::proxy::s3token(
   $auth_protocol = 'http'
 ) {
 
+  include ::swift::deps
+
   concat::fragment { 'swift_s3token':
     target  => '/etc/swift/proxy-server.conf',
     content => template('swift/proxy/s3token.conf.erb'),

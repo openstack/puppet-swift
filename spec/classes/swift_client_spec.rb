@@ -21,7 +21,7 @@ describe 'swift::client' do
       is_expected.to contain_package('swiftclient').with(
         :name   => 'python-swiftclient',
         :ensure => p[:package_ensure],
-        :tag    => 'openstack'
+        :tag    => ['openstack','swift-support-package'],
       )
     end
 

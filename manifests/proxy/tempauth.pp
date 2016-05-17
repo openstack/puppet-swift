@@ -81,6 +81,8 @@ class swift::proxy::tempauth (
   $storage_url_scheme = undef,
 ) {
 
+  include ::swift::deps
+
   validate_array($account_user_list)
 
   if ($reseller_prefix) {

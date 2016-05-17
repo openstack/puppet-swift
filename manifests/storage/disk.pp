@@ -49,11 +49,15 @@ define swift::storage::disk(
   $byte_size    = '1024',
 ) {
 
+  include ::swift::deps
+
   if(!defined(File[$mnt_base_dir])) {
     file { $mnt_base_dir:
-      ensure => directory,
-      owner  => 'swift',
-      group  => 'swift',
+      ensure  => directory,
+      owner   => 'swift',
+      group   => 'swift',
+      require => Anchor['swift::config::begin'],
+      before  => Anchor['swift::config::end'],
     }
   }
 
@@ -61,6 +65,7 @@ define swift::storage::disk(
     command => "parted -s ${base_dir}/${name} mklabel gpt",
     path    => ['/usr/bin/', '/sbin','/bin'],
     onlyif  => ["test -b ${base_dir}/${name}","parted ${base_dir}/${name} print|tail -1|grep 'Error'"],
+    before  => Anchor['swift::config::end'],
   }
 
   swift::storage::xfs { $name:

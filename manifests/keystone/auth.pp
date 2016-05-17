@@ -183,6 +183,8 @@ class swift::keystone::auth(
   $admin_address          = undef,
 ) {
 
+  include ::swift::deps
+
   if $endpoint_prefix {
     warning('The endpoint_prefix parameter is deprecated, use public_url, internal_url and admin_url instead.')
   }

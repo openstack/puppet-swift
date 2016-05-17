@@ -24,6 +24,7 @@ class swift::config (
   $swift_config        = {},
 ) {
 
+  include ::swift::deps
   validate_hash($swift_config)
 
   create_resources('swift_config', $swift_config)

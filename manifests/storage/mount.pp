@@ -28,6 +28,8 @@ define swift::storage::mount(
   $fstype       = 'xfs'
 ) {
 
+  include ::swift::deps
+
   if($loopback){
     $options = 'noatime,nodiratime,nobarrier,loop'
   } else {
@@ -43,9 +45,11 @@ define swift::storage::mount(
   # the directory that represents the mount point
   # needs to exist
   file { "${mnt_base_dir}/${name}":
-    ensure => directory,
-    owner  => 'swift',
-    group  => 'swift',
+    ensure  => directory,
+    owner   => 'swift',
+    group   => 'swift',
+    require => Anchor['swift::config::begin'],
+    before  => Anchor['swift::config::end'],
   }
 
   mount { "${mnt_base_dir}/${name}":
@@ -64,6 +68,7 @@ define swift::storage::mount(
     unless    => "grep ${mnt_base_dir}/${name} /etc/mtab",
     # TODO - this needs to be removed when I am done testing
     logoutput => true,
+    before    => Anchor['swift::config::end'],
   }
 
   exec { "fix_mount_permissions_${name}":
@@ -71,6 +76,7 @@ define swift::storage::mount(
     path        => ['/usr/sbin', '/bin'],
     subscribe   => Exec["mount_${name}"],
     refreshonly => true,
+    before      => Anchor['swift::config::end'],
   }
 
   # mounting in linux and puppet is broken and non-atomic
@@ -85,7 +91,7 @@ define swift::storage::mount(
       command     => "restorecon ${mnt_base_dir}/${name}",
       path        => ['/usr/sbin', '/sbin'],
       subscribe   => Exec["mount_${name}"],
-      before      =>  Exec["fix_mount_permissions_${name}"],
+      before      =>  [Exec["fix_mount_permissions_${name}"],Anchor['swift::config::end']],
       refreshonly => true,
     }
   }

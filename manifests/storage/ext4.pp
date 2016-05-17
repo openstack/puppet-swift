@@ -29,12 +29,14 @@ define swift::storage::ext4(
   $loopback     = false
 ) {
 
+  include ::swift::deps
   # does this have to be refreshonly?
   # how can I know if this drive has been formatted?
   exec { "mkfs-${name}":
     command     => "mkfs.ext4 -I ${byte_size} -F ${device}",
     path        => ['/sbin/'],
     refreshonly => true,
+    before      => Anchor['swift::config::end'],
   }
 
   swift::storage::mount { $name:

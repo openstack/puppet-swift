@@ -55,6 +55,8 @@ define swift::storage::node(
   $manage_ring = true
 ) {
 
+  include ::swift::deps
+
   validate_re($zone, '^\d+$', 'The zone parameter must be an integer')
 
   Swift::Storage::Server {

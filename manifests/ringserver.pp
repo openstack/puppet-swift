@@ -30,6 +30,7 @@ class swift::ringserver(
   $max_connections = 5
 ) {
 
+  include ::swift::deps
   Class['swift::ringbuilder'] -> Class['swift::ringserver']
 
   if !defined(Class['rsync::server']) {

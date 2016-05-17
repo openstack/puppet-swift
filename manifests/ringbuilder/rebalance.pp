@@ -12,6 +12,8 @@ define swift::ringbuilder::rebalance(
   $seed = undef
 ) {
 
+  include ::swift::deps
+
   validate_re($name, '^object|container|account$')
   if $seed {
     validate_re($seed, '^\d+$')
@@ -21,5 +23,6 @@ define swift::ringbuilder::rebalance(
     command     => strip("swift-ring-builder /etc/swift/${name}.builder rebalance ${seed}"),
     path        => ['/usr/bin'],
     refreshonly => true,
+    before      => Anchor['swift::config::end'],
   }
 }

@@ -35,6 +35,7 @@ define swift::storage::xfs(
   $loopback     = false
 ) {
 
+  include ::swift::deps
   include ::swift::xfs
 
   if $device == '' {
@@ -45,9 +46,11 @@ define swift::storage::xfs(
 
   if(!defined(File[$mnt_base_dir])) {
     file { $mnt_base_dir:
-      ensure => directory,
-      owner  => 'swift',
-      group  => 'swift',
+      ensure  => directory,
+      owner   => 'swift',
+      group   => 'swift',
+      require => Anchor['swift::config::begin'],
+      before  => Anchor['swift::config::end'],
     }
   }
 
@@ -60,6 +63,7 @@ define swift::storage::xfs(
     path    => ['/sbin/', '/usr/sbin/'],
     require => Package['xfsprogs'],
     unless  => "xfs_admin -l ${target_device}",
+    before  => Anchor['swift::config::end'],
   }
 
   swift::storage::mount { $name:

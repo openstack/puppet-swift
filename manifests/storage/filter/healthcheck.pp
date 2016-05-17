@@ -17,6 +17,8 @@
 define swift::storage::filter::healthcheck(
 ) {
 
+  include ::swift::deps
+
   concat::fragment { "swift_healthcheck_${name}":
     target  => "/etc/swift/${name}-server.conf",
     content => template('swift/proxy/healthcheck.conf.erb'),

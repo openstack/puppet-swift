@@ -29,6 +29,8 @@ class swift::proxy::keystone(
   $reseller_prefix     = 'AUTH_'
 ) {
 
+  include ::swift::deps
+
   concat::fragment { 'swift_keystone':
     target  => '/etc/swift/proxy-server.conf',
     content => template('swift/proxy/keystone.conf.erb'),

@@ -21,9 +21,12 @@ class swift::proxy::swauth(
   $package_ensure = 'present'
 ) {
 
+  include ::swift::deps
+
   package { 'python-swauth':
     ensure => $package_ensure,
     before => Package['swift-proxy'],
+    tag    => 'swift-package',
   }
 
   concat::fragment { 'swift_proxy_swauth':

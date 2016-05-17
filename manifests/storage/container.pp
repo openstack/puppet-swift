@@ -40,6 +40,8 @@ class swift::storage::container(
   $service_provider = $::swift::params::service_provider
 ) inherits ::swift::params {
 
+  include ::swift::deps
+
   Swift_config<| |> ~> Service['swift-container-updater']
 
   swift::storage::generic { 'container':

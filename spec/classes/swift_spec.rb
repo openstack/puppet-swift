@@ -30,7 +30,7 @@ describe 'swift' do
       {
         :owner   => 'swift',
         :group   => 'swift',
-        :require => 'Package[swift]'
+        :tag     => 'swift-file',
       }
     end
     it {is_expected.to contain_user('swift')}
@@ -55,7 +55,9 @@ describe 'swift' do
       is_expected.to contain_swift_config(
         'swift-constraints/max_header_size').with_value('16384')
     end
-    it { is_expected.to contain_package('swift').with_ensure('present') }
+    it { is_expected.to contain_package('swift').with_ensure('present')
+         is_expected.to contain_package('swift').that_requires('Anchor[swift::install::begin]')
+         is_expected.to contain_package('swift').that_notifies('Anchor[swift::install::end]')}
     it { is_expected.to contain_file('/etc/swift/swift.conf').with_before(/Swift_config\[.+\]/) }
   end
 

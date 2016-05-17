@@ -7,6 +7,8 @@ define swift::ringsync(
   $ring_server
 ) {
 
+  include ::swift::deps
+
   Exec { path => '/usr/bin' }
 
   rsync::get { "/etc/swift/${name}.ring.gz":

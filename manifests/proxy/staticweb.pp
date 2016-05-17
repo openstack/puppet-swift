@@ -18,6 +18,8 @@
 #
 class swift::proxy::staticweb() {
 
+  include ::swift::deps
+
   concat::fragment { 'swift-proxy-staticweb':
     target  => '/etc/swift/proxy-server.conf',
     content => template('swift/proxy/staticweb.conf.erb'),

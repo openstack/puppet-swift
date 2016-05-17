@@ -23,6 +23,8 @@ class swift::storage(
   $storage_local_net_ip
 ) {
 
+  include ::swift::deps
+
   if !defined(Class['rsync::server']){
     class{ '::rsync::server':
       use_xinetd => true,

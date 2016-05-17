@@ -50,13 +50,11 @@ describe 'basic swift' do
         part_power     => '18',
         replicas       => '1',
         min_part_hours => 1,
-        require        => Class['swift'],
       }
       class { '::swift::proxy':
         proxy_local_net_ip => '127.0.0.1',
         pipeline           => ['healthcheck', 'proxy-logging', 'cache', 'authtoken', 'keystone', 'dlo', 'proxy-server'],
         account_autocreate => true,
-        require            => Class['swift::ringbuilder'],
       }
       class { '::swift::proxy::authtoken':
         admin_password => 'a_big_secret',
@@ -142,13 +140,11 @@ describe 'basic swift' do
         part_power     => '18',
         replicas       => '1',
         min_part_hours => 1,
-        require        => Class['swift'],
       }
       class { '::swift::proxy':
         proxy_local_net_ip => '127.0.0.1',
         pipeline           => ['healthcheck', 'proxy-logging', 'cache', 'authtoken', 'keystone', 'dlo', 'proxy-server'],
         account_autocreate => true,
-        require            => Class['swift::ringbuilder'],
         service_provider   => 'swiftinit',
       }
       class { '::swift::proxy::authtoken':
