@@ -64,9 +64,6 @@ $keystone_admin_token          = hiera('admin_token', 'service_token')
 $swift_keystone_admin_email    = hiera('admin_email', 'keystone@localhost')
 $swift_keystone_admin_password = hiera('admin_password', 'ChangeMe')
 
-$swift_verbose                 = hiera('verbose', 'True')
-
-
 # This node can be used to deploy a keystone service.
 # This service only contains the credentials for authenticating
 # swift
@@ -92,8 +89,7 @@ node 'swift-keystone' {
   }
 
   class { '::keystone':
-    verbose        => $verbose,
-    debug          => $verbose,
+    debug          => $debug,
     catalog_type   => 'sql',
     admin_token    => $admin_token,
     enabled        => $enabled,

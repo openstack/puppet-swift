@@ -373,12 +373,12 @@ puppet-swift is a combination of Puppet manifest and ruby code to deliver config
 The `swift_config` provider is a children of the ini_setting provider. It allows one to write an entry in the `/etc/swift/swift.conf` file.
 
 ```puppet
-swift_config { 'DEFAULT/verbose' :
+swift_config { 'DEFAULT/debug' :
   value => true,
 }
 ```
 
-This will write `verbose=true` in the `[DEFAULT]` section.
+This will write `debug=true` in the `[DEFAULT]` section.
 
 ##### name
 
