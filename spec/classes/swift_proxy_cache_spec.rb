@@ -11,20 +11,15 @@ describe 'swift::proxy::cache' do
   end
 
   let :pre_condition do
-    'concat { "/etc/swift/proxy-server.conf": }
-     class { "memcached": max_memory => 1 }'
+    'class { "memcached": max_memory => 1 }'
   end
 
-  let :fragment_file do
-    "/var/lib/puppet/concat/_etc_swift_proxy-server.conf/fragments/23_swift_cache"
-  end
 
-  it { is_expected.to contain_file(fragment_file).with_content(/[filter:cache]/) }
-  it { is_expected.to contain_file(fragment_file).with_content(/use = egg:swift#memcache/) }
+  it { is_expected.to contain_concat_fragment('swift_cache').with_content(/\[filter:cache\]\nuse = egg:swift#memcache/) }
 
   describe 'with defaults' do
 
-    it { is_expected.to contain_file(fragment_file).with_content(/memcache_servers = 127\.0\.0\.1:11211/) }
+    it { is_expected.to contain_concat_fragment('swift_cache').with_content(/memcache_servers = 127\.0\.0\.1:11211/) }
 
   end
 
@@ -34,7 +29,7 @@ describe 'swift::proxy::cache' do
       {:memcache_servers => '10.0.0.1:1'}
     end
 
-    it { is_expected.to contain_file(fragment_file).with_content(/memcache_servers = 10\.0\.0\.1:1/) }
+    it { is_expected.to contain_concat_fragment('swift_cache').with_content(/memcache_servers = 10\.0\.0\.1:1/) }
 
   end
 
@@ -44,7 +39,7 @@ describe 'swift::proxy::cache' do
       {:memcache_servers => ['10.0.0.1:1', '10.0.0.2:2']}
     end
 
-    it { is_expected.to contain_file(fragment_file).with_content(/memcache_servers = 10\.0\.0\.1:1,10\.0\.0\.2:2/) }
+    it { is_expected.to contain_concat_fragment('swift_cache').with_content(/memcache_servers = 10\.0\.0\.1:1,10\.0\.0\.2:2/) }
 
   end
 

@@ -22,30 +22,16 @@ require 'spec_helper'
 
 describe 'swift::proxy::bulk' do
 
-  let :facts do
-    {}
-  end
-
-  let :pre_condition do
-    'concat { "/etc/swift/proxy-server.conf": }'
-  end
-
-  let :fragment_file do
-    "/var/lib/puppet/concat/_etc_swift_proxy-server.conf/fragments/21_swift_bulk"
-  end
-
   describe "when using default parameters" do
     it 'should build the fragment with correct parameters' do
-      verify_contents(catalogue, fragment_file,
-        [
-          '[filter:bulk]',
-          'use = egg:swift#bulk',
-          'max_containers_per_extraction = 10000',
-          'max_failed_extractions = 1000',
-          'max_deletes_per_request = 10000',
-          'yield_frequency = 60',
-        ]
-      )
+      is_expected.to contain_concat_fragment('swift_bulk').with_content('
+[filter:bulk]
+use = egg:swift#bulk
+max_containers_per_extraction = 10000
+max_failed_extractions = 1000
+max_deletes_per_request = 10000
+yield_frequency = 60
+')
     end
   end
 
@@ -59,16 +45,14 @@ describe 'swift::proxy::bulk' do
       }
     end
     it 'should build the fragment with correct parameters' do
-      verify_contents(catalogue, fragment_file,
-        [
-          '[filter:bulk]',
-          'use = egg:swift#bulk',
-          'max_containers_per_extraction = 5000',
-          'max_failed_extractions = 500',
-          'max_deletes_per_request = 5000',
-          'yield_frequency = 10',
-        ]
-      )
+      is_expected.to contain_concat_fragment('swift_bulk').with_content('
+[filter:bulk]
+use = egg:swift#bulk
+max_containers_per_extraction = 5000
+max_failed_extractions = 500
+max_deletes_per_request = 5000
+yield_frequency = 10
+')
     end
   end
 

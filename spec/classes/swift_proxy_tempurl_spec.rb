@@ -10,19 +10,14 @@ describe 'swift::proxy::tempurl' do
     'concat { "/etc/swift/proxy-server.conf": }'
   end
 
-  let :fragment_file do
-    "/var/lib/puppet/concat/_etc_swift_proxy-server.conf/fragments/29_swift-proxy-tempurl"
-  end
-
-  it { is_expected.to contain_file(fragment_file).with_content(/[filter:tempurl]/) }
-  it { is_expected.to contain_file(fragment_file).with_content(/use = egg:swift#tempurl/) }
+  it { is_expected.to contain_concat_fragment('swift-proxy-tempurl').with_content(/\[filter:tempurl\]\nuse = egg:swift#tempurl/) }
 
   ['methods',
    'incoming_remove_headers',
    'incoming_allow_headers',
    'outgoing_remove_headers',
    'outgoing_allow_headers' ].each do |h|
-     it { is_expected.to_not contain_file(fragment_file).with_content(/#{h}/) }
+     it { is_expected.to_not contain_concat_fragment('swift-proxy-tempurl').with_content(/#{h}/) }
    end
 
    context "when params are set" do
@@ -34,12 +29,12 @@ describe 'swift::proxy::tempurl' do
        'outgoing_allow_headers'  => ['x-foo','x-bar-*'],
      } end
 
-     it { is_expected.to contain_file(fragment_file).with_content(/methods = GET HEAD PUT/) }
+     it { is_expected.to contain_concat_fragment('swift-proxy-tempurl').with_content(/methods = GET HEAD PUT/) }
      ['incoming_remove_headers',
       'incoming_allow_headers',
       'outgoing_remove_headers',
       'outgoing_allow_headers' ].each do |h|
-        it { is_expected.to contain_file(fragment_file).with_content(/#{h} = x-foo x-bar-*/) }
+        it { is_expected.to contain_concat_fragment('swift-proxy-tempurl').with_content(/#{h} = x-foo x-bar-*/) }
       end
 
       describe 'when params are not array' do
@@ -51,12 +46,12 @@ describe 'swift::proxy::tempurl' do
           'outgoing_allow_headers'  => 'x-foo x-bar-*',
         } end
 
-        it { is_expected.to contain_file(fragment_file).with_content(/methods = GET HEAD PUT/) }
+        it { is_expected.to contain_concat_fragment('swift-proxy-tempurl').with_content(/methods = GET HEAD PUT/) }
         ['incoming_remove_headers',
          'incoming_allow_headers',
          'outgoing_remove_headers',
          'outgoing_allow_headers' ].each do |h|
-           it { is_expected.to contain_file(fragment_file).with_content(/#{h} = x-foo x-bar-*/) }
+           it { is_expected.to contain_concat_fragment('swift-proxy-tempurl').with_content(/#{h} = x-foo x-bar-*/) }
          end
       end
    end

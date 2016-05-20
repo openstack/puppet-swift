@@ -26,15 +26,7 @@ describe 'swift::proxy::container_quotas' do
     {}
   end
 
-  let :pre_condition do
-    'concat { "/etc/swift/proxy-server.conf": }'
-  end
-
-  let :fragment_file do
-    "/var/lib/puppet/concat/_etc_swift_proxy-server.conf/fragments/81_swift_container_quotas"
-  end
-
-  it { is_expected.to contain_file(fragment_file).with_content(/\[filter:container_quotas\]/) }
-  it { is_expected.to contain_file(fragment_file).with_content(/use = egg:swift#container_quotas/) }
+  it { is_expected.to contain_concat_fragment('swift_container_quotas').with_content(/\[filter:container_quotas\]/) }
+  it { is_expected.to contain_concat_fragment('swift_container_quotas').with_content(/use = egg:swift#container_quotas/) }
 
 end

@@ -16,10 +16,6 @@ describe 'swift::proxy' do
     }
   end
 
-  let :fragment_path do
-    "/var/lib/puppet/concat/_etc_swift_proxy-server.conf/fragments/00_swift_proxy"
-  end
-
   describe 'with proper dependencies' do
 
     let :pre_condition do
@@ -50,37 +46,42 @@ describe 'swift::proxy' do
          :tag        => 'swift-service',
         }
       )}
-      it { is_expected.to contain_file('/etc/swift/proxy-server.conf').with(
-        {:ensure  => 'present',
-         :owner   => 'swift',
-         :group   => 'swift',
-        }
-      )}
 
       it 'should build the header file with all of the default contents' do
-        verify_contents(catalogue, fragment_path,
-          [
-            '[DEFAULT]',
-            'bind_port = 8080',
-            "workers = #{facts[:processorcount]}",
-            'user = swift',
-            'log_name = proxy-server',
-            'log_level = INFO',
-            'log_headers = False',
-            'log_address = /dev/log',
-            '[pipeline:main]',
-            'pipeline = healthcheck cache tempauth proxy-server',
-            '[app:proxy-server]',
-            'use = egg:swift#proxy',
-            'set log_name = proxy-server',
-            'set log_facility = LOG_LOCAL1',
-            'set log_level = INFO',
-            'set log_address = /dev/log',
-            'log_handoffs = true',
-            'allow_account_management = true',
-            'account_autocreate = true'
-          ]
-        )
+        is_expected.to contain_concat_fragment('swift_proxy').with_content('# This file is managed by puppet.  Do not edit
+#
+[DEFAULT]
+bind_port = 8080
+
+bind_ip = 127.0.0.1
+
+workers = 1
+user = swift
+log_name = proxy-server
+log_facility = LOG_LOCAL1
+log_level = INFO
+log_headers = False
+log_address = /dev/log
+
+
+
+[pipeline:main]
+pipeline = healthcheck cache tempauth proxy-server
+
+[app:proxy-server]
+use = egg:swift#proxy
+set log_name = proxy-server
+set log_facility = LOG_LOCAL1
+set log_level = INFO
+set log_address = /dev/log
+log_handoffs = true
+allow_account_management = true
+account_autocreate = true
+
+
+
+
+')
       end
 
       it { is_expected.to contain_concat__fragment('swift_proxy').with_before(
@@ -120,26 +121,41 @@ describe 'swift::proxy' do
           }
         end
         it 'should build the header file with provided values' do
-          verify_contents(catalogue, fragment_path,
-            [
-              '[DEFAULT]',
-              'bind_port = 80',
-              "workers = 3",
-              'user = swift',
-              'log_level = DEBUG',
-              '[pipeline:main]',
-              'pipeline = swauth proxy-server',
-              '[app:proxy-server]',
-              'use = egg:swift#proxy',
-              'set log_name = swift-proxy-server',
-              'allow_account_management = false',
-              'account_autocreate = false',
-              'read_affinity = r1z1=100, r1=200',
-              'write_affinity = r1',
-              'write_affinity_node_count = 2 * replicas',
-              'node_timeout = 20'
-            ]
-          )
+          is_expected.to contain_concat_fragment('swift_proxy').with_content('# This file is managed by puppet.  Do not edit
+#
+[DEFAULT]
+bind_port = 80
+
+bind_ip = 10.0.0.2
+
+workers = 3
+user = swift
+log_name = swift-proxy-server
+log_facility = LOG_LOCAL1
+log_level = DEBUG
+log_headers = False
+log_address = /dev/log
+
+
+
+[pipeline:main]
+pipeline = swauth proxy-server
+
+[app:proxy-server]
+use = egg:swift#proxy
+set log_name = swift-proxy-server
+set log_facility = LOG_LOCAL1
+set log_level = DEBUG
+set log_address = /dev/log
+log_handoffs = true
+allow_account_management = false
+account_autocreate = false
+sorting_method = affinity
+read_affinity = r1z1=100, r1=200
+write_affinity = r1
+write_affinity_node_count = 2 * replicas
+node_timeout = 20
+')
         end
         if Puppet.version.to_f < 4.0
           it { is_expected.to contain_concat__fragment('swift_proxy').with_before('Class[Swift::Proxy::Swauth]')}
@@ -188,28 +204,42 @@ describe 'swift::proxy' do
           }
           end
         it 'should build the header file with provided values' do
-          verify_contents(catalogue, fragment_path,
-            [
-              '[DEFAULT]',
-              'bind_port = 80',
-              "workers = 3",
-              'user = swift',
-              'log_level = DEBUG',
-              'log_udp_host = 127.0.0.1',
-              'log_udp_port = 514',
-              '[pipeline:main]',
-              'pipeline = swauth proxy-server',
-              '[app:proxy-server]',
-              'use = egg:swift#proxy',
-              'set log_name = swift-proxy-server',
-              'allow_account_management = false',
-              'account_autocreate = false',
-              'read_affinity = r1z1=100, r1=200',
-              'write_affinity = r1',
-              'write_affinity_node_count = 2 * replicas',
-              'node_timeout = 20'
-            ]
-          )
+          is_expected.to contain_concat_fragment('swift_proxy').with_content('# This file is managed by puppet.  Do not edit
+#
+[DEFAULT]
+bind_port = 80
+
+bind_ip = 10.0.0.2
+
+workers = 3
+user = swift
+log_name = swift-proxy-server
+log_facility = LOG_LOCAL1
+log_level = DEBUG
+log_headers = False
+log_address = /dev/log
+# If set, log_udp_host will override log_address
+log_udp_host = 127.0.0.1
+log_udp_port = 514
+
+[pipeline:main]
+pipeline = swauth proxy-server
+
+[app:proxy-server]
+use = egg:swift#proxy
+set log_name = swift-proxy-server
+set log_facility = LOG_LOCAL1
+set log_level = DEBUG
+set log_address = /dev/log
+log_handoffs = true
+allow_account_management = false
+account_autocreate = false
+sorting_method = affinity
+read_affinity = r1z1=100, r1=200
+write_affinity = r1
+write_affinity_node_count = 2 * replicas
+node_timeout = 20
+')
         end
       end
     end

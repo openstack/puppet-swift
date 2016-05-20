@@ -6,23 +6,13 @@ describe 'swift::proxy::crossdomain' do
     {}
   end
 
-  let :pre_condition do
-    'concat { "/etc/swift/proxy-server.conf": }'
-  end
-
-  let :fragment_file do
-    "/var/lib/puppet/concat/_etc_swift_proxy-server.conf/fragments/35_swift_crossdomain"
-  end
-
   describe "when using default parameters" do
     it 'should build the fragment with correct parameters' do
-      verify_contents(catalogue, fragment_file,
-        [
-          '[filter:crossdomain]',
-          'use = egg:swift#crossdomain',
-          'cross_domain_policy = <allow-access-from domain="*" secure="false" />',
-        ]
-      )
+      is_expected.to contain_concat_fragment('swift_crossdomain').with_content('
+[filter:crossdomain]
+use = egg:swift#crossdomain
+cross_domain_policy = <allow-access-from domain="*" secure="false" />
+')
     end
   end
 
@@ -34,14 +24,12 @@ describe 'swift::proxy::crossdomain' do
       }
     end
     it 'should build the fragment with correct parameters' do
-      verify_contents(catalogue, fragment_file,
-        [
-          '[filter:crossdomain]',
-          'use = egg:swift#crossdomain',
-          'cross_domain_policy = <allow-access-from domain="xml-fragment-in-ini-file.so.wrong" secure="true" />',
-          '<allow-access-from domain="*" secure="false" />',
-        ]
-      )
+      is_expected.to contain_concat_fragment('swift_crossdomain').with_content('
+[filter:crossdomain]
+use = egg:swift#crossdomain
+cross_domain_policy = <allow-access-from domain="xml-fragment-in-ini-file.so.wrong" secure="true" />
+<allow-access-from domain="*" secure="false" />
+')
     end
   end
 

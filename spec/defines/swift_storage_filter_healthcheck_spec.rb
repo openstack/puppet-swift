@@ -9,21 +9,11 @@ describe 'swift::storage::filter::healthcheck' do
     {}
   end
 
-  let :pre_condition do
-    'concat { "/etc/swift/dummy-server.conf": }'
-  end
-
-  let :fragment_file do
-    "/var/lib/puppet/concat/_etc_swift_dummy-server.conf/fragments/25_swift_healthcheck_dummy"
-  end
-
 it 'should build the fragment with correct content' do
-  verify_contents(catalogue, fragment_file,
-    [
-      '[filter:healthcheck]',
-      'use = egg:swift#healthcheck'
-    ]
-  )
+  is_expected.to contain_concat_fragment('swift_healthcheck_dummy').with_content('
+[filter:healthcheck]
+use = egg:swift#healthcheck
+')
 end
 
 end
