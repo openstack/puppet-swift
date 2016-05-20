@@ -65,8 +65,8 @@ describe 'swift::dispersion' do
       is_expected.to contain_exec('swift-dispersion-populate').with(
         :path      => ['/bin', '/usr/bin'],
         :subscribe => 'File[/etc/swift/dispersion.conf]',
-        :onlyif    => "swift -A #{p[:auth_url]} -U #{p[:auth_tenant]}:#{p[:auth_user]} -K #{p[:auth_pass]} -V #{p[:auth_version]} stat | grep 'Account: '",
-        :unless    => "swift -A #{p[:auth_url]} -U #{p[:auth_tenant]}:#{p[:auth_user]} -K #{p[:auth_pass]} -V #{p[:auth_version]} list | grep dispersion_",
+        :onlyif    => "swift -A #{p[:auth_url]} --os-username #{p[:auth_user]} --os-project-name #{p[:auth_tenant]} --os-password #{p[:auth_pass]} -V #{p[:auth_version]} stat | grep 'Account: '",
+        :unless    => "swift -A #{p[:auth_url]} --os-username #{p[:auth_user]} --os-project-name #{p[:auth_tenant]} --os-password #{p[:auth_pass]} -V #{p[:auth_version]} list | grep dispersion_",
         :require => 'Package[swiftclient]'
       )
     end

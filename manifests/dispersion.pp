@@ -108,8 +108,8 @@ class swift::dispersion (
     path      => ['/bin', '/usr/bin'],
     subscribe => File['/etc/swift/dispersion.conf'],
     timeout   => 0,
-    onlyif    => "swift -A ${auth_url} -U ${auth_tenant}:${auth_user} -K ${auth_pass} -V ${auth_version} stat | grep 'Account: '",
-    unless    => "swift -A ${auth_url} -U ${auth_tenant}:${auth_user} -K ${auth_pass} -V ${auth_version} list | grep dispersion_",
+    onlyif    => "swift -A ${auth_url} --os-username ${auth_user} --os-project-name ${auth_tenant} --os-password ${auth_pass} -V ${auth_version} stat | grep 'Account: '",
+    unless    => "swift -A ${auth_url} --os-username ${auth_user} --os-project-name ${auth_tenant} --os-password ${auth_pass} -V ${auth_version} list | grep dispersion_",
     require   => Package['swiftclient'],
   }
 
