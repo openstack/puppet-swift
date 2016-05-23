@@ -420,6 +420,17 @@ Same as `swift_config`, but path is `/etc/swift/object-server.conf`
 
 Same as `swift_config`, but path is `/etc/swift/proxy-server.conf`
 
+#### swift_container_sync_realms_config
+
+Same as `swift_config`, but path is `/etc/swift/container-sync-realms.conf'
+
+Use this file for specifying the allowable clusters and their information.
+
+```puppet
+swift_container_sync_realms_config { 'realm1/cluster_clustername1':
+  value => 'https://host1/v1/'
+}
+```
 
 Limitations
 ------------

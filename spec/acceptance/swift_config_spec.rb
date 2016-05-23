@@ -15,6 +15,7 @@ describe 'basic swift_config resource' do
       File <||> -> Swift_dispersion_config <||>
       File <||> -> Swift_object_config <||>
       File <||> -> Swift_proxy_config <||>
+      File <||> -> Swift_container_sync_realms_config <||>
 
       file { '/etc/swift' :
         ensure => directory,
@@ -26,7 +27,8 @@ describe 'basic swift_config resource' do
                        '/etc/swift/container-server.conf',
                        '/etc/swift/dispersion.conf',
                        '/etc/swift/object-server.conf',
-                       '/etc/swift/proxy-server.conf']
+                       '/etc/swift/proxy-server.conf',
+                       '/etc/swift/container-sync-realms.conf']
 
       file { $swift_files  :
         ensure => file,
@@ -157,6 +159,24 @@ describe 'basic swift_config resource' do
         value             => 'toto',
         ensure_absent_val => 'toto',
       }
+
+      swift_container_sync_realms_config { 'DEFAULT/thisshouldexist' :
+        value => 'foo',
+      }
+
+      swift_container_sync_realms_config { 'DEFAULT/thisshouldnotexist' :
+        value => '<SERVICE DEFAULT>',
+      }
+
+      swift_container_sync_realms_config { 'DEFAULT/thisshouldexist2' :
+        value             => '<SERVICE DEFAULT>',
+        ensure_absent_val => 'toto',
+      }
+
+      swift_container_sync_realms_config { 'DEFAULT/thisshouldnotexist2' :
+        value             => 'toto',
+        ensure_absent_val => 'toto',
+      }
       EOS
 
 
@@ -171,7 +191,8 @@ describe 'basic swift_config resource' do
                      '/etc/swift/container-server.conf',
                      '/etc/swift/dispersion.conf',
                      '/etc/swift/object-server.conf',
-                     '/etc/swift/proxy-server.conf']
+                     '/etc/swift/proxy-server.conf',
+                     '/etc/swift/container-sync-realms.conf']
 
     $swift_files.each do |swift_conf_file|
       describe file(swift_conf_file) do
