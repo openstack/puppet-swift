@@ -20,11 +20,18 @@
 #   NOTE: The configuration MUST NOT be already handled by this module
 #   or Puppet catalog compilation will fail with duplicate resources.
 #
+# [*swift_container_sync_realms_config*]
+#   (optional) Allow configuration for specifying the allowable
+#   clusters and their information.
+#
 class swift::config (
-  $swift_config        = {},
+  $swift_config                       = {},
+  $swift_container_sync_realms_config = {}
 ) {
 
   validate_hash($swift_config)
+  validate_hash($swift_container_sync_realms_config)
 
   create_resources('swift_config', $swift_config)
+  create_resources('swift_container_sync_realms_config', $swift_container_sync_realms_config)
 }
