@@ -124,8 +124,8 @@ node /swift-storage/ {
 
   class { '::swift':
     # not sure how I want to deal with this shared secret
-    swift_hash_suffix => $swift_shared_secret,
-    package_ensure    => latest,
+    swift_hash_path_suffix => $swift_shared_secret,
+    package_ensure         => latest,
   }
 
   # create xfs partitions on a loopback device and mount them
@@ -188,8 +188,8 @@ node /swift-proxy/ {
 
   class { '::swift':
     # not sure how I want to deal with this shared secret
-    swift_hash_suffix => $swift_shared_secret,
-    package_ensure    => latest,
+    swift_hash_path_suffix => $swift_shared_secret,
+    package_ensure         => latest,
   }
 
   # curl is only required so that I can run tests

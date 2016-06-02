@@ -21,7 +21,7 @@ describe 'basic swift' do
       # Swift resources
       class { '::swift':
         # not sure how I want to deal with this shared secret
-        swift_hash_suffix => 'secrete',
+        swift_hash_path_suffix => 'secrete',
         package_ensure    => latest,
       }
       class { '::swift::keystone::auth':
@@ -102,7 +102,7 @@ describe 'basic swift' do
       # Swift resources
       class { '::swift':
         # not sure how I want to deal with this shared secret
-        swift_hash_suffix => 'secrete',
+        swift_hash_path_suffix => 'secrete',
         package_ensure    => latest,
       }
       class { '::swift::keystone::auth':

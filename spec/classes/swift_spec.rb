@@ -4,7 +4,7 @@ describe 'swift' do
 
   let :params do
     {
-      :swift_hash_suffix => 'string',
+      :swift_hash_path_suffix => 'string',
       :max_header_size   => '16384',
     }
   end

@@ -13,7 +13,7 @@
 #   string.
 #
 # [*swift_hash_path_prefix*]
-#   (Required)String. A prefix used by hash_path to offer a bit more security
+#   (Required) String. A prefix used by hash_path to offer a bit more security
 #   when generating hashes for paths. It simply prepends this value to all paths;
 #   if someone knows this prefix, it's easier for them to guess the hash a path
 #   will end up with. New installations are advised to set this parameter to a
@@ -23,22 +23,18 @@
 #   as a salt when hashing to determine mappings in the ring.
 #   This file should be the same on every node in the cluster.
 #
-# [*package_ensure*] The ensure state for the swift package.
-#   (Optional) Defaults to present.
+# [*package_ensure*]
+#   (Optional) The ensure state for the swift package.
+#   Defaults to present.
 #
-# [*client_package_ensure*] The ensure state for the swift client package.
-#   (Optional) Defaults to present.
+# [*client_package_ensure*]
+#   (Optional) The ensure state for the swift client package.
+#   Defaults to present.
 #
-# [*max_header_size*] Max HTTP header size for incoming requests for all swift
+# [*max_header_size*]
+#   (Optional) Max HTTP header size for incoming requests for all swift
 #   services. Recommended size is 32768 for PKI keystone tokens.
-#   (Optional) Defaults to 8192
-
-## DEPRECATED PARAMETERS
-#
-# [*swift_hash_suffix*]
-#   DEPRECATED. string of text to be used
-#   as a salt when hashing to determine mappings in the ring.
-#   This file should be the same on every node in the cluster.
+#   Defaults to 8192
 #
 # == Dependencies
 #
@@ -58,20 +54,13 @@ class swift(
   $package_ensure         = 'present',
   $client_package_ensure  = 'present',
   $max_header_size        = '8192',
-  # DEPRECATED PARAMETERS
-  $swift_hash_suffix      = undef,
 ) {
 
   include ::swift::deps
   include ::swift::params
 
-  if ($swift_hash_suffix == undef and $swift_hash_path_suffix == undef) {
-    fail('You must specify swift_hash_path_suffix')
-  } elsif ($swift_hash_suffix != undef and $swift_hash_path_suffix == undef) {
-    warning('swift_hash_suffix has been deprecated and should be replaced with swift_hash_path_suffix, this will be removed as part of the N-cycle')
-    $swift_hash_path_suffix_real = $swift_hash_suffix
-  } else {
-    $swift_hash_path_suffix_real = $swift_hash_path_suffix
+  if ($swift_hash_path_prefix == undef and $swift_hash_path_suffix == undef) {
+    fail('You must specify at least swift_hash_path_prefix or swift_hash_path_suffix')
   }
 
   if !defined(Package['swift']) {
@@ -114,7 +103,7 @@ class swift(
   File['/etc/swift/swift.conf'] -> Swift_config<||>
 
   swift_config {
-    'swift-hash/swift_hash_path_suffix': value => $swift_hash_path_suffix_real;
+    'swift-hash/swift_hash_path_suffix': value => $swift_hash_path_suffix;
     'swift-hash/swift_hash_path_prefix': value => $swift_hash_path_prefix;
     'swift-constraints/max_header_size': value => $max_header_size;
   }

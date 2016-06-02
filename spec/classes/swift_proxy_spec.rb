@@ -20,7 +20,7 @@ describe 'swift::proxy' do
 
     let :pre_condition do
       "class { memcached: max_memory => 1}
-       class { swift: swift_hash_suffix => string }"
+       class { swift: swift_hash_path_suffix => string }"
     end
 
     describe 'without the proxy local network ip address being specified' do
@@ -105,7 +105,7 @@ account_autocreate = true
         let :pre_condition do
           "
             class { memcached: max_memory => 1}
-            class { swift: swift_hash_suffix => string }
+            class { swift: swift_hash_path_suffix => string }
             swift_proxy_config { 'foo/bar': value => 'foo' }
           "
         end

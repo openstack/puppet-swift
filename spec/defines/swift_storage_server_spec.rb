@@ -11,7 +11,7 @@ describe 'swift::storage::server' do
   end
 
   let :pre_condition do
-    "class { 'swift': swift_hash_suffix => 'foo' }
+    "class { 'swift': swift_hash_path_suffix => 'foo' }
      class { 'swift::storage': storage_local_net_ip => '10.0.0.1' }"
   end
   let :default_params do
@@ -123,7 +123,7 @@ describe 'swift::storage::server' do
         describe "when using swift_#{t}_config resource" do
           let :pre_condition do
             "
-            class { 'swift': swift_hash_suffix => 'foo' }
+            class { 'swift': swift_hash_path_suffix => 'foo' }
             class { 'swift::storage': storage_local_net_ip => '10.0.0.1' }
             swift_#{t}_config { 'foo/bar': value => 'foo' }
             "

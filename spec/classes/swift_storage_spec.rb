@@ -10,7 +10,7 @@ describe 'swift::storage' do
 
   describe 'when required classes are specified' do
     let :pre_condition do
-      "class { 'swift': swift_hash_suffix => 'changeme' }"
+      "class { 'swift': swift_hash_path_suffix => 'changeme' }"
     end
 
     describe 'when the local net ip is specified' do
