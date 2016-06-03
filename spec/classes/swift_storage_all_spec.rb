@@ -10,7 +10,7 @@ describe 'swift::storage::all' do
   end
 
   let :pre_condition do
-    "class { 'swift': swift_hash_suffix => 'changeme' }"
+    "class { 'swift': swift_hash_path_suffix => 'changeme' }"
   end
 
   let :default_params do

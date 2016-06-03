@@ -17,7 +17,7 @@ describe 'swift::ringbuilder' do
 
     let :pre_condition do
       "class { memcached: max_memory => 1}
-       class { swift: swift_hash_suffix => string }"
+       class { swift: swift_hash_path_suffix => string }"
     end
 
     it 'should rebalance the ring for all ring types' do
@@ -57,7 +57,7 @@ describe 'swift::ringbuilder' do
     describe 'when specifying ring devices' do
       let :pre_condition do
          'class { memcached: max_memory => 1}
-          class { swift: swift_hash_suffix => string }
+          class { swift: swift_hash_path_suffix => string }
           ring_object_device { "127.0.0.1:6000/1":
           zone        => 1,
           weight      => 1,

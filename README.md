@@ -45,7 +45,7 @@ To utilize the swift module's functionality you will need to declare multiple re
 
 ```puppet
 class { 'swift':
-  swift_hash_suffix => 'swift_secret',
+  swift_hash_path_suffix => 'swift_secret',
 }
 
 swift::storage::loopback { ['1', '2']:
@@ -97,10 +97,10 @@ Usage
 Class that will set up the base packages and the base /etc/swift/swift.conf
 
 ```puppet
-class { 'swift': swift_hash_suffix => 'shared_secret', }
+class { 'swift': swift_hash_path_suffix => 'shared_secret', }
 ```
 
-####`swift_hash_suffix`
+####`swift_hash_path_suffix`
 The shared salt used when hashing ring mappings.
 
 ### Class swift::proxy

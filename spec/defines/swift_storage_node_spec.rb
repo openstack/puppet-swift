@@ -20,7 +20,7 @@ describe 'swift::storage::node' do
   end
 
   let :pre_condition do
-    "class { 'swift': swift_hash_suffix => 'foo' }
+    "class { 'swift': swift_hash_path_suffix => 'foo' }
      class { 'swift::storage': storage_local_net_ip => '127.0.0.1' }"
   end
 

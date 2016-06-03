@@ -22,7 +22,7 @@ describe 'swift::bench' do
   end
 
   let :pre_condition do
-    "class { 'swift': swift_hash_suffix => 'string' }"
+    "class { 'swift': swift_hash_path_suffix => 'string' }"
   end
 
   let :facts do
