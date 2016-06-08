@@ -49,13 +49,11 @@
 #
 # [*service_name*]
 #   (optional) Name of the service.
-#   Defaults to the value of auth_name, but must differ from the value
-#   of service_name_s3.
+#   Defaults to 'swift'
 #
 # [*service_name_s3*]
 #   (optional) Name of the s3 service.
-#   Defaults to the value of auth_name_s3, but must differ from the value
-#   of service_name.
+#   Defaults to 'swift_s3'
 #
 # [*service_description*]
 #   (optional) Description for keystone service.
@@ -157,8 +155,8 @@ class swift::keystone::auth(
   $email                  = 'swift@localhost',
   $region                 = 'RegionOne',
   $operator_roles         = ['admin', 'SwiftOperator'],
-  $service_name           = undef,
-  $service_name_s3        = undef,
+  $service_name           = 'swift',
+  $service_name_s3        = 'swift_s3',
   $service_description    = 'Openstack Object-Store Service',
   $service_description_s3 = 'Openstack S3 Service',
   $configure_endpoint     = true,
@@ -277,27 +275,24 @@ class swift::keystone::auth(
     $internal_url_s3_real = $internal_url_s3
   }
 
-  $real_service_name    = pick($service_name, $auth_name)
-  $real_service_name_s3 = pick($service_name_s3, "${auth_name}_s3")
-
-  if $real_service_name == $real_service_name_s3 {
-      fail('cinder::keystone::auth parameters service_name and service_name_s3 must be different.')
+  if $service_name == $service_name_s3 {
+      fail('swift::keystone::auth parameters service_name and service_name_s3 must be different.')
   }
 
   # Establish that keystone auth and endpoints are properly setup before
   # managing any type of swift related service.
   if $configure_endpoint {
-    Keystone_endpoint["${region}/${real_service_name}::object-store"] -> Swift::Service<||>
+    Keystone_endpoint["${region}/${service_name}::object-store"] -> Swift::Service<||>
   }
   if $configure_s3_endpoint {
-    Keystone_endpoint["${region}/${real_service_name_s3}::s3"] -> Swift::Service<||>
+    Keystone_endpoint["${region}/${service_name_s3}::s3"] -> Swift::Service<||>
   }
 
   keystone::resource::service_identity { 'swift':
     configure_endpoint  => $configure_endpoint,
     configure_user      => $configure_user,
     configure_user_role => $configure_user_role,
-    service_name        => $real_service_name,
+    service_name        => $service_name,
     service_type        => 'object-store',
     service_description => $service_description,
     region              => $region,
@@ -315,7 +310,7 @@ class swift::keystone::auth(
     configure_user_role => false,
     configure_endpoint  => $configure_s3_endpoint,
     configure_service   => $configure_s3_endpoint,
-    service_name        => $real_service_name_s3,
+    service_name        => $service_name_s3,
     service_type        => 's3',
     service_description => $service_description_s3,
     region              => $region,
