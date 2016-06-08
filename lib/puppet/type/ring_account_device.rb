@@ -6,6 +6,9 @@ Puppet::Type.newtype(:ring_account_device) do
 
   newparam(:name, :namevar => true) do
     validate do |value|
+      if !value.split(/^\d+:/)[1].nil?
+        raise(Puppet::Error, "Policy_index is not supported on account device")
+      end
       # we have to have URI Scheme so we just add http:// and ignore it later
       uri = URI('http://' + value)
       address = uri.host

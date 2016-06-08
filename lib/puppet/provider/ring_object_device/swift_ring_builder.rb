@@ -6,18 +6,21 @@ Puppet::Type.type(:ring_object_device).provide(
 
   optional_commands :swift_ring_builder => 'swift-ring-builder'
 
-  def self.prefetch(resource)
+  def prefetch(resource)
     @my_ring = lookup_ring
   end
 
-  def self.ring
+  def ring
     @my_ring ||= lookup_ring
   end
 
-  # TODO maybe this should be a parameter eventually so that
-  # it can be configurable
-  def self.builder_file_path
-    '/etc/swift/object.builder'
+  def self.builder_file_path(policy_index)
+    if policy_index.nil?
+      '/etc/swift/object.builder'
+    elsif policy_index == 0
+      '/etc/swift/object.builder'
+    else
+      "/etc/swift/object-#{policy_index}.builder"
+    end
   end
-
 end

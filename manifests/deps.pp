@@ -26,6 +26,10 @@ class swift::deps {
   ~> Anchor['swift::config::end']
 
   Anchor['swift::config::begin']
+  -> Swift_storage_policy<||>
+  ~> Anchor['swift::config::end']
+
+  Anchor['swift::config::begin']
   -> Swift_object_config<||>
   ~> Anchor['swift::config::end']
 

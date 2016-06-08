@@ -8,7 +8,7 @@ class Puppet::Provider::SwiftRingBuilder < Puppet::Provider
     end
   end
 
-  def self.address_string(address)
+  def address_string(address)
     ip = IPAddr.new(address)
     if ip.ipv6?
      '[' + ip.to_s + ']'
@@ -17,11 +17,11 @@ class Puppet::Provider::SwiftRingBuilder < Puppet::Provider
     end
   end
 
-  def self.lookup_ring
+  def lookup_ring
     object_hash = {}
-    if File.exists?(builder_file_path)
+    if File.exists?(builder_file_path(policy_index))
       # Swift < 2.2.2 Skip first 4 info lines from swift-ring-builder output
-      if rows = swift_ring_builder(builder_file_path).split("\n")[4..-1]
+      if rows = swift_ring_builder(builder_file_path(policy_index)).split("\n")[4..-1]
         # Skip "Ring file ... is up-to-date" message, if printed.
         if !rows[0].nil? and rows[0] =~ /Ring file\b.*\bis up-to-date/
              rows.shift
@@ -71,21 +71,32 @@ class Puppet::Provider::SwiftRingBuilder < Puppet::Provider
           # Swift 2.9.1+ output example:
           if row =~ /^\s*(\d+)\s+(\d+)\s+(\d+)\s+(\S+):(\d+)\s+\S+:\d+\s+(\S+)\s+(\d+\.\d+)\s+(\d+)\s*((-|\s-?)?\d+\.\d+)\s*(\S*)/
             address = address_string("#{$4}")
-            object_hash["#{address}:#{$5}/#{$6}"] = {
-              :id          => $1,
-              :region      => $2,
-              :zone        => $3,
-              :weight      => $7,
-              :partitions  => $8,
-              :balance     => $9,
-              :meta        => $11
+            if !policy_index.nil?
+              policy = "#{policy_index}:"
+            else
+              policy = ''
+            end
+            object_hash["#{policy}#{address}:#{$5}/#{$6}"] = {
+              :id           => $1,
+              :region       => $2,
+              :zone         => $3,
+              :weight       => $7,
+              :partitions   => $8,
+              :balance      => $9,
+              :meta         => $11,
+              :policy_index => "#{policy_index}"
             }
 
           # Swift 1.8+ output example:
           elsif row =~ /^\s*(\d+)\s+(\d+)\s+(\d+)\s+(\S+)\s+(\d+)\s+\S+\s+\d+\s+(\S+)\s+(\d+\.\d+)\s+(\d+)\s*((-|\s-?)?\d+\.\d+)\s*(\S*)/
 
             address = address_string("#{$4}")
-            object_hash["#{address}:#{$5}/#{$6}"] = {
+            if !policy_index.nil?
+              policy = "#{policy_index}:"
+            else
+              policy = ''
+            end
+            object_hash["#{policy}#{address}:#{$5}/#{$6}"] = {
               :id          => $1,
               :region      => $2,
               :zone        => $3,
@@ -121,7 +132,6 @@ class Puppet::Provider::SwiftRingBuilder < Puppet::Provider
               :balance     => $8,
               :meta        => $9
             }
-
           else
             Puppet.warning("Unexpected line: #{row}")
           end
@@ -131,12 +141,8 @@ class Puppet::Provider::SwiftRingBuilder < Puppet::Provider
     object_hash
   end
 
-  def ring
-    self.class.ring
-  end
-
-  def builder_file_path
-    self.class.builder_file_path
+  def builder_file_path(policy_index)
+    self.class.builder_file_path(policy_index)
   end
 
   def exists?
@@ -147,13 +153,12 @@ class Puppet::Provider::SwiftRingBuilder < Puppet::Provider
     [:zone, :weight].each do |param|
       raise(Puppet::Error, "#{param} is required") unless resource[param]
     end
-
     if :region == 'none'
       # Prior to Swift 1.8.0, regions did not exist.
       swift_ring_builder(
-        builder_file_path,
+        builder_file_path(policy_index),
         'add',
-        "z#{resource[:zone]}-#{resource[:name]}_#{resource[:meta]}",
+        "z#{resource[:zone]}-#{device_path}_#{resource[:meta]}",
         resource[:weight]
       )
     else
@@ -161,11 +166,27 @@ class Puppet::Provider::SwiftRingBuilder < Puppet::Provider
       # Region defaults to 1 if unspecified
       resource[:region] ||= 1
       swift_ring_builder(
-        builder_file_path,
+        builder_file_path(policy_index),
         'add',
-        "r#{resource[:region]}z#{resource[:zone]}-#{resource[:name]}_#{resource[:meta]}",
+        "r#{resource[:region]}z#{resource[:zone]}-#{device_path}_#{resource[:meta]}",
         resource[:weight]
       )
+    end
+  end
+
+  def device_path
+    if resource[:name].split(/^\d+:/)[1].nil?
+      return resource[:name]
+    else
+      return resource[:name].split(/^\d+:/)[1]
+    end
+  end
+
+  def policy_index
+    if resource[:name].split(/^\d+:/)[1].nil?
+      return nil
+    else
+      Integer("#{resource[:name].match(/^\d+/)}")
     end
   end
 
@@ -203,7 +224,7 @@ class Puppet::Provider::SwiftRingBuilder < Puppet::Provider
     swift_ring_builder(
       builder_file_path,
       'set_weight',
-      "d#{ring[resource[:name]][:id]}",
+      "d#{ring[device_path][:id]}",
       resource[:weight]
     )
     # requires a rebalance
@@ -233,10 +254,9 @@ class Puppet::Provider::SwiftRingBuilder < Puppet::Provider
     swift_ring_builder(
       builder_file_path,
       'set_info',
-      "d#{ring[resource[:name]][:id]}",
+      "d#{ring[device_path][:id]}",
       "_#{resource[:meta]}"
     )
   end
 
 end
-

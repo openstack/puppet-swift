@@ -6,7 +6,7 @@ swift
 1. [Overview - What is the swift module?](#overview)
 2. [Module Description - What does the module do?](#module-description)
 3. [Setup - The basics of getting started with swift](#setup)
-4. [Reference - The classes, defines,functions and facts available in this module](#reference)
+4. [Usage - The classes, defines,functions and facts available in this module](#reference)
 5. [Implementation - An under-the-hood peek at what the module is doing](#implementation)
 6. [Limitations - OS compatibility, etc.](#limitations)
 7. [Development - Guide for contributing to the module](#development)
@@ -102,6 +102,139 @@ class { 'swift': swift_hash_path_suffix => 'shared_secret', }
 
 ####`swift_hash_path_suffix`
 The shared salt used when hashing ring mappings.
+
+### Swift storage policies
+### Define: swift::storage::policy
+
+A defined type that is used to configure swift storage policies as defined by swift:
+http://docs.openstack.org/developer/swift/overview_policies.html
+It is important for the operator to have a solid understanding of storage policies so they understand which parts of this module are needed for the result they seek.
+
+swift::storage::policy is a wrapper to a new swift type/provider called "swift_storage_policy".
+Swift storage policies are found in /etc/swift/swift.conf.
+ex from swift.conf:
+```puppet
+[storage-policy:0]
+name = Policy-0
+aliases = gold, silver, bronze
+policy_type = replication
+default = true
+
+
+[storage-policy:1]
+name = policy-other
+aliases = a, b, c
+policy_type = replication
+deprecated = No
+default = false
+```
+
+The swift_storage_policy provider will manage one or more storage policy sections that can be created in swift.conf.
+This provider will also enforce the following rules for swift storage policies as defined by the swift project:
+http://docs.openstack.org/developer/swift/overview_policies.html#configuring-policies
+ - No duplicate names or aliases used across all policies.
+ - There is at least one policy that is marked as the default policy.
+ - Policy name/alias case/content.
+ - Policy-0 specifics.
+ - Deprecated and default can not be declared on the same policy.
+ - Storage policy policy_type.
+ - Policy indexes must be unique
+
+
+#### How to add Policy-0 plus another policy to swift.conf
+In this example we have an existing swift ring that is configured to store 1 replica of object data.
+This existing ring will be considered "storage-policy:0".
+The operator wants to add another storage policy to the cluster for a ring that will be configured to store 3 replicas of object data using 3 different storage devices.
+The operator will need to first define storage-policy:0 to match what exists already, then the operator will need to define the new 3 replica storage policy called "storage-policy:1"
+
+
+Using /spec/acceptance/basic_swift_spec.rb as an example:
+The existing storage node and ringbuilder manifest will be:
+```puppet
+{
+# Create storage policy 0 in swift.conf
+  swift::storage::policy { '0':
+    policy_name    => 'Policy-0',
+    policy_aliases => 'basic, single, A',
+    default_policy => true,
+    policy_type    => 'replication'
+  }
+
+# Build the existing ring
+  class { '::swift::ringbuilder':
+    part_power     => '14',
+    replicas       => '1',
+    min_part_hours => 1,
+   }
+
+  swift::storage::node { '0':
+    mnt_base_dir         => '/srv/node',
+    weight               => 1,
+    zone                 => '2',
+    storage_local_net_ip => '127.0.0.1',
+    require              => Swift::Storage::Loopback['2', '3', '4'] ,
+  }
+
+```
+
+
+To add the new ring and storage-policy:1 to swift.conf
+```puppet
+
+ # Create storage policy 1 in swift.conf
+  swift::storage::policy { '1':
+    policy_name    => '3-Replica-Policy',
+    policy_aliases => 'extra, triple, B',
+    default_policy => false,
+    deprecated     => 'No',
+  }
+
+  # Create an object ring for nodes using policy 1
+  swift::ringbuilder::policy_ring { '1':
+    part_power     => '18',
+    replicas       => '3',
+    min_part_hours => 1,
+  }
+
+  # ring_object_devices for a storage policy start with the policy id.
+  # Create 3 ring_object_device starting with "1:" to be
+  # added to an object-1 ring for storage policy 1.
+  ring_object_device { "1:127.0.0.1:6000/2":
+    zone         => 2,
+    weight       => 1,
+    require      => Swift::Storage::Loopback['2'],
+  }
+  ring_object_device { "1:127.0.0.1:6000/3":
+    zone         => 2,
+    weight       => 1,
+    require      => Swift::Storage::Loopback['3'] ,
+  }
+  ring_object_device { "1:127.0.0.1:6000/4":
+    zone         => 2,
+    weight       => 1,
+    require      => Swift::Storage::Loopback['4'] ,
+  }
+```
+
+To remove any section from a storage policy, just set its value to undef.
+To remove a storage policy section completely set it to ensure => absent
+This will remove the section AND section header.
+ex:
+```puppet
+  # Purge storage policy 1 entirely from swift.conf
+  swift::storage::policy { '1':
+    ensure         => absent,
+    policy_name    => '3-Replica-Policy',
+    policy_aliases => 'extra, triple, B',
+    default_policy => false,
+    deprecated     => 'No',
+  }
+```
+See swift::storage::policy for additional parameters to set. 
+#### Storage policies and erasure code support.
+Support for erasure code using storage policies is supported using swift::storage::policy.
+A future change will enable the swift-object-reconstructor process that is needed for a 
+cluster that runs erasure code.
 
 ### Class swift::proxy
 

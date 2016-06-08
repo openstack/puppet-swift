@@ -32,23 +32,60 @@ describe 'basic swift' do
         storage_local_net_ip => '127.0.0.1',
       }
       # create xfs partitions on a loopback device and mounts them
-      swift::storage::loopback { '2':
+      swift::storage::loopback { ['2','3','4']:
         seek    => '200000',
         require => Class['swift'],
+      }
+      # Create storage policy 0 in swift.conf
+      swift::storage::policy { '0':
+        policy_name    => 'Policy-0',
+        policy_aliases => 'basic, single, A',
+        default_policy => true,
+        policy_type    => 'replication'
+      }
+      # Create storage policy 1 in swift.conf
+      swift::storage::policy { '1':
+        policy_name    => '3-Replica-Policy',
+        policy_aliases => 'extra, triple, B',
+        default_policy => false,
+        deprecated     => 'No',
       }
       # sets up storage nodes which is composed of a single
       # device that contains an endpoint for an object, account, and container
       swift::storage::node { '2':
         mnt_base_dir         => '/srv/node',
         weight               => 1,
-        manage_ring          => true,
         zone                 => '2',
         storage_local_net_ip => '127.0.0.1',
-        require              => Swift::Storage::Loopback['2'] ,
+        policy_index         => 0,
+        require              => Swift::Storage::Loopback['2','3','4'] ,
+      }
+      # ring_object_devices for a storage policy start with the policy id.
+      # Create 3 ring_object_device starting with "1:" to be
+      # added to an object-1 ring for storage policy 1.
+      ring_object_device { "1:127.0.0.1:6000/2":
+        zone         => 2,
+        weight       => 1,
+        require      => Swift::Storage::Loopback['2'],
+      }
+      ring_object_device { "1:127.0.0.1:6000/3":
+        zone         => 2,
+        weight       => 1,
+        require      => Swift::Storage::Loopback['3'] ,
+      }
+      ring_object_device { "1:127.0.0.1:6000/4":
+        zone         => 2,
+        weight       => 1,
+        require      => Swift::Storage::Loopback['4'] ,
       }
       class { '::swift::ringbuilder':
         part_power     => '18',
         replicas       => '1',
+        min_part_hours => 1,
+      }
+      swift::ringbuilder::policy_ring { '1':
+        part_power     => '18',
+        replicas       => '3',
         min_part_hours => 1,
       }
       class { '::swift::proxy':
@@ -113,19 +150,51 @@ describe 'basic swift' do
         storage_local_net_ip => '127.0.0.1',
       }
       # create xfs partitions on a loopback device and mounts them
-      swift::storage::loopback { '2':
+      swift::storage::loopback { ['2','3','4']:
         seek    => '200000',
         require => Class['swift'],
+      }
+      # Create storage policy 0 in swift.conf
+      swift::storage::policy { '0':
+        policy_name    => 'Policy-0',
+        policy_aliases => 'basic, single, A',
+        default_policy => true,
+        policy_type    => 'replication'
+      }
+      # Create storage policy 1 in swift.conf
+      swift::storage::policy { '1':
+        policy_name    => '3-Replica-Policy',
+        policy_aliases => 'extra, triple, B',
+        default_policy => false,
+        deprecated     => 'No',
       }
       # sets up storage nodes which is composed of a single
       # device that contains an endpoint for an object, account, and container
       swift::storage::node { '2':
         mnt_base_dir         => '/srv/node',
         weight               => 1,
-        manage_ring          => true,
         zone                 => '2',
         storage_local_net_ip => '127.0.0.1',
-        require              => Swift::Storage::Loopback['2'] ,
+        policy_index         => 0,
+        require              => Swift::Storage::Loopback['2','3','4'] ,
+      }
+      # ring_object_devices for a storage policy start with the policy id.
+      # Create 3 ring_object_device starting with "1:" to be
+      # added to an object-1 ring for storage policy 1.
+      ring_object_device { "1:127.0.0.1:6000/2":
+        zone         => 2,
+        weight       => 1,
+        require      => Swift::Storage::Loopback['2'],
+      }
+      ring_object_device { "1:127.0.0.1:6000/3":
+        zone         => 2,
+        weight       => 1,
+        require      => Swift::Storage::Loopback['3'] ,
+      }
+      ring_object_device { "1:127.0.0.1:6000/4":
+        zone         => 2,
+        weight       => 1,
+        require      => Swift::Storage::Loopback['4'] ,
       }
       class { '::swift::storage::account':
         service_provider => 'swiftinit',
@@ -139,6 +208,11 @@ describe 'basic swift' do
       class { '::swift::ringbuilder':
         part_power     => '18',
         replicas       => '1',
+        min_part_hours => 1,
+      }
+      swift::ringbuilder::policy_ring { '1':
+        part_power     => '18',
+        replicas       => '3',
         min_part_hours => 1,
       }
       class { '::swift::proxy':

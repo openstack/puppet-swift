@@ -38,11 +38,9 @@
 #   (optional) The IP address of the storage server.
 #   Defaults to '127.0.0.1'.
 #
-# ==== DEPRECATED PARAMETERS
-#
-# [*manage_ring*]
-#   This parameter is deprecated and does nothing.
-#
+#  [*policy_index*]
+#    (optional) storage policy index
+#    Defaults to undef
 define swift::storage::node(
   $mnt_base_dir,
   $zone,
@@ -51,8 +49,7 @@ define swift::storage::node(
   $group  = 'swift',
   $max_connections = 25,
   $storage_local_net_ip = '127.0.0.1',
-  # DEPRECATED PARAMETERS
-  $manage_ring = true
+  $policy_index = undef,
 ) {
 
   include ::swift::deps
@@ -71,7 +68,14 @@ define swift::storage::node(
     type             => 'object',
     config_file_path => 'object-server.conf',
   }
-  ring_object_device { "${storage_local_net_ip}:60${name}0/${name}":
+
+  if !$policy_index {
+    $ring_device = "${storage_local_net_ip}:60${name}0/${name}"
+  } else {
+    $ring_device = "${policy_index}:${storage_local_net_ip}:60${name}0/${name}"
+  }
+
+  ring_object_device { $ring_device:
     zone   => $zone,
     weight => $weight,
   }

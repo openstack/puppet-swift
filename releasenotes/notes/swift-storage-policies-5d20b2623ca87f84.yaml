@@ -1,0 +1,36 @@
+---
+prelude: >
+    Add support for swift storage policies.
+    This change adds storage policy support to the
+    swift ringbuilder class as well as ring_object_device.
+    This change also adds a new custom type/provider
+    called swift_storage_policy that is used to create
+    and enforce rules for storage policies in swift.conf
+features:
+  - Add support for swift storage policies.
+    This change adds storage policy support to the
+    swift ringbuilder class as well as ring_object_device.
+    The swift ringbuilder provider was modified to accept
+    ring_object_device with a name that starts with an
+    integer followed by colon.  For example, a ring_object_device
+    without a storage policy would be named 127.0.0.1:6000/4
+    A ring_object_device that should be included in
+    storage-policy:1 would be 1:127.0.0.1:6000/4.
+    Spec tests were split up and updated to test the
+    changes to ring_object_device as well.
+  - This change also adds a new custom type/provider
+    called swift_storage_policy that is used to create
+    and enforce rules for storage policies in swift.conf
+    This provider enforces rules established by the swift
+    project for storage_policies.  This provider uses the
+    puppet inifile provider to control storage policy
+    entries in swift.conf.  This provider implements a way
+    to remove/purge a storage policy including it's section
+    header from swift.conf.
+  - An upcoming change will enable the use of erasure code
+    through swift storage policies.
+upgrade:
+  - No action is required by existing users of this
+    module.  To begin using storage policies follow the
+    example upgrade procedure in the README under the
+    swift storage policy section.

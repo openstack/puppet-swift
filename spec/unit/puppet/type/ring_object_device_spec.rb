@@ -11,4 +11,10 @@ describe Puppet::Type.type(:ring_object_device) do
       Puppet::Type.type(:ring_object_device).new(:name => 'foo:80')
     }.to raise_error(Puppet::Error, /should contain a device/)
   end
+
+  it 'should not fail if the name contains a policy index' do
+    expect {
+      Puppet::Type.type(:ring_object_device).new(:name => '1:192.168.101.13:6002/1')
+    }.to_not raise_error
+  end
 end

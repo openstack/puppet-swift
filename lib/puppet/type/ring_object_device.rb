@@ -6,6 +6,11 @@ Puppet::Type.newtype(:ring_object_device) do
 
   newparam(:name, :namevar => true) do
     validate do |value|
+      # If storage policy_index is specified first strip that off.
+      # Resource name is not required to start with a policy_index
+      if !value.split(/^\d+:/)[1].nil?
+        value = value.split(/^\d+:/)[1]
+      end
       # we have to have URI Scheme so we just add http:// and ignore it later
       uri = URI('http://' + value)
       address = uri.host
@@ -26,7 +31,7 @@ Puppet::Type.newtype(:ring_object_device) do
       "%.2f" % value
     end
   end
-
+  
   newproperty(:meta)
 
   [:id, :partitions, :balance].each do |param|
