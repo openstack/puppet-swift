@@ -83,21 +83,9 @@ Puppet::Type.type(:service).provide :swiftinit, :parent => :service do
   # file and notify systemctl.  For Ubuntu < 16.04 create init file.
   def enable
     if default_provider_upstart?
-      file = Puppet::Type.type(:file).new(
-        :name    => "/etc/init/#{resource[:pattern]}.conf",
-        :ensure  => :present,
-        :content => upstart_template,
-        :mode    => '0644'
-      )
-      file.write(file)
+      File.open("/etc/init/#{resource[:pattern]}.conf", 'w') { |file| file.write(upstart_template) }
     else
-      file = Puppet::Type.type(:file).new(
-        :name    => "/etc/systemd/system/#{resource[:pattern]}.service",
-        :ensure  => :present,
-        :content => systemd_template,
-        :mode    => '0644'
-      )
-      file.write(file)
+      File.open("/etc/systemd/system/#{resource[:pattern]}.service", 'w') { |file| file.write(systemd_template) }
       systemctl_run('daemon-reload', nil, true)
       systemctl_run('enable', [resource[:pattern]], false)
     end
