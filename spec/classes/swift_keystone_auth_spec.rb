@@ -21,6 +21,8 @@ describe 'swift::keystone::auth' do
       :public_url_s3     => 'http://127.0.0.1:8080',
       :admin_url_s3      => 'http://127.0.0.1:8080',
       :internal_url_s3   => 'http://127.0.0.1:8080',
+      :service_name      => 'swift',
+      :service_name_s3   => 'swift_s3',
     }
   end
 
@@ -57,14 +59,14 @@ describe 'swift::keystone::auth' do
         it { is_expected.to contain_keystone_role(role_name).with_ensure('present') }
       end
 
-      it { is_expected.to contain_keystone_endpoint("#{params[:region]}/#{params[:auth_name]}::object-store").with(
+      it { is_expected.to contain_keystone_endpoint("#{params[:region]}/#{default_params[:service_name]}::object-store").with(
         :ensure       => 'present',
         :public_url   => params[:public_url],
         :admin_url    => params[:admin_url],
         :internal_url => params[:internal_url],
       )}
 
-      it { is_expected.to contain_keystone_endpoint("#{params[:region]}/#{params[:auth_name]}_s3::s3").with(
+      it { is_expected.to contain_keystone_endpoint("#{params[:region]}/#{default_params[:service_name_s3]}::s3").with(
         :ensure       => 'present',
         :public_url   => params[:public_url_s3],
         :admin_url    => params[:admin_url_s3],
@@ -107,6 +109,8 @@ describe 'swift::keystone::auth' do
           :internal_protocol => 'https',
           :internal_address  => 'internal.example.org',
           :endpoint_prefix   => 'KEY_AUTH',
+          :service_name      => 'swift',
+          :service_name_s3   => 'swift_s3'
         })
       end
 
@@ -114,14 +118,14 @@ describe 'swift::keystone::auth' do
         default_params.merge( params )
       end
 
-      it { is_expected.to contain_keystone_endpoint("#{p[:region]}/#{p[:auth_name]}::object-store").with(
+      it { is_expected.to contain_keystone_endpoint("#{p[:region]}/#{p[:service_name]}::object-store").with(
         :ensure       => 'present',
         :public_url   => "#{p[:public_protocol]}://#{p[:public_address]}:#{p[:public_port]}/v1/#{p[:endpoint_prefix]}_%(tenant_id)s",
         :admin_url    => "#{p[:admin_protocol]}://#{p[:admin_address]}:#{p[:port]}",
         :internal_url => "#{p[:internal_protocol]}://#{p[:internal_address]}:#{p[:port]}/v1/#{p[:endpoint_prefix]}_%(tenant_id)s"
       )}
 
-      it { is_expected.to contain_keystone_endpoint("#{p[:region]}/#{p[:auth_name]}_s3::s3").with(
+      it { is_expected.to contain_keystone_endpoint("#{p[:region]}/#{p[:service_name_s3]}::s3").with(
         :ensure       => 'present',
         :public_url   => "#{p[:public_protocol]}://#{p[:public_address]}:#{p[:port]}",
         :admin_url    => "#{p[:admin_protocol]}://#{p[:admin_address]}:#{p[:port]}",
@@ -136,10 +140,11 @@ describe 'swift::keystone::auth' do
     end
 
     context 'when user configuration is set to default' do
+
       it { is_expected.to contain_keystone_user(p[:auth_name]).with(
         :ensure   => 'present',
         :password => p[:password],
-        :email    => p[:email]
+        :email    => p[:email],
       )}
 
       it { is_expected.to contain_keystone_user_role("#{p[:auth_name]}@#{p[:tenant]}").with(
@@ -147,13 +152,13 @@ describe 'swift::keystone::auth' do
         :roles   => ['admin'],
       )}
 
-      it { is_expected.to contain_keystone_service("#{p[:auth_name]}::object-store").with(
+      it { is_expected.to contain_keystone_service("swift::object-store").with(
         :ensure      => 'present',
         :type        => 'object-store',
         :description => 'Openstack Object-Store Service'
       )}
 
-      it { is_expected.to contain_keystone_service("#{p[:auth_name]}_s3::s3").with(
+      it { is_expected.to contain_keystone_service('swift_s3::s3').with(
         :ensure      => 'present',
         :type        => 's3',
         :description => 'Openstack S3 Service'
@@ -168,7 +173,7 @@ describe 'swift::keystone::auth' do
       it { is_expected.to_not contain_keystone_user(p[:auth_name]) }
       it { is_expected.to contain_keystone_user_role("#{p[:auth_name]}@#{p[:tenant]}") }
 
-      it { is_expected.to contain_keystone_service("#{p[:auth_name]}::object-store").with(
+      it { is_expected.to contain_keystone_service('swift::object-store').with(
         :ensure       => 'present',
         :type         => 'object-store',
         :description  => 'Openstack Object-Store Service'
@@ -186,7 +191,7 @@ describe 'swift::keystone::auth' do
         it { is_expected.to_not contain_keystone_user(p[:auth_name]) }
         it { is_expected.to_not contain_keystone_user_role("#{p[:auth_name]}@#{p[:tenant]}") }
 
-        it { is_expected.to contain_keystone_service("#{p[:auth_name]}::object-store").with(
+        it { is_expected.to contain_keystone_service('swift::object-store').with(
           :ensure       => 'present',
           :type         => 'object-store',
           :description  => 'Openstack Object-Store Service'
@@ -209,9 +214,6 @@ describe 'swift::keystone::auth' do
 
     it_configures 'swift keystone auth'
   end
-
-
-
 
   context 'when overriding service name' do
     before do
