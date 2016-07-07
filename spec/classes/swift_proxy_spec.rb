@@ -10,10 +10,11 @@ describe 'swift::proxy' do
 
   # set os so memcache will not fail
   let :facts do
-    {:operatingsystem => 'Ubuntu',
+    OSDefaults.get_facts({
+     :operatingsystem => 'Ubuntu',
      :osfamily        => 'Debian',
-     :processorcount  => 1
-    }
+     :processorcount  => 1,
+    })
   end
 
   describe 'with proper dependencies' do
@@ -322,9 +323,11 @@ node_timeout = 20
 
   context 'on Debian platforms' do
     let :facts do
-      { :operatingsystem => 'Ubuntu',
+      OSDefaults.get_facts({
+        :operatingsystem => 'Ubuntu',
         :osfamily        => 'Debian',
-        :concat_basedir  => '/var/lib/puppet/concat' }
+        :concat_basedir  => '/var/lib/puppet/concat',
+      })
     end
 
     let :platform_params do
@@ -350,9 +353,11 @@ node_timeout = 20
 
   context 'on RedHat platforms' do
     let :facts do
-      { :osfamily        => 'RedHat',
+      OSDefaults.get_facts({
+        :osfamily        => 'RedHat',
         :operatingsystem => 'RedHat',
-        :concat_basedir  => '/var/lib/puppet/concat' }
+        :concat_basedir  => '/var/lib/puppet/concat',
+      })
     end
 
     let :platform_params do

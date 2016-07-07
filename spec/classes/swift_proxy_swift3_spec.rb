@@ -3,8 +3,10 @@ require 'spec_helper'
 describe 'swift::proxy::swift3' do
 
   let :facts do
-    { :osfamily        => 'Debian',
-      :operatingsystem => 'Ubuntu' }
+    OSDefaults.get_facts({
+      :osfamily        => 'Debian',
+      :operatingsystem => 'Ubuntu',
+    })
   end
 
   let :pre_condition do

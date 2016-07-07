@@ -2,12 +2,11 @@ require 'spec_helper'
 describe 'swift::storage::server' do
 
   let :facts do
-    {
+    OSDefaults.get_facts({
       :operatingsystem => 'Ubuntu',
       :osfamily        => 'Debian',
-      :processorcount  => 1
-    }
-
+      :processorcount  => 1,
+    })
   end
 
   let :pre_condition do

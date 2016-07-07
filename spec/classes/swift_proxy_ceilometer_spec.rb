@@ -3,9 +3,7 @@ require 'spec_helper'
 describe 'swift::proxy::ceilometer' do
 
   let :facts do
-    {
-      :osfamily => 'Debian'
-    }
+    OSDefaults.get_facts({ :osfamily => 'Debian' })
   end
 
   let :pre_condition do

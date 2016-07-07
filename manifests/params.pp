@@ -1,6 +1,7 @@
 # == Class: swift::params
 #
 class swift::params {
+  include ::openstacklib::defaults
   case $::osfamily {
     'Debian': {
       $package_name                      = 'swift'

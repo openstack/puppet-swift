@@ -1,11 +1,11 @@
 describe 'swift::storage::node' do
 
   let :facts do
-    {
+    OSDefaults.get_facts({
       :operatingsystem => 'Ubuntu',
       :osfamily        => 'Debian',
-      :processorcount  => 1
-    }
+      :processorcount  => 1,
+    })
   end
 
   let :params do

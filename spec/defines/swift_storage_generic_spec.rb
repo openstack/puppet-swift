@@ -7,10 +7,10 @@ describe 'swift::storage::generic' do
   end
 
   let :facts do
-    {
+    OSDefaults.get_facts({
       :operatingsystem => 'Ubuntu',
-      :osfamily        => 'Debian'
-    }
+      :osfamily        => 'Debian',
+    })
   end
 
   let :pre_condition do
@@ -100,8 +100,10 @@ describe 'swift::storage::generic' do
 
   context 'on Debian platforms' do
     let :facts do
-      { :operatingsystem => 'Ubuntu',
-        :osfamily        => 'Debian' }
+      OSDefaults.get_facts({
+        :operatingsystem => 'Ubuntu',
+        :osfamily        => 'Debian',
+      })
     end
 
     let :platform_params do
@@ -145,8 +147,10 @@ describe 'swift::storage::generic' do
 
   context 'on Redhat platforms' do
     let :facts do
-      { :operatingsystem => 'Redhat',
-        :osfamily        => 'Redhat' }
+      OSDefaults.get_facts({
+        :operatingsystem => 'Redhat',
+        :osfamily        => 'Redhat',
+      })
     end
 
     let :platform_params do

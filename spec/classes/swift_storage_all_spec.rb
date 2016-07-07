@@ -3,10 +3,10 @@ require 'spec_helper'
 describe 'swift::storage::all' do
 
   let :facts do
-    {
+    OSDefaults.get_facts({
       :operatingsystem => 'Ubuntu',
-      :osfamily        => 'Debian'
-    }
+      :osfamily        => 'Debian',
+    })
   end
 
   let :pre_condition do
@@ -125,10 +125,10 @@ describe 'swift::storage::all' do
 
   describe "when installed on Debian" do
     let :facts do
-      {
+      OSDefaults.get_facts({
         :operatingsystem => 'Debian',
-        :osfamily        => 'Debian'
-      }
+        :osfamily        => 'Debian',
+      })
     end
 
     [{  :storage_local_net_ip => '127.0.0.1' },

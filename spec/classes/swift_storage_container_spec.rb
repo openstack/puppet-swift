@@ -69,9 +69,10 @@ describe 'swift::storage::container' do
 
   context 'on Debian platforms' do
     let :facts do
-      {:operatingsystem => 'Ubuntu',
-       :osfamily        => 'Debian' }
-
+      OSDefaults.get_facts({
+        :osfamily        => 'Debian',
+        :operatingsystem => 'Ubuntu',
+      })
     end
 
     let :platform_params do
@@ -111,8 +112,10 @@ describe 'swift::storage::container' do
 
   context 'on RedHat platforms' do
     let :facts do
-      { :osfamily        => 'RedHat',
-        :operatingsystem => 'RedHat' }
+      OSDefaults.get_facts({
+        :osfamily        => 'RedHat',
+        :operatingsystem => 'RedHat',
+      })
     end
 
     let :platform_params do

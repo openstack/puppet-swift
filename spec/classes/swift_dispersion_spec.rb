@@ -21,7 +21,7 @@ describe 'swift::dispersion' do
   end
 
   let :facts do
-    { :osfamily => 'Debian' }
+    OSDefaults.get_facts({ :osfamily => 'Debian' })
   end
 
   let :params do

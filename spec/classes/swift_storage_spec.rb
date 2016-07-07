@@ -2,10 +2,10 @@ require 'spec_helper'
 
 describe 'swift::storage' do
   let :facts do
-    {
+    OSDefaults.get_facts({
       :operatingsystem => 'Ubuntu',
-      :osfamily        => 'Debian'
-    }
+      :osfamily        => 'Debian',
+    })
   end
 
   describe 'when required classes are specified' do

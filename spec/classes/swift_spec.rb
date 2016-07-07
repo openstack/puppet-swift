@@ -10,10 +10,10 @@ describe 'swift' do
   end
 
   let :facts do
-    {
+    OSDefaults.get_facts({
       :operatingsystem => 'Ubuntu',
-      :osfamily        => 'Debian'
-    }
+      :osfamily        => 'Debian',
+    })
   end
 
   describe 'when no swift hash is specified' do

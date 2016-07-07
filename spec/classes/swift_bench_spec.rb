@@ -26,8 +26,10 @@ describe 'swift::bench' do
   end
 
   let :facts do
-    { :operatingsystem => 'Ubuntu',
-      :osfamily        => 'Debian' }
+    OSDefaults.get_facts({
+      :operatingsystem => 'Ubuntu',
+      :osfamily        => 'Debian'
+    })
   end
 
   let :params do

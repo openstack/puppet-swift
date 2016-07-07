@@ -13,10 +13,10 @@ describe 'swift::ringserver' do
     end
 
     let :facts do
-      {
+      OSDefaults.get_facts({
         :operatingsystem => 'Ubuntu',
-        :osfamily        => 'Debian'
-      }
+        :osfamily        => 'Debian',
+      })
     end
 
     let :params do
@@ -51,10 +51,10 @@ describe 'swift::ringserver' do
     end
 
     let :facts do
-      {
+      OSDefaults.get_facts({
         :operatingsystem => 'Ubuntu',
-        :osfamily        => 'Debian'
-      }
+        :osfamily        => 'Debian',
+      })
     end
 
 
