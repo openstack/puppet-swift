@@ -1,5 +1,5 @@
 #
-# Configure swift cache_errors.
+# Configure swift formpost.
 #
 # == Dependencies
 #
