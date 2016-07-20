@@ -1,0 +1,5 @@
+---
+deprecations:
+  - The Swift Keystone middleware option is_admin has been deprecated in the
+    Mitaka release and should be no longer used. It has no more effect and will
+    be removed in a future version.
