@@ -20,7 +20,7 @@ describe provider_class do
 262144 partitions, 3 replicas, 3 zones, 3 devices, 0.00 balance
 The minimum number of hours before a partition can be reassigned is 1
 The overload factor is 0.00% (0.000000)
-Devices:    id  region  zone      ip address  port      replication ip  replication port name weight partitions balance meta
+Devices:    id  region  zone    ip address:port       replic_ip:replic_port              name weight partitions balance meta
              1     1     1  192.168.101.13:6002         192.168.101.13:6002                 1   1.00     262144 0.00
              2     1     2  192.168.101.14:6002         192.168.101.14:6002                 1   1.00     262144 200.00  m2
              0     1     3  192.168.101.15:6002         192.168.101.15:6002                 1   1.00     262144-100.00  m2
