@@ -61,8 +61,28 @@ class Puppet::Provider::SwiftRingBuilder < Puppet::Provider
            # The overload factor is 0.00% (0.000000)
            # Devices:    id  region  zone      ip address  port  replication ip  replication port      name weight partitions balance meta
            #              0       1     2       127.0.0.1  6021       127.0.0.1              6021         2   1.00     262144    0.00
+           # Swift 2.9.1+ output example:
+           # /etc/swift/object.builder, build version 1
+           # 262144 partitions, 1.000000 replicas, 1 regions, 1 zones, 1 devices, 0.00 balance, 0.00 dispersion
+           # The minimum number of hours before a partition can be reassigned is 1
+           # The overload factor is 0.00% (0.000000)
+           # Devices:    id  region  zone      ip address:port  replication ip:replication port      name weight partitions balance meta
+           #              0       1     2       127.0.0.1:6021       127.0.0.1:6021                     2   1.00     262144    0.00
+          # Swift 2.9.1+ output example:
+          if row =~ /^\s*(\d+)\s+(\d+)\s+(\d+)\s+(\S+):(\d+)\s+\S+:\d+\s+(\S+)\s+(\d+\.\d+)\s+(\d+)\s*((-|\s-?)?\d+\.\d+)\s*(\S*)/
+            address = address_string("#{$4}")
+            object_hash["#{address}:#{$5}/#{$6}"] = {
+              :id          => $1,
+              :region      => $2,
+              :zone        => $3,
+              :weight      => $7,
+              :partitions  => $8,
+              :balance     => $9,
+              :meta        => $11
+            }
+
           # Swift 1.8+ output example:
-          if row =~ /^\s*(\d+)\s+(\d+)\s+(\d+)\s+(\S+)\s+(\d+)\s+\S+\s+\d+\s+(\S+)\s+(\d+\.\d+)\s+(\d+)\s*((-|\s-?)?\d+\.\d+)\s*(\S*)/
+          elsif row =~ /^\s*(\d+)\s+(\d+)\s+(\d+)\s+(\S+)\s+(\d+)\s+\S+\s+\d+\s+(\S+)\s+(\d+\.\d+)\s+(\d+)\s*((-|\s-?)?\d+\.\d+)\s*(\S*)/
 
             address = address_string("#{$4}")
             object_hash["#{address}:#{$5}/#{$6}"] = {
