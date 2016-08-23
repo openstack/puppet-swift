@@ -62,9 +62,7 @@ describe 'swift::proxy' do
 #
 [DEFAULT]
 bind_port = 8080
-
 bind_ip = 127.0.0.1
-
 workers = 1
 user = swift
 log_name = proxy-server
@@ -72,8 +70,6 @@ log_facility = LOG_LOCAL1
 log_level = INFO
 log_headers = False
 log_address = /dev/log
-
-
 
 [pipeline:main]
 pipeline = healthcheck cache tempauth proxy-server
@@ -87,10 +83,6 @@ set log_address = /dev/log
 log_handoffs = true
 allow_account_management = true
 account_autocreate = true
-
-
-
-
 ')
       end
 
@@ -136,9 +128,7 @@ account_autocreate = true
 #
 [DEFAULT]
 bind_port = 80
-
 bind_ip = 10.0.0.2
-
 workers = 3
 user = swift
 log_name = swift-proxy-server
@@ -146,8 +136,6 @@ log_facility = LOG_LOCAL1
 log_level = DEBUG
 log_headers = False
 log_address = /dev/log
-
-
 cors_allow_origin = http://foo.bar:1234,https://foo.bar
 strict_cors_mode = true
 
@@ -223,9 +211,7 @@ node_timeout = 20
 #
 [DEFAULT]
 bind_port = 80
-
 bind_ip = 10.0.0.2
-
 workers = 3
 user = swift
 log_name = swift-proxy-server
