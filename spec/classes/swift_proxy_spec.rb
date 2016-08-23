@@ -128,6 +128,7 @@ account_autocreate = true
            :write_affinity            => 'r1',
            :write_affinity_node_count => '2 * replicas',
            :node_timeout              => '20',
+           :cors_allow_origin         => 'http://foo.bar:1234,https://foo.bar',
           }
         end
         it 'should build the header file with provided values' do
@@ -147,6 +148,8 @@ log_headers = False
 log_address = /dev/log
 
 
+cors_allow_origin = http://foo.bar:1234,https://foo.bar
+strict_cors_mode = true
 
 [pipeline:main]
 pipeline = swauth proxy-server
@@ -190,6 +193,7 @@ node_timeout = 20
              :write_affinity            => 'r1',
              :write_affinity_node_count => '2 * replicas',
              :node_timeout              => '20',
+             :cors_allow_origin         => 'http://foo.bar:1234,https://foo.bar',
           }
           end
         it_raises 'a Puppet::Error', /log_udp_port requires log_udp_host to be set/
@@ -211,6 +215,7 @@ node_timeout = 20
              :write_affinity            => 'r1',
              :write_affinity_node_count => '2 * replicas',
              :node_timeout              => '20',
+             :cors_allow_origin         => 'http://foo.bar:1234,https://foo.bar',
           }
           end
         it 'should build the header file with provided values' do
@@ -231,6 +236,8 @@ log_address = /dev/log
 # If set, log_udp_host will override log_address
 log_udp_host = 127.0.0.1
 log_udp_port = 514
+cors_allow_origin = http://foo.bar:1234,https://foo.bar
+strict_cors_mode = true
 
 [pipeline:main]
 pipeline = swauth proxy-server

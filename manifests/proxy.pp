@@ -98,6 +98,16 @@
 #    Configures log_name for swift proxy-server.
 #    Optional. Defaults to proxy-server
 #
+# [*cors_allow_origin*]
+#   (optional) Origins to be allowed to make Cross Origin Requests.
+#   A comma separated list of full url (http://foo.bar:1234,https://foo.bar)
+#   Defaults to undef.
+#
+# [*strict_cors_mode*]
+#   (optional) Whether or not log every request. reduces logging output if false,
+#   good for seeing errors if true
+#   Defaults to true.
+#
 #  [*service_provider*]
 #    (optional)
 #    To use the swiftinit service provider to manage swift services, set
@@ -131,6 +141,8 @@ class swift::proxy(
   $log_facility              = 'LOG_LOCAL1',
   $log_handoffs              = true,
   $log_name                  = 'proxy-server',
+  $cors_allow_origin         = undef,
+  $strict_cors_mode          = true,
   $read_affinity             = undef,
   $write_affinity            = undef,
   $write_affinity_node_count = undef,
