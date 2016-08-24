@@ -16,6 +16,13 @@ log_udp_host = <%= @log_udp_host -%>
 log_udp_port = <%= @log_udp_port -%>
 <% end %>
 workers = <%= @workers %>
+<%- if @statsd_enabled -%>
+log_statsd_host = <%=@log_statsd_host%>
+log_statsd_port = <%=@log_statsd_port%>
+log_statsd_default_sample_rate = <%=@log_statsd_default_sample_rate%>
+log_statsd_sample_rate_factor = <%=@log_statsd_sample_rate_factor%>
+log_statsd_metric_prefix = <%=@log_statsd_metric_prefix%>
+<%- end -%>
 
 [pipeline:main]
 pipeline = <%= @pipeline.to_a.join(' ') %>

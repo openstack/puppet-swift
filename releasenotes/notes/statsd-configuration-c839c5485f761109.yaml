@@ -1,0 +1,8 @@
+---
+features:
+  - Added parameters to configure the statsd integration
+    for the account, container, object and proxy services.
+    log_statsd_host, log_statsd_port, log_statsd_default_sample_rate,
+    log_statsd_sample_rate_factor and log_statsd_metric_prefix can
+    be configured if statsd_enabled is set to true for the
+    swift::storage::services resource.

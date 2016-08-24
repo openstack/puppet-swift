@@ -109,32 +109,64 @@
 #    Starting at the path "/etc/swift/"
 #    Defaults to "${type}-server.conf"
 #
+# [*statsd_enabled*]
+#  (optional) Should statsd configuration items be writen out to config files
+#  Defaults to false.
+#
+# [*log_statsd_host*]
+#   (optional) statsd host to send data to.
+#   Defaults to 'localhost'
+#
+# [*log_statsd_port*]
+#   (optional) statsd port to send data to.
+#   Defaults to 8125
+#
+# [*log_statsd_default_sample_rate*]
+#   (optional) Default sample rate for data. This should be a number between 0
+#   and 1. According to the documentation this should be set to 1 and the
+#   sample rate factor should be adjusted.
+#   Defaults to '1.0'
+#
+# [*log_statsd_sample_rate_factor*]
+#   (optional) sample rate factor for data.
+#   Defaults to '1.0'
+#
+# [*log_statsd_metric_prefix*]
+#   (optional) Prefix for data being sent to statsd.
+#   Defaults to ''
+#
 define swift::storage::server(
   $type,
   $storage_local_net_ip,
-  $devices                = '/srv/node',
-  $owner                  = 'swift',
-  $group                  = 'swift',
-  $incoming_chmod         = 'Du=rwx,g=rx,o=rx,Fu=rw,g=r,o=r',
-  $outgoing_chmod         = 'Du=rwx,g=rx,o=rx,Fu=rw,g=r,o=r',
-  $max_connections        = 25,
-  $pipeline               = ["${type}-server"],
-  $mount_check            = true,
-  $user                   = 'swift',
-  $workers                = '1',
-  $allow_versions         = false,
-  $replicator_concurrency = $::processorcount,
-  $updater_concurrency    = $::processorcount,
-  $reaper_concurrency     = $::processorcount,
-  $log_facility           = 'LOG_LOCAL2',
-  $log_level              = 'INFO',
-  $log_address            = '/dev/log',
-  $log_name               = "${type}-server",
-  $log_udp_host           = undef,
-  $log_udp_port           = undef,
-  $log_requests           = true,
+  $devices                        = '/srv/node',
+  $owner                          = 'swift',
+  $group                          = 'swift',
+  $incoming_chmod                 = 'Du=rwx,g=rx,o=rx,Fu=rw,g=r,o=r',
+  $outgoing_chmod                 = 'Du=rwx,g=rx,o=rx,Fu=rw,g=r,o=r',
+  $max_connections                = 25,
+  $pipeline                       = ["${type}-server"],
+  $mount_check                    = true,
+  $user                           = 'swift',
+  $workers                        = '1',
+  $allow_versions                 = false,
+  $replicator_concurrency         = $::processorcount,
+  $updater_concurrency            = $::processorcount,
+  $reaper_concurrency             = $::processorcount,
+  $log_facility                   = 'LOG_LOCAL2',
+  $log_level                      = 'INFO',
+  $log_address                    = '/dev/log',
+  $log_name                       = "${type}-server",
+  $log_udp_host                   = undef,
+  $log_udp_port                   = undef,
+  $log_requests                   = true,
   # this parameters needs to be specified after type and name
-  $config_file_path       = "${type}-server.conf",
+  $config_file_path               = "${type}-server.conf",
+  $statsd_enabled                 = false,
+  $log_statsd_host                = 'localhost',
+  $log_statsd_port                = 8125,
+  $log_statsd_default_sample_rate = '1.0',
+  $log_statsd_sample_rate_factor  = '1.0',
+  $log_statsd_metric_prefix       = '',
 ) {
 
   include ::swift::deps
