@@ -57,7 +57,7 @@ describe 'basic swift' do
         account_autocreate => true,
       }
       class { '::swift::proxy::authtoken':
-        admin_password => 'a_big_secret',
+        password => 'a_big_secret',
       }
       class { '::swift::keystone::dispersion': } -> class { '::swift::dispersion': }
       class {'::swift::objectexpirer':

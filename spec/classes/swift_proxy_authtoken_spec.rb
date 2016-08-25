@@ -32,39 +32,27 @@ log_name = swift
 signing_dir = /var/cache/swift
 paste.filter_factory = keystonemiddleware.auth_token:filter_factory
 
-auth_host = 127.0.0.1
-auth_port = 35357
-auth_protocol = http
 auth_uri = http://127.0.0.1:5000
-admin_tenant_name = services
-admin_user = swift
-admin_password = password
+auth_url = http://127.0.0.1:35357
+auth_plugin = password
+project_domain_id = default
+user_domain_id = default
+project_name = services
+username = swift
+password = password
+
 delay_auth_decision = 1
+
 cache = swift.cache
-include_service_catalog = False
+include_service_catalog = false
 ')
     end
   end
 
-  describe "when overriding admin_token" do
-    let :params do
-      {
-        :admin_token => 'ADMINTOKEN'
-      }
-    end
-
-    it 'should build the fragment with correct parameters' do
-      is_expected.to contain_concat_fragment('swift_authtoken').with_content(/admin_token = ADMINTOKEN/)
-    end
-  end
 
   describe "when overriding parameters" do
     let :params do
       {
-        :auth_host           => 'some.host',
-        :auth_port           => '443',
-        :auth_protocol       => 'https',
-        :auth_admin_prefix   => '/keystone/admin',
         :admin_tenant_name   => 'admin',
         :admin_user          => 'swiftuser',
         :admin_password      => 'swiftpassword',
@@ -81,17 +69,19 @@ log_name = swift
 signing_dir = /home/swift/keystone-signing
 paste.filter_factory = keystonemiddleware.auth_token:filter_factory
 
-auth_host = some.host
-auth_port = 443
-auth_protocol = https
-auth_admin_prefix = /keystone/admin
-auth_uri = https://some.host:5000
-admin_tenant_name = admin
-admin_user = swiftuser
-admin_password = swiftpassword
+auth_uri = http://127.0.0.1:5000
+auth_url = http://127.0.0.1:35357
+auth_plugin = password
+project_domain_id = default
+user_domain_id = default
+project_name = admin
+username = swiftuser
+password = swiftpassword
+
 delay_auth_decision = 0
+
 cache = foo
-include_service_catalog = False
+include_service_catalog = false
 ')
     end
   end
@@ -104,24 +94,6 @@ include_service_catalog = False
     it { is_expected.to contain_concat_fragment('swift_authtoken').with_content(/auth_uri = http:\/\/public\.host\/keystone\/main/)}
   end
 
-  [
-    'keystone',
-    'keystone/',
-    '/keystone/',
-    '/keystone/admin/',
-    'keystone/admin/',
-    'keystone/admin'
-  ].each do |auth_admin_prefix|
-    describe "when overriding auth_admin_prefix with incorrect value #{auth_admin_prefix}" do
-      let :params do
-        { :auth_admin_prefix => auth_admin_prefix }
-      end
-
-      it { expect { is_expected.to contain_concat_fragment('swift_authtoken').with_content(/auth_admin_prefix = #{auth_admin_prefix}/) }.to \
-        raise_error(Puppet::Error, /validate_re\(\): "#{auth_admin_prefix}" does not match/) }
-    end
-  end
-
   describe "when identity_uri is set" do
     let :params do
       {
@@ -130,7 +102,7 @@ include_service_catalog = False
     end
 
     it 'should build the fragment with correct parameters' do
-      is_expected.to contain_concat_fragment('swift_authtoken').with_content(/identity_uri = https:\/\/foo\.bar:35357\//)
+      is_expected.to contain_concat_fragment('swift_authtoken').with_content(/auth_url = https:\/\/foo\.bar:35357\//)
     end
   end
 
@@ -144,7 +116,7 @@ include_service_catalog = False
 
     it 'should build the fragment with correct parameters' do
       is_expected.to contain_concat_fragment('swift_authtoken').with_content(/auth_uri = https:\/\/foo\.bar:5000\/v2\.0\//)
-      is_expected.to contain_concat_fragment('swift_authtoken').with_content(/identity_uri = https:\/\/foo\.bar:35357\//)
+      is_expected.to contain_concat_fragment('swift_authtoken').with_content(/auth_url = https:\/\/foo\.bar:35357\//)
     end
   end
 

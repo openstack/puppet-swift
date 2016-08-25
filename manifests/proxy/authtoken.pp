@@ -4,63 +4,78 @@
 #
 # == Parameters
 #
-#  [*admin_token*]
-#    Keystone admin token that can serve as a shared secret
-#    for authenticating. If this is choosen if is used instead of a user,tenant,password.
-#    Optional. Defaults to false.
+# [*delay_auth_decision*]
+#   (Optional) Do not handle authorization requests within the middleware, but
+#   delegate the authorization decision to downstream WSGI components. Boolean value
+#   Defaults to 1
 #
-#  [*admin_user*]
-#    User used to authenticate service.
-#    Optional. Defaults to 'swift'.
-#
-#  [*admin_tenant_name*]
-#    Tenant used to authenticate service.
-#    Optional. Defaults to 'services'.
-#
-#  [*admin_password*]
-#    Password used with user to authenticate service.
-#    Optional. Defaults to 'password'.
-#
-#  [*delay_auth_decision*]
-#    Set to 1 to support token-less access (anonymous access, tempurl, ...)
-#    Optional, Defaults to 0
-#
-#  [*auth_host*]
-#    Host providing the keystone service API endpoint. Optional.
-#    Defaults to 127.0.0.1
-#
-#  [*auth_port*]
-#    Port where keystone service is listening. Optional.
-#    Defaults to 3557.
-#
-#  [*auth_protocol*]
-#    Protocol to use to communicate with keystone. Optional.
-#    Defaults to https.
-#
-#  [*auth_admin_prefix*]
-#    Path part of the auth url. Optional.
-#    This allows admin auth URIs like http://host/keystone/admin/v2.0.
-#    Defaults to false for empty. It defined, should be a string with a leading '/' and no trailing '/'.
-#
-#  [*auth_uri*]
-#    The public auth url to redirect unauthenticated requests.
-#    Defaults to false to be expanded to '${auth_protocol}://${auth_host}:5000'.
-#    Should be set to your public keystone endpoint (without version).
-#
-#  [*identity_uri*]
-#    identity_uri points to the Keystone Admin service. This information is
-#    used by the middleware to actually query Keystone about the validity of the
-#    authentication tokens. It is not necessary to append any Keystone API version
-#    number to this URI.
-#    Defaults to false.
-#
-#  [*signing_dir*]
+# [*signing_dir*]
 #    The cache directory for signing certificates.
 #    Defaults to '/var/cache/swift'
 #
-#  [*cache*]
+# [*cache*]
 #    The cache backend to use
 #    Optional. Defaults to 'swift.cache'
+#
+# [*auth_uri*]
+#   (Optional) Complete public Identity API endpoint.
+#   Defaults to 'http://127.0.0.1:5000'
+#
+# [*auth_url*]
+#   (Optional) The URL to use for authentication.
+#   Defaults to 'http://127.0.0.1:35357'
+#
+# [*auth_plugin*]
+#   (Optional) The plugin for authentication
+#   Defaults to 'password'
+#
+# [*username*]
+#   (Optional) The name of the service user
+#   Defaults to 'swift'
+#
+# [*password*]
+#   (Optional) The password for the user
+#   Defaults to 'password'
+#
+# [*project_name*]
+#   (Optional) Service project name
+#   Defaults to 'services'
+#
+# [*project_domain_id*]
+#   (Optional) id of domain for $project_name
+#   Defaults to 'default'
+#
+# [*user_domain_id*]
+#   (Optional) id of domain for $username
+#   Defaults to 'default'
+#
+# [*include_service_catalog*]
+#   (Optional) Indicate whether to set the X-Service-Catalog header. If False,
+#   middleware will not ask for service catalog on token validation and will
+#   not set the X-Service-Catalog header. Boolean value.
+#   Defaults to false
+#
+# == DEPRECATED
+#
+# [*admin_token*]
+#   (optional) Depreated.
+#   Defaults to undef
+#
+# [*identity_uri*]
+#   (optional) Deprecated. Use auth_url instead.
+#   Defaults to undef
+#
+# [*admin_user*]
+#   (optional) Deprecated. Use username instead.
+#   Defaults to undef
+#
+# [*admin_tenant_name*]
+#   (optional) Deprecated. Use project_name instead.
+#   Defaults to undef
+#
+# [*admin_password*]
+#   (optional) Deprecated. Use password instead.
+#   Defaults to undef
 #
 # == Authors
 #
@@ -71,46 +86,52 @@
 # Copyright 2012 Puppetlabs Inc, unless otherwise noted.
 #
 class swift::proxy::authtoken(
-  $admin_user          = 'swift',
-  $admin_tenant_name   = 'services',
-  $admin_password      = 'password',
-  $auth_uri            = false,
-  $identity_uri        = false,
-  $delay_auth_decision = 1,
-  $admin_token         = false,
-  $signing_dir         = '/var/cache/swift',
-  $cache               = 'swift.cache',
+  $delay_auth_decision     = 1,
+  $signing_dir             = '/var/cache/swift',
+  $cache                   = 'swift.cache',
+  $auth_uri                = 'http://127.0.0.1:5000',
+  $auth_url                = 'http://127.0.0.1:35357',
+  $auth_plugin             = 'password',
+  $project_domain_id       = 'default',
+  $user_domain_id          = 'default',
+  $project_name            = 'services',
+  $username                = 'swift',
+  $password                = 'password',
+  $include_service_catalog = false,
   # DEPRECATED PARAMETERS
-  $auth_host           = '127.0.0.1',
-  $auth_port           = '35357',
-  $auth_protocol       = 'http',
-  $auth_admin_prefix   = false,
+  $admin_user              = undef,
+  $admin_tenant_name       = undef,
+  $admin_password          = undef,
+  $identity_uri            = undef,
+  $admin_token             = undef,
 ) {
 
   include ::swift::deps
 
-  if $auth_uri {
-    $auth_uri_real = $auth_uri
-  } else {
-    $auth_uri_real = "${auth_protocol}://${auth_host}:5000"
+  if $admin_token {
+    warning('admin_token is deprecated, has no usage and will be removed in the O release')
   }
 
-  # if both auth_uri and identity_uri are set we skip these deprecated warnings
-  if !$auth_uri or !$identity_uri {
-    if $auth_host {
-      warning('The auth_host parameter is deprecated. Please use auth_uri and identity_uri instead.')
-    }
-    if $auth_port {
-      warning('The auth_port parameter is deprecated. Please use auth_uri and identity_uri instead.')
-    }
-    if $auth_protocol {
-      warning('The auth_protocol parameter is deprecated. Please use auth_uri and identity_uri instead.')
-    }
-    if $auth_admin_prefix {
-      warning('The auth_admin_prefix parameter is deprecated. Please use auth_uri and identity_uri instead.')
-      validate_re($auth_admin_prefix, '^(/.+[^/])?$')
-    }
+  if $identity_uri {
+    warning('identity_uri is deprecated and will be removed, please use auth_url instead')
   }
+
+  if $admin_user {
+    warning('admin_user is deprecated and will be removed, please use username instead')
+  }
+
+  if $admin_tenant_name {
+    warning('admin_tenant_name is deprecated and will be removed, please use project_name instead')
+  }
+
+  if $admin_password {
+    warning('admin_password is deprecated and will be removed, please use password isntead')
+  }
+
+  $auth_url_real = pick($identity_uri, $auth_url)
+  $username_real = pick($admin_user, $username)
+  $project_name_real = pick($admin_tenant_name, $project_name)
+  $password_real = pick($admin_password, $password)
 
   file { $signing_dir:
     ensure                  => directory,
