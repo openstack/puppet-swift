@@ -1,0 +1,13 @@
+---
+features:
+  - add new parameters to configure authtoken for swift, like
+    username, password, project_name, auth_url, auth_plugin,
+    project_domain_id, user_domain_id, include_service_catalog
+deprecations:
+  - admin_token
+  - admin_tenant_name in favor of project_name
+  - admin_password in favor of password
+  - admin_user in favor of username
+  - identity_uri in favor of auth_url
+fixes:
+  - remove auth_host, auth_port, auth_protocol, auth_admin_prefix

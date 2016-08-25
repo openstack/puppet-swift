@@ -251,11 +251,9 @@ node /swift-proxy/ {
     operator_roles => ['admin', 'SwiftOperator'],
   }
   class { '::swift::proxy::authtoken':
-    admin_user        => 'swift',
-    admin_tenant_name => 'services',
-    admin_password    => $swift_admin_password,
+    password  => $swift_admin_password,
     # assume that the controller host is the swift api server
-    auth_host         => $swift_keystone_node,
+    auth_host => $swift_keystone_node,
   }
 
   # collect all of the resources that are needed
