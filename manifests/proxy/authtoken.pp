@@ -58,7 +58,7 @@
 # == DEPRECATED
 #
 # [*admin_token*]
-#   (optional) Depreated.
+#   (optional) Deprecated.
 #   Defaults to undef
 #
 # [*identity_uri*]
