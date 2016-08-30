@@ -39,6 +39,6 @@ class swift::proxy::s3token(
   concat::fragment { 'swift_s3token':
     target  => '/etc/swift/proxy-server.conf',
     content => template('swift/proxy/s3token.conf.erb'),
-    order   => '28',
+    order   => '80',
   }
 }

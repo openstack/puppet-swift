@@ -24,6 +24,6 @@ class swift::proxy::account_quotas() {
   concat::fragment { 'swift_account_quotas':
     target  => '/etc/swift/proxy-server.conf',
     content => template('swift/proxy/account_quotas.conf.erb'),
-    order   => '80',
+    order   => '210',
   }
 }

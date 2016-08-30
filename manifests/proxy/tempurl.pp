@@ -97,7 +97,7 @@ class swift::proxy::tempurl (
   concat::fragment { 'swift-proxy-tempurl':
     target  => '/etc/swift/proxy-server.conf',
     content => template('swift/proxy/tempurl.conf.erb'),
-    order   => '29',
+    order   => '120',
   }
 
 }

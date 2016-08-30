@@ -1,0 +1,6 @@
+---
+fixes:
+  - Fix the middleware order in the proxy server pipeline according to
+    upstream documentation
+features:
+  - Add missing copy and versioned_writes middlewares

@@ -32,7 +32,7 @@ class swift::proxy::swauth(
   concat::fragment { 'swift_proxy_swauth':
     target  => '/etc/swift/proxy-server.conf',
     content => template('swift/proxy/swauth.conf.erb'),
-    order   => '20',
+    order   => '160',
   }
 
 }
