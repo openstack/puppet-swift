@@ -39,7 +39,7 @@ class swift::proxy::dlo (
   concat::fragment { 'swift_dlo':
     target  => '/etc/swift/proxy-server.conf',
     content => template('swift/proxy/dlo.conf.erb'),
-    order   => '36',
+    order   => '240',
   }
 
 }

@@ -49,6 +49,6 @@ class swift::proxy::bulk(
   concat::fragment { 'swift_bulk':
     target  => '/etc/swift/proxy-server.conf',
     content => template('swift/proxy/bulk.conf.erb'),
-    order   => '21',
+    order   => '110',
   }
 }

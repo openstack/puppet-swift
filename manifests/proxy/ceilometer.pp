@@ -102,7 +102,7 @@ class swift::proxy::ceilometer(
   concat::fragment { 'swift_ceilometer':
     target  => '/etc/swift/proxy-server.conf',
     content => template('swift/proxy/ceilometer.conf.erb'),
-    order   => '33',
+    order   => '260',
     require => Class['::ceilometer'],
   }
 

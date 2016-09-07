@@ -36,7 +36,7 @@ class swift::proxy::swift3(
   concat::fragment { 'swift_swift3':
     target  => '/etc/swift/proxy-server.conf',
     content => template('swift/proxy/swift3.conf.erb'),
-    order   => '27',
+    order   => '70',
   }
 
 }

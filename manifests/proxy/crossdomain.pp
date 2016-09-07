@@ -20,7 +20,7 @@ class swift::proxy::crossdomain (
   concat::fragment { 'swift_crossdomain':
     target  => '/etc/swift/proxy-server.conf',
     content => template('swift/proxy/crossdomain.conf.erb'),
-    order   => '35',
+    order   => '100',
   }
 
 }

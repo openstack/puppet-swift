@@ -22,7 +22,7 @@ class swift::proxy::formpost() {
   concat::fragment { 'swift-proxy-formpost':
     target  => '/etc/swift/proxy-server.conf',
     content => template('swift/proxy/formpost.conf.erb'),
-    order   => '31',
+    order   => '130',
   }
 
 }

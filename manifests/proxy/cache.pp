@@ -32,7 +32,7 @@ class swift::proxy::cache(
   concat::fragment { 'swift_cache':
     target  => '/etc/swift/proxy-server.conf',
     content => template('swift/proxy/cache.conf.erb'),
-    order   => '23',
+    order   => '50',
   }
 
 }

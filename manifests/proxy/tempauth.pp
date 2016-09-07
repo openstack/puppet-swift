@@ -105,10 +105,10 @@ class swift::proxy::tempauth (
     validate_re($storage_url_scheme, ['http','https','default'])
   }
 
-  concat::fragment { 'swift-proxy-swauth':
+  concat::fragment { 'swift-proxy-tempauth':
     target  => '/etc/swift/proxy-server.conf',
     content => template('swift/proxy/tempauth.conf.erb'),
-    order   => '01',
+    order   => '150',
   }
 
 }

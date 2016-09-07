@@ -39,7 +39,7 @@ class swift::proxy::keystone(
   concat::fragment { 'swift_keystone':
     target  => '/etc/swift/proxy-server.conf',
     content => template('swift/proxy/keystone.conf.erb'),
-    order   => '79',
+    order   => '180',
   }
 
 }

@@ -54,7 +54,7 @@ class swift::proxy::slo (
   concat::fragment { 'swift_slo':
     target  => '/etc/swift/proxy-server.conf',
     content => template('swift/proxy/slo.conf.erb'),
-    order   => '35',
+    order   => '230',
   }
 
 }

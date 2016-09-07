@@ -48,7 +48,7 @@ class swift::proxy::gatekeeper(
   concat::fragment { 'swift_gatekeeper':
     target  => '/etc/swift/proxy-server.conf',
     content => template('swift/proxy/gatekeeper.conf.erb'),
-    order   => '34',
+    order   => '20',
   }
 
 }
