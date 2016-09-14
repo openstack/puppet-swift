@@ -188,7 +188,8 @@ class swift::keystone::auth(
   }
 
   if $port {
-    warning('The port parameter is deprecated, use public_url, internal_url, admin_url, public_url_s3, internal_url_s3 and admin_url_s3 instead.')
+    warning('The port parameter is deprecated, use public_url, internal_url, admin_url, \
+              public_url_s3, internal_url_s3 and admin_url_s3 instead.')
   }
 
   if $public_port {
