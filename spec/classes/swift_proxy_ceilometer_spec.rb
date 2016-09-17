@@ -17,7 +17,6 @@ describe 'swift::proxy::ceilometer' do
     it { is_expected.to contain_concat_fragment('swift_ceilometer').with_content(/[filter:ceilometer]/) }
     it { is_expected.to contain_concat_fragment('swift_ceilometer').with_content(/paste.filter_factory = ceilometermiddleware.swift:filter_factory/) }
     it { is_expected.to contain_concat_fragment('swift_ceilometer').with_content(/url = rabbit:\/\/guest:guest@127.0.0.1:5672\//) }
-    it { is_expected.to contain_concat__fragment('swift_ceilometer').with_require('Class[Ceilometer]')}
     it { is_expected.to contain_user('swift').with_groups('ceilometer') }
     it { is_expected.to contain_file('/var/log/ceilometer/swift-proxy-server.log').with(:owner => 'swift', :group => 'swift', :mode => '0664') }
   end

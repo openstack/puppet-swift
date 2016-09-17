@@ -103,7 +103,6 @@ class swift::proxy::ceilometer(
     target  => '/etc/swift/proxy-server.conf',
     content => template('swift/proxy/ceilometer.conf.erb'),
     order   => '260',
-    require => Class['::ceilometer'],
   }
 
   package { 'python-ceilometermiddleware':
