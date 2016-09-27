@@ -26,6 +26,7 @@ class swift::params {
       $container_replicator_service_name = 'swift-container-replicator'
       $container_updater_service_name    = 'swift-container-updater'
       $container_sync_service_name       = 'swift-container-sync'
+      $container_reconciler_service_name = 'swift-container-reconciler'
       $account_package_name              = 'swift-account'
       $account_server_service_name       = 'swift-account'
       $account_auditor_service_name      = 'swift-account-auditor'
@@ -50,6 +51,7 @@ class swift::params {
       $container_replicator_service_name = 'openstack-swift-container-replicator'
       $container_updater_service_name    = 'openstack-swift-container-updater'
       $container_sync_service_name       = 'openstack-swift-container-sync'
+      $container_reconciler_service_name = 'openstack-swift-container-reconciler'
       $account_package_name              = 'openstack-swift-account'
       $account_server_service_name       = 'openstack-swift-account'
       $account_auditor_service_name      = 'openstack-swift-account-auditor'
@@ -77,5 +79,6 @@ class swift::params {
     'swift-container-server',
     'swift-container-sync',
     'swift-container-updater',
+    'swift-container-reconciler',
   ]
 }

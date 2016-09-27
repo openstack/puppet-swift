@@ -64,11 +64,18 @@
 #    See README for more details.
 #    Defaults to $::swift::params::service_provider.
 #
+#  [*memcache_servers*]
+#    (optional)
+#    A list of the memcache servers to be used. Entries should be in the
+#    form host:port. This value is only used if 'cache' is added to the
+#    pipeline, e.g. ['catch_errors', 'cache', 'proxy-server']
+#    Defaults to ['127.0.0.1:11211']
+#
 class swift::objectexpirer(
   $manage_service                = true,
   $enabled                       = true,
   $package_ensure                = 'present',
-  $pipeline                      = ['catch_errors', 'cache', 'proxy-server'],
+  $pipeline                      = ['catch_errors', 'proxy-server'],
   $auto_create_account_prefix    = '.',
   $concurrency                   = 1,
   $expiring_objects_account_name = 'expiring_objects',
@@ -78,7 +85,8 @@ class swift::objectexpirer(
   $reclaim_age                   = 604800,
   $recon_cache_path              = '/var/cache/swift',
   $report_interval               = 300,
-  $service_provider              = $::swift::params::service_provider
+  $service_provider              = $::swift::params::service_provider,
+  $memcache_servers              = ['127.0.0.1:11211'],
 ) inherits ::swift::params {
 
   include ::swift::deps
@@ -92,6 +100,19 @@ class swift::objectexpirer(
       ensure => $package_ensure,
       name   => $::swift::params::object_expirer_package_name,
       tag    => ['openstack', 'swift-package'],
+    }
+  }
+
+  # only add memcache servers if 'cache' is included in the pipeline
+  if !empty(grep(any2array($pipeline), 'cache')) {
+
+    swift_object_expirer_config {
+      'filter:cache/memcache_servers': value => join(any2array($memcache_servers), ',');
+    }
+
+    # require the memcached class if it is on the same machine
+    if !empty(grep(any2array($memcache_servers), '127.0.0.1')) {
+      Class['::memcached'] -> Class['::swift::objectexpirer']
     }
   }
 
