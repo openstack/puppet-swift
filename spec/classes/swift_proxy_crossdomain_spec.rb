@@ -7,30 +7,19 @@ describe 'swift::proxy::crossdomain' do
   end
 
   describe "when using default parameters" do
-    it 'should build the fragment with correct parameters' do
-      is_expected.to contain_concat_fragment('swift_crossdomain').with_content('
-[filter:crossdomain]
-use = egg:swift#crossdomain
-cross_domain_policy = <allow-access-from domain="*" secure="false" />
-')
-    end
+    it { is_expected.to contain_swift_proxy_config('filter:crossdomain/use').with_value('egg:swift#crossdomain') }
+    it { is_expected.to contain_swift_proxy_config('filter:crossdomain/cross_domain_policy').with_value('<allow-access-from domain="*" secure="false" />') }
   end
 
   describe "when overriding default parameters" do
     let :params do
       {
-        :cross_domain_policy => '<allow-access-from domain="xml-fragment-in-ini-file.so.wrong" secure="true" />
-<allow-access-from domain="*" secure="false" />',
+        :cross_domain_policy => '<allow-access-from domain="xml-fragment-in-ini-file.so.wrong" secure="true" /><allow-access-from domain="*" secure="false" />',
       }
     end
-    it 'should build the fragment with correct parameters' do
-      is_expected.to contain_concat_fragment('swift_crossdomain').with_content('
-[filter:crossdomain]
-use = egg:swift#crossdomain
-cross_domain_policy = <allow-access-from domain="xml-fragment-in-ini-file.so.wrong" secure="true" />
-<allow-access-from domain="*" secure="false" />
-')
-    end
+    it { is_expected.to contain_swift_proxy_config('filter:crossdomain/use').with_value('egg:swift#crossdomain') }
+    it { is_expected.to contain_swift_proxy_config('filter:crossdomain/cross_domain_policy').with_value('<allow-access-from domain="xml-fragment-in-ini-file.so.wrong" secure="true" /><allow-access-from domain="*" secure="false" />') }
+
   end
 
 end

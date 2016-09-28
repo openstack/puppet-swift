@@ -29,10 +29,9 @@ class swift::proxy::cache(
     Class['::memcached'] -> Class['::swift::proxy::cache']
   }
 
-  concat::fragment { 'swift_cache':
-    target  => '/etc/swift/proxy-server.conf',
-    content => template('swift/proxy/cache.conf.erb'),
-    order   => '50',
+  swift_proxy_config {
+    'filter:cache/use':              value => 'egg:swift#memcache';
+    'filter:cache/memcache_servers': value => join(any2array($memcache_servers), ',');
   }
 
 }

@@ -36,10 +36,9 @@ class swift::proxy::keystone(
         warning('is_admin parameter is deprecated, has no effect and will be removed in a future release.')
   }
 
-  concat::fragment { 'swift_keystone':
-    target  => '/etc/swift/proxy-server.conf',
-    content => template('swift/proxy/keystone.conf.erb'),
-    order   => '180',
+  swift_proxy_config {
+    'filter:keystone/use':             value => 'egg:swift#keystoneauth';
+    'filter:keystone/operator_roles':  value => join(any2array($operator_roles), ', ');
+    'filter:keystone/reseller_prefix': value => $reseller_prefix;
   }
-
 }

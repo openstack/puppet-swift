@@ -21,9 +21,7 @@ class swift::proxy::account_quotas() {
 
   include ::swift::deps
 
-  concat::fragment { 'swift_account_quotas':
-    target  => '/etc/swift/proxy-server.conf',
-    content => template('swift/proxy/account_quotas.conf.erb'),
-    order   => '210',
+  swift_proxy_config {
+    'filter:account_quotas/use': value => 'egg:swift#account_quotas';
   }
 }

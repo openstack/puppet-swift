@@ -14,9 +14,8 @@ describe 'swift::proxy::ceilometer' do
   end
 
   describe "when using default parameters" do
-    it { is_expected.to contain_concat_fragment('swift_ceilometer').with_content(/[filter:ceilometer]/) }
-    it { is_expected.to contain_concat_fragment('swift_ceilometer').with_content(/paste.filter_factory = ceilometermiddleware.swift:filter_factory/) }
-    it { is_expected.to contain_concat_fragment('swift_ceilometer').with_content(/url = rabbit:\/\/guest:guest@127.0.0.1:5672\//) }
+    it { is_expected.to contain_swift_proxy_config('filter:ceilometer/paste.filter_factory').with_value('ceilometermiddleware.swift:filter_factory') }
+    it { is_expected.to contain_swift_proxy_config('filter:ceilometer/url').with_value('rabbit://guest:guest@127.0.0.1:5672//') }
     it { is_expected.to contain_user('swift').with_groups('ceilometer') }
     it { is_expected.to contain_file('/var/log/ceilometer/swift-proxy-server.log').with(:owner => 'swift', :group => 'swift', :mode => '0664') }
   end
@@ -37,12 +36,11 @@ describe 'swift::proxy::ceilometer' do
 
     context 'with single rabbit host' do
       it { is_expected.to contain_user('swift').with_groups('www-data') }
-      it { is_expected.to contain_concat_fragment('swift_ceilometer').with_content(/[filter:ceilometer]/) }
-      it { is_expected.to contain_concat_fragment('swift_ceilometer').with_content(/paste.filter_factory = ceilometermiddleware.swift:filter_factory/) }
-      it { is_expected.to contain_concat_fragment('swift_ceilometer').with_content(/url = rabbit:\/\/user_1:user_1_passw@1.1.1.1:5673\/rabbit/) }
-      it { is_expected.to contain_concat_fragment('swift_ceilometer').with_content(/driver = messagingv2/) }
-      it { is_expected.to contain_concat_fragment('swift_ceilometer').with_content(/topic = notifications/) }
-      it { is_expected.to contain_concat_fragment('swift_ceilometer').with_content(/control_exchange = swift/) }
+      it { is_expected.to contain_swift_proxy_config('filter:ceilometer/paste.filter_factory').with_value('ceilometermiddleware.swift:filter_factory') }
+      it { is_expected.to contain_swift_proxy_config('filter:ceilometer/url').with_value('rabbit://user_1:user_1_passw@1.1.1.1:5673/rabbit') }
+      it { is_expected.to contain_swift_proxy_config('filter:ceilometer/driver').with_value('messagingv2') }
+      it { is_expected.to contain_swift_proxy_config('filter:ceilometer/topic').with_value('notifications') }
+      it { is_expected.to contain_swift_proxy_config('filter:ceilometer/control_exchange').with_value('swift') }
     end
 
     context 'with multiple rabbit hosts' do
@@ -51,12 +49,11 @@ describe 'swift::proxy::ceilometer' do
       end
 
       it { is_expected.to contain_user('swift').with_groups('www-data') }
-      it { is_expected.to contain_concat_fragment('swift_ceilometer').with_content(/[filter:ceilometer]/) }
-      it { is_expected.to contain_concat_fragment('swift_ceilometer').with_content(/paste.filter_factory = ceilometermiddleware.swift:filter_factory/) }
-      it { is_expected.to contain_concat_fragment('swift_ceilometer').with_content(/url = rabbit:\/\/user_1:user_1_passw@127.0.0.1:5672,user_1:user_1_passw@127.0.0.2:5672\/rabbit/) }
-      it { is_expected.to contain_concat_fragment('swift_ceilometer').with_content(/driver = messagingv2/) }
-      it { is_expected.to contain_concat_fragment('swift_ceilometer').with_content(/topic = notifications/) }
-      it { is_expected.to contain_concat_fragment('swift_ceilometer').with_content(/control_exchange = swift/) }
+      it { is_expected.to contain_swift_proxy_config('filter:ceilometer/paste.filter_factory').with_value('ceilometermiddleware.swift:filter_factory') }
+      it { is_expected.to contain_swift_proxy_config('filter:ceilometer/url').with_value('rabbit://user_1:user_1_passw@127.0.0.1:5672,user_1:user_1_passw@127.0.0.2:5672/rabbit') }
+      it { is_expected.to contain_swift_proxy_config('filter:ceilometer/driver').with_value('messagingv2') }
+      it { is_expected.to contain_swift_proxy_config('filter:ceilometer/topic').with_value('notifications') }
+      it { is_expected.to contain_swift_proxy_config('filter:ceilometer/control_exchange').with_value('swift') }
     end
 
   end

@@ -20,10 +20,7 @@ class swift::proxy::staticweb() {
 
   include ::swift::deps
 
-  concat::fragment { 'swift-proxy-staticweb':
-    target  => '/etc/swift/proxy-server.conf',
-    content => template('swift/proxy/staticweb.conf.erb'),
-    order   => '190',
+  swift_proxy_config {
+    'filter:staticweb/use':              value => 'egg:swift#staticweb';
   }
-
 }

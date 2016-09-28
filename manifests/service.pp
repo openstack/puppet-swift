@@ -55,6 +55,7 @@ define swift::service(
       provider  => $service_provider,
       tag       => 'swift-service',
       subscribe => $subscribe,
+      require   => $require,
     }
   } elsif $service_provider == 'swiftinit' {
     service { $name:
@@ -67,6 +68,7 @@ define swift::service(
       manifest   => $config_file_name,
       tag        => 'swift-service',
       subscribe  => $subscribe,
+      require    => $require,
     }
   }
 }

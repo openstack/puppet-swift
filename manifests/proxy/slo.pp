@@ -51,10 +51,13 @@ class swift::proxy::slo (
 
   include ::swift::deps
 
-  concat::fragment { 'swift_slo':
-    target  => '/etc/swift/proxy-server.conf',
-    content => template('swift/proxy/slo.conf.erb'),
-    order   => '230',
+  swift_proxy_config {
+    'filter:slo/use':                         value => 'egg:swift#slo';
+    'filter:slo/max_manifest_segments':       value => $max_manifest_segments;
+    'filter:slo/max_manifest_size':           value => $max_manifest_size;
+    'filter:slo/min_segment_size':            value => $min_segment_size;
+    'filter:slo/rate_limit_after_segment':    value => $rate_limit_after_segment;
+    'filter:slo/rate_limit_segments_per_sec': value => $rate_limit_segments_per_sec;
+    'filter:slo/max_get_time':                value => $max_get_time;
   }
-
 }

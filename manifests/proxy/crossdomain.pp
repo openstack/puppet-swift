@@ -17,10 +17,8 @@ class swift::proxy::crossdomain (
 
   include ::swift::deps
 
-  concat::fragment { 'swift_crossdomain':
-    target  => '/etc/swift/proxy-server.conf',
-    content => template('swift/proxy/crossdomain.conf.erb'),
-    order   => '100',
+  swift_proxy_config {
+    'filter:crossdomain/use':                 value => 'egg:swift#crossdomain';
+    'filter:crossdomain/cross_domain_policy': value => $cross_domain_policy;
   }
-
 }

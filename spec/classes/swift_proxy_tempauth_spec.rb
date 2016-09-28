@@ -19,13 +19,13 @@ describe 'swift::proxy::tempauth' do
     'concat { "/etc/swift/proxy-server.conf": }'
   end
 
-  it { is_expected.to contain_concat_fragment('swift-proxy-tempauth').with_content(/\[filter:tempauth\]\nuse = egg:swift#tempauth/) }
-  it { is_expected.to contain_concat_fragment('swift-proxy-tempauth').with_content(/user_admin_admin = admin \.admin \.reseller_admin/) }
+  it { is_expected.to contain_swift_proxy_config('filter:tempauth/use').with_value('egg:swift#tempauth') }
+  it { is_expected.to contain_swift_proxy_config('filter:tempauth/user_admin_admin').with_value('admin .admin .reseller_admin') }
 
-  it { is_expected.to_not contain_concat_fragment('swift-proxy-tempauth').with_content(/reseller_prefix/) }
-  it { is_expected.to_not contain_concat_fragment('swift-proxy-tempauth').with_content(/token_life/) }
-  it { is_expected.to_not contain_concat_fragment('swift-proxy-tempauth').with_content(/auth_prefix/) }
-  it { is_expected.to_not contain_concat_fragment('swift-proxy-tempauth').with_content(/storage_url_scheme/) }
+  it { is_expected.to_not contain_swift_proxy_config('filter:tempauth/reseller_prefix').with_value('') }
+  it { is_expected.to_not contain_swift_proxy_config('filter:tempauth/token_life').with_value('') }
+  it { is_expected.to_not contain_swift_proxy_config('filter:tempauth/auth_prefix').with_value('') }
+  it { is_expected.to_not contain_swift_proxy_config('filter:tempauth/storage_url_scheme').with_value('') }
 
   context 'declaring two users' do
     let :params do {
@@ -44,12 +44,8 @@ describe 'swift::proxy::tempauth' do
         },
       ]
     } end
-    it { is_expected.to contain_concat_fragment('swift-proxy-tempauth').with_content(
-      /user_admin_admin = admin \.admin \.reseller_admin/
-    ) }
-    it { is_expected.to contain_concat_fragment('swift-proxy-tempauth').with_content(
-      /user_bar_foo = pass \.reseller_admin/
-    ) }
+    it { is_expected.to contain_swift_proxy_config('filter:tempauth/user_admin_admin').with_value('admin .admin .reseller_admin') }
+    it { is_expected.to contain_swift_proxy_config('filter:tempauth/user_bar_foo').with_value('pass .reseller_admin') }
   end
 
   context 'when group is empty' do
@@ -63,7 +59,7 @@ describe 'swift::proxy::tempauth' do
         },
       ]
     } end
-    it { is_expected.to contain_concat_fragment('swift-proxy-tempauth').with_content(/user_admin_admin = admin $/) }
+    it { is_expected.to contain_swift_proxy_config('filter:tempauth/user_admin_admin').with_value('admin') }
   end
 
 
@@ -76,10 +72,10 @@ describe 'swift::proxy::tempauth' do
     }.merge(default_params)
     end
 
-    it { is_expected.to contain_concat_fragment('swift-proxy-tempauth').with_content(/reseller_prefix = AUTH/) }
-    it { is_expected.to contain_concat_fragment('swift-proxy-tempauth').with_content(/token_life = 81600/) }
-    it { is_expected.to contain_concat_fragment('swift-proxy-tempauth').with_content(/auth_prefix = \/auth\//) }
-    it { is_expected.to contain_concat_fragment('swift-proxy-tempauth').with_content(/storage_url_scheme = http/) }
+    it { is_expected.to contain_swift_proxy_config('filter:tempauth/reseller_prefix').with_value('AUTH') }
+    it { is_expected.to contain_swift_proxy_config('filter:tempauth/token_life').with_value('81600') }
+    it { is_expected.to contain_swift_proxy_config('filter:tempauth/auth_prefix').with_value('/auth/') }
+    it { is_expected.to contain_swift_proxy_config('filter:tempauth/storage_url_scheme').with_value('http') }
 
     describe "invalid params" do
       ['account_user_list', 'token_life', 'auth_prefix', 'storage_url_scheme'].each do |param|

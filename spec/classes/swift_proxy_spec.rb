@@ -38,6 +38,12 @@ describe 'swift::proxy' do
         {:proxy_local_net_ip => '127.0.0.1'}
       end
 
+      it 'passes purge to swift_proxy_config resource' do
+        is_expected.to contain_resources('swift_proxy_config').with({
+          :purge => false
+        })
+      end
+
       it { is_expected.to contain_package('swift-proxy').that_requires('Anchor[swift::install::begin]')
            is_expected.to contain_package('swift-proxy').that_notifies('Anchor[swift::install::end]') }
 
@@ -46,47 +52,33 @@ describe 'swift::proxy' do
          :provider   => nil,
          :enable     => true,
          :hasstatus  => true,
-         :subscribe  => 'Concat[/etc/swift/proxy-server.conf]',
          :tag        => 'swift-service',
         }
       )}
-      it { is_expected.to contain_concat('/etc/swift/proxy-server.conf').with(
-        {:ensure  => 'present',
-         :owner   => 'swift',
-         :group   => 'swift',
-        }
-      )}
 
-      it 'should build the header file with all of the default contents' do
-        is_expected.to contain_concat_fragment('swift_proxy').with_content('# This file is managed by puppet.  Do not edit
-#
-[DEFAULT]
-bind_port = 8080
-bind_ip = 127.0.0.1
-workers = 1
-user = swift
-log_name = proxy-server
-log_facility = LOG_LOCAL1
-log_level = INFO
-log_headers = False
-log_address = /dev/log
+      it { is_expected.to contain_service('swift-proxy-server').that_subscribes_to('Anchor[swift::service::begin]')}
+      it { is_expected.to contain_service('swift-proxy-server').that_notifies('Anchor[swift::service::end]')}
+      it { is_expected.to contain_swift_proxy_config('DEFAULT/bind_port').with_value('8080')}
+      it { is_expected.to contain_swift_proxy_config('DEFAULT/bind_ip').with_value('127.0.0.1')}
+      it { is_expected.to contain_swift_proxy_config('DEFAULT/workers').with_value('1')}
+      it { is_expected.to contain_swift_proxy_config('DEFAULT/user').with_value('swift')}
+      it { is_expected.to contain_swift_proxy_config('DEFAULT/log_name').with_value('proxy-server')}
+      it { is_expected.to contain_swift_proxy_config('DEFAULT/log_facility').with_value('LOG_LOCAL1')}
+      it { is_expected.to contain_swift_proxy_config('DEFAULT/log_level').with_value('INFO')}
+      it { is_expected.to contain_swift_proxy_config('DEFAULT/log_headers').with_value('False')}
+      it { is_expected.to contain_swift_proxy_config('DEFAULT/log_address').with_value('/dev/log')}
+      it { is_expected.to contain_swift_proxy_config('pipeline:main/pipeline').with_value('healthcheck cache tempauth proxy-server')}
+      it { is_expected.to contain_swift_proxy_config('app:proxy-server/use').with_value('egg:swift#proxy')}
+      it { is_expected.to contain_swift_proxy_config('app:proxy-server/set log_name').with_value('proxy-server')}
+      it { is_expected.to contain_swift_proxy_config('app:proxy-server/set log_facility').with_value('LOG_LOCAL1')}
+      it { is_expected.to contain_swift_proxy_config('app:proxy-server/set log_level').with_value('INFO')}
+      it { is_expected.to contain_swift_proxy_config('app:proxy-server/set log_address').with_value('/dev/log')}
+      it { is_expected.to contain_swift_proxy_config('app:proxy-server/log_handoffs').with_value('true')}
+      it { is_expected.to contain_swift_proxy_config('app:proxy-server/allow_account_management').with_value('true')}
+      it { is_expected.to contain_swift_proxy_config('app:proxy-server/account_autocreate').with_value('true')}
 
-[pipeline:main]
-pipeline = healthcheck cache tempauth proxy-server
 
-[app:proxy-server]
-use = egg:swift#proxy
-set log_name = proxy-server
-set log_facility = LOG_LOCAL1
-set log_level = INFO
-set log_address = /dev/log
-log_handoffs = true
-allow_account_management = true
-account_autocreate = true
-')
-      end
-
-      it { is_expected.to contain_concat__fragment('swift_proxy').with_before(
+      it { is_expected.to contain_service('swift-proxy-server').with_require(
         [
           'Class[Swift::Proxy::Healthcheck]',
           'Class[Swift::Proxy::Cache]',
@@ -102,7 +94,7 @@ account_autocreate = true
             swift_proxy_config { 'foo/bar': value => 'foo' }
           "
         end
-        it { is_expected.to contain_concat("/etc/swift/proxy-server.conf").that_comes_before("Swift_proxy_config[foo/bar]") }
+        it { is_expected.to contain_swift_proxy_config('foo/bar').with_value('foo').that_notifies('Anchor[swift::config::end]')}
       end
 
       describe 'when more parameters are set' do
@@ -123,47 +115,32 @@ account_autocreate = true
            :cors_allow_origin         => 'http://foo.bar:1234,https://foo.bar',
           }
         end
-        it 'should build the header file with provided values' do
-          is_expected.to contain_concat_fragment('swift_proxy').with_content('# This file is managed by puppet.  Do not edit
-#
-[DEFAULT]
-bind_port = 80
-bind_ip = 10.0.0.2
-workers = 3
-user = swift
-log_name = swift-proxy-server
-log_facility = LOG_LOCAL1
-log_level = DEBUG
-log_headers = False
-log_address = /dev/log
-cors_allow_origin = http://foo.bar:1234,https://foo.bar
-strict_cors_mode = true
-
-[pipeline:main]
-pipeline = swauth proxy-server
-
-[app:proxy-server]
-use = egg:swift#proxy
-set log_name = swift-proxy-server
-set log_facility = LOG_LOCAL1
-set log_level = DEBUG
-set log_address = /dev/log
-log_handoffs = true
-allow_account_management = false
-account_autocreate = false
-sorting_method = affinity
-read_affinity = r1z1=100, r1=200
-write_affinity = r1
-write_affinity_node_count = 2 * replicas
-node_timeout = 20
-')
-        end
-        if Puppet.version.to_f < 4.0
-          it { is_expected.to contain_concat__fragment('swift_proxy').with_before('Class[Swift::Proxy::Swauth]')}
-        else
-          it { is_expected.to contain_concat__fragment('swift_proxy').with_before(['Class[Swift::Proxy::Swauth]'])}
-        end
-       end
+        it { is_expected.to contain_swift_proxy_config('DEFAULT/bind_port').with_value('80')}
+        it { is_expected.to contain_swift_proxy_config('DEFAULT/bind_ip').with_value('10.0.0.2')}
+        it { is_expected.to contain_swift_proxy_config('DEFAULT/workers').with_value('3')}
+        it { is_expected.to contain_swift_proxy_config('DEFAULT/user').with_value('swift')}
+        it { is_expected.to contain_swift_proxy_config('DEFAULT/log_name').with_value('swift-proxy-server')}
+        it { is_expected.to contain_swift_proxy_config('DEFAULT/log_facility').with_value('LOG_LOCAL1')}
+        it { is_expected.to contain_swift_proxy_config('DEFAULT/log_level').with_value('DEBUG')}
+        it { is_expected.to contain_swift_proxy_config('DEFAULT/log_headers').with_value('False')}
+        it { is_expected.to contain_swift_proxy_config('DEFAULT/log_address').with_value('/dev/log')}
+        it { is_expected.to contain_swift_proxy_config('DEFAULT/cors_allow_origin').with_value('http://foo.bar:1234,https://foo.bar')}
+        it { is_expected.to contain_swift_proxy_config('DEFAULT/strict_cors_mode').with_value('true')}
+        it { is_expected.to contain_swift_proxy_config('pipeline:main/pipeline').with_value('swauth proxy-server')}
+        it { is_expected.to contain_swift_proxy_config('app:proxy-server/use').with_value('egg:swift#proxy')}
+        it { is_expected.to contain_swift_proxy_config('app:proxy-server/set log_name').with_value('swift-proxy-server')}
+        it { is_expected.to contain_swift_proxy_config('app:proxy-server/set log_facility').with_value('LOG_LOCAL1')}
+        it { is_expected.to contain_swift_proxy_config('app:proxy-server/set log_level').with_value('DEBUG')}
+        it { is_expected.to contain_swift_proxy_config('app:proxy-server/set log_address').with_value('/dev/log')}
+        it { is_expected.to contain_swift_proxy_config('app:proxy-server/log_handoffs').with_value('true')}
+        it { is_expected.to contain_swift_proxy_config('app:proxy-server/allow_account_management').with_value('false')}
+        it { is_expected.to contain_swift_proxy_config('app:proxy-server/account_autocreate').with_value('false')}
+        it { is_expected.to contain_swift_proxy_config('app:proxy-server/sorting_method').with_value('affinity')}
+        it { is_expected.to contain_swift_proxy_config('app:proxy-server/read_affinity').with_value('r1z1=100, r1=200')}
+        it { is_expected.to contain_swift_proxy_config('app:proxy-server/write_affinity').with_value('r1')}
+        it { is_expected.to contain_swift_proxy_config('app:proxy-server/write_affinity_node_count').with_value('2 * replicas')}
+        it { is_expected.to contain_swift_proxy_config('app:proxy-server/node_timeout').with_value('20')}
+      end
       describe "when log udp port is set" do
         context 'and log_udp_host is not set' do
           let :params do
@@ -204,47 +181,36 @@ node_timeout = 20
              :write_affinity_node_count => '2 * replicas',
              :node_timeout              => '20',
              :cors_allow_origin         => 'http://foo.bar:1234,https://foo.bar',
-          }
+            }
           end
-        it 'should build the header file with provided values' do
-          is_expected.to contain_concat_fragment('swift_proxy').with_content('# This file is managed by puppet.  Do not edit
-#
-[DEFAULT]
-bind_port = 80
-bind_ip = 10.0.0.2
-workers = 3
-user = swift
-log_name = swift-proxy-server
-log_facility = LOG_LOCAL1
-log_level = DEBUG
-log_headers = False
-log_address = /dev/log
-# If set, log_udp_host will override log_address
-log_udp_host = 127.0.0.1
-log_udp_port = 514
-cors_allow_origin = http://foo.bar:1234,https://foo.bar
-strict_cors_mode = true
-
-[pipeline:main]
-pipeline = swauth proxy-server
-
-[app:proxy-server]
-use = egg:swift#proxy
-set log_name = swift-proxy-server
-set log_facility = LOG_LOCAL1
-set log_level = DEBUG
-set log_address = /dev/log
-log_handoffs = true
-allow_account_management = false
-account_autocreate = false
-sorting_method = affinity
-read_affinity = r1z1=100, r1=200
-write_affinity = r1
-write_affinity_node_count = 2 * replicas
-node_timeout = 20
-')
+          it { is_expected.to contain_swift_proxy_config('DEFAULT/bind_port').with_value('80')}
+          it { is_expected.to contain_swift_proxy_config('DEFAULT/bind_ip').with_value('10.0.0.2')}
+          it { is_expected.to contain_swift_proxy_config('DEFAULT/workers').with_value('3')}
+          it { is_expected.to contain_swift_proxy_config('DEFAULT/user').with_value('swift')}
+          it { is_expected.to contain_swift_proxy_config('DEFAULT/log_name').with_value('swift-proxy-server')}
+          it { is_expected.to contain_swift_proxy_config('DEFAULT/log_facility').with_value('LOG_LOCAL1')}
+          it { is_expected.to contain_swift_proxy_config('DEFAULT/log_level').with_value('DEBUG')}
+          it { is_expected.to contain_swift_proxy_config('DEFAULT/log_headers').with_value('False')}
+          it { is_expected.to contain_swift_proxy_config('DEFAULT/log_address').with_value('/dev/log')}
+          it { is_expected.to contain_swift_proxy_config('DEFAULT/log_udp_host').with_value('127.0.0.1')}
+          it { is_expected.to contain_swift_proxy_config('DEFAULT/log_udp_port').with_value('514')}
+          it { is_expected.to contain_swift_proxy_config('DEFAULT/cors_allow_origin').with_value('http://foo.bar:1234,https://foo.bar')}
+          it { is_expected.to contain_swift_proxy_config('DEFAULT/strict_cors_mode').with_value('true')}
+          it { is_expected.to contain_swift_proxy_config('pipeline:main/pipeline').with_value('swauth proxy-server')}
+          it { is_expected.to contain_swift_proxy_config('app:proxy-server/use').with_value('egg:swift#proxy')}
+          it { is_expected.to contain_swift_proxy_config('app:proxy-server/set log_name').with_value('swift-proxy-server')}
+          it { is_expected.to contain_swift_proxy_config('app:proxy-server/set log_facility').with_value('LOG_LOCAL1')}
+          it { is_expected.to contain_swift_proxy_config('app:proxy-server/set log_level').with_value('DEBUG')}
+          it { is_expected.to contain_swift_proxy_config('app:proxy-server/set log_address').with_value('/dev/log')}
+          it { is_expected.to contain_swift_proxy_config('app:proxy-server/log_handoffs').with_value('true')}
+          it { is_expected.to contain_swift_proxy_config('app:proxy-server/allow_account_management').with_value('false')}
+          it { is_expected.to contain_swift_proxy_config('app:proxy-server/account_autocreate').with_value('false')}
+          it { is_expected.to contain_swift_proxy_config('app:proxy-server/sorting_method').with_value('affinity')}
+          it { is_expected.to contain_swift_proxy_config('app:proxy-server/read_affinity').with_value('r1z1=100, r1=200')}
+          it { is_expected.to contain_swift_proxy_config('app:proxy-server/write_affinity').with_value('r1')}
+          it { is_expected.to contain_swift_proxy_config('app:proxy-server/write_affinity_node_count').with_value('2 * replicas')}
+          it { is_expected.to contain_swift_proxy_config('app:proxy-server/node_timeout').with_value('20')}
         end
-      end
     end
 
       describe 'when supplying bad values for parameters' do
@@ -308,7 +274,6 @@ node_timeout = 20
           :provider   => platform_params['service_provider'],
           :enable     => false,
           :hasstatus  => true,
-          :subscribe  => 'Concat[/etc/swift/proxy-server.conf]'
         )
       end
     end

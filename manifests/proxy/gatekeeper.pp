@@ -45,10 +45,12 @@ class swift::proxy::gatekeeper(
 
   include ::swift::deps
 
-  concat::fragment { 'swift_gatekeeper':
-    target  => '/etc/swift/proxy-server.conf',
-    content => template('swift/proxy/gatekeeper.conf.erb'),
-    order   => '20',
+  swift_proxy_config {
+    'filter:gatekeeper/use':              value => 'egg:swift#gatekeeper';
+    'filter:gatekeeper/set log_name':     value => $log_name;
+    'filter:gatekeeper/set log_facility': value => $log_facility;
+    'filter:gatekeeper/set log_level':    value => $log_level;
+    'filter:gatekeeper/set log_headers':  value => $log_headers;
+    'filter:gatekeeper/set log_address':  value => $log_address;
   }
-
 }

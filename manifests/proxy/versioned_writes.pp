@@ -17,10 +17,8 @@ class swift::proxy::versioned_writes (
 
   include ::swift::deps
 
-  concat::fragment { 'swift_versioned_writes':
-    target  => '/etc/swift/proxy-server.conf',
-    content => template('swift/proxy/versioned_writes.conf.erb'),
-    order   => '250',
+  swift_proxy_config {
+    'filter:versioned_writes/use':                    value => 'egg:swift#versioned_writes';
+    'filter:versioned_writes/allow_versioned_writes': value => $allow_versioned_writes;
   }
-
 }

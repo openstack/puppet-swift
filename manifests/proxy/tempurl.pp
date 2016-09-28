@@ -94,10 +94,13 @@ class swift::proxy::tempurl (
     }
   }
 
-  concat::fragment { 'swift-proxy-tempurl':
-    target  => '/etc/swift/proxy-server.conf',
-    content => template('swift/proxy/tempurl.conf.erb'),
-    order   => '120',
-  }
 
+  swift_proxy_config {
+    'filter:tempurl/use':                     value => 'egg:swift#tempurl';
+    'filter:tempurl/methods':                 value => $methods_real;
+    'filter:tempurl/incoming_remove_headers': value => $incoming_remove_headers_real;
+    'filter:tempurl/incoming_allow_headers':  value => $incoming_allow_headers_real;
+    'filter:tempurl/outgoing_remove_headers': value => $outgoing_remove_headers_real;
+    'filter:tempurl/outgoing_allow_headers':  value => $outgoing_allow_headers_real;
+  }
 }

@@ -10,12 +10,12 @@ describe 'swift::proxy::keystone' do
     'concat { "/etc/swift/proxy-server.conf": }'
   end
 
-  it { is_expected.to contain_concat_fragment('swift_keystone').with_content(/\[filter:keystone\]\nuse = egg:swift#keystoneauth/) }
+  it { is_expected.to contain_swift_proxy_config('filter:keystone/use').with_value('egg:swift#keystoneauth') }
 
   describe 'with defaults' do
 
-    it { is_expected.to contain_concat_fragment('swift_keystone').with_content(/operator_roles = admin, SwiftOperator/) }
-    it { is_expected.to contain_concat_fragment('swift_keystone').with_content(/reseller_prefix = AUTH_/) }
+    it { is_expected.to contain_swift_proxy_config('filter:keystone/operator_roles').with_value('admin, SwiftOperator') }
+    it { is_expected.to contain_swift_proxy_config('filter:keystone/reseller_prefix').with_value('AUTH_') }
 
   end
 
@@ -27,8 +27,8 @@ describe 'swift::proxy::keystone' do
         :reseller_prefix => 'SWIFT_'
       }
 
-      it { is_expected.to contain_concat_fragment('swift_keystone').with_content(/operator_roles = foo/) }
-      it { is_expected.to contain_concat_fragment('swift_keystone').with_content(/reseller_prefix = SWIFT_/) }
+      it { is_expected.to contain_swift_proxy_config('filter:keystone/operator_roles').with_value('foo') }
+      it { is_expected.to contain_swift_proxy_config('filter:keystone/reseller_prefix').with_value('SWIFT_') }
 
     end
 

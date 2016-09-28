@@ -7,13 +7,9 @@ describe 'swift::proxy::copy' do
   end
 
   describe "when using default parameters" do
-    it 'should build the fragment with correct parameters' do
-      is_expected.to contain_concat_fragment('swift_copy').with_content('
-[filter:copy]
-use = egg:swift#copy
-object_post_as_copy = true
-')
-    end
+    it { is_expected.to contain_swift_proxy_config('filter:copy/use').with_value('egg:swift#copy') }
+    it { is_expected.to contain_swift_proxy_config('filter:copy/object_post_as_copy').with_value('true') }
+
   end
 
   describe "when overriding default parameters" do
@@ -22,9 +18,7 @@ object_post_as_copy = true
         :object_post_as_copy => false,
       }
     end
-    it 'should build the fragment with correct parameters' do
-      is_expected.to contain_concat_fragment('swift_copy').with_content(/object_post_as_copy = false/)
-    end
+    it { is_expected.to contain_swift_proxy_config('filter:copy/object_post_as_copy').with_value('false') }
   end
 
 end

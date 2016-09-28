@@ -26,7 +26,6 @@ describe 'swift::proxy::container_quotas' do
     {}
   end
 
-  it { is_expected.to contain_concat_fragment('swift_container_quotas').with_content(/\[filter:container_quotas\]/) }
-  it { is_expected.to contain_concat_fragment('swift_container_quotas').with_content(/use = egg:swift#container_quotas/) }
+  it { is_expected.to contain_swift_proxy_config('filter:container_quotas/use').with_value('egg:swift#container_quotas') }
 
 end

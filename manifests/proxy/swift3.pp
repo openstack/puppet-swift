@@ -33,10 +33,7 @@ class swift::proxy::swift3(
     tag    => ['openstack','swift-package']
   }
 
-  concat::fragment { 'swift_swift3':
-    target  => '/etc/swift/proxy-server.conf',
-    content => template('swift/proxy/swift3.conf.erb'),
-    order   => '70',
+  swift_proxy_config {
+    'filter:swift3/use': value => 'egg:swift3#swift3';
   }
-
 }

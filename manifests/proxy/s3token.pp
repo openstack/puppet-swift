@@ -36,9 +36,10 @@ class swift::proxy::s3token(
 
   include ::swift::deps
 
-  concat::fragment { 'swift_s3token':
-    target  => '/etc/swift/proxy-server.conf',
-    content => template('swift/proxy/s3token.conf.erb'),
-    order   => '80',
+  swift_proxy_config {
+    'filter:s3token/paste.filter_factory': value => 'keystonemiddleware.s3_token:filter_factory';
+    'filter:s3token/auth_host':            value => $auth_host;
+    'filter:s3token/auth_port':            value => $auth_port;
+    'filter:s3token/auth_protocol':        value => $auth_protocol;
   }
 }

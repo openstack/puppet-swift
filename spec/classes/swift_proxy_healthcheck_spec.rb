@@ -6,7 +6,6 @@ describe 'swift::proxy::healthcheck' do
     {}
   end
 
-  it { is_expected.to contain_concat_fragment('swift_healthcheck').with_content(/[filter:healthcheck]/) }
-  it { is_expected.to contain_concat_fragment('swift_healthcheck').with_content(/use = egg:swift#healthcheck/) }
+  it { is_expected.to contain_swift_proxy_config('filter:healthcheck/use').with_value('egg:swift#healthcheck') }
 
 end

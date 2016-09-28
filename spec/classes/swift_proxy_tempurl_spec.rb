@@ -10,14 +10,14 @@ describe 'swift::proxy::tempurl' do
     'concat { "/etc/swift/proxy-server.conf": }'
   end
 
-  it { is_expected.to contain_concat_fragment('swift-proxy-tempurl').with_content(/\[filter:tempurl\]\nuse = egg:swift#tempurl/) }
+  it { is_expected.to contain_swift_proxy_config('filter:tempurl/use').with_value('egg:swift#tempurl') }
 
   ['methods',
    'incoming_remove_headers',
    'incoming_allow_headers',
    'outgoing_remove_headers',
    'outgoing_allow_headers' ].each do |h|
-     it { is_expected.to_not contain_concat_fragment('swift-proxy-tempurl').with_content(/#{h}/) }
+     it { is_expected.to_not contain_swift_proxy_config("filter:tempurl/#{h}").with_value('') }
    end
 
    context "when params are set" do
@@ -29,12 +29,12 @@ describe 'swift::proxy::tempurl' do
        'outgoing_allow_headers'  => ['x-foo','x-bar-*'],
      } end
 
-     it { is_expected.to contain_concat_fragment('swift-proxy-tempurl').with_content(/methods = GET HEAD PUT/) }
+     it { is_expected.to contain_swift_proxy_config('filter:tempurl/methods').with_value('GET HEAD PUT') }
      ['incoming_remove_headers',
       'incoming_allow_headers',
       'outgoing_remove_headers',
       'outgoing_allow_headers' ].each do |h|
-        it { is_expected.to contain_concat_fragment('swift-proxy-tempurl').with_content(/#{h} = x-foo x-bar-*/) }
+        it { is_expected.to contain_swift_proxy_config("filter:tempurl/#{h}").with_value('x-foo x-bar-*') }
       end
 
       describe 'when params are not array' do
@@ -46,12 +46,12 @@ describe 'swift::proxy::tempurl' do
           'outgoing_allow_headers'  => 'x-foo x-bar-*',
         } end
 
-        it { is_expected.to contain_concat_fragment('swift-proxy-tempurl').with_content(/methods = GET HEAD PUT/) }
+        it { is_expected.to contain_swift_proxy_config('filter:tempurl/methods').with_value('GET HEAD PUT') }
         ['incoming_remove_headers',
          'incoming_allow_headers',
          'outgoing_remove_headers',
          'outgoing_allow_headers' ].each do |h|
-           it { is_expected.to contain_concat_fragment('swift-proxy-tempurl').with_content(/#{h} = x-foo x-bar-*/) }
+           it { is_expected.to contain_swift_proxy_config("filter:tempurl/#{h}").with_value('x-foo x-bar-*') }
          end
       end
    end
