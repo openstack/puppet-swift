@@ -25,8 +25,8 @@ class swift::proxy::cache(
   include ::swift::deps
 
   # require the memcached class if its on the same machine
-  if grep(any2array($memcache_servers), '^127\.0\.0\.1') {
-    Class['memcached'] -> Class['swift::proxy::cache']
+  if !empty(grep(any2array($memcache_servers), '127.0.0.1')) {
+    Class['::memcached'] -> Class['::swift::proxy::cache']
   }
 
   concat::fragment { 'swift_cache':

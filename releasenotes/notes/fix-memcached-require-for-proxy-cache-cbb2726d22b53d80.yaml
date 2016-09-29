@@ -1,0 +1,5 @@
+---
+fixes:
+  - Fixed the incorrect inclusion of a requirement for the memcached class
+    to be in the catalog for swift::proxy::cache due to a bad grep of the
+    memcached server list. LP#1628967
