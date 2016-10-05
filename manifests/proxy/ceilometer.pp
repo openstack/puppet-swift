@@ -88,8 +88,9 @@ class swift::proxy::ceilometer(
     groups +> $group,
   }
 
-  if defined(Service['swift-proxy']) {
-    File['/var/log/ceilometer/swift-proxy-server.log'] -> Service['swift-proxy']
+  if defined(Service['swift-proxy-server']) {
+    File['/var/log/ceilometer/swift-proxy-server.log'] -> Service['swift-proxy-server']
+    Package['python-ceilometermiddleware'] -> Service['swift-proxy-server']
   }
 
   file { '/var/log/ceilometer/swift-proxy-server.log':
