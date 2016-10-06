@@ -5,7 +5,7 @@ describe 'swift::ringbuilder' do
     OSDefaults.get_facts({
       :operatingsystem => 'Ubuntu',
       :osfamily        => 'Debian',
-      :processorcount  => 1,
+      :os_workers      => 1,
     })
   end
   describe 'when swift class is not included' do
