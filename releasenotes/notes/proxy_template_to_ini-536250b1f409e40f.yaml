@@ -1,0 +1,10 @@
+---
+prelude: >
+ -  swift_proxy_config ini provider is now used to mange
+    all sections in proxy-server.conf. The erb templates
+    and use of concat for proxy.conf sections has been removed.
+    All template logic is moved into proxy middleware classes.
+    To purge proxy.conf of settings that are not specified
+    set the new paramater "purge_config" to "true".
+upgrade:
+  - Maintains backward compatibility.

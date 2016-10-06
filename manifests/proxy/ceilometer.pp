@@ -84,6 +84,13 @@ class swift::proxy::ceilometer(
     $rabbit_hosts_with_creds = prefix($rabbit_hosts, "${rabbit_user}:${rabbit_password}@")
   }
 
+  if !$rabbit_hosts {
+    $url = "rabbit://${rabbit_user}:${rabbit_password}@${rabbit_host}:${rabbit_port}/${rabbit_virtual_host}"
+  } else {
+    $hosts = join($rabbit_hosts_with_creds, ',')
+    $url = "rabbit://${hosts}/${rabbit_virtual_host}"
+  }
+
   User['swift'] {
     groups +> $group,
   }
@@ -100,10 +107,12 @@ class swift::proxy::ceilometer(
     group  => 'swift',
   }
 
-  concat::fragment { 'swift_ceilometer':
-    target  => '/etc/swift/proxy-server.conf',
-    content => template('swift/proxy/ceilometer.conf.erb'),
-    order   => '260',
+  swift_proxy_config {
+    'filter:ceilometer/topic':                value => $topic;
+    'filter:ceilometer/driver':               value => $driver;
+    'filter:ceilometer/url':                  value => $url;
+    'filter:ceilometer/control_exchange':     value => $control_exchange;
+    'filter:ceilometer/paste.filter_factory': value => 'ceilometermiddleware.swift:filter_factory';
   }
 
   package { 'python-ceilometermiddleware':

@@ -6,7 +6,6 @@ describe 'swift::proxy::staticweb' do
     {}
   end
 
-  it { is_expected.to contain_concat_fragment('swift-proxy-staticweb').with_content(/[filter:staticweb]/) }
-  it { is_expected.to contain_concat_fragment('swift-proxy-staticweb').with_content(/use = egg:swift#staticweb/) }
+  it { is_expected.to contain_swift_proxy_config('filter:staticweb/use').with_value('egg:swift#staticweb') }
 
 end

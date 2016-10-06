@@ -29,10 +29,9 @@ class swift::proxy::swauth(
     tag    => 'swift-package',
   }
 
-  concat::fragment { 'swift_proxy_swauth':
-    target  => '/etc/swift/proxy-server.conf',
-    content => template('swift/proxy/swauth.conf.erb'),
-    order   => '160',
+  swift_proxy_config {
+    'filter:swauth/use':                   value => 'egg:swauth#swauth';
+    'filter:swauth/default_swift_cluster': value => "local#${swauth_endpoint}";
+    'filter:swauth/super_admin_key':       value => $swauth_super_admin_key;
   }
-
 }

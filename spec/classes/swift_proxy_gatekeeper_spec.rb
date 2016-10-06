@@ -7,17 +7,12 @@ describe 'swift::proxy::gatekeeper' do
   end
 
   describe "when using default parameters" do
-    it 'should build the fragment with correct parameters' do
-      is_expected.to contain_concat_fragment('swift_gatekeeper').with_content('
-[filter:gatekeeper]
-use = egg:swift#gatekeeper
-set log_name = gatekeeper
-set log_facility = LOG_LOCAL0
-set log_level = INFO
-set log_headers = false
-set log_address = /dev/log
-')
-    end
+    it { is_expected.to contain_swift_proxy_config('filter:gatekeeper/use').with_value('egg:swift#gatekeeper') }
+    it { is_expected.to contain_swift_proxy_config('filter:gatekeeper/set log_name').with_value('gatekeeper') }
+    it { is_expected.to contain_swift_proxy_config('filter:gatekeeper/set log_facility').with_value('LOG_LOCAL0') }
+    it { is_expected.to contain_swift_proxy_config('filter:gatekeeper/set log_level').with_value('INFO') }
+    it { is_expected.to contain_swift_proxy_config('filter:gatekeeper/set log_headers').with_value('false') }
+    it { is_expected.to contain_swift_proxy_config('filter:gatekeeper/set log_address').with_value('/dev/log') }
   end
 
   describe "when overriding default parameters" do
@@ -28,11 +23,9 @@ set log_address = /dev/log
         :log_level        => 'WARN',
       }
     end
-    it 'should build the fragment with correct parameters' do
-      is_expected.to contain_concat_fragment('swift_gatekeeper').with_content(/set log_name = newgatekeeper/)
-      is_expected.to contain_concat_fragment('swift_gatekeeper').with_content(/set log_facility = LOG_LOCAL2/)
-      is_expected.to contain_concat_fragment('swift_gatekeeper').with_content(/set log_level = WARN/)
-    end
+    it { is_expected.to contain_swift_proxy_config('filter:gatekeeper/set log_name').with_value('newgatekeeper') }
+    it { is_expected.to contain_swift_proxy_config('filter:gatekeeper/set log_facility').with_value('LOG_LOCAL2') }
+    it { is_expected.to contain_swift_proxy_config('filter:gatekeeper/set log_level').with_value('WARN') }
   end
 
 end

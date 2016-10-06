@@ -21,9 +21,7 @@ class swift::proxy::container_quotas() {
 
   include ::swift::deps
 
-  concat::fragment { 'swift_container_quotas':
-    target  => '/etc/swift/proxy-server.conf',
-    content => template('swift/proxy/container_quotas.conf.erb'),
-    order   => '220',
+  swift_proxy_config {
+    'filter:container_quotas/use': value => 'egg:swift#container_quotas';
   }
 }

@@ -23,6 +23,6 @@ require 'spec_helper'
 describe 'swift::proxy::account_quotas' do
 
   it do
-    is_expected.to contain_concat_fragment('swift_account_quotas').with_content("\n[filter:account_quotas]\nuse = egg:swift#account_quotas\n")
+    is_expected.to contain_swift_proxy_config('filter:account_quotas/use').with_value('egg:swift#account_quotas')
   end
 end

@@ -19,10 +19,7 @@ class swift::proxy::catch_errors() {
 
   include ::swift::deps
 
-  concat::fragment { 'swift_catch_errors':
-    target  => '/etc/swift/proxy-server.conf',
-    content => template('swift/proxy/catch_errors.conf.erb'),
-    order   => '10',
+  swift_proxy_config {
+    'filter:catch_errors/use': value => 'egg:swift#catch_errors';
   }
-
 }

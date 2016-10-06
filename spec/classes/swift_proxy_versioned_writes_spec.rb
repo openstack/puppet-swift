@@ -7,13 +7,8 @@ describe 'swift::proxy::versioned_writes' do
   end
 
   describe "when using default parameters" do
-    it 'should build the fragment with correct parameters' do
-      is_expected.to contain_concat_fragment('swift_versioned_writes').with_content('
-[filter:versioned_writes]
-use = egg:swift#versioned_writes
-allow_versioned_writes = false
-')
-    end
+    it { is_expected.to contain_swift_proxy_config('filter:versioned_writes/use').with_value('egg:swift#versioned_writes') }
+    it { is_expected.to contain_swift_proxy_config('filter:versioned_writes/allow_versioned_writes').with_value('false') }
   end
 
   describe "when overriding default parameters" do
@@ -22,9 +17,7 @@ allow_versioned_writes = false
         :allow_versioned_writes => true,
       }
     end
-    it 'should build the fragment with correct parameters' do
-      is_expected.to contain_concat_fragment('swift_versioned_writes').with_content(/allow_versioned_writes = true/)
-    end
+    it { is_expected.to contain_swift_proxy_config('filter:versioned_writes/allow_versioned_writes').with_value('true') }
   end
 
 end

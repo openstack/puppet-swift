@@ -19,10 +19,7 @@ class swift::proxy::formpost() {
 
   include ::swift::deps
 
-  concat::fragment { 'swift-proxy-formpost':
-    target  => '/etc/swift/proxy-server.conf',
-    content => template('swift/proxy/formpost.conf.erb'),
-    order   => '130',
+  swift_proxy_config {
+    'filter:formpost/use': value => 'egg:swift#formpost';
   }
-
 }

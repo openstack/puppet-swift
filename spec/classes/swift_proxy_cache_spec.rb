@@ -19,10 +19,8 @@ describe 'swift::proxy::cache' do
       is_expected.to contain_class('swift::deps')
       is_expected.to contain_class('swift::proxy::cache')
     end
-    it 'should properly configure the swift_cache fragment' do
-      is_expected.to contain_concat_fragment('swift_cache').with_content(/\[filter:cache\]\nuse = egg:swift#memcache/)
-      is_expected.to contain_concat_fragment('swift_cache').with_content(/memcache_servers = 127\.0\.0\.1:11211/)
-    end
+    it { is_expected.to contain_swift_proxy_config('filter:cache/use').with_value('egg:swift#memcache') }
+    it { is_expected.to contain_swift_proxy_config('filter:cache/memcache_servers').with_value('127.0.0.1:11211') }
   end
 
   describe 'without memcached being included' do
@@ -36,10 +34,8 @@ describe 'swift::proxy::cache' do
       {:memcache_servers => '10.0.0.1:1'}
     end
 
-    it 'should properly configure the swift_cache fragment' do
-      is_expected.to contain_concat_fragment('swift_cache').with_content(/\[filter:cache\]\nuse = egg:swift#memcache/)
-      is_expected.to contain_concat_fragment('swift_cache').with_content(/memcache_servers = 10\.0\.0\.1:1/)
-    end
+    it { is_expected.to contain_swift_proxy_config('filter:cache/use').with_value('egg:swift#memcache') }
+    it { is_expected.to contain_swift_proxy_config('filter:cache/memcache_servers').with_value('10.0.0.1:1') }
   end
 
   describe 'with overridden memcache server array' do
@@ -47,10 +43,8 @@ describe 'swift::proxy::cache' do
       {:memcache_servers => ['10.0.0.1:1', '10.0.0.2:2']}
     end
 
-    it 'should properly configure the swift_cache fragment' do
-      is_expected.to contain_concat_fragment('swift_cache').with_content(/\[filter:cache\]\nuse = egg:swift#memcache/)
-      is_expected.to contain_concat_fragment('swift_cache').with_content(/memcache_servers = 10\.0\.0\.1:1,10\.0\.0\.2:2/)
-    end
+    it { is_expected.to contain_swift_proxy_config('filter:cache/use').with_value('egg:swift#memcache') }
+    it { is_expected.to contain_swift_proxy_config('filter:cache/memcache_servers').with_value('10.0.0.1:1,10.0.0.2:2') }
   end
 
 end

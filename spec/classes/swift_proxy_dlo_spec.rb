@@ -7,15 +7,10 @@ describe 'swift::proxy::dlo' do
   end
 
   describe "when using default parameters" do
-    it 'should build the fragment with correct parameters' do
-      is_expected.to contain_concat_fragment('swift_dlo').with_content('
-[filter:dlo]
-use = egg:swift#dlo
-rate_limit_after_segment = 10
-rate_limit_segments_per_sec = 1
-max_get_time = 86400
-')
-    end
+    it { is_expected.to contain_swift_proxy_config('filter:dlo/use').with_value('egg:swift#dlo') }
+    it { is_expected.to contain_swift_proxy_config('filter:dlo/rate_limit_after_segment').with_value('10') }
+    it { is_expected.to contain_swift_proxy_config('filter:dlo/rate_limit_segments_per_sec').with_value('1') }
+    it { is_expected.to contain_swift_proxy_config('filter:dlo/max_get_time').with_value('86400') }
   end
 
   describe "when overriding default parameters" do
@@ -26,11 +21,9 @@ max_get_time = 86400
         :max_get_time                => '6400',
       }
     end
-    it 'should build the fragment with correct parameters' do
-      is_expected.to contain_concat_fragment('swift_dlo').with_content(/rate_limit_after_segment = 30/)
-      is_expected.to contain_concat_fragment('swift_dlo').with_content(/rate_limit_segments_per_sec = 5/)
-      is_expected.to contain_concat_fragment('swift_dlo').with_content(/max_get_time = 6400/)
-    end
+    it { is_expected.to contain_swift_proxy_config('filter:dlo/rate_limit_after_segment').with_value('30') }
+    it { is_expected.to contain_swift_proxy_config('filter:dlo/rate_limit_segments_per_sec').with_value('5') }
+    it { is_expected.to contain_swift_proxy_config('filter:dlo/max_get_time').with_value('6400') }
   end
 
 end

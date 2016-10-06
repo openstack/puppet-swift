@@ -7,15 +7,10 @@ describe 'swift::proxy::s3token' do
   end
 
   describe "when using default parameters" do
-    it 'should build the fragment with correct parameters' do
-      is_expected.to contain_concat_fragment('swift_s3token').with_content('
-[filter:s3token]
-paste.filter_factory = keystonemiddleware.s3_token:filter_factory
-auth_port = 35357
-auth_protocol = http
-auth_host = 127.0.0.1
-')
-    end
+    it { is_expected.to contain_swift_proxy_config('filter:s3token/paste.filter_factory').with_value('keystonemiddleware.s3_token:filter_factory') }
+    it { is_expected.to contain_swift_proxy_config('filter:s3token/auth_port').with_value('35357') }
+    it { is_expected.to contain_swift_proxy_config('filter:s3token/auth_protocol').with_value('http') }
+    it { is_expected.to contain_swift_proxy_config('filter:s3token/auth_host').with_value('127.0.0.1') }
   end
 
   describe "when overriding default parameters" do
@@ -26,11 +21,9 @@ auth_host = 127.0.0.1
           :auth_host     => '1.2.3.4'
       }
     end
-    it 'should build the fragment with correct parameters' do
-      is_expected.to contain_concat_fragment('swift_s3token').with_content(/auth_port = 4212/)
-      is_expected.to contain_concat_fragment('swift_s3token').with_content(/auth_protocol = https/)
-      is_expected.to contain_concat_fragment('swift_s3token').with_content(/auth_host = 1.2.3.4/)
-    end
+    it { is_expected.to contain_swift_proxy_config('filter:s3token/auth_port').with_value('4212') }
+    it { is_expected.to contain_swift_proxy_config('filter:s3token/auth_protocol').with_value('https') }
+    it { is_expected.to contain_swift_proxy_config('filter:s3token/auth_host').with_value('1.2.3.4') }
   end
 
 end

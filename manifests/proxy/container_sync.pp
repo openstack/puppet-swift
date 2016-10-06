@@ -6,9 +6,10 @@
 #   Denis Egorenko <degorenko@mirantis.com>
 #
 class swift::proxy::container_sync() {
-  concat::fragment { 'swift_container_sync':
-    target  => '/etc/swift/proxy-server.conf',
-    content => template('swift/proxy/container_sync.conf.erb'),
-    order   => '60',
+
+  include ::swift::deps
+
+  swift_proxy_config {
+    'filter:container_sync/use': value => 'egg:swift#container_sync';
   }
 }

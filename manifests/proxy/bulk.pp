@@ -46,9 +46,11 @@ class swift::proxy::bulk(
 
   include ::swift::deps
 
-  concat::fragment { 'swift_bulk':
-    target  => '/etc/swift/proxy-server.conf',
-    content => template('swift/proxy/bulk.conf.erb'),
-    order   => '110',
+  swift_proxy_config {
+    'filter:bulk/use':                           value => 'egg:swift#bulk';
+    'filter:bulk/max_containers_per_extraction': value => $max_containers_per_extraction;
+    'filter:bulk/max_failed_extractions':        value => $max_failed_extractions;
+    'filter:bulk/max_deletes_per_request':       value => $max_deletes_per_request;
+    'filter:bulk/yield_frequency':               value => $yield_frequency;
   }
 }

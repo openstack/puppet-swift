@@ -36,10 +36,10 @@ class swift::proxy::dlo (
 
   include ::swift::deps
 
-  concat::fragment { 'swift_dlo':
-    target  => '/etc/swift/proxy-server.conf',
-    content => template('swift/proxy/dlo.conf.erb'),
-    order   => '240',
+  swift_proxy_config {
+    'filter:dlo/use':                         value => 'egg:swift#dlo';
+    'filter:dlo/rate_limit_after_segment':    value => $rate_limit_after_segment;
+    'filter:dlo/rate_limit_segments_per_sec': value => $rate_limit_segments_per_sec;
+    'filter:dlo/max_get_time':                value => $max_get_time;
   }
-
 }

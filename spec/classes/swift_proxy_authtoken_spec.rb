@@ -25,28 +25,21 @@ describe 'swift::proxy::authtoken' do
   end
 
   describe "when using default parameters" do
-    it 'should build the fragment with correct parameters' do
-      is_expected.to contain_concat_fragment('swift_authtoken').with_content('
-[filter:authtoken]
-log_name = swift
-signing_dir = /var/cache/swift
-paste.filter_factory = keystonemiddleware.auth_token:filter_factory
+    it { is_expected.to contain_swift_proxy_config('filter:authtoken/log_name').with_value('swift') }
+    it { is_expected.to contain_swift_proxy_config('filter:authtoken/signing_dir').with_value('/var/cache/swift') }
+    it { is_expected.to contain_swift_proxy_config('filter:authtoken/paste.filter_factory').with_value('keystonemiddleware.auth_token:filter_factory') }
+    it { is_expected.to contain_swift_proxy_config('filter:authtoken/auth_uri').with_value('http://127.0.0.1:5000') }
+    it { is_expected.to contain_swift_proxy_config('filter:authtoken/auth_url').with_value('http://127.0.0.1:35357') }
+    it { is_expected.to contain_swift_proxy_config('filter:authtoken/auth_plugin').with_value('password') }
+    it { is_expected.to contain_swift_proxy_config('filter:authtoken/project_domain_id').with_value('default') }
+    it { is_expected.to contain_swift_proxy_config('filter:authtoken/user_domain_id').with_value('default') }
+    it { is_expected.to contain_swift_proxy_config('filter:authtoken/project_name').with_value('services') }
+    it { is_expected.to contain_swift_proxy_config('filter:authtoken/username').with_value('swift') }
+    it { is_expected.to contain_swift_proxy_config('filter:authtoken/password').with_value('password') }
+    it { is_expected.to contain_swift_proxy_config('filter:authtoken/delay_auth_decision').with_value('1') }
+    it { is_expected.to contain_swift_proxy_config('filter:authtoken/cache').with_value('swift.cache') }
+    it { is_expected.to contain_swift_proxy_config('filter:authtoken/include_service_catalog').with_value('false') }
 
-auth_uri = http://127.0.0.1:5000
-auth_url = http://127.0.0.1:35357
-auth_plugin = password
-project_domain_id = default
-user_domain_id = default
-project_name = services
-username = swift
-password = password
-
-delay_auth_decision = 1
-
-cache = swift.cache
-include_service_catalog = false
-')
-    end
   end
 
 
@@ -62,28 +55,21 @@ include_service_catalog = false
       }
     end
 
-    it 'should build the fragment with correct parameters' do
-      is_expected.to contain_concat_fragment('swift_authtoken').with_content('
-[filter:authtoken]
-log_name = swift
-signing_dir = /home/swift/keystone-signing
-paste.filter_factory = keystonemiddleware.auth_token:filter_factory
+    it { is_expected.to contain_swift_proxy_config('filter:authtoken/log_name').with_value('swift') }
+    it { is_expected.to contain_swift_proxy_config('filter:authtoken/signing_dir').with_value('/home/swift/keystone-signing') }
+    it { is_expected.to contain_swift_proxy_config('filter:authtoken/paste.filter_factory').with_value('keystonemiddleware.auth_token:filter_factory') }
+    it { is_expected.to contain_swift_proxy_config('filter:authtoken/auth_uri').with_value('http://127.0.0.1:5000') }
+    it { is_expected.to contain_swift_proxy_config('filter:authtoken/auth_url').with_value('http://127.0.0.1:35357') }
+    it { is_expected.to contain_swift_proxy_config('filter:authtoken/auth_plugin').with_value('password') }
+    it { is_expected.to contain_swift_proxy_config('filter:authtoken/project_domain_id').with_value('default') }
+    it { is_expected.to contain_swift_proxy_config('filter:authtoken/user_domain_id').with_value('default') }
+    it { is_expected.to contain_swift_proxy_config('filter:authtoken/project_name').with_value('admin') }
+    it { is_expected.to contain_swift_proxy_config('filter:authtoken/username').with_value('swiftuser') }
+    it { is_expected.to contain_swift_proxy_config('filter:authtoken/password').with_value('swiftpassword') }
+    it { is_expected.to contain_swift_proxy_config('filter:authtoken/delay_auth_decision').with_value('0') }
+    it { is_expected.to contain_swift_proxy_config('filter:authtoken/cache').with_value('foo') }
+    it { is_expected.to contain_swift_proxy_config('filter:authtoken/include_service_catalog').with_value('false') }
 
-auth_uri = http://127.0.0.1:5000
-auth_url = http://127.0.0.1:35357
-auth_plugin = password
-project_domain_id = default
-user_domain_id = default
-project_name = admin
-username = swiftuser
-password = swiftpassword
-
-delay_auth_decision = 0
-
-cache = foo
-include_service_catalog = false
-')
-    end
   end
 
   describe 'when overriding auth_uri' do
@@ -91,7 +77,7 @@ include_service_catalog = false
       { :auth_uri => 'http://public.host/keystone/main' }
     end
 
-    it { is_expected.to contain_concat_fragment('swift_authtoken').with_content(/auth_uri = http:\/\/public\.host\/keystone\/main/)}
+    it { is_expected.to contain_swift_proxy_config('filter:authtoken/auth_uri').with_value('http://public.host/keystone/main') }
   end
 
   describe "when identity_uri is set" do
@@ -101,9 +87,7 @@ include_service_catalog = false
       }
     end
 
-    it 'should build the fragment with correct parameters' do
-      is_expected.to contain_concat_fragment('swift_authtoken').with_content(/auth_url = https:\/\/foo\.bar:35357\//)
-    end
+    it { is_expected.to contain_swift_proxy_config('filter:authtoken/auth_url').with_value('https://foo.bar:35357/') }
   end
 
   describe "when both auth_uri and identity_uri are set" do
@@ -114,10 +98,8 @@ include_service_catalog = false
       }
     end
 
-    it 'should build the fragment with correct parameters' do
-      is_expected.to contain_concat_fragment('swift_authtoken').with_content(/auth_uri = https:\/\/foo\.bar:5000\/v2\.0\//)
-      is_expected.to contain_concat_fragment('swift_authtoken').with_content(/auth_url = https:\/\/foo\.bar:35357\//)
-    end
+    it { is_expected.to contain_swift_proxy_config('filter:authtoken/auth_uri').with_value('https://foo.bar:5000/v2.0/') }
+    it { is_expected.to contain_swift_proxy_config('filter:authtoken/auth_url').with_value('https://foo.bar:35357/') }
   end
 
 end

@@ -21,10 +21,8 @@ class swift::proxy::copy (
 
   include ::swift::deps
 
-  concat::fragment { 'swift_copy':
-    target  => '/etc/swift/proxy-server.conf',
-    content => template('swift/proxy/copy.conf.erb'),
-    order   => '140',
+  swift_proxy_config {
+    'filter:copy/use':                 value => 'egg:swift#copy';
+    'filter:copy/object_post_as_copy': value => $object_post_as_copy;
   }
-
 }

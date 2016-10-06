@@ -6,7 +6,6 @@ describe 'swift::proxy::formpost' do
     {}
   end
 
-  it { is_expected.to contain_concat_fragment('swift-proxy-formpost').with_content(/[filter:formpost]/) }
-  it { is_expected.to contain_concat_fragment('swift-proxy-formpost').with_content(/use = egg:swift#formpost/) }
+  it { is_expected.to contain_swift_proxy_config('filter:formpost/use').with_value('egg:swift#formpost') }
 
 end

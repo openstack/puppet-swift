@@ -125,7 +125,7 @@ class swift::proxy::authtoken(
   }
 
   if $admin_password {
-    warning('admin_password is deprecated and will be removed, please use password isntead')
+    warning('admin_password is deprecated and will be removed, please use password instead')
   }
 
   $auth_url_real = pick($identity_uri, $auth_url)
@@ -143,10 +143,20 @@ class swift::proxy::authtoken(
     before                  => Anchor['swift::config::end'],
   }
 
-  concat::fragment { 'swift_authtoken':
-    target  => '/etc/swift/proxy-server.conf',
-    content => template('swift/proxy/authtoken.conf.erb'),
-    order   => '170',
+  swift_proxy_config {
+    'filter:authtoken/log_name':                value => 'swift';
+    'filter:authtoken/signing_dir':             value => $signing_dir;
+    'filter:authtoken/paste.filter_factory':    value => 'keystonemiddleware.auth_token:filter_factory';
+    'filter:authtoken/auth_uri':                value => $auth_uri;
+    'filter:authtoken/auth_url':                value => $auth_url_real;
+    'filter:authtoken/auth_plugin':             value => $auth_plugin;
+    'filter:authtoken/project_domain_id':       value => $project_domain_id;
+    'filter:authtoken/user_domain_id':          value => $user_domain_id;
+    'filter:authtoken/project_name':            value => $project_name_real;
+    'filter:authtoken/username':                value => $username_real;
+    'filter:authtoken/password':                value => $password_real;
+    'filter:authtoken/delay_auth_decision':     value => $delay_auth_decision;
+    'filter:authtoken/cache':                   value => $cache;
+    'filter:authtoken/include_service_catalog': value => $include_service_catalog;
   }
-
 }
