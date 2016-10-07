@@ -39,6 +39,7 @@ class swift::deps {
 
   Anchor['swift::config::begin']
   -> File<| tag == 'swift-file' |>
+  -> Concat<| tag == 'swift-concat' |>
   ~> Anchor['swift::config::end']
 
   # Support packages need to be installed in the install phase, but we don't

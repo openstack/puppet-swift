@@ -218,6 +218,7 @@ define swift::storage::server(
     group   => $group,
     notify  => Service["swift-${type}-server", "swift-${type}-replicator", "swift-${type}-auditor"],
     require => Package['swift'],
+    tag     => 'swift-concat',
   }
 
   $required_middlewares = split(
