@@ -66,15 +66,15 @@
 #
 # [*replicator_concurrency*]
 #   (optional) Number of replicator workers to spawn.
-#   Defaults to $::processorcount.
+#   Defaults to 1.
 #
 # [*updater_concurrency*]
 #   (optional) Number of updater workers to spawn.
-#   Defaults to $::processorcount.
+#   Defaults to 1.
 #
 # [*reaper_concurrency*]
 #   (optional) Number of reaper workers to spawn.
-#   Defaults to $::processorcount.
+#   Defaults to 1.
 #
 # [*log_facility*]
 #   (optional) Syslog log facility.
@@ -149,9 +149,9 @@ define swift::storage::server(
   $user                           = 'swift',
   $workers                        = '1',
   $allow_versions                 = false,
-  $replicator_concurrency         = $::processorcount,
-  $updater_concurrency            = $::processorcount,
-  $reaper_concurrency             = $::processorcount,
+  $replicator_concurrency         = 1,
+  $updater_concurrency            = 1,
+  $reaper_concurrency             = 1,
   $log_facility                   = 'LOG_LOCAL2',
   $log_level                      = 'INFO',
   $log_address                    = '/dev/log',
