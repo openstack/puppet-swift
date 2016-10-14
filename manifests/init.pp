@@ -58,6 +58,7 @@ class swift(
 
   include ::swift::deps
   include ::swift::params
+  include ::swift::client
 
   if ($swift_hash_path_prefix == undef and $swift_hash_path_suffix == undef) {
     fail('You must specify at least swift_hash_path_prefix or swift_hash_path_suffix')
@@ -69,10 +70,6 @@ class swift(
       name   => $::swift::params::package_name,
       tag    => ['openstack', 'swift-package'],
     }
-  }
-
-  class { '::swift::client':
-    ensure => $client_package_ensure;
   }
 
   File {
