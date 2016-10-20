@@ -25,7 +25,7 @@
 #
 #  [*workers*]
 #    (optional) Number of threads to process requests.
-#    Defaults to the number of processors.
+#    Defaults to $::os_workers.
 #
 #  [*allow_account_management*]
 #    (optional) Rather or not requests through this proxy can create and
@@ -133,7 +133,7 @@ class swift::proxy(
   $proxy_local_net_ip,
   $port                      = '8080',
   $pipeline                  = ['healthcheck', 'cache', 'tempauth', 'proxy-server'],
-  $workers                   = $::processorcount,
+  $workers                   = $::os_workers,
   $allow_account_management  = true,
   $account_autocreate        = true,
   $log_headers               = 'False',

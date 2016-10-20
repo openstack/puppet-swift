@@ -5,6 +5,7 @@ describe 'swift::storage::server' do
     OSDefaults.get_facts({
       :operatingsystem => 'Ubuntu',
       :osfamily        => 'Debian',
+      :os_workers      => 1,
     })
   end
 

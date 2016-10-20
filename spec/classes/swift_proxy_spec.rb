@@ -13,7 +13,7 @@ describe 'swift::proxy' do
     OSDefaults.get_facts({
      :operatingsystem => 'Ubuntu',
      :osfamily        => 'Debian',
-     :processorcount  => 1,
+     :os_workers      => 1,
     })
   end
 
