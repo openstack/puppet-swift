@@ -54,6 +54,10 @@
 #   ceilometer/wsgi: set $::apache::group
 #   Defaults to 'ceilometer'
 #
+# [*nonblocking_notify*]
+#   Whether to send events to messaging driver in a background thread
+#   Defaults to false
+#
 # == Examples
 #
 # == Authors
@@ -76,6 +80,7 @@ class swift::proxy::ceilometer(
   $control_exchange    = undef,
   $ensure              = 'present',
   $group               = 'ceilometer',
+  $nonblocking_notify  = false,
 ) inherits swift {
 
   include ::swift::deps

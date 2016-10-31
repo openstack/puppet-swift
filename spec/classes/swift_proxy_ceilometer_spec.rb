@@ -32,6 +32,7 @@ describe 'swift::proxy::ceilometer' do
         :driver              => 'messagingv2',
         :topic               => 'notifications',
         :control_exchange    => 'swift',
+        :nonblocking_notify  => true,
       }
     end
 
@@ -43,6 +44,7 @@ describe 'swift::proxy::ceilometer' do
       it { is_expected.to contain_concat_fragment('swift_ceilometer').with_content(/driver = messagingv2/) }
       it { is_expected.to contain_concat_fragment('swift_ceilometer').with_content(/topic = notifications/) }
       it { is_expected.to contain_concat_fragment('swift_ceilometer').with_content(/control_exchange = swift/) }
+      it { is_expected.to contain_concat_fragment('swift_ceilometer').with_content(/nonblocking_notify = true/) }
     end
 
     context 'with multiple rabbit hosts' do
@@ -57,6 +59,7 @@ describe 'swift::proxy::ceilometer' do
       it { is_expected.to contain_concat_fragment('swift_ceilometer').with_content(/driver = messagingv2/) }
       it { is_expected.to contain_concat_fragment('swift_ceilometer').with_content(/topic = notifications/) }
       it { is_expected.to contain_concat_fragment('swift_ceilometer').with_content(/control_exchange = swift/) }
+      it { is_expected.to contain_concat_fragment('swift_ceilometer').with_content(/nonblocking_notify = true/) }
     end
 
   end
