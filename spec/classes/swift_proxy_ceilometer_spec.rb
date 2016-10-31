@@ -16,6 +16,7 @@ describe 'swift::proxy::ceilometer' do
   describe "when using default parameters" do
     it { is_expected.to contain_swift_proxy_config('filter:ceilometer/paste.filter_factory').with_value('ceilometermiddleware.swift:filter_factory') }
     it { is_expected.to contain_swift_proxy_config('filter:ceilometer/url').with_value('rabbit://guest:guest@127.0.0.1:5672//') }
+    it { is_expected.to contain_swift_proxy_config('filter:ceilometer/nonblocking_notify').with_value('false') }
     it { is_expected.to contain_user('swift').with_groups('ceilometer') }
     it { is_expected.to contain_file('/var/log/ceilometer/swift-proxy-server.log').with(:owner => 'swift', :group => 'swift', :mode => '0664') }
   end
@@ -31,6 +32,7 @@ describe 'swift::proxy::ceilometer' do
         :driver              => 'messagingv2',
         :topic               => 'notifications',
         :control_exchange    => 'swift',
+        :nonblocking_notify  => true,
       }
     end
 
@@ -41,6 +43,7 @@ describe 'swift::proxy::ceilometer' do
       it { is_expected.to contain_swift_proxy_config('filter:ceilometer/driver').with_value('messagingv2') }
       it { is_expected.to contain_swift_proxy_config('filter:ceilometer/topic').with_value('notifications') }
       it { is_expected.to contain_swift_proxy_config('filter:ceilometer/control_exchange').with_value('swift') }
+      it { is_expected.to contain_swift_proxy_config('filter:ceilometer/nonblocking_notify').with_value('true') }
     end
 
     context 'with multiple rabbit hosts' do
@@ -54,6 +57,7 @@ describe 'swift::proxy::ceilometer' do
       it { is_expected.to contain_swift_proxy_config('filter:ceilometer/driver').with_value('messagingv2') }
       it { is_expected.to contain_swift_proxy_config('filter:ceilometer/topic').with_value('notifications') }
       it { is_expected.to contain_swift_proxy_config('filter:ceilometer/control_exchange').with_value('swift') }
+      it { is_expected.to contain_swift_proxy_config('filter:ceilometer/nonblocking_notify').with_value('true') }
     end
 
   end

@@ -1,0 +1,10 @@
+---
+features:
+  - A new ceilometermiddleware option "nonblocking_notify" has been
+    added and can be used to send notifications in a separate background
+    thread. This avoids blocking of Swift if RabbitMQ is not able to
+    process new notifications. In this case notifications will be
+    dropped after the local queue (defaults to 1000 entries) is
+    exhausted. It requires the Newton release of ceilometermiddleware.
+    This option is disabled by default and not changing the current
+    behavior.
