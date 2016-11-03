@@ -6,10 +6,6 @@ describe 'swift::proxy::catch_errors' do
     {}
   end
 
-  let :pre_condition do
-    'concat { "/etc/swift/proxy-server.conf": }'
-  end
-
   it { is_expected.to contain_swift_proxy_config('filter:catch_errors/use').with_value('egg:swift#catch_errors') }
 
 end

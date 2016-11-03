@@ -15,10 +15,6 @@ describe 'swift::proxy::tempauth' do
 
   let :params do default_params end
 
-  let :pre_condition do
-    'concat { "/etc/swift/proxy-server.conf": }'
-  end
-
   it { is_expected.to contain_swift_proxy_config('filter:tempauth/use').with_value('egg:swift#tempauth') }
   it { is_expected.to contain_swift_proxy_config('filter:tempauth/user_admin_admin').with_value('admin .admin .reseller_admin') }
 

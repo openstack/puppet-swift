@@ -10,9 +10,15 @@
 #    Swift operator roles must be defined in swift::keystone::auth because
 #    keystone API access is usually not available on Swift proxy nodes.
 #
-# [*reseller_prefix*]
-#   (Optional) The prefix used for reseller URL.
-#   Defaults to 'AUTH_'
+#  [*reseller_prefix*]
+#    (Optional) The prefix used for reseller URL.
+#    Defaults to 'AUTH_'
+#
+#  [*reseller_admin_role*]
+#    The reseller admin role has the ability to create and delete accounts.
+#    This role defines who has the ability to manage other swift accounts.
+#    (Optional)
+#    Defaults to Undef.
 #
 # DEPRECATED PARAMETERS
 # [*is_admin*]
@@ -26,6 +32,7 @@
 class swift::proxy::keystone(
   $operator_roles      = ['admin', 'SwiftOperator'],
   $reseller_prefix     = 'AUTH_',
+  $reseller_admin_role = undef,
   # DEPRECATED PARAMETERS
   $is_admin            = undef
 ) {
@@ -37,8 +44,9 @@ class swift::proxy::keystone(
   }
 
   swift_proxy_config {
-    'filter:keystone/use':             value => 'egg:swift#keystoneauth';
-    'filter:keystone/operator_roles':  value => join(any2array($operator_roles), ', ');
-    'filter:keystone/reseller_prefix': value => $reseller_prefix;
+    'filter:keystone/use':                 value => 'egg:swift#keystoneauth';
+    'filter:keystone/operator_roles':      value => join(any2array($operator_roles), ', ');
+    'filter:keystone/reseller_prefix':     value => $reseller_prefix;
+    'filter:keystone/reseller_admin_role': value => $reseller_admin_role;
   }
 }

@@ -6,10 +6,6 @@ describe 'swift::proxy::tempurl' do
     {}
   end
 
-  let :pre_condition do
-    'concat { "/etc/swift/proxy-server.conf": }'
-  end
-
   it { is_expected.to contain_swift_proxy_config('filter:tempurl/use').with_value('egg:swift#tempurl') }
 
   ['methods',

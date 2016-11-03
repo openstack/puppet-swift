@@ -6,10 +6,6 @@ describe 'swift::proxy::keystone' do
     {}
   end
 
-  let :pre_condition do
-    'concat { "/etc/swift/proxy-server.conf": }'
-  end
-
   it { is_expected.to contain_swift_proxy_config('filter:keystone/use').with_value('egg:swift#keystoneauth') }
 
   describe 'with defaults' do
@@ -23,12 +19,14 @@ describe 'swift::proxy::keystone' do
 
     let :params do
       {
-        :operator_roles  => 'foo',
-        :reseller_prefix => 'SWIFT_'
+        :operator_roles      => 'foo',
+        :reseller_prefix     => 'SWIFT_',
+        :reseller_admin_role => 'ResellerAdmin'
       }
 
       it { is_expected.to contain_swift_proxy_config('filter:keystone/operator_roles').with_value('foo') }
       it { is_expected.to contain_swift_proxy_config('filter:keystone/reseller_prefix').with_value('SWIFT_') }
+      it { is_expected.to contain_swift_proxy_config('filter:keystone/reseller_admin_role').with_value('ResellerAdmin') }
 
     end
 

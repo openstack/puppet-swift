@@ -284,7 +284,6 @@ describe 'swift::proxy' do
       OSDefaults.get_facts({
         :operatingsystem => 'Ubuntu',
         :osfamily        => 'Debian',
-        :concat_basedir  => '/var/lib/puppet/concat',
       })
     end
 
@@ -314,7 +313,6 @@ describe 'swift::proxy' do
       OSDefaults.get_facts({
         :osfamily        => 'RedHat',
         :operatingsystem => 'RedHat',
-        :concat_basedir  => '/var/lib/puppet/concat',
       })
     end
 
