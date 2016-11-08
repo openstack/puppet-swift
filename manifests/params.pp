@@ -1,11 +1,16 @@
 # == Class: swift::params
 #
+# Parameters for puppet-swift
+#
 class swift::params {
   include ::openstacklib::defaults
+
+  $client_package   = 'python-swiftclient'
+  $service_provider = undef
+
   case $::osfamily {
     'Debian': {
       $package_name                      = 'swift'
-      $client_package                    = 'python-swiftclient'
       $proxy_package_name                = 'swift-proxy'
       $proxy_server_service_name         = 'swift-proxy'
       $object_package_name               = 'swift-object'
@@ -27,11 +32,9 @@ class swift::params {
       $account_reaper_service_name       = 'swift-account-reaper'
       $account_replicator_service_name   = 'swift-account-replicator'
       $swift3                            = 'swift-plugin-s3'
-      $service_provider                  = undef
     }
     'RedHat': {
       $package_name                      = 'openstack-swift'
-      $client_package                    = 'python-swiftclient'
       $proxy_package_name                = 'openstack-swift-proxy'
       $proxy_server_service_name         = 'openstack-swift-proxy'
       $object_package_name               = 'openstack-swift-object'
@@ -52,7 +55,6 @@ class swift::params {
       $account_auditor_service_name      = 'openstack-swift-account-auditor'
       $account_reaper_service_name       = 'openstack-swift-account-reaper'
       $account_replicator_service_name   = 'openstack-swift-account-replicator'
-      $service_provider                  = undef
       $swift3                            = 'openstack-swift-plugin-swift3'
     }
     default: {
