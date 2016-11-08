@@ -1,0 +1,10 @@
+---
+deprecations:
+  - swift::proxy::ceilometer::rabbit_host,
+    swift::proxy::ceilometer::rabbit_hosts,
+    swift::proxy::ceilometer::rabbit_password,
+    swift::proxy::ceilometer::rabbit_port,
+    swift::proxy::ceilometer::rabbit_userid and
+    swift::proxy::ceilometer::rabbit_virtual_host are deprecated.
+    swift::proxy::ceilometer::default_transport_url should be used instead.
+

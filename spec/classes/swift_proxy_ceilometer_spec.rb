@@ -59,6 +59,14 @@ describe 'swift::proxy::ceilometer' do
       it { is_expected.to contain_swift_proxy_config('filter:ceilometer/nonblocking_notify').with_value('true') }
     end
 
+    context 'with default transport url' do
+      before do
+        params.merge!({ :default_transport_url => 'rabbit://user:pass@host:1234/virt' })
+      end
+
+      it { is_expected.to contain_swift_proxy_config('filter:ceilometer/url').with_value('rabbit://user:pass@host:1234/virt') }
+    end
+
   end
 
 end
