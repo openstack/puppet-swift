@@ -116,7 +116,7 @@ class swift::proxy::tempauth (
   }
 
   # tempauth account_users end up in the following format
-  # user_<account>_<user> = <key> .<group1> .<groupx> 
+  # user_<account>_<user> = <key> .<group1> .<groupx>
   # ex: user_admin_admin=admin .admin .reseller_admin
   # account_data is an array with each element containing a single account string:
   # ex [user_<account>_<user>, <key> .<group1> .<groupx>]
@@ -125,7 +125,7 @@ class swift::proxy::tempauth (
       "<% @account_user_list.each do |user| %>\
       user_<%= user['account'] %>_<%= user['user'] %>,\
       <%= user['key'] %> <%= user['groups'].map { |g| '.' + g }.join(' ') %> ; <% end %>"),';')
-  
+
     # write each temauth account line to file
     # TODO replace/simplify with iterators once all supported puppet versions support them.
     swift::proxy::tempauth_account { $account_data: }
