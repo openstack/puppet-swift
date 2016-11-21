@@ -31,12 +31,21 @@
 #   See README for more details.
 #   Defaults to $::swift::params::service_provider.
 #
+# [*service_subscribe*]
+# (optional) Parameter used to pass in resources that this service should
+#  subscribe to.
+#
+# [*service_require*]
+# (optional) Parameter used to pass in resources that this service requires.
+#
 define swift::service(
   $os_family_service_name,
   $config_file_name,
-  $service_ensure   = undef,
-  $enabled          = true,
-  $service_provider = $::swift::params::service_provider,
+  $service_ensure    = undef,
+  $enabled           = true,
+  $service_provider  = $::swift::params::service_provider,
+  $service_subscribe = undef,
+  $service_require   = undef,
 ) {
 
   include ::swift::deps
@@ -54,8 +63,8 @@ define swift::service(
       enable    => $enabled,
       provider  => $service_provider,
       tag       => 'swift-service',
-      subscribe => $subscribe,
-      require   => $require,
+      subscribe => $service_subscribe,
+      require   => $service_require,
     }
   } elsif $service_provider == 'swiftinit' {
     service { $name:
@@ -67,8 +76,8 @@ define swift::service(
       pattern    => $os_family_service_name,
       manifest   => $config_file_name,
       tag        => 'swift-service',
-      subscribe  => $subscribe,
-      require    => $require,
+      subscribe  => $service_subscribe,
+      require    => $service_require,
     }
   }
 }

@@ -59,7 +59,7 @@ class swift::storage::account(
     enabled                => $enabled,
     config_file_name       => $config_file_name,
     service_provider       => $service_provider,
-    require                => Package['swift-account'],
-    subscribe              => Concat["/etc/swift/${config_file_name}"],
+    service_require        => Package['swift-account'],
+    service_subscribe      => Concat["/etc/swift/${config_file_name}"],
   }
 }

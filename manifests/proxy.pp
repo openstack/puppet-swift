@@ -275,6 +275,6 @@ class swift::proxy(
     enabled                => $enabled,
     config_file_name       => 'proxy-server.conf',
     service_provider       => $service_provider,
-    require                => Class[$required_classes]
+    service_require        => Class[$required_classes]
   }
 }
