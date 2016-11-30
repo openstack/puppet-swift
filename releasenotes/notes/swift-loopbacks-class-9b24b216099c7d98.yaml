@@ -1,0 +1,5 @@
+---
+features:
+  - Adds a wrapper class for the storage::loopback
+    definition, making it possible to add multiple loopback
+    devices using a Hiera hash.
