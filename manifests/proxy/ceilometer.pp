@@ -135,7 +135,7 @@ deprecated. Please use swift::proxy::ceilometer::default_transport_url instead."
   swift_proxy_config {
     'filter:ceilometer/topic':                value => $topic;
     'filter:ceilometer/driver':               value => $driver;
-    'filter:ceilometer/url':                  value => $amqp_url;
+    'filter:ceilometer/url':                  value => $amqp_url, secret => true;
     'filter:ceilometer/control_exchange':     value => $control_exchange;
     'filter:ceilometer/paste.filter_factory': value => 'ceilometermiddleware.swift:filter_factory';
     'filter:ceilometer/nonblocking_notify':   value => $nonblocking_notify;

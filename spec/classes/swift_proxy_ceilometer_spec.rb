@@ -64,7 +64,7 @@ describe 'swift::proxy::ceilometer' do
         params.merge!({ :default_transport_url => 'rabbit://user:pass@host:1234/virt' })
       end
 
-      it { is_expected.to contain_swift_proxy_config('filter:ceilometer/url').with_value('rabbit://user:pass@host:1234/virt') }
+      it { is_expected.to contain_swift_proxy_config('filter:ceilometer/url').with_value('rabbit://user:pass@host:1234/virt').with_secret(true) }
     end
 
   end
