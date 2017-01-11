@@ -58,7 +58,7 @@
 #   one. Increasing the number of workers may reduce the possibility of slow file
 #   system operations in one request from negatively impacting other requests.
 #   See http://docs.openstack.org/developer/swift/deployment_guide.html#general-service-tuning
-#   Defaults to '1'.
+#   Defaults to $::os_workers.
 #
 # [*allow_versions*]
 #   (optional) Enable/Disable object versioning feature
@@ -147,7 +147,7 @@ define swift::storage::server(
   $pipeline                       = ["${type}-server"],
   $mount_check                    = true,
   $user                           = 'swift',
-  $workers                        = '1',
+  $workers                        = $::os_workers,
   $allow_versions                 = false,
   $replicator_concurrency         = 1,
   $updater_concurrency            = 1,
