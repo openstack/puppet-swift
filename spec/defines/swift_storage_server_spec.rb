@@ -168,6 +168,7 @@ describe 'swift::storage::server' do
         )}
 
         # verify template lines
+        it { is_expected.to contain_concat("/etc/swift/#{t}-server.conf").with_mode('0640') }
         it { is_expected.to contain_file(fragment_file).with_content(/^devices\s*=\s*\/srv\/node\s*$/) }
         it { is_expected.to contain_file(fragment_file).with_content(/^bind_ip\s*=\s*10\.0\.0\.1\s*$/) }
         it { is_expected.to contain_file(fragment_file).with_content(/^bind_port\s*=\s*#{title}\s*$/) }

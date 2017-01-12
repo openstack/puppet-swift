@@ -52,6 +52,7 @@ describe 'swift::proxy' do
       )}
       it { is_expected.to contain_file('/etc/swift/proxy-server.conf').with(
         {:ensure  => 'present',
+         :mode    => '0640',
          :owner   => 'swift',
          :group   => 'swift',
         }
