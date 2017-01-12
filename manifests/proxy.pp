@@ -193,6 +193,7 @@ class swift::proxy(
   }
 
   concat { '/etc/swift/proxy-server.conf':
+    mode    => '0640',
     owner   => 'swift',
     group   => 'swift',
     require => Package['swift-proxy'],

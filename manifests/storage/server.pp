@@ -214,6 +214,7 @@ define swift::storage::server(
   }
 
   concat { "/etc/swift/${config_file_path}":
+    mode    => '0640',
     owner   => $owner,
     group   => $group,
     notify  => Service["swift-${type}-server", "swift-${type}-replicator", "swift-${type}-auditor"],
