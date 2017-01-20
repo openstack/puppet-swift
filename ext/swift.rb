@@ -17,7 +17,7 @@ user_header="-H 'X-Storage-User: #{user}'"
 password_header="-H 'X-Storage-Pass: #{password}'"
 get_cred_command="curl -k -v #{user_header} #{password_header} http://#{proxy_local_net_ip}:8080/auth/v1.0"
 
-# verify that we can retrive credentials from our user
+# verify that we can retrieve credentials from our user
 result_hash = {}
 puts "getting credentials: #{get_cred_command}"
 Open3.popen3(get_cred_command) do |stdin, stdout, stderr|
