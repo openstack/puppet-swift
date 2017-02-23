@@ -1,0 +1,4 @@
+---
+features:
+  - It is possible to set the basic SSL options for the ceilometermiddleware's
+    notifications on swift-proxy.
