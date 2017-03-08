@@ -1,5 +1,5 @@
 # follow the instructions for creating a loopback device
-# for storage from: http://swift.openstack.org/development_saio.html
+# for storage from: http://docs.openstack.org/developer/swift/development_saio.html
 #
 #
 # creates a managed loopback interface

@@ -1,6 +1,6 @@
 # This Puppet resource is based on the following
 # instructions for creating a disk device:
-# http://swift.openstack.org/development_saio.html
+# http://docs.openstack.org/developer/swift/development_saio.html
 #
 # ==Add a raw disk to a swift storage node==
 #

@@ -1,7 +1,7 @@
 #!/usr/bin/env ruby
 #
 # This is a script that uses
-# instructions here: http://swift.openstack.org/howto_installmultinode.html
+# instructions here: http://docs.openstack.org/developer/swift/howto_installmultinode.html
 # Even though I expect this script will work with a wide range
 # of swift versions, it is currently only tested with: 1.4.6
 require 'open3'
