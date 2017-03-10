@@ -65,13 +65,13 @@ describe 'swift::proxy::ceilometer' do
         it { is_expected.to contain_swift_proxy_config('filter:ceilometer/url').with_value('rabbit://user:pass@host:1234/virt').with_secret(true) }
       end
 
-      context 'with default SSL values' do
-        it { is_expected.to contain_swift_proxy_config('oslo_messaging_rabbit/rabbit_use_ssl').with_value('<SERVICE DEFAULT>') }
-        it { is_expected.to contain_swift_proxy_config('oslo_messaging_rabbit/kombu_ssl_ca_certs').with_value('<SERVICE DEFAULT>') }
-        it { is_expected.to contain_swift_proxy_config('oslo_messaging_rabbit/kombu_ssl_certfile').with_value('<SERVICE DEFAULT>') }
-        it { is_expected.to contain_swift_proxy_config('oslo_messaging_rabbit/kombu_ssl_keyfile').with_value('<SERVICE DEFAULT>') }
-        it { is_expected.to contain_swift_proxy_config('oslo_messaging_rabbit/kombu_ssl_version').with_value('<SERVICE DEFAULT>') }
-      end
+      it { is_expected.to contain_oslo__messaging__rabbit('swift_proxy_config').with(
+        :rabbit_use_ssl     => '<SERVICE DEFAULT>',
+        :kombu_ssl_ca_certs => '<SERVICE DEFAULT>',
+        :kombu_ssl_certfile => '<SERVICE DEFAULT>',
+        :kombu_ssl_keyfile  => '<SERVICE DEFAULT>',
+        :kombu_ssl_version  => '<SERVICE DEFAULT>',
+      )}
 
       context 'with overriden rabbit ssl params' do
         before do
@@ -85,11 +85,13 @@ describe 'swift::proxy::ceilometer' do
             })
         end
 
-        it { is_expected.to contain_swift_proxy_config('oslo_messaging_rabbit/kombu_ssl_ca_certs').with_value('/etc/ca.cert') }
-        it { is_expected.to contain_swift_proxy_config('oslo_messaging_rabbit/kombu_ssl_certfile').with_value('/etc/certfile') }
-        it { is_expected.to contain_swift_proxy_config('oslo_messaging_rabbit/kombu_ssl_keyfile').with_value('/etc/key') }
-        it { is_expected.to contain_swift_proxy_config('oslo_messaging_rabbit/rabbit_use_ssl').with_value('true') }
-        it { is_expected.to contain_swift_proxy_config('oslo_messaging_rabbit/kombu_ssl_version').with_value('TLSv1') }
+        it { is_expected.to contain_oslo__messaging__rabbit('swift_proxy_config').with(
+          :rabbit_use_ssl     => true,
+          :kombu_ssl_ca_certs => '/etc/ca.cert',
+          :kombu_ssl_certfile => '/etc/certfile',
+          :kombu_ssl_keyfile  => '/etc/key',
+          :kombu_ssl_version  => 'TLSv1',
+        )}
       end
 
     end
