@@ -153,6 +153,8 @@ deprecated. Please use swift::proxy::ceilometer::default_transport_url instead."
     groups +> $group,
   }
 
+  Package<| tag == 'ceilometer-package' |> -> User['swift']
+
   if defined(Service['swift-proxy-server']) {
     File['/var/log/ceilometer/swift-proxy-server.log'] -> Service['swift-proxy-server']
     Package['python-ceilometermiddleware'] -> Service['swift-proxy-server']
