@@ -1,0 +1,8 @@
+---
+features:
+  - Adds a warning when ports 6000-6002 are used for object, container,
+    and/or account storage servers. LP#1521339
+upgrade:
+  - Operators shoud prepare for the port change by specifying ports for the
+    object storage server, container storage server, and account storage
+    server.

@@ -125,6 +125,18 @@ class swift::storage::all(
 
   include ::swift::deps
 
+  if ($object_port == '6000') {
+    warning('The default port for the object storage server has changed from 6000 to 6200 and will be changed in a later release')
+  }
+
+  if ($container_port == '6001') {
+    warning('The default port for the container storage server has changed from 6001 to 6201 and will be changed in a later release')
+  }
+
+  if ($account_port == '6002') {
+    warning('The default port for the account storage server has changed from 6002 to 6202 and will be changed in a later release')
+  }
+
   class { '::swift::storage':
     storage_local_net_ip => $storage_local_net_ip,
   }
