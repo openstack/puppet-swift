@@ -78,10 +78,11 @@ describe 'swift::storage::object' do
 
     let :platform_params do
       { :service_names => {
-          'swift-object-server'     => 'swift-object',
-          'swift-object-replicator' => 'swift-object-replicator',
-          'swift-object-updater'    => 'swift-object-updater',
-          'swift-object-auditor'    => 'swift-object-auditor'
+          'swift-object-server'         => 'swift-object',
+          'swift-object-reconstructor'  => 'swift-object-reconstructor',
+          'swift-object-replicator'     => 'swift-object-replicator',
+          'swift-object-updater'        => 'swift-object-updater',
+          'swift-object-auditor'        => 'swift-object-auditor'
         },
         :service_provider => nil
       }
@@ -96,10 +97,11 @@ describe 'swift::storage::object' do
 
       let :platform_params do
         { :service_names => {
-            'swift-object-server'     => 'swift-object-server',
-            'swift-object-replicator' => 'swift-object-replicator',
-            'swift-object-updater'    => 'swift-object-updater',
-            'swift-object-auditor'    => 'swift-object-auditor',
+            'swift-object-server'           => 'swift-object-server',
+            'swift-object-reconstructor'    => 'swift-object-reconstructor',
+            'swift-object-replicator'       => 'swift-object-replicator',
+            'swift-object-updater'          => 'swift-object-updater',
+            'swift-object-auditor'          => 'swift-object-auditor',
           },
           :service_provider => 'swiftinit'
         }
@@ -121,10 +123,11 @@ describe 'swift::storage::object' do
 
     let :platform_params do
       { :service_names => {
-          'swift-object-server'     => 'openstack-swift-object',
-          'swift-object-replicator' => 'openstack-swift-object-replicator',
-          'swift-object-updater'    => 'openstack-swift-object-updater',
-          'swift-object-auditor'    => 'openstack-swift-object-auditor'
+          'swift-object-server'         => 'openstack-swift-object',
+          'swift-object-reconstructor'  => 'openstack-swift-object-reconstructor',
+          'swift-object-replicator'     => 'openstack-swift-object-replicator',
+          'swift-object-updater'        => 'openstack-swift-object-updater',
+          'swift-object-auditor'        => 'openstack-swift-object-auditor'
         }
       }
     end
@@ -138,10 +141,11 @@ describe 'swift::storage::object' do
 
       let :platform_params do
         { :service_names => {
-            'swift-object-server'     => 'swift-object-server',
-            'swift-object-replicator' => 'swift-object-replicator',
-            'swift-object-updater'    => 'swift-object-updater',
-            'swift-object-auditor'    => 'swift-object-auditor',
+            'swift-object-server'           => 'swift-object-server',
+            'swift-object-reconstructor'    => 'swift-object-reconstructor',
+            'swift-object-replicator'       => 'swift-object-replicator',
+            'swift-object-updater'          => 'swift-object-updater',
+            'swift-object-auditor'          => 'swift-object-auditor',
           },
           :service_provider => 'swiftinit'
         }

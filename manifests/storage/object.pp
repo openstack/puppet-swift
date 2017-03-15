@@ -36,6 +36,7 @@ class swift::storage::object(
 
   include ::swift::deps
   Swift_config<| |> ~> Service['swift-object-updater']
+  Swift_config<| |> ~> Service['swift-object-reconstructor']
 
   swift::storage::generic { 'object':
     manage_service   => $manage_service,
@@ -62,4 +63,15 @@ class swift::storage::object(
     require                => Package['swift-object'],
     service_subscribe      => Concat["/etc/swift/${config_file_name}"],
   }
+
+  swift::service { 'swift-object-reconstructor':
+    os_family_service_name => $::swift::params::object_reconstructor_service_name,
+    service_ensure         => $service_ensure,
+    enabled                => $enabled,
+    config_file_name       => $config_file_name,
+    service_provider       => $service_provider,
+    require                => Package['swift-object'],
+    service_subscribe      => Concat["/etc/swift/${config_file_name}"],
+  }
+
 }
