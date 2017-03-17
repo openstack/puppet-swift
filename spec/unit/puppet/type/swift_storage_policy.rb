@@ -10,7 +10,7 @@ describe Puppet::Type.type(:swift_storage_policy) do
   it 'should fail if swift_storage_policy name is not an integer' do
     expect {
       Puppet::Type.type(:swift_storage_policy).new(:name => 'a')
-    }.to raise_error(Puppet::ResourceError, /swift_storage_policy name must be a postive integer/)
+    }.to raise_error(Puppet::ResourceError, /swift_storage_policy name must be a positive integer/)
   end
 
   it 'should pass if policy_name is valid' do

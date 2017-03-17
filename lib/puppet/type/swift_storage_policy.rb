@@ -6,7 +6,7 @@ Puppet::Type.newtype(:swift_storage_policy) do
     validate do |value|
       value_match = /\d+/.match(value)
       next unless value_match.nil? || !value_match[0].eql?(value)
-      fail('swift_storage_policy name must be a postive integer')
+      fail('swift_storage_policy name must be a positive integer')
     end
     newvalues(/\d+/)
   end
