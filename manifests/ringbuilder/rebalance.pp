@@ -24,5 +24,6 @@ define swift::ringbuilder::rebalance(
     path        => ['/usr/bin'],
     refreshonly => true,
     before      => Anchor['swift::config::end'],
+    returns     => [0, 1],
   }
 }

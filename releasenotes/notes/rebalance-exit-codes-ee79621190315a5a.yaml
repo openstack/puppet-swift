@@ -1,0 +1,7 @@
+---
+fixes:
+  - puppet-swift will no longer raise an error if
+    swift-ring-builder rebalance returns an exit code of 1.
+    This is a warning but not an error in
+    swift-ring-builder; errors use an exit code of 2 in
+    swift-ring-builder.
