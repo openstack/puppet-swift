@@ -63,14 +63,14 @@ describe 'swift::proxy' do
       it { is_expected.to contain_swift_proxy_config('DEFAULT/workers').with_value('1')}
       it { is_expected.to contain_swift_proxy_config('DEFAULT/user').with_value('swift')}
       it { is_expected.to contain_swift_proxy_config('DEFAULT/log_name').with_value('proxy-server')}
-      it { is_expected.to contain_swift_proxy_config('DEFAULT/log_facility').with_value('LOG_LOCAL1')}
+      it { is_expected.to contain_swift_proxy_config('DEFAULT/log_facility').with_value('LOG_LOCAL2')}
       it { is_expected.to contain_swift_proxy_config('DEFAULT/log_level').with_value('INFO')}
       it { is_expected.to contain_swift_proxy_config('DEFAULT/log_headers').with_value('False')}
       it { is_expected.to contain_swift_proxy_config('DEFAULT/log_address').with_value('/dev/log')}
       it { is_expected.to contain_swift_proxy_config('pipeline:main/pipeline').with_value('healthcheck cache tempauth proxy-server')}
       it { is_expected.to contain_swift_proxy_config('app:proxy-server/use').with_value('egg:swift#proxy')}
       it { is_expected.to contain_swift_proxy_config('app:proxy-server/set log_name').with_value('proxy-server')}
-      it { is_expected.to contain_swift_proxy_config('app:proxy-server/set log_facility').with_value('LOG_LOCAL1')}
+      it { is_expected.to contain_swift_proxy_config('app:proxy-server/set log_facility').with_value('LOG_LOCAL2')}
       it { is_expected.to contain_swift_proxy_config('app:proxy-server/set log_level').with_value('INFO')}
       it { is_expected.to contain_swift_proxy_config('app:proxy-server/set log_address').with_value('/dev/log')}
       it { is_expected.to contain_swift_proxy_config('app:proxy-server/log_handoffs').with_value('true')}
@@ -120,7 +120,7 @@ describe 'swift::proxy' do
         it { is_expected.to contain_swift_proxy_config('DEFAULT/workers').with_value('3')}
         it { is_expected.to contain_swift_proxy_config('DEFAULT/user').with_value('swift')}
         it { is_expected.to contain_swift_proxy_config('DEFAULT/log_name').with_value('swift-proxy-server')}
-        it { is_expected.to contain_swift_proxy_config('DEFAULT/log_facility').with_value('LOG_LOCAL1')}
+        it { is_expected.to contain_swift_proxy_config('DEFAULT/log_facility').with_value('LOG_LOCAL2')}
         it { is_expected.to contain_swift_proxy_config('DEFAULT/log_level').with_value('DEBUG')}
         it { is_expected.to contain_swift_proxy_config('DEFAULT/log_headers').with_value('False')}
         it { is_expected.to contain_swift_proxy_config('DEFAULT/log_address').with_value('/dev/log')}
@@ -129,7 +129,7 @@ describe 'swift::proxy' do
         it { is_expected.to contain_swift_proxy_config('pipeline:main/pipeline').with_value('swauth proxy-server')}
         it { is_expected.to contain_swift_proxy_config('app:proxy-server/use').with_value('egg:swift#proxy')}
         it { is_expected.to contain_swift_proxy_config('app:proxy-server/set log_name').with_value('swift-proxy-server')}
-        it { is_expected.to contain_swift_proxy_config('app:proxy-server/set log_facility').with_value('LOG_LOCAL1')}
+        it { is_expected.to contain_swift_proxy_config('app:proxy-server/set log_facility').with_value('LOG_LOCAL2')}
         it { is_expected.to contain_swift_proxy_config('app:proxy-server/set log_level').with_value('DEBUG')}
         it { is_expected.to contain_swift_proxy_config('app:proxy-server/set log_address').with_value('/dev/log')}
         it { is_expected.to contain_swift_proxy_config('app:proxy-server/log_handoffs').with_value('true')}
@@ -188,7 +188,7 @@ describe 'swift::proxy' do
           it { is_expected.to contain_swift_proxy_config('DEFAULT/workers').with_value('3')}
           it { is_expected.to contain_swift_proxy_config('DEFAULT/user').with_value('swift')}
           it { is_expected.to contain_swift_proxy_config('DEFAULT/log_name').with_value('swift-proxy-server')}
-          it { is_expected.to contain_swift_proxy_config('DEFAULT/log_facility').with_value('LOG_LOCAL1')}
+          it { is_expected.to contain_swift_proxy_config('DEFAULT/log_facility').with_value('LOG_LOCAL2')}
           it { is_expected.to contain_swift_proxy_config('DEFAULT/log_level').with_value('DEBUG')}
           it { is_expected.to contain_swift_proxy_config('DEFAULT/log_headers').with_value('False')}
           it { is_expected.to contain_swift_proxy_config('DEFAULT/log_address').with_value('/dev/log')}
@@ -199,7 +199,7 @@ describe 'swift::proxy' do
           it { is_expected.to contain_swift_proxy_config('pipeline:main/pipeline').with_value('swauth proxy-server')}
           it { is_expected.to contain_swift_proxy_config('app:proxy-server/use').with_value('egg:swift#proxy')}
           it { is_expected.to contain_swift_proxy_config('app:proxy-server/set log_name').with_value('swift-proxy-server')}
-          it { is_expected.to contain_swift_proxy_config('app:proxy-server/set log_facility').with_value('LOG_LOCAL1')}
+          it { is_expected.to contain_swift_proxy_config('app:proxy-server/set log_facility').with_value('LOG_LOCAL2')}
           it { is_expected.to contain_swift_proxy_config('app:proxy-server/set log_level').with_value('DEBUG')}
           it { is_expected.to contain_swift_proxy_config('app:proxy-server/set log_address').with_value('/dev/log')}
           it { is_expected.to contain_swift_proxy_config('app:proxy-server/log_handoffs').with_value('true')}
