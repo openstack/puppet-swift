@@ -59,7 +59,7 @@
 #
 #  [*log_facility*]
 #    (optional) Log level
-#    Defaults to 'LOG_LOCAL1'.
+#    Defaults to 'LOG_LOCAL2'.
 #
 #  [*log_handoffs*]
 #     (optional) If True, the proxy will log whenever it has to failover to a handoff node
@@ -141,7 +141,7 @@ class swift::proxy(
   $log_udp_port              = undef,
   $log_address               = '/dev/log',
   $log_level                 = 'INFO',
-  $log_facility              = 'LOG_LOCAL1',
+  $log_facility              = 'LOG_LOCAL2',
   $log_handoffs              = true,
   $log_name                  = 'proxy-server',
   $cors_allow_origin         = undef,
