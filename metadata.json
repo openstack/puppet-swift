@@ -1,6 +1,6 @@
 {
   "name": "openstack-swift",
-  "version": "10.3.0",
+  "version": "10.3.1",
   "author": "Puppet Labs and OpenStack Contributors",
   "summary": "Puppet module for OpenStack Swift",
   "license": "Apache-2.0",
