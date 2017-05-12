@@ -33,6 +33,15 @@ describe 'swift::proxy::ceilometer' do
         :topic               => 'notifications',
         :control_exchange    => 'swift',
         :nonblocking_notify  => true,
+	:ignore_projects     => 'services',
+        :auth_uri            => 'http://127.0.0.1:5000',
+        :auth_url            => 'http://127.0.0.1:35357',
+        :auth_type           => 'password',
+        :project_domain_name => 'Default',
+        :user_domain_name    => 'Default',
+        :project_name        => 'services',
+        :username            => 'swift',
+        :password            => 'password',
       }
     end
 
@@ -45,6 +54,15 @@ describe 'swift::proxy::ceilometer' do
       it { is_expected.to contain_concat_fragment('swift_ceilometer').with_content(/topic = notifications/) }
       it { is_expected.to contain_concat_fragment('swift_ceilometer').with_content(/control_exchange = swift/) }
       it { is_expected.to contain_concat_fragment('swift_ceilometer').with_content(/nonblocking_notify = true/) }
+      it { is_expected.to contain_concat_fragment('swift_ceilometer').with_content(/ignore_projects = services/) }
+      it { is_expected.to contain_concat_fragment('swift_ceilometer').with_content(/auth_uri = http:\/\/127.0.0.1:5000/) }
+      it { is_expected.to contain_concat_fragment('swift_ceilometer').with_content(/auth_url = http:\/\/127.0.0.1:35357/) }
+      it { is_expected.to contain_concat_fragment('swift_ceilometer').with_content(/auth_type = password/) }
+      it { is_expected.to contain_concat_fragment('swift_ceilometer').with_content(/project_domain_name = Default/) }
+      it { is_expected.to contain_concat_fragment('swift_ceilometer').with_content(/user_domain_name = Default/) }
+      it { is_expected.to contain_concat_fragment('swift_ceilometer').with_content(/project_name = services/) }
+      it { is_expected.to contain_concat_fragment('swift_ceilometer').with_content(/username = swift/) }
+      it { is_expected.to contain_concat_fragment('swift_ceilometer').with_content(/password = password/) }
     end
 
     context 'with multiple rabbit hosts' do
