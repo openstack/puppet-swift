@@ -39,6 +39,42 @@
 #   Whether to send events to messaging driver in a background thread
 #   Defaults to false
 #
+# [*ignore_projects*]
+#   What projects to ignore to send events to ceilometer
+#   Defaults to ['services']
+#
+# [*auth_uri*]
+#   (Optional) Complete public Identity API endpoint.
+#   Defaults to 'http://127.0.0.1:5000'
+#
+# [*auth_url*]
+#   (Optional) The URL to use for authentication.
+#   Defaults to 'http://127.0.0.1:35357'
+#
+# [*auth_type*]
+#   (Optional) The plugin for authentication
+#   Defaults to 'password'
+#
+# [*project_name*]
+#   (Optional) Service project name
+#   Defaults to 'services'
+#
+# [*project_domain_name*]
+#   (Optional) name of domain for $project_name
+#   Defaults to 'default'
+#
+# [*user_domain_name*]
+#   (Optional) name of domain for $username
+#   Defaults to 'default'
+#
+# [*username*]
+#   (Optional) The name of the service user
+#   Defaults to 'swift'
+#
+# [*password*]
+#   (Optional) The password for the user
+#   Defaults to 'password'
+#
 # === DEPRECATED PARAMETERS
 #
 # [*rabbit_host*]
@@ -84,6 +120,15 @@ class swift::proxy::ceilometer(
   $ensure                = 'present',
   $group                 = 'ceilometer',
   $nonblocking_notify    = false,
+  $ignore_projects       = ['services'],
+  $auth_uri              = 'http://127.0.0.1:5000',
+  $auth_url              = 'http://127.0.0.1:35357',
+  $auth_type             = 'password',
+  $project_domain_name   = 'Default',
+  $user_domain_name      = 'Default',
+  $project_name          = 'services',
+  $username              = 'swift',
+  $password              = 'password',
   # DEPRECATED PARAMETERS
   $rabbit_user           = 'guest',
   $rabbit_password       = 'guest',
@@ -139,6 +184,15 @@ deprecated. Please use swift::proxy::ceilometer::default_transport_url instead."
     'filter:ceilometer/control_exchange':     value => $control_exchange;
     'filter:ceilometer/paste.filter_factory': value => 'ceilometermiddleware.swift:filter_factory';
     'filter:ceilometer/nonblocking_notify':   value => $nonblocking_notify;
+    'filter:ceilometer/ignore_projects':      value => $ignore_projects;
+    'filter:ceilometer/auth_uri':             value => $auth_uri;
+    'filter:ceilometer/auth_url':             value => $auth_url;
+    'filter:ceilometer/auth_type':            value => $auth_type;
+    'filter:ceilometer/project_domain_name':  value => $project_domain_name;
+    'filter:ceilometer/user_domain_name':     value => $user_domain_name;
+    'filter:ceilometer/project_name':         value => $project_name;
+    'filter:ceilometer/username':             value => $username;
+    'filter:ceilometer/password':             value => $password;
   }
 
   package { 'python-ceilometermiddleware':
