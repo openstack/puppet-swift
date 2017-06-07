@@ -9,14 +9,20 @@
 #   Defaults to 'present'.
 #
 class swift::client (
-  $ensure = 'present'
+  $ensure = $::swift::client_package_ensure
 ) {
+
+  if $ensure {
+    $real_ensure = $ensure
+  } else {
+    $real_ensure = 'present'
+  }
 
   include ::swift::deps
   include ::swift::params
 
   package { 'swiftclient':
-    ensure => $ensure,
+    ensure => $real_ensure,
     name   => $::swift::params::client_package,
     tag    => ['openstack','swift-support-package']
   }
