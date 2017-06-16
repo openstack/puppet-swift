@@ -142,6 +142,7 @@ describe 'swift::storage::container' do
             'swift-container-replicator' => 'swift-container-replicator',
             'swift-container-updater'    => 'swift-container-updater',
             'swift-container-auditor'    => 'swift-container-auditor',
+            'swift-container-sync'       => 'swift-container-sync'
           },
           :service_provider => 'swiftinit'
         }
