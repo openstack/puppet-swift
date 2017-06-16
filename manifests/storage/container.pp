@@ -43,6 +43,7 @@ class swift::storage::container(
   include ::swift::deps
 
   Swift_config<| |> ~> Service['swift-container-updater']
+  Swift_config<| |> ~> Service['swift-container-sync']
 
   swift::storage::generic { 'container':
     manage_service   => $manage_service,
@@ -70,16 +71,13 @@ class swift::storage::container(
     service_subscribe      => Concat["/etc/swift/${config_file_name}"],
   }
 
-  if $::osfamily == 'Debian' {
-    swift::service { 'swift-container-sync':
-      os_family_service_name => $::swift::params::container_sync_service_name,
-      service_ensure         => $service_ensure,
-      enabled                => $enabled,
-      config_file_name       => $config_file_name,
-      service_provider       => $service_provider,
-      service_require        => Package['swift-container'],
-      service_subscribe      => Concat["/etc/swift/${config_file_name}"],
-    }
-    Swift_config<| |> ~> Service['swift-container-sync']
+  swift::service { 'swift-container-sync':
+    os_family_service_name => $::swift::params::container_sync_service_name,
+    service_ensure         => $service_ensure,
+    enabled                => $enabled,
+    config_file_name       => $config_file_name,
+    service_provider       => $service_provider,
+    service_require        => Package['swift-container'],
+    service_subscribe      => Concat["/etc/swift/${config_file_name}"],
   }
 }

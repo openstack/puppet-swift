@@ -1,0 +1,5 @@
+---
+fixes:
+  - |
+    The systemd service for Swift containersync is now enabled by
+    default without a distribution check.
