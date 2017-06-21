@@ -89,6 +89,7 @@ class swift::dispersion (
     ensure => file,
     owner  => 'swift',
     group  => 'swift',
+    mode   => '0640',
   }
 
   swift_dispersion_config {

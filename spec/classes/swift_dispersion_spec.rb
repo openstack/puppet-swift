@@ -31,7 +31,8 @@ describe 'swift::dispersion' do
   it { is_expected.to contain_file('/etc/swift/dispersion.conf').with(
     :ensure  => 'file',
     :owner   => 'swift',
-    :group   => 'swift',)
+    :group   => 'swift',
+    :mode    => '0640',)
   }
 
   shared_examples 'swift::dispersion' do
