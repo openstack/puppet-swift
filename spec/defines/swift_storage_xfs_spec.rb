@@ -10,7 +10,8 @@ describe 'swift::storage::xfs' do
        :device       => "/dev/#{title}",
        :byte_size    => '1024',
        :mnt_base_dir => '/srv/node',
-       :loopback     => false
+       :loopback     => false,
+       :device_type  => 'path'
       }
     end
 
