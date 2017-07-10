@@ -16,6 +16,7 @@ class swift::params {
       $object_package_name               = 'swift-object'
       $object_server_service_name        = 'swift-object'
       $object_auditor_service_name       = 'swift-object-auditor'
+      $object_reconstructor_service_name = 'swift-object-reconstructor'
       $object_replicator_service_name    = 'swift-object-replicator'
       $object_updater_service_name       = 'swift-object-updater'
       $object_expirer_package_name       = 'swift-object-expirer'
@@ -41,6 +42,7 @@ class swift::params {
       $object_package_name               = 'openstack-swift-object'
       $object_server_service_name        = 'openstack-swift-object'
       $object_auditor_service_name       = 'openstack-swift-object-auditor'
+      $object_reconstructor_service_name = 'openstack-swift-object-reconstructor'
       $object_replicator_service_name    = 'openstack-swift-object-replicator'
       $object_updater_service_name       = 'openstack-swift-object-updater'
       $object_expirer_package_name       = 'openstack-swift-proxy'
@@ -67,6 +69,7 @@ class swift::params {
     'swift-proxy-server',
     'swift-object-auditor',
     'swift-object-expirer',
+    'swift-object-reconstructor',
     'swift-object-replicator',
     'swift-object-server',
     'swift-object-updater',

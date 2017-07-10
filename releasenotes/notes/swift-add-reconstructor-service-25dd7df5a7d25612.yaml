@@ -1,0 +1,4 @@
+---
+fixes:
+  - Added the object-reconstructor service and enabled it by default.
+    This is required for erasure coding.
