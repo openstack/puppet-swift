@@ -1,0 +1,4 @@
+---
+features:
+  - Add device_type param to support mount disk partitions by UUID,
+    this is more helpful than device path in production environment.

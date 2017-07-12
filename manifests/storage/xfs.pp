@@ -17,11 +17,16 @@
 #   (optional) Define if the device must be mounted as a loopback or not
 #   Defaults to false.
 #
+# [*mount_type*]
+#   (optional) Define if the device is mounted by the device partition path or UUID.
+#   Defaults to 'path'.
+#
 # Sample usage:
 #
 # swift::storage::xfs {
 #   ['sdb', 'sdc', 'sde', 'sdf', 'sdg', 'sdh', 'sdi', 'sdj', 'sdk']:
 #     mnt_base_dir => '/srv/node',
+#     mount_type  => 'uuid',
 #     require      => Class['swift'];
 # }
 #
@@ -32,7 +37,8 @@ define swift::storage::xfs(
   $device       = '',
   $byte_size    = '1024',
   $mnt_base_dir = '/srv/node',
-  $loopback     = false
+  $loopback     = false,
+  $mount_type  = 'path',
 ) {
 
   include ::swift::deps
@@ -42,6 +48,14 @@ define swift::storage::xfs(
     $target_device = "/dev/${name}"
   } else {
     $target_device = $device
+  }
+
+  case $mount_type {
+    'path': { $mount_device = $target_device }
+    'uuid': { $mount_device = dig44($facts, ['partitions', $target_device, 'uuid'])
+              unless $mount_device { fail("Unable to fetch uuid of ${target_device}") }
+            }
+    default: { fail("Unsupported mount_type parameter value: '${mount_type}'. Should be 'path' or 'uuid'.") }
   }
 
   if(!defined(File[$mnt_base_dir])) {
@@ -67,7 +81,7 @@ define swift::storage::xfs(
   }
 
   swift::storage::mount { $name:
-    device       => $target_device,
+    device       => $mount_device,
     mnt_base_dir => $mnt_base_dir,
     subscribe    => Exec["mkfs-${name}"],
     loopback     => $loopback,
