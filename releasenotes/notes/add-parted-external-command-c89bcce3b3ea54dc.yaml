@@ -1,0 +1,4 @@
+---
+features:
+  - Add support of external args in running parted command. When mounting device by uuid,
+    this param should be set to a appropriate value.

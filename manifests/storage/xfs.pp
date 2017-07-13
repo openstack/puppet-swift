@@ -50,6 +50,11 @@ define swift::storage::xfs(
     $target_device = $device
   }
 
+  # Currently, facter doesn't support to fetch the device's uuid, only the partition's.
+  # If you want to mount device by uuid, you should set $ext_args to 'mkpart primary 0% 100%'
+  # in swift::storage::disk to make a partition. Also, the device name should change accordingly.
+  # For example: from 'sda' to 'sda1'.
+  # The code does NOT work in existing Swift cluster.
   case $mount_type {
     'path': { $mount_device = $target_device }
     'uuid': { $mount_device = dig44($facts, ['partitions', $target_device, 'uuid'])

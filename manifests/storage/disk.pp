@@ -29,6 +29,10 @@
 #   (optional) The byte size that dd uses when it creates the file system.
 #   Defaults to '1024', block size for the disk.  For very large partitions, this should be larger
 #
+# [*ext_args*]
+#   (optional) The external command that will be used in parted command.
+#   Default to ''. For making partitions, it would be 'mkpart primary 0% 100%'.
+#
 # =Example=
 #
 # Simply add one disk sdb:
@@ -47,6 +51,7 @@ define swift::storage::disk(
   $base_dir     = '/dev',
   $mnt_base_dir = '/srv/node',
   $byte_size    = '1024',
+  $ext_args     = '',
 ) {
 
   include ::swift::deps
@@ -62,7 +67,7 @@ define swift::storage::disk(
   }
 
   exec { "create_partition_label-${name}":
-    command => "parted -s ${base_dir}/${name} mklabel gpt",
+    command => "parted -s ${base_dir}/${name} mklabel gpt ${ext_args}",
     path    => ['/usr/bin/', '/sbin','/bin'],
     onlyif  => ["test -b ${base_dir}/${name}","parted ${base_dir}/${name} print|tail -1|grep 'Error'"],
     before  => Anchor['swift::config::end'],
