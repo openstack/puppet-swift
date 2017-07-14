@@ -42,9 +42,11 @@ define swift::storage::ext4(
   swift::storage::mount { $name:
     device       => $device,
     mnt_base_dir => $mnt_base_dir,
-    subscribe    => Exec["mkfs-${name}"],
     loopback     => $loopback,
     fstype       => 'ext4',
   }
+
+  Exec<| title == "mkfs-${name}" |>
+  ~> Swift::Storage::Mount<| title == $name |>
 
 }

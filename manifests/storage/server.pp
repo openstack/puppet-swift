@@ -216,8 +216,8 @@ define swift::storage::server(
   concat { "/etc/swift/${config_file_path}":
     owner   => $owner,
     group   => $group,
-    notify  => Service["swift-${type}-server", "swift-${type}-replicator", "swift-${type}-auditor"],
-    require => Package['swift'],
+    notify  => Anchor['swift::config::end'],
+    require => Anchor['swift::install::end'],
     tag     => 'swift-concat',
   }
 
@@ -239,7 +239,7 @@ define swift::storage::server(
     # does not specify the backends for every specified element of
     # the pipeline
     before  => $required_middlewares,
-    require => Package['swift'],
+    require => Anchor['swift::install::end'],
   }
 
   case $type {

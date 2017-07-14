@@ -11,7 +11,14 @@ describe 'swift::storage::server' do
 
   let :pre_condition do
     "class { 'swift': swift_hash_path_suffix => 'foo' }
-     class { 'swift::storage': storage_local_net_ip => '10.0.0.1' }"
+     class { 'swift::storage': storage_local_net_ip => '10.0.0.1' }
+     swift::storage::filter::healthcheck { 'container': }
+     swift::storage::filter::recon { 'container': }
+     swift::storage::filter::healthcheck { 'object': }
+     swift::storage::filter::recon { 'object': }
+     swift::storage::filter::healthcheck { 'account': }
+     swift::storage::filter::recon { 'account': }
+    "
   end
   let :default_params do
     {
@@ -64,7 +71,7 @@ describe 'swift::storage::server' do
           :user        => 'dan',
           :mount_check => true,
           :workers     => 7,
-          :pipeline    => ['foo'],
+          :pipeline    => ['healthcheck'],
         }.each do |k,v|
           describe "when #{k} is set" do
             let :params do req_params.merge({k => v}) end
@@ -72,10 +79,10 @@ describe 'swift::storage::server' do
           end
         end
         describe "when pipeline is passed an array" do
-          let :params do req_params.merge({:pipeline => ['healthcheck','recon','test']})  end
+          let :params do req_params.merge({:pipeline => ['healthcheck','recon']})  end
           it { is_expected.to contain_concat__fragment("swift-#{t}-#{title}").with(
-            :content => /^pipeline\s*=\s*healthcheck recon test\s*$/,
-            :before => ["Swift::Storage::Filter::Healthcheck[#{t}]", "Swift::Storage::Filter::Recon[#{t}]", "Swift::Storage::Filter::Test[#{t}]"]
+            :content => /^pipeline\s*=\s*healthcheck recon\s*$/,
+            :before => ["Swift::Storage::Filter::Healthcheck[#{t}]", "Swift::Storage::Filter::Recon[#{t}]",]
           )}
         end
         describe "when pipeline is not passed an array" do

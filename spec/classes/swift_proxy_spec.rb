@@ -21,8 +21,12 @@ describe 'swift::proxy' do
 
     let :pre_condition do
       "class { memcached: max_memory => 1}
-       class { swift: swift_hash_path_suffix => string }"
+       class { swift: swift_hash_path_suffix => string }
+       include ::swift::proxy::healthcheck
+       include ::swift::proxy::cache
+       include ::swift::proxy::tempauth"
     end
+
 
     describe 'without the proxy local network ip address being specified' do
       if Puppet::Util::Package.versioncmp(Puppet.version, '4.3.0') >= 0
@@ -37,6 +41,7 @@ describe 'swift::proxy' do
       let :params do
         {:proxy_local_net_ip => '127.0.0.1'}
       end
+
 
       it 'passes purge to swift_proxy_config resource' do
         is_expected.to contain_resources('swift_proxy_config').with({
@@ -92,12 +97,21 @@ describe 'swift::proxy' do
             class { memcached: max_memory => 1}
             class { swift: swift_hash_path_suffix => string }
             swift_proxy_config { 'foo/bar': value => 'foo' }
+            include ::swift::proxy::healthcheck
+            include ::swift::proxy::cache
+            include ::swift::proxy::tempauth
           "
         end
         it { is_expected.to contain_swift_proxy_config('foo/bar').with_value('foo').that_notifies('Anchor[swift::config::end]')}
       end
 
       describe 'when more parameters are set' do
+        let :pre_condition do
+          "class { memcached: max_memory => 1}
+           class { swift: swift_hash_path_suffix => string }
+           include ::swift::proxy::swauth"
+        end
+
         let :params do
           {
            :proxy_local_net_ip        => '10.0.0.2',
@@ -183,6 +197,12 @@ describe 'swift::proxy' do
              :cors_allow_origin         => 'http://foo.bar:1234,https://foo.bar',
             }
           end
+          let :pre_condition do
+            "class { memcached: max_memory => 1}
+             class { swift: swift_hash_path_suffix => string }
+             include ::swift::proxy::swauth"
+          end
+
           it { is_expected.to contain_swift_proxy_config('DEFAULT/bind_port').with_value('80')}
           it { is_expected.to contain_swift_proxy_config('DEFAULT/bind_ip').with_value('10.0.0.2')}
           it { is_expected.to contain_swift_proxy_config('DEFAULT/workers').with_value('3')}
@@ -239,6 +259,14 @@ describe 'swift::proxy' do
     let :params do
       { :proxy_local_net_ip => '127.0.0.1' }
     end
+    let :pre_condition do
+      "class { memcached: max_memory => 1}
+       class { swift: swift_hash_path_suffix => string }
+       include ::swift::proxy::healthcheck
+       include ::swift::proxy::cache
+       include ::swift::proxy::tempauth"
+    end
+
 
     [{ :enabled => true, :manage_service => true },
      { :enabled => false, :manage_service => true }].each do |param_hash|

@@ -10,7 +10,10 @@ describe 'swift::storage::all' do
   end
 
   let :pre_condition do
-    "class { 'swift': swift_hash_path_suffix => 'changeme' }"
+    "class { 'swift': swift_hash_path_suffix => 'changeme' }
+     swift::storage::filter::healthcheck { 'container': }
+     swift::storage::filter::healthcheck { 'object': }
+     swift::storage::filter::healthcheck { 'account': }"
   end
 
   let :default_params do
@@ -41,9 +44,9 @@ describe 'swift::storage::all' do
       :object_port => '7000',
       :container_port => '7001',
       :account_port => '7002',
-      :object_pipeline => ["1", "2"],
-      :container_pipeline => ["3", "4"],
-      :account_pipeline => ["5", "6"],
+      :object_pipeline => ["healthcheck"],
+      :container_pipeline => ["healthcheck"],
+      :account_pipeline => ["healthcheck"],
       :allow_versions => true,
       :log_facility => ['LOG_LOCAL2', 'LOG_LOCAL3'],
       :incoming_chmod => '0644',

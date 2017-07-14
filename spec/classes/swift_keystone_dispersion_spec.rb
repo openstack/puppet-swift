@@ -13,7 +13,6 @@ describe 'swift::keystone::dispersion' do
     it { is_expected.to contain_keystone_user_role('dispersion@services').with(
       :ensure  => 'present',
       :roles   => 'admin',
-      :require => 'Keystone_user[dispersion]'
     ) }
   end
 

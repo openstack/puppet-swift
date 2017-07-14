@@ -36,14 +36,12 @@ describe 'swift::storage::xfs' do
         it { is_expected.to contain_exec("mkfs-foo").with(
           :command     => "mkfs.xfs -f -i size=#{param_hash[:byte_size]} #{param_hash[:device]}",
           :path        => ['/sbin/', '/usr/sbin/'],
-          :require     => 'Package[xfsprogs]'
         )}
 
         it { is_expected.to contain_swift__storage__mount(title).with(
            :device       => param_hash[:device],
            :mnt_base_dir => param_hash[:mnt_base_dir],
            :loopback     => param_hash[:loopback],
-           :subscribe    => 'Exec[mkfs-foo]'
         )}
 
       end

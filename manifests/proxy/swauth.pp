@@ -25,9 +25,10 @@ class swift::proxy::swauth(
 
   package { 'python-swauth':
     ensure => $package_ensure,
-    before => Package['swift-proxy'],
     tag    => 'swift-package',
   }
+
+  Package['python-swauth'] -> Package<| title == 'swift-proxy' |>
 
   swift_proxy_config {
     'filter:swauth/use':                   value => 'egg:swauth#swauth';
