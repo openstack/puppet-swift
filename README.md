@@ -114,7 +114,7 @@ The shared salt used when hashing ring mappings.
 ### Define: swift::storage::policy
 
 A defined type that is used to configure swift storage policies as defined by swift:
-http://docs.openstack.org/developer/swift/overview_policies.html
+https://docs.openstack.org/swift/latest/overview_policies.html
 It is important for the operator to have a solid understanding of storage policies so they understand which parts of this module are needed for the result they seek.
 
 swift::storage::policy is a wrapper to a new swift type/provider called "swift_storage_policy".
@@ -138,7 +138,7 @@ default = false
 
 The swift_storage_policy provider will manage one or more storage policy sections that can be created in swift.conf.
 This provider will also enforce the following rules for swift storage policies as defined by the swift project:
-http://docs.openstack.org/developer/swift/overview_policies.html#configuring-policies
+https://docs.openstack.org/swift/latest/overview_policies.html#configuring-policies
  - No duplicate names or aliases used across all policies.
  - There is at least one policy that is marked as the default policy.
  - Policy name/alias case/content.
@@ -266,7 +266,7 @@ The port for which the proxy service will bind to when it starts.
 
 ### Class swift::proxy::dlo
 
-Configures [DLO middleware](http://docs.openstack.org/developer/swift/middleware.html#module-swift.common.middleware.dlo) for swift proxy.
+Configures [DLO middleware](https://docs.openstack.org/swift/latest/middleware.html#module-swift.common.middleware.dlo) for swift proxy.
 
 ```puppet
 class { '::swift::proxy::dlo':
@@ -416,7 +416,7 @@ It is assumed that the object expirer service will be installed on a proxy node.
 The 'swiftinit' provider is a custom provider of the service type.
 
 "Swift services are generally managed with swift-init. the general usage is swift-init <service> <command>, where service is the swift service to manage (for example object, container, account, proxy)"
-From http://docs.openstack.org/developer/swift/admin_guide.html#managing-services
+From https://docs.openstack.org/swift/latest/admin_guide.html#managing-services
 
 This new provider is intended to improve puppet-swift deployments in the following ways:
 
@@ -592,7 +592,7 @@ Development
 
 Developer documentation for the entire puppet-openstack project.
 
-* http://docs.openstack.org/developer/puppet-openstack-guide/
+* https://docs.openstack.org/puppet-openstack-guide/latest/
 
 Contributors
 ------------

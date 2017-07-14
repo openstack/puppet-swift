@@ -1,5 +1,5 @@
 # follow the instructions for creating a loopback device
-# for storage from: http://docs.openstack.org/developer/swift/development_saio.html
+# for storage from: https://docs.openstack.org/swift/latest/development_saio.html
 #
 # this define needs to be sent a refresh signal to do anything
 #

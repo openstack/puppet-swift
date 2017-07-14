@@ -57,7 +57,7 @@
 #   it will try to default to the number of effective cpu cores and fallback to
 #   one. Increasing the number of workers may reduce the possibility of slow file
 #   system operations in one request from negatively impacting other requests.
-#   See http://docs.openstack.org/developer/swift/deployment_guide.html#general-service-tuning
+#   See https://docs.openstack.org/swift/latest/deployment_guide.html#general-service-tuning
 #   Defaults to $::os_workers.
 #
 # [*allow_versions*]

@@ -7,7 +7,7 @@
 # on the swift proxy node.
 #
 # For more details, see :
-#   http://docs.openstack.org/developer/swift/admin_guide.html#cluster-health
+#   https://docs.openstack.org/swift/latest/admin_guide.html#cluster-health
 #
 # === Parameters
 #
