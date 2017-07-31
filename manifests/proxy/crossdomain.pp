@@ -8,7 +8,7 @@
 # == Parameters
 #
 # [*cross_domain_policy*]
-#   cross_domain_policy value according to http://docs.openstack.org/developer/swift/crossdomain.html
+#   cross_domain_policy value according to https://docs.openstack.org/swift/latest/crossdomain.html
 #   default: <allow-access-from domain="*" secure="false" />
 #
 class swift::proxy::crossdomain (
