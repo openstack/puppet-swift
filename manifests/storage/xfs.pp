@@ -80,7 +80,6 @@ define swift::storage::xfs(
   exec { "mkfs-${name}":
     command => "mkfs.xfs -f -i size=${byte_size} ${target_device}",
     path    => ['/sbin/', '/usr/sbin/'],
-    require => Package['xfsprogs'],
     unless  => "xfs_admin -l ${target_device}",
     before  => Anchor['swift::config::end'],
   }
@@ -88,8 +87,11 @@ define swift::storage::xfs(
   swift::storage::mount { $name:
     device       => $mount_device,
     mnt_base_dir => $mnt_base_dir,
-    subscribe    => Exec["mkfs-${name}"],
     loopback     => $loopback,
   }
+
+  Package<| title == 'xfsprogs' |>
+  ~> Exec<| title == "mkfs-${name}" |>
+  ~> Swift::Storage::Mount<| title == $name |>
 
 }

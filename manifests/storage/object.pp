@@ -35,8 +35,6 @@ class swift::storage::object(
 ) inherits ::swift::params {
 
   include ::swift::deps
-  Swift_config<| |> ~> Service['swift-object-updater']
-  Swift_config<| |> ~> Service['swift-object-reconstructor']
 
   swift::storage::generic { 'object':
     manage_service   => $manage_service,
@@ -60,7 +58,7 @@ class swift::storage::object(
     enabled                => $enabled,
     config_file_name       => $config_file_name,
     service_provider       => $service_provider,
-    require                => Package['swift-object'],
+    require                => Anchor['swift::install::end'],
     service_subscribe      => Concat["/etc/swift/${config_file_name}"],
   }
 
@@ -70,7 +68,7 @@ class swift::storage::object(
     enabled                => $enabled,
     config_file_name       => $config_file_name,
     service_provider       => $service_provider,
-    require                => Package['swift-object'],
+    require                => Anchor['swift::install::end'],
     service_subscribe      => Concat["/etc/swift/${config_file_name}"],
   }
 

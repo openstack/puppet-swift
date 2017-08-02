@@ -57,14 +57,12 @@ define swift::storage::mount(
     device  => $device,
     fstype  => $fstype,
     options => "${options},${fsoptions}",
-    require => File["${mnt_base_dir}/${name}"],
   }
 
   # double checks to make sure that things are mounted
   exec { "mount_${name}":
     command   => "mount ${mnt_base_dir}/${name}",
     path      => ['/bin'],
-    require   => Mount["${mnt_base_dir}/${name}"],
     unless    => "grep ${mnt_base_dir}/${name} /etc/mtab",
     # TODO - this needs to be removed when I am done testing
     logoutput => true,
@@ -74,7 +72,6 @@ define swift::storage::mount(
   exec { "fix_mount_permissions_${name}":
     command     => "chown -R swift:swift ${mnt_base_dir}/${name}",
     path        => ['/usr/sbin', '/bin'],
-    subscribe   => Exec["mount_${name}"],
     refreshonly => true,
     before      => Anchor['swift::config::end'],
   }
@@ -90,9 +87,15 @@ define swift::storage::mount(
     exec { "restorecon_mount_${name}":
       command     => "restorecon ${mnt_base_dir}/${name}",
       path        => ['/usr/sbin', '/sbin'],
-      subscribe   => Exec["mount_${name}"],
-      before      =>  [Exec["fix_mount_permissions_${name}"],Anchor['swift::config::end']],
+      before      => Anchor['swift::config::end'],
       refreshonly => true,
     }
+
+  File<| title == "${mnt_base_dir}/${name}" |>
+  ~> Mount<| title == "${mnt_base_dir}/${name}" |>
+  ~> Exec<| title == "mount_${name}" |>
+  ~> Exec<| title == "fix_mount_permissions_${name}" |>
+  ~> Exec<| title == "restorecon_mount_${name}" |>
+
   }
 }

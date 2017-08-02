@@ -18,7 +18,6 @@ describe 'swift::storage::mount' do
       :device  => '/dev/sda',
       :fstype  => 'xfs',
       :options => 'noatime,nodiratime,nobarrier,logbufs=8',
-      :require => 'File[/srv/node/dans_mount_point]'
     )}
 
   end

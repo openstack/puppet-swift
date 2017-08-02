@@ -83,7 +83,7 @@ class swift(
   }
   user {'swift':
     ensure  => present,
-    require => Package['swift'],
+    require => Anchor['swift::install::end'],
   }
   file { '/var/lib/swift':
     ensure => directory,

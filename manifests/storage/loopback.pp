@@ -62,9 +62,10 @@ define swift::storage::loopback(
     command => "dd if=/dev/zero of=${base_dir}/${name} bs=${byte_size} count=0 seek=${seek}",
     path    => ['/usr/bin/', '/bin'],
     unless  => "test -f ${base_dir}/${name}",
-    require => File[$base_dir],
     before  => Anchor['swift::config::end'],
   }
+
+  File<| title == $base_dir |> ~> Exec<| title == "create_partition-${name}" |>
 
   $storage_params = {
     device       => "${base_dir}/${name}",
