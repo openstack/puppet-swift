@@ -1,0 +1,16 @@
+---
+prelude: >
+    Swift has now merged the swift3 middleware into its own source tree and
+    renamed it to s3api.
+features:
+  - |
+    The s3api middleware provides S3API support to a Swift cluster.
+upgrade:
+  - |
+    For previous users of Swift3 middleware, it is a simple change to use
+    the s3api middleware, no APIs have been changed. Simply substitute in the
+    new middleware in the pipeline and remember to add the filter. 
+deprecations:
+  - |
+    In s3token middleware, the use of auth_host, auth_port and auth_protocol
+    have been deprecated in favor of auth_uri
