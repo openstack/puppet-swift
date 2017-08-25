@@ -1,0 +1,6 @@
+---
+features:
+  - |
+    Expose the account, container and object server worker count. This allows
+    operators to tune their settings depending on their needs. The current
+    default is kept unchanged.

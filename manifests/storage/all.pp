@@ -97,6 +97,18 @@
 #   (optional) Prefix for data being sent to statsd.
 #   Defaults to ''
 #
+# [*account_server_workers*]
+#   (optional) Number of account server workers.
+#   Defaults to undef.
+#
+# [*container_server_workers*]
+#   (optional) Number of container server workers.
+#   Defaults to undef.
+#
+# [*object_server_workers*]
+#   (optional) Number of account server workers.
+#   Defaults to undef.
+#
 class swift::storage::all(
   $storage_local_net_ip,
   $devices                        = '/srv/node',
@@ -121,6 +133,9 @@ class swift::storage::all(
   $log_statsd_default_sample_rate = '1.0',
   $log_statsd_sample_rate_factor  = '1.0',
   $log_statsd_metric_prefix       = '',
+  $account_server_workers         = undef,
+  $container_server_workers       = undef,
+  $object_server_workers          = undef,
 ) {
 
   include ::swift::deps
@@ -164,6 +179,7 @@ class swift::storage::all(
     log_requests     => $log_requests,
     incoming_chmod   => $incoming_chmod,
     outgoing_chmod   => $outgoing_chmod,
+    workers          => $account_server_workers,
   }
 
   swift::storage::server { $container_port:
@@ -175,6 +191,7 @@ class swift::storage::all(
     log_requests     => $log_requests,
     incoming_chmod   => $incoming_chmod,
     outgoing_chmod   => $outgoing_chmod,
+    workers          => $container_server_workers,
   }
 
   swift::storage::server { $object_port:
@@ -185,5 +202,6 @@ class swift::storage::all(
     log_requests     => $log_requests,
     incoming_chmod   => $incoming_chmod,
     outgoing_chmod   => $outgoing_chmod,
+    workers          => $object_server_workers,
   }
 }
