@@ -10,7 +10,6 @@ describe 'swift::keystone::auth' do
     {
       :auth_name         => 'swift',
       :password          => 'swift_password',
-      :port              => '8080',
       :tenant            => 'services',
       :email             => 'swift@localhost',
       :region            => 'RegionOne',
@@ -91,47 +90,6 @@ describe 'swift::keystone::auth' do
       end
     end
 
-    context 'with deprecated endpoint parameters' do
-      before do
-        params.merge!({
-          :auth_name         => 'object_store',
-          :password          => 'passw0rd',
-          :port              => '443',
-          :tenant            => 'admin',
-          :email             => 'object_store@localhost',
-          :region            => 'RegionTwo',
-          :operator_roles    => ['admin', 'SwiftOperator', 'Gopher'],
-          :public_protocol   => 'https',
-          :public_address    => 'public.example.org',
-          :public_port       => '443',
-          :admin_protocol    => 'https',
-          :admin_address     => 'admin.example.org',
-          :internal_protocol => 'https',
-          :internal_address  => 'internal.example.org',
-          :endpoint_prefix   => 'KEY_AUTH',
-          :service_name      => 'swift',
-          :service_name_s3   => 'swift_s3'
-        })
-      end
-
-      let :p do
-        default_params.merge( params )
-      end
-
-      it { is_expected.to contain_keystone_endpoint("#{p[:region]}/#{p[:service_name]}::object-store").with(
-        :ensure       => 'present',
-        :public_url   => "#{p[:public_protocol]}://#{p[:public_address]}:#{p[:public_port]}/v1/#{p[:endpoint_prefix]}_%(tenant_id)s",
-        :admin_url    => "#{p[:admin_protocol]}://#{p[:admin_address]}:#{p[:port]}",
-        :internal_url => "#{p[:internal_protocol]}://#{p[:internal_address]}:#{p[:port]}/v1/#{p[:endpoint_prefix]}_%(tenant_id)s"
-      )}
-
-      it { is_expected.to contain_keystone_endpoint("#{p[:region]}/#{p[:service_name_s3]}::s3").with(
-        :ensure       => 'present',
-        :public_url   => "#{p[:public_protocol]}://#{p[:public_address]}:#{p[:port]}",
-        :admin_url    => "#{p[:admin_protocol]}://#{p[:admin_address]}:#{p[:port]}",
-        :internal_url => "#{p[:internal_protocol]}://#{p[:internal_address]}:#{p[:port]}"
-      )}
-    end
   end
 
   shared_examples_for 'keystone auth configuration' do
