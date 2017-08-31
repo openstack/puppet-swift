@@ -200,4 +200,24 @@ describe 'swift::storage::all' do
       end
     end
   end
+
+  describe "when specifying number of workers" do
+    let :params do
+      {
+        :storage_local_net_ip	    => '127.0.0.1',
+        :account_server_workers     => '42',
+        :container_server_workers   => '42',
+        :object_server_workers      => '42',
+      }
+    end
+
+    {'object' => '6000', 'container' => '6001', 'account' => '6002'}.each do |type,name|
+      it "should define worker count in the #{type} config file" do
+       is_expected.to contain_concat_fragment("swift-#{type}-#{name}").with_content(
+         /workers = 42/
+       )
+      end
+    end
+  end
+
 end
