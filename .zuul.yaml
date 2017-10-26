@@ -1,0 +1,6 @@
+- project:
+    name: openstack/puppet-swift
+    templates:
+      - puppet-openstack-check-jobs
+      - puppet-openstack-module-unit-jobs
+      - puppet-openstack-integration-jobs-scenario002
