@@ -12,6 +12,12 @@ describe 'basic swift' do
       include ::openstack_integration::mysql
       include ::openstack_integration::keystone
 
+      exec { 'setenforce 0':
+        path   => '/bin:/sbin:/usr/bin:/usr/sbin',
+        onlyif => 'which setenforce && getenforce | grep Enforcing',
+        before => Class['::swift'],
+      }
+
       package { 'curl': ensure => present }
 
       class { '::memcached':
@@ -106,7 +112,6 @@ describe 'basic swift' do
       }
       EOS
 
-
       # Need to be run 2 times because we have an exported when creating the ring.
       apply_manifest(pp, :catch_failures => false)
       apply_manifest(pp, :catch_failures => true)
@@ -129,6 +134,12 @@ describe 'basic swift' do
       include ::openstack_integration::rabbitmq
       include ::openstack_integration::mysql
       include ::openstack_integration::keystone
+
+      exec { 'setenforce 0':
+        path   => '/bin:/sbin:/usr/bin:/usr/sbin',
+        onlyif => 'which setenforce && getenforce | grep Enforcing',
+        before => Class['::swift'],
+      }
 
       package { 'curl': ensure => present }
 
