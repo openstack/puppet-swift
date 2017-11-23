@@ -13,7 +13,7 @@
 #
 # [*log_facility*]
 # The log facility of gatekeeper.
-# Default to LOG_LOCAL0.
+# Default to LOG_LOCAL2.
 #
 # [*log_level*]
 # The log level of gatekeeper.
@@ -37,7 +37,7 @@
 #
 class swift::proxy::gatekeeper(
   $log_name     = 'gatekeeper',
-  $log_facility = 'LOG_LOCAL0',
+  $log_facility = 'LOG_LOCAL2',
   $log_level    = 'INFO',
   $log_headers  = false,
   $log_address  = '/dev/log'
