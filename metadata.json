@@ -1,79 +1,79 @@
 {
-  "name": "openstack-swift",
-  "version": "9.6.0",
-  "author": "Puppet Labs and OpenStack Contributors",
-  "summary": "Puppet module for OpenStack Swift",
-  "license": "Apache-2.0",
-  "source": "git://github.com/openstack/puppet-swift.git",
-  "project_page": "https://launchpad.net/puppet-swift",
-  "issues_url": "https://bugs.launchpad.net/puppet-swift",
-  "requirements": [
-    {
-      "name": "pe",
-      "version_requirement": "3.x"
-    },
-    {
-      "name": "puppet",
-      "version_requirement": "3.x"
-    }
-  ],
-  "operatingsystem_support": [
-    {
-      "operatingsystem": "Debian",
-      "operatingsystemrelease": [
-        "7"
-      ]
-    },
-    {
-      "operatingsystem": "Fedora",
-      "operatingsystemrelease": [
-        "20"
-      ]
-    },
-    {
-      "operatingsystem": "RedHat",
-      "operatingsystemrelease": [
-        "6.5",
-        "7"
-      ]
-    },
-    {
-      "operatingsystem": "Ubuntu",
-      "operatingsystemrelease": [
-        "14.04",
-        "16.04"
-      ]
-    }
-  ],
-  "description": "Installs and configures OpenStack Swift (Object Storage).",
-  "dependencies": [
-    {
-      "name": "puppetlabs/inifile",
-      "version_requirement": ">=1.0.0 <2.0.0"
-    },
-    {
-      "name": "openstack/keystone",
-      "version_requirement": ">=9.5.0 <10.0.0"
-    },
-    {
-      "name": "puppetlabs/rsync",
-      "version_requirement": ">=0.2.0 <1.0.0"
-    },
-    {
-      "name": "puppetlabs/stdlib",
-      "version_requirement": ">=4.0.0 <5.0.0"
-    },
-    {
-      "name": "puppetlabs/xinetd",
-      "version_requirement": ">=1.0.1 <2.0.1"
-    },
-    {
-      "name": "puppetlabs/concat",
-      "version_requirement": ">=1.0.0 <3.0.0"
-    },
-    {
-      "name": "saz/memcached",
-      "version_requirement": ">=2.0.2 <3.0.0"
-    }
-  ]
+    "name": "openstack-swift",
+    "version": "9.7.0",
+    "author": "Puppet Labs and OpenStack Contributors",
+    "summary": "Puppet module for OpenStack Swift",
+    "license": "Apache-2.0",
+    "source": "git://github.com/openstack/puppet-swift.git",
+    "project_page": "https://launchpad.net/puppet-swift",
+    "issues_url": "https://bugs.launchpad.net/puppet-swift",
+    "requirements": [
+        {
+            "name": "pe",
+            "version_requirement": "3.x"
+        },
+        {
+            "name": "puppet",
+            "version_requirement": "3.x"
+        }
+    ],
+    "operatingsystem_support": [
+        {
+            "operatingsystem": "Debian",
+            "operatingsystemrelease": [
+                "7"
+            ]
+        },
+        {
+            "operatingsystem": "Fedora",
+            "operatingsystemrelease": [
+                "20"
+            ]
+        },
+        {
+            "operatingsystem": "RedHat",
+            "operatingsystemrelease": [
+                "6.5",
+                "7"
+            ]
+        },
+        {
+            "operatingsystem": "Ubuntu",
+            "operatingsystemrelease": [
+                "14.04",
+                "16.04"
+            ]
+        }
+    ],
+    "description": "Installs and configures OpenStack Swift (Object Storage).",
+    "dependencies": [
+        {
+            "name": "puppetlabs/inifile",
+            "version_requirement": ">=1.0.0 <2.0.0"
+        },
+        {
+            "name": "openstack/keystone",
+            "version_requirement": ">=9.6.0 <10.0.0"
+        },
+        {
+            "name": "puppetlabs/rsync",
+            "version_requirement": ">=0.2.0 <1.0.0"
+        },
+        {
+            "name": "puppetlabs/stdlib",
+            "version_requirement": ">=4.0.0 <5.0.0"
+        },
+        {
+            "name": "puppetlabs/xinetd",
+            "version_requirement": ">=1.0.1 <2.0.1"
+        },
+        {
+            "name": "puppetlabs/concat",
+            "version_requirement": ">=1.0.0 <3.0.0"
+        },
+        {
+            "name": "saz/memcached",
+            "version_requirement": ">=2.0.2 <3.0.0"
+        }
+    ]
 }
