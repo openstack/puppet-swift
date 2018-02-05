@@ -7,6 +7,7 @@ describe 'swift::proxy::cache' do
       :operatingsystem => 'Ubuntu',
       :osfamily        => 'Debian',
       :os_workers      => 1,
+      :processorcount  => 1,
     }
   end
 

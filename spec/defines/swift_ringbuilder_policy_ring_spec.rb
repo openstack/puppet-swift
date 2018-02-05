@@ -11,6 +11,7 @@ describe 'swift::ringbuilder::policy_ring' do
       :operatingsystem => 'Ubuntu',
       :osfamily        => 'Debian',
       :os_workers      => 1,
+      :processorcount  => 1,
     })
   end
   describe 'when swift class is not included' do
