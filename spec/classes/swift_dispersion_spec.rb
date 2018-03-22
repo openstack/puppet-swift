@@ -76,7 +76,7 @@ describe 'swift::dispersion' do
     include_examples 'swift::dispersion'
   end
 
-  describe 'when parameters are overriden' do
+  describe 'when parameters are overridden' do
     before do
       params.merge!(
         :auth_url      => 'https://10.0.0.10:7000/auth/v8.0/',

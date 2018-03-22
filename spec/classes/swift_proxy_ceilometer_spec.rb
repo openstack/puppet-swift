@@ -91,7 +91,7 @@ describe 'swift::proxy::ceilometer' do
         :kombu_ssl_version  => '<SERVICE DEFAULT>',
       )}
 
-      context 'with overriden rabbit ssl params' do
+      context 'with overridden rabbit ssl params' do
         before do
           params.merge!(
             {
