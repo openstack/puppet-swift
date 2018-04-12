@@ -27,19 +27,18 @@ describe 'swift::client' do
 
   end
 
-  context 'on Debian platform' do
-    let :facts do
-      OSDefaults.get_facts({ :osfamily => 'Debian' })
-    end
+  on_supported_os({
+    :supported_os   => OSDefaults.get_supported_os
+  }).each do |os,facts|
+    context "on #{os}" do
+      let (:facts) do
+        facts.merge(OSDefaults.get_facts({
+          :fqdn           => 'some.host.tld',
+        }))
+      end
 
-    it_configures 'swift client'
+      it_configures 'swift client'
+    end
   end
 
-  context 'on RedHat platform' do
-    let :facts do
-      OSDefaults.get_facts({ :osfamily => 'RedHat' })
-    end
-
-    it_configures 'swift client'
-  end
 end
