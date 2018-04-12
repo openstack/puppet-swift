@@ -5,7 +5,13 @@
 class swift::params {
   include ::openstacklib::defaults
 
-  $client_package   = 'python-swiftclient'
+  if ($::os_package_type == 'debian') {
+    $pyvers = '3'
+  } else {
+    $pyvers = ''
+  }
+
+  $client_package   = "python${pyvers}-swiftclient"
   $service_provider = undef
 
   case $::osfamily {

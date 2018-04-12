@@ -19,7 +19,7 @@ describe 'swift::client' do
 
     it 'installs swift client package' do
       is_expected.to contain_package('swiftclient').with(
-        :name   => 'python-swiftclient',
+        :name   => platform_params[:client_package_name],
         :ensure => p[:package_ensure],
         :tag    => ['openstack','swift-support-package'],
       )
@@ -35,6 +35,19 @@ describe 'swift::client' do
         facts.merge(OSDefaults.get_facts({
           :fqdn           => 'some.host.tld',
         }))
+      end
+
+      let(:platform_params) do
+        case facts[:osfamily]
+        when 'Debian'
+          if facts[:os_package_type] == 'debian'
+            { :client_package_name => 'python3-swiftclient' }
+          else
+            { :client_package_name => 'python-swiftclient' }
+          end
+        when 'RedHat'
+          { :client_package_name => 'python-swiftclient' }
+        end
       end
 
       it_configures 'swift client'
