@@ -16,6 +16,8 @@ describe 'swift::objectexpirer' do
       :reclaim_age                   => 604800,
       :recon_cache_path              => '/var/cache/swift',
       :report_interval               => 300,
+      :log_facility                  => 'LOG_LOCAL2',
+      :log_level                     => 'INFO',
       :memcache_servers              => ['127.0.0.1:11211'] }
   end
 
@@ -52,6 +54,10 @@ describe 'swift::objectexpirer' do
           'object-expirer/recon_cache_path').with_value(p[:recon_cache_path])
         is_expected.to contain_swift_object_expirer_config(
           'object-expirer/report_interval').with_value(p[:report_interval])
+        is_expected.to contain_swift_object_expirer_config(
+          'object-expirer/log_level').with_value(p[:log_level])
+        is_expected.to contain_swift_object_expirer_config(
+          'object-expirer/log_facility').with_value(p[:log_facility])
       end
 
       it 'configures object-expirer service' do
