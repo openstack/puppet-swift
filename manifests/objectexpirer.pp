@@ -71,6 +71,14 @@
 #    pipeline, e.g. ['catch_errors', 'cache', 'proxy-server']
 #    Defaults to ['127.0.0.1:11211']
 #
+#  [*log_level*]
+#    (optional) Log level.
+#    Defaults to 'INFO'.
+#
+#  [*log_facility*]
+#    (optional) Log level
+#    Defaults to 'LOG_LOCAL2'.
+#
 class swift::objectexpirer(
   $manage_service                = true,
   $enabled                       = true,
@@ -87,6 +95,8 @@ class swift::objectexpirer(
   $report_interval               = 300,
   $service_provider              = $::swift::params::service_provider,
   $memcache_servers              = ['127.0.0.1:11211'],
+  $log_level                     = 'INFO',
+  $log_facility                  = 'LOG_LOCAL2',
 ) inherits ::swift::params {
 
   include ::swift::deps
@@ -127,6 +137,8 @@ class swift::objectexpirer(
     'object-expirer/reclaim_age':                   value => $reclaim_age;
     'object-expirer/recon_cache_path':              value => $recon_cache_path;
     'object-expirer/report_interval':               value => $report_interval;
+    'object-expirer/log_facility':                  value => $log_facility;
+    'object-expirer/log_level':                     value => $log_level;
   }
 
   if $manage_service {
