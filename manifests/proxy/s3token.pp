@@ -6,15 +6,19 @@
 #
 # [*auth_host*]
 #   (optional) The keystone host
-#   Defaults to 127.0.0.1
+#   Defaults to undef.
 #
 # [*auth_port*]
 #   (optional) The Keystone client API port
-#   Defaults to 5000
+#   Defaults to undef.
 #
 # [*auth_protocol*]
 #   (optional) http or https
-#    Defaults to http
+#    Defaults to undef.
+#
+# [*auth_uri*]
+#   (optional) The Keystone server uri
+#   Defaults to http://127.0.0.1:35357
 #
 # == Dependencies
 #
@@ -29,17 +33,25 @@
 # Copyright 2012 eNovance licensing@enovance.com
 #
 class swift::proxy::s3token(
-  $auth_host = '127.0.0.1',
-  $auth_port = '35357',
-  $auth_protocol = 'http'
+  $auth_host = undef,
+  $auth_port = undef,
+  $auth_protocol = undef,
+  $auth_uri = 'http://127.0.0.1:35357'
 ) {
 
   include ::swift::deps
 
+  if $auth_host and $auth_port and $auth_protocol {
+    warning('Use of the auth_host, auth_port, and auth_protocol options have been deprecated in favor of auth_uri.')
+    $auth_uri_real = "${auth_protocol}://${auth_host}:${auth_port}"
+  } else {
+    $auth_uri_real = $auth_uri
+  }
+
+
+
   swift_proxy_config {
-    'filter:s3token/paste.filter_factory': value => 'keystonemiddleware.s3_token:filter_factory';
-    'filter:s3token/auth_host':            value => $auth_host;
-    'filter:s3token/auth_port':            value => $auth_port;
-    'filter:s3token/auth_protocol':        value => $auth_protocol;
+    'filter:s3token/use':                  value => 'egg:swift#s3token';
+    'filter:s3token/auth_uri':             value => $auth_uri_real;
   }
 }

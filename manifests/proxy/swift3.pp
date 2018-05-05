@@ -6,7 +6,7 @@
 # == Parameters
 #
 # [*ensure*]
-#   Enable or not ceilometer fragment
+#   Enable or not swift3 middleware
 #   Defaults to 'present'
 #
 # == Examples
