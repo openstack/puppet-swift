@@ -147,7 +147,7 @@ class swift::proxy::authtoken(
     'filter:authtoken/log_name':                value => 'swift';
     'filter:authtoken/signing_dir':             value => $signing_dir;
     'filter:authtoken/paste.filter_factory':    value => 'keystonemiddleware.auth_token:filter_factory';
-    'filter:authtoken/auth_uri':                value => $auth_uri;
+    'filter:authtoken/www_authenticate_uri':    value => $auth_uri;
     'filter:authtoken/auth_url':                value => $auth_url_real;
     'filter:authtoken/auth_plugin':             value => $auth_plugin;
     'filter:authtoken/project_domain_id':       value => $project_domain_id;
