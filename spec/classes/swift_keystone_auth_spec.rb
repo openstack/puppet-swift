@@ -1,7 +1,6 @@
 require 'spec_helper'
 
 describe 'swift::keystone::auth' do
-
   let :params do
     { }
   end
@@ -25,9 +24,9 @@ describe 'swift::keystone::auth' do
     }
   end
 
-  shared_examples_for 'swift keystone auth' do
+  shared_examples 'swift::keystone::auth' do
     context 'with default class parameters' do
-      it_configures 'keystone auth configuration'
+      it_configures 'keystone::auth::configuration'
 
       ['admin', 'SwiftOperator'].each do |role_name|
         it { is_expected.to contain_keystone_role(role_name).with_ensure('present') }
@@ -52,7 +51,7 @@ describe 'swift::keystone::auth' do
         })
       end
 
-      it_configures 'keystone auth configuration'
+      it_configures 'keystone::auth::configuration'
 
       ['admin', 'SwiftOperator', 'Gopher'].each do |role_name|
         it { is_expected.to contain_keystone_role(role_name).with_ensure('present') }
@@ -90,9 +89,35 @@ describe 'swift::keystone::auth' do
       end
     end
 
+    context 'when overriding service name' do
+      before do
+        params.merge!({
+          :service_name    => 'swift_service',
+          :service_name_s3 => 'swift_service_s3',
+        })
+      end
+
+      it 'configures correct user name' do
+        is_expected.to contain_keystone_user('swift')
+      end
+
+      it 'configures correct user role' do
+        is_expected.to contain_keystone_user_role('swift@services')
+      end
+
+      it 'configures correct service name' do
+        is_expected.to contain_keystone_service('swift_service::object-store')
+        is_expected.to contain_keystone_service('swift_service_s3::s3')
+      end
+
+      it 'configures correct endpoint name' do
+        is_expected.to contain_keystone_endpoint('RegionOne/swift_service::object-store')
+        is_expected.to contain_keystone_endpoint('RegionOne/swift_service_s3::s3')
+      end
+    end
   end
 
-  shared_examples_for 'keystone auth configuration' do
+  shared_examples 'keystone::auth::configuration' do
     let :p do
       default_params.merge( params )
     end
@@ -157,43 +182,15 @@ describe 'swift::keystone::auth' do
      end
   end
 
-  context 'on Debian platforms' do
-    let :facts do
-      { :osfamily => 'Debian' }
-    end
+  on_supported_os({
+    :supported_os => OSDefaults.get_supported_os
+  }).each do |os,facts|
+    context "on #{os}" do
+      let (:facts) do
+        facts.merge(OSDefaults.get_facts())
+      end
 
-    it_configures 'swift keystone auth'
-  end
-
-  context 'on RedHat platforms' do
-    let :facts do
-      { :osfamily => 'RedHat' }
-    end
-
-    it_configures 'swift keystone auth'
-  end
-
-  context 'when overriding service name' do
-    before do
-      params.merge!({
-        :service_name    => 'swift_service',
-        :service_name_s3 => 'swift_service_s3',
-      })
-    end
-    it 'configures correct user name' do
-      is_expected.to contain_keystone_user('swift')
-    end
-    it 'configures correct user role' do
-      is_expected.to contain_keystone_user_role('swift@services')
-    end
-    it 'configures correct service name' do
-      is_expected.to contain_keystone_service('swift_service::object-store')
-      is_expected.to contain_keystone_service('swift_service_s3::s3')
-    end
-    it 'configures correct endpoint name' do
-      is_expected.to contain_keystone_endpoint('RegionOne/swift_service::object-store')
-      is_expected.to contain_keystone_endpoint('RegionOne/swift_service_s3::s3')
+      it_configures 'swift::keystone::auth'
     end
   end
-
 end

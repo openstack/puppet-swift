@@ -21,8 +21,19 @@
 require 'spec_helper'
 
 describe 'swift::proxy::account_quotas' do
+  shared_examples 'swift::proxy::account_quotas' do
+    it { should contain_swift_proxy_config('filter:account_quotas/use').with_value('egg:swift#account_quotas') }
+  end
 
-  it do
-    is_expected.to contain_swift_proxy_config('filter:account_quotas/use').with_value('egg:swift#account_quotas')
+  on_supported_os({
+    :supported_os => OSDefaults.get_supported_os
+  }).each do |os,facts|
+    context "on #{os}" do
+      let (:facts) do
+        facts.merge(OSDefaults.get_facts())
+      end
+
+      it_configures 'swift::proxy::account_quotas'
+    end
   end
 end

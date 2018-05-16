@@ -29,7 +29,7 @@ describe 'swift::objectexpirer' do
     'class { "memcached": max_memory => 1 }'
   end
 
-  shared_examples_for 'swift-object-expirer' do
+  shared_examples 'swift::object::expirer' do
     let (:p) { default_params.merge!(params) }
 
     context 'with defaults' do
@@ -103,7 +103,6 @@ describe 'swift::objectexpirer' do
         platform_params.merge!({ :service_provider => 'swiftinit' })
       end
     end
-
   end
 
   on_supported_os({
@@ -125,7 +124,7 @@ describe 'swift::objectexpirer' do
         end
       end
 
-      it_configures 'swift-object-expirer'
+      it_configures 'swift::object::expirer'
     end
 
   end

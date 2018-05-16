@@ -16,7 +16,7 @@ require 'spec_helper'
 
 describe 'swift::storage::loopbacks' do
 
-  shared_examples_for 'swift storage loopbacks' do
+  shared_examples 'swift::storage::loopbacks' do
     let :params do
       {
         :args => {
@@ -44,7 +44,7 @@ describe 'swift::storage::loopbacks' do
         facts.merge!(OSDefaults.get_facts())
       end
 
-      it_configures 'swift storage loopbacks'
+      it_configures 'swift::storage::loopbacks'
     end
   end
 

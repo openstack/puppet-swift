@@ -21,7 +21,7 @@ describe 'swift::containerreconciler' do
     'class { "memcached": max_memory => 1 }'
   end
 
-  shared_examples_for 'swift-container-reconciler' do
+  shared_examples 'swift::container::reconciler' do
     let (:p) { default_params.merge!(params) }
 
     context 'with defaults' do
@@ -101,7 +101,7 @@ describe 'swift::containerreconciler' do
         end
       end
 
-      it_configures 'swift-container-reconciler'
+      it_configures 'swift::container::reconciler'
     end
 
   end

@@ -13,8 +13,7 @@ describe 'swift::storage::object' do
       :manage_service => true }
   end
 
-  shared_examples_for 'swift-storage-object' do
-
+  shared_examples 'swift::storage::object' do
     [{},
      { :package_ensure => 'latest' }
     ].each do |param_set|
@@ -40,7 +39,7 @@ describe 'swift::storage::object' do
               :name     => service_name,
               :ensure   => (param_hash[:manage_service] && param_hash[:enabled]) ? 'running' : 'stopped',
               :enable   => param_hash[:enabled],
-              :provider => platform_params[:service_provider],
+              :provider => nil,
               :tag      => 'swift-service',
             )
           end
@@ -48,110 +47,65 @@ describe 'swift::storage::object' do
       end
     end
 
-    context 'with disabled service managing' do
+    context 'with disabled service managing and service provider' do
       before do
         params.merge!({
-          :manage_service => false,
-          :enabled        => false })
+          :manage_service   => false,
+          :enabled          => false,
+          :service_provider => 'swiftinit',
+        })
       end
 
       it 'configures services' do
-        platform_params[:service_names].each do |service_alias, service_name|
+        { 'swift-object-server'        => 'swift-object-server',
+          'swift-object-reconstructor' => 'swift-object-reconstructor',
+          'swift-object-replicator'    => 'swift-object-replicator',
+          'swift-object-updater'       => 'swift-object-updater',
+          'swift-object-auditor'       => 'swift-object-auditor' }.each do |service_alias, service_name|
           is_expected.to contain_service(service_alias).with(
-            :ensure    => nil,
-            :name      => service_name,
-            :enable    => false,
-            :tag       => 'swift-service',
+            :ensure   => nil,
+            :name     => service_name,
+            :enable   => false,
+            :tag      => 'swift-service',
+            :provider => 'swiftinit',
           )
         end
       end
     end
   end
 
-  context 'on Debian platforms' do
-    let :facts do
-      OSDefaults.get_facts({
-       :operatingsystem => 'Ubuntu',
-       :osfamily        => 'Debian',
-      })
-    end
-
-    let :platform_params do
-      { :service_names => {
-          'swift-object-server'         => 'swift-object',
-          'swift-object-reconstructor'  => 'swift-object-reconstructor',
-          'swift-object-replicator'     => 'swift-object-replicator',
-          'swift-object-updater'        => 'swift-object-updater',
-          'swift-object-auditor'        => 'swift-object-auditor'
-        },
-        :service_provider => nil
-      }
-    end
-
-    it_configures 'swift-storage-object'
-    context 'on debian using swiftinit service provider' do
-
-      before do
-        params.merge!({ :service_provider => 'swiftinit' })
+  on_supported_os({
+    :supported_os => OSDefaults.get_supported_os
+  }).each do |os,facts|
+    context "on #{os}" do
+      let (:facts) do
+        facts.merge(OSDefaults.get_facts())
       end
 
-      let :platform_params do
-        { :service_names => {
-            'swift-object-server'           => 'swift-object-server',
-            'swift-object-reconstructor'    => 'swift-object-reconstructor',
-            'swift-object-replicator'       => 'swift-object-replicator',
-            'swift-object-updater'          => 'swift-object-updater',
-            'swift-object-auditor'          => 'swift-object-auditor',
-          },
-          :service_provider => 'swiftinit'
-        }
+      let(:platform_params) do
+        case facts[:osfamily]
+        when 'Debian'
+          { :service_names => {
+              'swift-object-server'         => 'swift-object',
+              'swift-object-reconstructor'  => 'swift-object-reconstructor',
+              'swift-object-replicator'     => 'swift-object-replicator',
+              'swift-object-updater'        => 'swift-object-updater',
+              'swift-object-auditor'        => 'swift-object-auditor'
+            }
+          }
+        when 'RedHat'
+          { :service_names => {
+              'swift-object-server'         => 'openstack-swift-object',
+              'swift-object-reconstructor'  => 'openstack-swift-object-reconstructor',
+              'swift-object-replicator'     => 'openstack-swift-object-replicator',
+              'swift-object-updater'        => 'openstack-swift-object-updater',
+              'swift-object-auditor'        => 'openstack-swift-object-auditor'
+            }
+          }
+        end
       end
 
-      it_configures 'swift-storage-object'
-    end
-
-
-  end
-
-  context 'on RedHat platforms' do
-    let :facts do
-      OSDefaults.get_facts({
-        :osfamily        => 'RedHat',
-        :operatingsystem => 'RedHat',
-      })
-    end
-
-    let :platform_params do
-      { :service_names => {
-          'swift-object-server'         => 'openstack-swift-object',
-          'swift-object-reconstructor'  => 'openstack-swift-object-reconstructor',
-          'swift-object-replicator'     => 'openstack-swift-object-replicator',
-          'swift-object-updater'        => 'openstack-swift-object-updater',
-          'swift-object-auditor'        => 'openstack-swift-object-auditor'
-        }
-      }
-    end
-
-    it_configures 'swift-storage-object'
-    context 'on redhat using swiftinit service provider' do
-
-      before do
-        params.merge!({ :service_provider => 'swiftinit' })
-      end
-
-      let :platform_params do
-        { :service_names => {
-            'swift-object-server'           => 'swift-object-server',
-            'swift-object-reconstructor'    => 'swift-object-reconstructor',
-            'swift-object-replicator'       => 'swift-object-replicator',
-            'swift-object-updater'          => 'swift-object-updater',
-            'swift-object-auditor'          => 'swift-object-auditor',
-          },
-          :service_provider => 'swiftinit'
-        }
-      end
-
-      it_configures 'swift-storage-object'
+      it_configures 'swift::storage::object'
     end
   end
 end

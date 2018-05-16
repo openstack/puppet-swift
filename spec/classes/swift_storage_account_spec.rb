@@ -12,8 +12,7 @@ describe 'swift::storage::account' do
       :manage_service => true }
   end
 
-  shared_examples_for 'swift-storage-account' do
-
+  shared_examples 'swift::storage::account' do
     [{},
      {:package_ensure => 'latest'}
     ].each do |param_set|
@@ -36,116 +35,74 @@ describe 'swift::storage::account' do
         it 'configures services' do
           platform_params[:service_names].each do |service_alias, service_name|
             is_expected.to contain_service(service_alias).with(
-              :name    => service_name,
-              :ensure  => (param_hash[:manage_service] && param_hash[:enabled]) ? 'running' : 'stopped',
-              :enable  => param_hash[:enabled],
-              :provider => platform_params[:service_provider],
-              :tag     => 'swift-service',
+              :name     => service_name,
+              :ensure   => (param_hash[:manage_service] && param_hash[:enabled]) ? 'running' : 'stopped',
+              :enable   => param_hash[:enabled],
+              :provider => nil,
+              :tag      => 'swift-service',
             )
           end
         end
       end
     end
 
-    context 'with disabled service managing' do
+    context 'with disabled service managing and service provider' do
       before do
         params.merge!({
-          :manage_service => false,
-          :enabled        => false })
+          :manage_service   => false,
+          :enabled          => false,
+          :service_provider => 'swiftinit',
+        })
       end
 
       it 'configures services' do
-        platform_params[:service_names].each do |service_alias, service_name|
+            
+        { 'swift-account-server'     => 'swift-account-server',
+          'swift-account-replicator' => 'swift-account-replicator',
+          'swift-account-reaper'     => 'swift-account-reaper',
+          'swift-account-auditor'    => 'swift-account-auditor' }.each do |service_alias, service_name|
           is_expected.to contain_service(service_alias).with(
-            :ensure    => nil,
-            :name      => service_name,
-            :enable    => false,
-            :tag       => 'swift-service',
+            :ensure   => nil,
+            :name     => service_name,
+            :enable   => false,
+            :tag      => 'swift-service',
+            :provider => 'swiftinit',
           )
         end
       end
     end
   end
 
-  context 'on Debian platforms' do
-    let :facts do
-      OSDefaults.get_facts({
-       :operatingsystem => 'Ubuntu',
-       :osfamily        => 'Debian',
-      })
-    end
-
-    let :platform_params do
-      { :service_names => {
-          'swift-account-server'     => 'swift-account',
-          'swift-account-replicator' => 'swift-account-replicator',
-          'swift-account-reaper'     => 'swift-account-reaper',
-          'swift-account-auditor'    => 'swift-account-auditor'
-        },
-        :service_provider => nil
-      }
-    end
-
-    it_configures 'swift-storage-account'
-    context 'on Debian platforms using swiftinit service provider' do
-
-      before do
-        params.merge!({ :service_provider => 'swiftinit' })
+  on_supported_os({
+    :supported_os => OSDefaults.get_supported_os
+  }).each do |os,facts|
+    context "on #{os}" do
+      let (:facts) do
+        facts.merge(OSDefaults.get_facts())
       end
 
-      let :platform_params do
-        { :service_names => {
-            'swift-account-server'     => 'swift-account-server',
-            'swift-account-replicator' => 'swift-account-replicator',
-            'swift-account-reaper'     => 'swift-account-reaper',
-            'swift-account-auditor'    => 'swift-account-auditor',
-          },
-          :service_provider => 'swiftinit'
-        }
+      let(:platform_params) do
+        case facts[:osfamily]
+        when 'Debian'
+          { :service_names => {
+              'swift-account-server'     => 'swift-account',
+              'swift-account-replicator' => 'swift-account-replicator',
+              'swift-account-reaper'     => 'swift-account-reaper',
+              'swift-account-auditor'    => 'swift-account-auditor'
+            }
+          }
+        when 'RedHat'
+          { :service_names => {
+              'swift-account-server'     => 'openstack-swift-account',
+              'swift-account-replicator' => 'openstack-swift-account-replicator',
+              'swift-account-reaper'     => 'openstack-swift-account-reaper',
+              'swift-account-auditor'    => 'openstack-swift-account-auditor'
+            }
+          }
+        end
       end
 
-      it_configures 'swift-storage-account'
-    end
-  end
-
-  context 'on RedHat platforms' do
-    let :facts do
-      OSDefaults.get_facts({
-        :osfamily        => 'RedHat',
-        :operatingsystem => 'RedHat',
-      })
-    end
-
-    let :platform_params do
-      { :service_names => {
-          'swift-account-server'     => 'openstack-swift-account',
-          'swift-account-replicator' => 'openstack-swift-account-replicator',
-          'swift-account-reaper'     => 'openstack-swift-account-reaper',
-          'swift-account-auditor'    => 'openstack-swift-account-auditor'
-        },
-
-      }
-    end
-
-    it_configures 'swift-storage-account'
-    context 'on redhat using swiftinit service provider' do
-
-      before do
-        params.merge!({ :service_provider => 'swiftinit' })
-      end
-
-      let :platform_params do
-        { :service_names => {
-            'swift-account-server'     => 'swift-account-server',
-            'swift-account-replicator' => 'swift-account-replicator',
-            'swift-account-reaper'     => 'swift-account-reaper',
-            'swift-account-auditor'    => 'swift-account-auditor',
-          },
-          :service_provider => 'swiftinit'
-        }
-      end
-
-      it_configures 'swift-storage-account'
+      it_configures 'swift::storage::account'
     end
   end
 end

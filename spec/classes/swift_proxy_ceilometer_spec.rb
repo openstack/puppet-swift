@@ -8,8 +8,7 @@ describe 'swift::proxy::ceilometer' do
      }'
   end
 
-  shared_examples 'swift-proxy-ceilometer' do
-
+  shared_examples 'swift::proxy::ceilometer' do
     describe "when using default parameters" do
       it { is_expected.to contain_swift_proxy_config('filter:ceilometer/paste.filter_factory').with_value('ceilometermiddleware.swift:filter_factory') }
       it { is_expected.to contain_swift_proxy_config('filter:ceilometer/url').with_value('rabbit://guest:guest@127.0.0.1:5672//') }
@@ -122,7 +121,7 @@ describe 'swift::proxy::ceilometer' do
       let (:facts) do
         facts.merge!(OSDefaults.get_facts())
       end
-      it_behaves_like 'swift-proxy-ceilometer'
+      it_behaves_like 'swift::proxy::ceilometer'
     end
   end
 

@@ -10,7 +10,7 @@ describe 'swift::client' do
     { :package_ensure   => 'present' }
   end
 
-  shared_examples_for 'swift client' do
+  shared_examples 'swift::client' do
     let :p do
       default_params.merge(params)
     end
@@ -50,7 +50,7 @@ describe 'swift::client' do
         end
       end
 
-      it_configures 'swift client'
+      it_configures 'swift::client'
     end
   end
 

@@ -16,7 +16,7 @@ require 'spec_helper'
 
 describe 'swift::storage::disks' do
 
-  shared_examples_for 'swift storage disks' do
+  shared_examples 'swift::storage::disks' do
     let :params do
       {
         :args => {
@@ -44,7 +44,7 @@ describe 'swift::storage::disks' do
         facts.merge!(OSDefaults.get_facts())
       end
 
-      it_configures 'swift storage disks'
+      it_configures 'swift::storage::disks'
     end
   end
 

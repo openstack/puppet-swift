@@ -25,70 +25,80 @@ describe 'swift::bench' do
     "class { 'swift': swift_hash_path_suffix => 'string' }"
   end
 
-  let :facts do
-    OSDefaults.get_facts({
-      :operatingsystem => 'Ubuntu',
-      :osfamily        => 'Debian'
-    })
-  end
-
   let :params do
-    {}
+    default_params
   end
 
   shared_examples 'swift::bench' do
-    let (:p) { default_params.merge!(params) }
+    describe 'with defaults' do
+      it 'configures swift-bench.conf' do
+        is_expected.to contain_swift_bench_config(
+          'bench/auth').with_value(params[:auth_url])
+        is_expected.to contain_swift_bench_config(
+          'bench/user').with_value(params[:swift_user])
+        is_expected.to contain_swift_bench_config(
+          'bench/key').with_value(params[:swift_key])
+        is_expected.to contain_swift_bench_config(
+          'bench/auth_version').with_value(params[:auth_version])
+        is_expected.to contain_swift_bench_config(
+          'bench/log-level').with_value(params[:log_level])
+        is_expected.to contain_swift_bench_config(
+          'bench/timeout').with_value(params[:test_timeout])
+        is_expected.to contain_swift_bench_config(
+          'bench/put_concurrency').with_value(params[:put_concurrency])
+        is_expected.to contain_swift_bench_config(
+          'bench/get_concurrency').with_value(params[:get_concurrency])
+        is_expected.to contain_swift_bench_config(
+          'bench/get_concurrency').with_value(params[:get_concurrency])
+        is_expected.to contain_swift_bench_config(
+          'bench/lower_object_size').with_value(params[:lower_object_size])
+        is_expected.to contain_swift_bench_config(
+          'bench/upper_object_size').with_value(params[:upper_object_size])
+        is_expected.to contain_swift_bench_config(
+          'bench/object_size').with_value(params[:object_size])
+        is_expected.to contain_swift_bench_config(
+          'bench/num_objects').with_value(params[:num_objects])
+        is_expected.to contain_swift_bench_config(
+          'bench/num_gets').with_value(params[:num_gets])
+        is_expected.to contain_swift_bench_config(
+          'bench/num_containers').with_value(params[:num_containers])
+        is_expected.to contain_swift_bench_config(
+          'bench/delete').with_value(params[:delete])
+      end
+    end
 
-    it 'configures swift-bench.conf' do
-      is_expected.to contain_swift_bench_config(
-        'bench/auth').with_value(p[:auth_url])
-      is_expected.to contain_swift_bench_config(
-        'bench/user').with_value(p[:swift_user])
-      is_expected.to contain_swift_bench_config(
-        'bench/key').with_value(p[:swift_key])
-      is_expected.to contain_swift_bench_config(
-        'bench/auth_version').with_value(p[:auth_version])
-      is_expected.to contain_swift_bench_config(
-        'bench/log-level').with_value(p[:log_level])
-      is_expected.to contain_swift_bench_config(
-        'bench/timeout').with_value(p[:test_timeout])
-      is_expected.to contain_swift_bench_config(
-        'bench/put_concurrency').with_value(p[:put_concurrency])
-      is_expected.to contain_swift_bench_config(
-        'bench/get_concurrency').with_value(p[:get_concurrency])
-      is_expected.to contain_swift_bench_config(
-        'bench/get_concurrency').with_value(p[:get_concurrency])
-      is_expected.to contain_swift_bench_config(
-        'bench/lower_object_size').with_value(p[:lower_object_size])
-      is_expected.to contain_swift_bench_config(
-        'bench/upper_object_size').with_value(p[:upper_object_size])
-      is_expected.to contain_swift_bench_config(
-        'bench/object_size').with_value(p[:object_size])
-      is_expected.to contain_swift_bench_config(
-        'bench/num_objects').with_value(p[:num_objects])
-      is_expected.to contain_swift_bench_config(
-        'bench/num_gets').with_value(p[:num_gets])
-      is_expected.to contain_swift_bench_config(
-        'bench/num_containers').with_value(p[:num_containers])
-      is_expected.to contain_swift_bench_config(
-        'bench/delete').with_value(p[:delete])
+    describe 'with overriden' do
+      before do
+        params.merge!(
+          :auth_url        => 'http://127.0.0.1:8080/auth/v1.0',
+          :swift_user      => 'admin:admin',
+          :swift_key       => 'admin',
+          :put_concurrency => '20'
+        )
+      end
+
+      it 'configures swift-bench.conf' do
+        is_expected.to contain_swift_bench_config(
+          'bench/auth').with_value(params[:auth_url])
+        is_expected.to contain_swift_bench_config(
+          'bench/user').with_value(params[:swift_user])
+        is_expected.to contain_swift_bench_config(
+          'bench/key').with_value(params[:swift_key])
+        is_expected.to contain_swift_bench_config(
+          'bench/put_concurrency').with_value(params[:put_concurrency])
+      end      
     end
   end
 
-  describe 'with defaults' do
-    include_examples 'swift::bench'
-  end
+  on_supported_os({
+    :supported_os => OSDefaults.get_supported_os
+  }).each do |os,facts|
+    context "on #{os}" do
+      let (:facts) do
+        facts.merge(OSDefaults.get_facts())
+      end
 
-  describe 'when overridding' do
-    before do
-      params.merge!(
-        :auth_url        => 'http://127.0.0.1:8080/auth/v1.0',
-        :swift_user      => 'admin:admin',
-        :swift_key       => 'admin',
-        :put_concurrency => '20'
-      )
+      it_configures 'swift::bench'
     end
-
-    include_examples 'swift::bench'
   end
 end
