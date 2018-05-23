@@ -67,7 +67,7 @@ describe 'swift::bench' do
       end
     end
 
-    describe 'with overriden' do
+    describe 'with overridden' do
       before do
         params.merge!(
           :auth_url        => 'http://127.0.0.1:8080/auth/v1.0',
