@@ -23,7 +23,7 @@
 #
 # [*auth_url*]
 #   (Optional) The URL to use for authentication.
-#   Defaults to 'http://127.0.0.1:35357'
+#   Defaults to 'http://127.0.0.1:5000'
 #
 # [*auth_plugin*]
 #   (Optional) The plugin for authentication
@@ -90,7 +90,7 @@ class swift::proxy::authtoken(
   $signing_dir             = '/var/cache/swift',
   $cache                   = 'swift.cache',
   $auth_uri                = 'http://127.0.0.1:5000',
-  $auth_url                = 'http://127.0.0.1:35357',
+  $auth_url                = 'http://127.0.0.1:5000',
   $auth_plugin             = 'password',
   $project_domain_id       = 'default',
   $user_domain_id          = 'default',

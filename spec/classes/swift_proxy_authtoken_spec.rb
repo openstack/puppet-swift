@@ -22,7 +22,7 @@ describe 'swift::proxy::authtoken' do
       it { is_expected.to contain_swift_proxy_config('filter:authtoken/signing_dir').with_value('/var/cache/swift') }
       it { is_expected.to contain_swift_proxy_config('filter:authtoken/paste.filter_factory').with_value('keystonemiddleware.auth_token:filter_factory') }
       it { is_expected.to contain_swift_proxy_config('filter:authtoken/www_authenticate_uri').with_value('http://127.0.0.1:5000') }
-      it { is_expected.to contain_swift_proxy_config('filter:authtoken/auth_url').with_value('http://127.0.0.1:35357') }
+      it { is_expected.to contain_swift_proxy_config('filter:authtoken/auth_url').with_value('http://127.0.0.1:5000') }
       it { is_expected.to contain_swift_proxy_config('filter:authtoken/auth_plugin').with_value('password') }
       it { is_expected.to contain_swift_proxy_config('filter:authtoken/project_domain_id').with_value('default') }
       it { is_expected.to contain_swift_proxy_config('filter:authtoken/user_domain_id').with_value('default') }
@@ -50,7 +50,7 @@ describe 'swift::proxy::authtoken' do
       it { is_expected.to contain_swift_proxy_config('filter:authtoken/signing_dir').with_value('/home/swift/keystone-signing') }
       it { is_expected.to contain_swift_proxy_config('filter:authtoken/paste.filter_factory').with_value('keystonemiddleware.auth_token:filter_factory') }
       it { is_expected.to contain_swift_proxy_config('filter:authtoken/www_authenticate_uri').with_value('http://127.0.0.1:5000') }
-      it { is_expected.to contain_swift_proxy_config('filter:authtoken/auth_url').with_value('http://127.0.0.1:35357') }
+      it { is_expected.to contain_swift_proxy_config('filter:authtoken/auth_url').with_value('http://127.0.0.1:5000') }
       it { is_expected.to contain_swift_proxy_config('filter:authtoken/auth_plugin').with_value('password') }
       it { is_expected.to contain_swift_proxy_config('filter:authtoken/project_domain_id').with_value('default') }
       it { is_expected.to contain_swift_proxy_config('filter:authtoken/user_domain_id').with_value('default') }
@@ -73,23 +73,23 @@ describe 'swift::proxy::authtoken' do
     describe "when identity_uri is set" do
       let :params do
         {
-          :identity_uri => 'https://foo.bar:35357/'
+          :identity_uri => 'https://foo.bar:5000/'
         }
       end
 
-      it { is_expected.to contain_swift_proxy_config('filter:authtoken/auth_url').with_value('https://foo.bar:35357/') }
+      it { is_expected.to contain_swift_proxy_config('filter:authtoken/auth_url').with_value('https://foo.bar:5000/') }
     end
 
     describe "when both auth_uri and identity_uri are set" do
       let :params do
         {
           :auth_uri => 'https://foo.bar:5000/v2.0/',
-          :identity_uri => 'https://foo.bar:35357/'
+          :identity_uri => 'https://foo.bar:5000/'
         }
       end
 
       it { is_expected.to contain_swift_proxy_config('filter:authtoken/www_authenticate_uri').with_value('https://foo.bar:5000/v2.0/') }
-      it { is_expected.to contain_swift_proxy_config('filter:authtoken/auth_url').with_value('https://foo.bar:35357/') }
+      it { is_expected.to contain_swift_proxy_config('filter:authtoken/auth_url').with_value('https://foo.bar:5000/') }
     end
   end
 
