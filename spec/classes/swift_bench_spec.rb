@@ -86,7 +86,7 @@ describe 'swift::bench' do
           'bench/key').with_value(params[:swift_key])
         is_expected.to contain_swift_bench_config(
           'bench/put_concurrency').with_value(params[:put_concurrency])
-      end      
+      end
     end
   end
 
