@@ -18,7 +18,7 @@
 #
 # [*auth_uri*]
 #   (optional) The Keystone server uri
-#   Defaults to http://127.0.0.1:35357
+#   Defaults to http://127.0.0.1:5000
 #
 # == Dependencies
 #
@@ -36,7 +36,7 @@ class swift::proxy::s3token(
   $auth_host = undef,
   $auth_port = undef,
   $auth_protocol = undef,
-  $auth_uri = 'http://127.0.0.1:35357'
+  $auth_uri = 'http://127.0.0.1:5000'
 ) {
 
   include ::swift::deps

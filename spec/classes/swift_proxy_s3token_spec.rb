@@ -4,7 +4,7 @@ describe 'swift::proxy::s3token' do
   shared_examples 'swift::proxy::s3token' do
     describe "when using default parameters" do
       it { is_expected.to contain_swift_proxy_config('filter:s3token/use').with_value('egg:swift#s3token') }
-      it { is_expected.to contain_swift_proxy_config('filter:s3token/auth_uri').with_value('http://127.0.0.1:35357') }
+      it { is_expected.to contain_swift_proxy_config('filter:s3token/auth_uri').with_value('http://127.0.0.1:5000') }
     end
 
     describe "when overriding default parameters" do
@@ -22,11 +22,11 @@ describe 'swift::proxy::s3token' do
     describe "when overriding default parameters" do
       let :params do
         {
-          :auth_uri => 'http://192.168.24.11:35357'
+          :auth_uri => 'http://192.168.24.11:5000'
         }
       end
 
-      it { is_expected.to contain_swift_proxy_config('filter:s3token/auth_uri').with_value('http://192.168.24.11:35357') }
+      it { is_expected.to contain_swift_proxy_config('filter:s3token/auth_uri').with_value('http://192.168.24.11:5000') }
     end
   end
 

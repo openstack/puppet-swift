@@ -49,7 +49,7 @@
 #
 # [*auth_url*]
 #   (Optional) The URL to use for authentication.
-#   Defaults to 'http://127.0.0.1:35357'
+#   Defaults to 'http://127.0.0.1:5000'
 #
 # [*auth_type*]
 #   (Optional) The plugin for authentication
@@ -149,7 +149,7 @@ class swift::proxy::ceilometer(
   $nonblocking_notify         = false,
   $ignore_projects            = ['services'],
   $auth_uri                   = 'http://127.0.0.1:5000',
-  $auth_url                   = 'http://127.0.0.1:35357',
+  $auth_url                   = 'http://127.0.0.1:5000',
   $auth_type                  = 'password',
   $project_domain_name        = 'Default',
   $user_domain_name           = 'Default',

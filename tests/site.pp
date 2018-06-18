@@ -245,7 +245,7 @@ node /swift-proxy/ {
   class { '::swift::proxy::s3token':
     # assume that the controller host is the swift api server
     auth_host => $swift_keystone_node,
-    auth_port => '35357',
+    auth_port => '5000',
   }
   class { '::swift::proxy::keystone':
     operator_roles => ['admin', 'SwiftOperator'],
