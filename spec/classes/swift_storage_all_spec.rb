@@ -41,6 +41,7 @@ describe 'swift::storage::all' do
        :container_pipeline => ["healthcheck"],
        :account_pipeline => ["healthcheck"],
        :allow_versions => true,
+       :splice => true,
        :log_facility => ['LOG_LOCAL2', 'LOG_LOCAL3'],
        :incoming_chmod => '0644',
        :outgoing_chmod => '0644',
@@ -98,7 +99,8 @@ describe 'swift::storage::all' do
            :config_file_path => 'object-server.conf',
            :incoming_chmod => param_hash[:incoming_chmod],
            :outgoing_chmod => param_hash[:outgoing_chmod],
-           :pipeline => param_hash[:object_pipeline] || ['object-server'] }.merge(storage_server_defaults)
+           :pipeline => param_hash[:object_pipeline] || ['object-server'],
+           :splice => param_hash[:splice] || false }.merge(storage_server_defaults)
         )}
         it { is_expected.to contain_swift__storage__server(param_hash[:container_port]).with(
           {:type => 'container',

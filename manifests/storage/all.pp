@@ -109,6 +109,11 @@
 #   (optional) Number of account server workers.
 #   Defaults to undef.
 #
+# [*splice*]
+#   (optional) Use splice for zero-copy object GETs. This requires Linux Kernel
+#   version 3.0 or greater.
+#   Defaults to false.
+#
 class swift::storage::all(
   $storage_local_net_ip,
   $devices                        = '/srv/node',
@@ -136,6 +141,7 @@ class swift::storage::all(
   $account_server_workers         = undef,
   $container_server_workers       = undef,
   $object_server_workers          = undef,
+  $splice                         = false,
 ) {
 
   include ::swift::deps
@@ -203,5 +209,6 @@ class swift::storage::all(
     incoming_chmod   => $incoming_chmod,
     outgoing_chmod   => $outgoing_chmod,
     workers          => $object_server_workers,
+    splice           => $splice,
   }
 }

@@ -111,6 +111,16 @@ describe 'swift::storage::server' do
             end
           end
 
+          if t == 'object'
+            describe "when splice is not set" do
+             it { is_expected.to contain_concat_fragment("swift-#{t}-#{title}").with_content(/^splice\s*=\s*false\s*$/) }
+            end
+            describe "when splice is set" do
+             let :params do req_params.merge({ :splice => true, }) end
+              it { is_expected.to contain_concat_fragment("swift-#{t}-#{title}").with_content(/^splice\s*=\s*true\s*$/) }
+            end
+          end
+
           describe "when log_udp_port is set" do
             context 'and log_udp_host is not set' do
               let :params do req_params.merge({ :log_udp_port => 514}) end

@@ -135,6 +135,11 @@
 #   (optional) Prefix for data being sent to statsd.
 #   Defaults to ''
 #
+# [*splice*]
+#   (optional) Use splice for zero-copy object GETs. This requires Linux Kernel
+#   version 3.0 or greater.
+#   Defaults to false.
+#
 define swift::storage::server(
   $type,
   $storage_local_net_ip,
@@ -167,6 +172,7 @@ define swift::storage::server(
   $log_statsd_default_sample_rate = '1.0',
   $log_statsd_sample_rate_factor  = '1.0',
   $log_statsd_metric_prefix       = '',
+  $splice                         = false,
 ) {
 
   include ::swift::deps
@@ -198,6 +204,7 @@ define swift::storage::server(
   validate_re($type, '^object|container|account$')
   validate_array($pipeline)
   validate_bool($allow_versions)
+  validate_bool($splice)
   # TODO - validate that name is an integer
 
   $bind_port = $name
