@@ -60,6 +60,7 @@ define swift::storage::xfs(
     'uuid': { $mount_device = dig44($facts, ['partitions', $target_device, 'uuid'])
               unless $mount_device { fail("Unable to fetch uuid of ${target_device}") }
             }
+    'label': { $mount_device = "LABEL=${name}" }
     default: { fail("Unsupported mount_type parameter value: '${mount_type}'. Should be 'path' or 'uuid'.") }
   }
 
@@ -78,7 +79,7 @@ define swift::storage::xfs(
   # so we format it. If device has a valid XFS FS, command returns 0
   # So we do NOT touch it.
   exec { "mkfs-${name}":
-    command => "mkfs.xfs -f -i size=${byte_size} ${target_device}",
+    command => "mkfs.xfs -f -i size=${byte_size} -L ${device} ${target_device}",
     path    => ['/sbin/', '/usr/sbin/'],
     unless  => "xfs_admin -l ${target_device}",
     before  => Anchor['swift::config::end'],
