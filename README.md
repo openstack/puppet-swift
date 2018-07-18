@@ -237,10 +237,10 @@ ex:
     deprecated     => 'No',
   }
 ```
-See swift::storage::policy for additional parameters to set. 
+See swift::storage::policy for additional parameters to set.
 #### Storage policies and erasure code support.
 Support for erasure code using storage policies is supported using swift::storage::policy.
-A future change will enable the swift-object-reconstructor process that is needed for a 
+A future change will enable the swift-object-reconstructor process that is needed for a
 cluster that runs erasure code.
 
 ### Class swift::proxy
@@ -605,6 +605,6 @@ Release Notes
 * https://docs.openstack.org/releasenotes/puppet-swift
 
 Repository
--------------
+----------
 
 * https://git.openstack.org/cgit/openstack/puppet-swift
