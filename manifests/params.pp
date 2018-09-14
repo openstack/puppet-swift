@@ -68,7 +68,8 @@ class swift::params {
       $swift3                            = 'openstack-swift-plugin-swift3'
     }
     default: {
-        fail("Unsupported osfamily: ${::osfamily} for os ${::operatingsystem}")
+      fail("Unsupported osfamily: ${::osfamily} operatingsystem: ${::operatingsystem}, \
+module ${module_name} only support osfamily RedHat and Debian")
     }
   }
   $swift_init_service_names = [
