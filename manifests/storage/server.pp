@@ -47,6 +47,14 @@
 #   writing to the root device.
 #   Defaults to true.
 #
+# [*servers_per_port*]
+#   (optional) Spawn multiple servers per device on different ports.
+#   Make object-server run this many worker processes per unique port of
+#   "local" ring devices across all storage policies.  This can help provide
+#   the isolation of threads_per_disk without the severe overhead.  The default
+#   value of 0 disables this feature.
+#   Defaults to 0.
+#
 # [*user*]
 #   (optional) User to run as
 #   Defaults to 'swift'.
@@ -151,6 +159,7 @@ define swift::storage::server(
   $max_connections                = 25,
   $pipeline                       = ["${type}-server"],
   $mount_check                    = true,
+  $servers_per_port               = 0,
   $user                           = 'swift',
   $workers                        = $::os_workers,
   $allow_versions                 = false,
