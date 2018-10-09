@@ -1,0 +1,4 @@
+---
+features:
+  - Default number of account/container/object server workers
+    capped to os_workers fact unless overridden.

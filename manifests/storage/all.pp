@@ -99,15 +99,15 @@
 #
 # [*account_server_workers*]
 #   (optional) Number of account server workers.
-#   Defaults to undef.
+#   Defaults to $::os_workers.
 #
 # [*container_server_workers*]
 #   (optional) Number of container server workers.
-#   Defaults to undef.
+#   Defaults to $::os_workers.
 #
 # [*object_server_workers*]
 #   (optional) Number of account server workers.
-#   Defaults to undef.
+#   Defaults to $::os_workers.
 #
 # [*splice*]
 #   (optional) Use splice for zero-copy object GETs. This requires Linux Kernel
@@ -138,9 +138,9 @@ class swift::storage::all(
   $log_statsd_default_sample_rate = '1.0',
   $log_statsd_sample_rate_factor  = '1.0',
   $log_statsd_metric_prefix       = '',
-  $account_server_workers         = undef,
-  $container_server_workers       = undef,
-  $object_server_workers          = undef,
+  $account_server_workers         = $::os_workers,
+  $container_server_workers       = $::os_workers,
+  $object_server_workers          = $::os_workers,
   $splice                         = false,
 ) {
 
