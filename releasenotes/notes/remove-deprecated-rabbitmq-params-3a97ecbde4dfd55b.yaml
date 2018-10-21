@@ -1,0 +1,6 @@
+---
+upgrade:
+  - |
+    The deprecated options rabbit_host, rabbit_hosts, rabbit_password,
+    rabbit_port, rabbit_userid and rabbit_virtual_host in
+    swift::proxy::ceilometer has been removed.
