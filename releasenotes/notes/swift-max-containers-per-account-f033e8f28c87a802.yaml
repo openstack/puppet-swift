@@ -1,0 +1,6 @@
+---
+features:
+  - |
+    Added new parameters max_containers_per_account and 
+    max_containers_whitelist to proxy class that can be used to configure
+    the maximum authorized container number for an account.

@@ -65,6 +65,8 @@ describe 'swift::proxy' do
         it { should contain_swift_proxy_config('app:proxy-server/log_handoffs').with_value('true') }
         it { should contain_swift_proxy_config('app:proxy-server/allow_account_management').with_value('true') }
         it { should contain_swift_proxy_config('app:proxy-server/account_autocreate').with_value('true') }
+        it { should contain_swift_proxy_config('app:proxy-server/max_containers_per_account').with_value(0) }
+        it { should contain_swift_proxy_config('app:proxy-server/max_containers_whitelist').with_value('<SERVICE DEFAULT>') }
 
         it { should contain_service('swift-proxy-server').with_require([
           'Class[Swift::Proxy::Healthcheck]',
@@ -96,19 +98,21 @@ describe 'swift::proxy' do
 
           let :params do
             {
-              :proxy_local_net_ip        => '10.0.0.2',
-              :port                      => '80',
-              :workers                   => 3,
-              :pipeline                  => ['swauth', 'proxy-server'],
-              :allow_account_management  => false,
-              :account_autocreate        => false,
-              :log_level                 => 'DEBUG',
-              :log_name                  => 'swift-proxy-server',
-              :read_affinity             => 'r1z1=100, r1=200',
-              :write_affinity            => 'r1',
-              :write_affinity_node_count => '2 * replicas',
-              :node_timeout              => '20',
-              :cors_allow_origin         => 'http://foo.bar:1234,https://foo.bar',
+              :proxy_local_net_ip         => '10.0.0.2',
+              :port                       => '80',
+              :workers                    => 3,
+              :pipeline                   => ['swauth', 'proxy-server'],
+              :allow_account_management   => false,
+              :account_autocreate         => false,
+              :log_level                  => 'DEBUG',
+              :log_name                   => 'swift-proxy-server',
+              :max_containers_per_account => 10,
+              :max_containers_whitelist   => 'project1,project2',
+              :read_affinity              => 'r1z1=100, r1=200',
+              :write_affinity             => 'r1',
+              :write_affinity_node_count  => '2 * replicas',
+              :node_timeout               => '20',
+              :cors_allow_origin          => 'http://foo.bar:1234,https://foo.bar',
             }
           end
 
@@ -132,6 +136,8 @@ describe 'swift::proxy' do
           it { should contain_swift_proxy_config('app:proxy-server/log_handoffs').with_value('true') }
           it { should contain_swift_proxy_config('app:proxy-server/allow_account_management').with_value('false') }
           it { should contain_swift_proxy_config('app:proxy-server/account_autocreate').with_value('false') }
+          it { should contain_swift_proxy_config('app:proxy-server/max_containers_per_account').with_value(10) }
+          it { should contain_swift_proxy_config('app:proxy-server/max_containers_whitelist').with_value('project1,project2') }
           it { should contain_swift_proxy_config('app:proxy-server/sorting_method').with_value('affinity') }
           it { should contain_swift_proxy_config('app:proxy-server/read_affinity').with_value('r1z1=100, r1=200') }
           it { should contain_swift_proxy_config('app:proxy-server/write_affinity').with_value('r1') }

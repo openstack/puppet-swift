@@ -65,6 +65,14 @@
 #     (optional) If True, the proxy will log whenever it has to failover to a handoff node
 #     Defaults to true.
 #
+#  [*max_containers_per_account*]
+#     (optional) If set to a positive value, will limit container number per account.
+#     Default to 0.
+#
+#  [*max_containers_whitelist*]
+#     (optional) This is a comma separated list of account hashes that ignore the max_containers_per_account cap.
+#     Default to $::os_service_default.
+#
 #  [*read_affinity*]
 #    (optional) Configures the read affinity of proxy-server.
 #    Defaults to undef.
@@ -131,30 +139,32 @@
 #
 class swift::proxy(
   $proxy_local_net_ip,
-  $port                      = '8080',
-  $pipeline                  = ['healthcheck', 'cache', 'tempauth', 'proxy-server'],
-  $workers                   = $::os_workers,
-  $allow_account_management  = true,
-  $account_autocreate        = true,
-  $log_headers               = 'False',
-  $log_udp_host              = undef,
-  $log_udp_port              = undef,
-  $log_address               = '/dev/log',
-  $log_level                 = 'INFO',
-  $log_facility              = 'LOG_LOCAL2',
-  $log_handoffs              = true,
-  $log_name                  = 'proxy-server',
-  $cors_allow_origin         = undef,
-  $strict_cors_mode          = true,
-  $read_affinity             = undef,
-  $write_affinity            = undef,
-  $write_affinity_node_count = undef,
-  $node_timeout              = undef,
-  $manage_service            = true,
-  $enabled                   = true,
-  $package_ensure            = 'present',
-  $service_provider          = $::swift::params::service_provider,
-  $purge_config              = false,
+  $port                       = '8080',
+  $pipeline                   = ['healthcheck', 'cache', 'tempauth', 'proxy-server'],
+  $workers                    = $::os_workers,
+  $allow_account_management   = true,
+  $account_autocreate         = true,
+  $log_headers                = 'False',
+  $log_udp_host               = undef,
+  $log_udp_port               = undef,
+  $log_address                = '/dev/log',
+  $log_level                  = 'INFO',
+  $log_facility               = 'LOG_LOCAL2',
+  $log_handoffs               = true,
+  $log_name                   = 'proxy-server',
+  $cors_allow_origin          = undef,
+  $strict_cors_mode           = true,
+  $max_containers_per_account = 0,
+  $max_containers_whitelist   = $::os_service_default,
+  $read_affinity              = undef,
+  $write_affinity             = undef,
+  $write_affinity_node_count  = undef,
+  $node_timeout               = undef,
+  $manage_service             = true,
+  $enabled                    = true,
+  $package_ensure             = 'present',
+  $service_provider           = $::swift::params::service_provider,
+  $purge_config               = false,
 ) inherits ::swift::params {
 
   include ::swift::deps
@@ -201,29 +211,31 @@ class swift::proxy(
   }
 
   swift_proxy_config {
-    'DEFAULT/bind_port':                          value => $port;
-    'DEFAULT/bind_ip':                            value => $proxy_local_net_ip;
-    'DEFAULT/workers':                            value => $workers;
-    'DEFAULT/user':                               value => 'swift';
-    'DEFAULT/log_name':                           value => $log_name;
-    'DEFAULT/log_facility':                       value => $log_facility;
-    'DEFAULT/log_level':                          value => $log_level;
-    'DEFAULT/log_headers':                        value => $log_headers;
-    'DEFAULT/log_address':                        value => $log_address;
-    'DEFAULT/log_udp_host':                       value => $log_udp_host;
-    'DEFAULT/log_udp_port':                       value => $log_udp_port;
-    'pipeline:main/pipeline':                     value => join($pipeline, ' ');
-    'app:proxy-server/use':                       value => 'egg:swift#proxy';
-    'app:proxy-server/set log_name':              value => $log_name;
-    'app:proxy-server/set log_facility':          value => $log_facility;
-    'app:proxy-server/set log_level':             value => $log_level;
-    'app:proxy-server/set log_address':           value => $log_address;
-    'app:proxy-server/log_handoffs':              value => $log_handoffs;
-    'app:proxy-server/allow_account_management':  value => $allow_account_management;
-    'app:proxy-server/account_autocreate':        value => $account_autocreate;
-    'app:proxy-server/write_affinity':            value => $write_affinity;
-    'app:proxy-server/write_affinity_node_count': value => $write_affinity_node_count;
-    'app:proxy-server/node_timeout':              value => $node_timeout;
+    'DEFAULT/bind_port':                           value => $port;
+    'DEFAULT/bind_ip':                             value => $proxy_local_net_ip;
+    'DEFAULT/workers':                             value => $workers;
+    'DEFAULT/user':                                value => 'swift';
+    'DEFAULT/log_name':                            value => $log_name;
+    'DEFAULT/log_facility':                        value => $log_facility;
+    'DEFAULT/log_level':                           value => $log_level;
+    'DEFAULT/log_headers':                         value => $log_headers;
+    'DEFAULT/log_address':                         value => $log_address;
+    'DEFAULT/log_udp_host':                        value => $log_udp_host;
+    'DEFAULT/log_udp_port':                        value => $log_udp_port;
+    'pipeline:main/pipeline':                      value => join($pipeline, ' ');
+    'app:proxy-server/use':                        value => 'egg:swift#proxy';
+    'app:proxy-server/set log_name':               value => $log_name;
+    'app:proxy-server/set log_facility':           value => $log_facility;
+    'app:proxy-server/set log_level':              value => $log_level;
+    'app:proxy-server/set log_address':            value => $log_address;
+    'app:proxy-server/log_handoffs':               value => $log_handoffs;
+    'app:proxy-server/allow_account_management':   value => $allow_account_management;
+    'app:proxy-server/account_autocreate':         value => $account_autocreate;
+    'app:proxy-server/max_containers_per_account': value => $max_containers_per_account;
+    'app:proxy-server/max_containers_whitelist':   value => $max_containers_whitelist;
+    'app:proxy-server/write_affinity':             value => $write_affinity;
+    'app:proxy-server/write_affinity_node_count':  value => $write_affinity_node_count;
+    'app:proxy-server/node_timeout':               value => $node_timeout;
   }
 
   if $cors_allow_origin {
