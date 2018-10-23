@@ -11,7 +11,7 @@
 #
 # [*signing_dir*]
 #    The cache directory for signing certificates.
-#    Defaults to '/var/cache/swift'
+#    Defaults to $::swift::params::signing_dir
 #
 # [*cache*]
 #    The cache backend to use
@@ -87,7 +87,7 @@
 #
 class swift::proxy::authtoken(
   $delay_auth_decision     = 1,
-  $signing_dir             = '/var/cache/swift',
+  $signing_dir             = $::swift::params::signing_dir,
   $cache                   = 'swift.cache',
   $auth_uri                = 'http://127.0.0.1:5000',
   $auth_url                = 'http://127.0.0.1:5000',
@@ -104,7 +104,7 @@ class swift::proxy::authtoken(
   $admin_password          = undef,
   $identity_uri            = undef,
   $admin_token             = undef,
-) {
+) inherits swift::params {
 
   include ::swift::deps
 
@@ -133,15 +133,18 @@ class swift::proxy::authtoken(
   $project_name_real = pick($admin_tenant_name, $project_name)
   $password_real = pick($admin_password, $password)
 
-  file { $signing_dir:
-    ensure                  => directory,
-    mode                    => '0700',
-    owner                   => 'swift',
-    group                   => 'swift',
-    selinux_ignore_defaults => true,
-    require                 => Anchor['swift::config::begin'],
-    before                  => Anchor['swift::config::end'],
+  if ($::os_package_type != 'debian') {
+    file { $signing_dir:
+      ensure                  => directory,
+      mode                    => '0700',
+      owner                   => 'swift',
+      group                   => 'swift',
+      selinux_ignore_defaults => true,
+      require                 => Anchor['swift::config::begin'],
+      before                  => Anchor['swift::config::end'],
+    }
   }
+
 
   swift_proxy_config {
     'filter:authtoken/log_name':                value => 'swift';

@@ -1,0 +1,6 @@
+---
+prelude: >
+    The default signing_dir is changed to /var/lib/swift for Debian. For all
+    other OSes, /var/cache/swift is kept. This is due to the fact that the
+    Debian sysv-init / systemd scripts are setting /var/cache/swift with the
+    unix rights 0755, which isn't safe for this OS.
