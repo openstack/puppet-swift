@@ -102,33 +102,6 @@
 #   available on some distributions. (string value)
 #   Defaults to $::os_service_default
 #
-# === DEPRECATED PARAMETERS
-#
-# [*rabbit_host*]
-#   (Optional) IP or hostname of the rabbit server.
-#   Defaults to '127.0.0.1'.
-#
-# [*rabbit_port*]
-#   (Optional) Port of the rabbit server.
-#   Defaults to 5672.
-#
-# [*rabbit_hosts*]
-#   (Optional) IP or hostname of the rabbits servers.
-#   comma separated array (ex: ['1.0.0.10:5672','1.0.0.11:5672'])
-#   Defaults to undef.
-#
-# [*rabbit_user*]
-#   (Optional) Username for rabbit.
-#   Defaults to 'guest'.
-#
-# [*rabbit_password*]
-#   (Optional) Password for rabbit user.
-#   Defaults to 'guest'.
-#
-# [*rabbit_virtual_host*]
-#   (Optional) Virtual host to use.
-#   Defaults to '/'.
-#
 # == Examples
 #
 # == Authors
@@ -162,37 +135,9 @@ class swift::proxy::ceilometer(
   $amqp_ssl_key_password      = $::os_service_default,
   $rabbit_use_ssl             = $::os_service_default,
   $kombu_ssl_version          = $::os_service_default,
-  # DEPRECATED PARAMETERS
-  $rabbit_user                = 'guest',
-  $rabbit_password            = 'guest',
-  $rabbit_host                = '127.0.0.1',
-  $rabbit_port                = '5672',
-  $rabbit_hosts               = undef,
-  $rabbit_virtual_host        = '/',
 ) inherits swift {
 
   include ::swift::deps
-
-  if $default_transport_url {
-    $amqp_url = $default_transport_url
-  } else {
-    warning("swift::proxy::ceilometer::rabbit_host,
-swift::proxy::ceilometer::rabbit_hosts, swift::proxy::ceilometer::rabbit_password, \
-swift::proxy::ceilometer::rabbit_port, swift::proxy::ceilometer::rabbit_userid \
-and swift::proxy::ceilometer::rabbit_virtual_host are \
-deprecated. Please use swift::proxy::ceilometer::default_transport_url instead.")
-
-    if(is_array($rabbit_hosts)) {
-      $rabbit_hosts_with_creds = prefix($rabbit_hosts, "${rabbit_user}:${rabbit_password}@")
-    }
-
-    if !$rabbit_hosts {
-      $amqp_url = "rabbit://${rabbit_user}:${rabbit_password}@${rabbit_host}:${rabbit_port}/${rabbit_virtual_host}"
-    } else {
-      $hosts = join($rabbit_hosts_with_creds, ',')
-      $amqp_url = "rabbit://${hosts}/${rabbit_virtual_host}"
-    }
-  }
 
   User['swift'] {
     groups +> $group,
@@ -215,7 +160,7 @@ deprecated. Please use swift::proxy::ceilometer::default_transport_url instead."
   swift_proxy_config {
     'filter:ceilometer/topic':                value => $topic;
     'filter:ceilometer/driver':               value => $driver;
-    'filter:ceilometer/url':                  value => $amqp_url, secret => true;
+    'filter:ceilometer/url':                  value => $default_transport_url, secret => true;
     'filter:ceilometer/control_exchange':     value => $control_exchange;
     'filter:ceilometer/paste.filter_factory': value => 'ceilometermiddleware.swift:filter_factory';
     'filter:ceilometer/nonblocking_notify':   value => $nonblocking_notify;
@@ -230,7 +175,7 @@ deprecated. Please use swift::proxy::ceilometer::default_transport_url instead."
     'filter:ceilometer/password':             value => $password;
   }
 
-  if $amqp_url =~ /^rabbit.*/ {
+  if $default_transport_url =~ /^rabbit.*/ {
     oslo::messaging::rabbit {'swift_proxy_config':
       kombu_ssl_ca_certs => $notification_ssl_ca_file,
       kombu_ssl_certfile => $notification_ssl_cert_file,
@@ -238,7 +183,7 @@ deprecated. Please use swift::proxy::ceilometer::default_transport_url instead."
       kombu_ssl_version  => $kombu_ssl_version,
       rabbit_use_ssl     => $rabbit_use_ssl,
     }
-  } elsif $amqp_url =~ /^amqp.*/ {
+  } elsif $default_transport_url =~ /^amqp.*/ {
     oslo::messaging::amqp {'swift_proxy_config':
       ssl_ca_file      => $notification_ssl_ca_file,
       ssl_cert_file    => $notification_ssl_cert_file,

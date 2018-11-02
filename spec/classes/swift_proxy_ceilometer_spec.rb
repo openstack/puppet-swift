@@ -10,8 +10,14 @@ describe 'swift::proxy::ceilometer' do
 
   shared_examples 'swift::proxy::ceilometer' do
     describe "when using default parameters" do
+      let :params do
+        {
+          :default_transport_url => 'rabbit://user_1:user_1_passw@1.1.1.1:5673/rabbit',
+        }
+      end
+
       it { is_expected.to contain_swift_proxy_config('filter:ceilometer/paste.filter_factory').with_value('ceilometermiddleware.swift:filter_factory') }
-      it { is_expected.to contain_swift_proxy_config('filter:ceilometer/url').with_value('rabbit://guest:guest@127.0.0.1:5672//') }
+      it { is_expected.to contain_swift_proxy_config('filter:ceilometer/url').with_value('rabbit://user_1:user_1_passw@1.1.1.1:5673/rabbit').with_secret(true) }
       it { is_expected.to contain_swift_proxy_config('filter:ceilometer/nonblocking_notify').with_value('false') }
       it { is_expected.to contain_user('swift').with_groups('ceilometer') }
       it { is_expected.to contain_file('/var/log/ceilometer/swift-proxy-server.log').with(:owner => 'swift', :group => 'swift', :mode => '0664') }
@@ -19,32 +25,28 @@ describe 'swift::proxy::ceilometer' do
 
     describe "when overriding default parameters with rabbit driver" do
       let :params do
-        { :group               => 'www-data',
-          :rabbit_user         => 'user_1',
-          :rabbit_password     => 'user_1_passw',
-          :rabbit_host         => '1.1.1.1',
-          :rabbit_port         => '5673',
-          :rabbit_virtual_host => 'rabbit',
-          :driver              => 'messagingv2',
-          :topic               => 'notifications',
-          :control_exchange    => 'swift',
-          :nonblocking_notify  => true,
-          :ignore_projects     => ['services'],
-	  :auth_uri            => 'http://127.0.0.1:5000',
-	  :auth_url            => 'http://127.0.0.1:5000',
-	  :auth_type           => 'password',
-	  :project_domain_name => 'Default',
-	  :user_domain_name    => 'Default',
-	  :project_name        => 'services',
-	  :username            => 'swift',
-	  :password            => 'password',
+        { :group                 => 'www-data',
+          :default_transport_url => 'rabbit://user_1:user_1_passw@1.1.1.1:5673/rabbit',
+          :driver                => 'messagingv2',
+          :topic                 => 'notifications',
+          :control_exchange      => 'swift',
+          :nonblocking_notify    => true,
+          :ignore_projects       => ['services'],
+	  :auth_uri              => 'http://127.0.0.1:5000',
+	  :auth_url              => 'http://127.0.0.1:5000',
+	  :auth_type             => 'password',
+	  :project_domain_name   => 'Default',
+	  :user_domain_name      => 'Default',
+	  :project_name          => 'services',
+	  :username              => 'swift',
+	  :password              => 'password',
         }
       end
 
       context 'with single rabbit host' do
         it { is_expected.to contain_user('swift').with_groups('www-data') }
         it { is_expected.to contain_swift_proxy_config('filter:ceilometer/paste.filter_factory').with_value('ceilometermiddleware.swift:filter_factory') }
-        it { is_expected.to contain_swift_proxy_config('filter:ceilometer/url').with_value('rabbit://user_1:user_1_passw@1.1.1.1:5673/rabbit') }
+        it { is_expected.to contain_swift_proxy_config('filter:ceilometer/url').with_value('rabbit://user_1:user_1_passw@1.1.1.1:5673/rabbit').with_secret(true) }
         it { is_expected.to contain_swift_proxy_config('filter:ceilometer/driver').with_value('messagingv2') }
         it { is_expected.to contain_swift_proxy_config('filter:ceilometer/topic').with_value('notifications') }
         it { is_expected.to contain_swift_proxy_config('filter:ceilometer/control_exchange').with_value('swift') }
@@ -58,20 +60,6 @@ describe 'swift::proxy::ceilometer' do
         it { is_expected.to contain_swift_proxy_config('filter:ceilometer/project_name').with_value('services') }
         it { is_expected.to contain_swift_proxy_config('filter:ceilometer/username').with_value('swift') }
         it { is_expected.to contain_swift_proxy_config('filter:ceilometer/password').with_value('password') }
-      end
-
-      context 'with multiple rabbit hosts' do
-        before do
-          params.merge!({ :rabbit_hosts => ['127.0.0.1:5672', '127.0.0.2:5672'] })
-        end
-
-        it { is_expected.to contain_user('swift').with_groups('www-data') }
-        it { is_expected.to contain_swift_proxy_config('filter:ceilometer/paste.filter_factory').with_value('ceilometermiddleware.swift:filter_factory') }
-        it { is_expected.to contain_swift_proxy_config('filter:ceilometer/url').with_value('rabbit://user_1:user_1_passw@127.0.0.1:5672,user_1:user_1_passw@127.0.0.2:5672/rabbit') }
-        it { is_expected.to contain_swift_proxy_config('filter:ceilometer/driver').with_value('messagingv2') }
-        it { is_expected.to contain_swift_proxy_config('filter:ceilometer/topic').with_value('notifications') }
-        it { is_expected.to contain_swift_proxy_config('filter:ceilometer/control_exchange').with_value('swift') }
-        it { is_expected.to contain_swift_proxy_config('filter:ceilometer/nonblocking_notify').with_value('true') }
       end
 
       context 'with default transport url' do
