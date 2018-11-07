@@ -19,7 +19,7 @@ describe 'swift::proxy::authtoken' do
 
     describe "when using default parameters" do
       it { is_expected.to contain_swift_proxy_config('filter:authtoken/log_name').with_value('swift') }
-      it { is_expected.to contain_swift_proxy_config('filter:authtoken/signing_dir').with_value('/var/cache/swift') }
+      it { is_expected.to contain_swift_proxy_config('filter:authtoken/signing_dir').with_value(platform_params[:default_signing_dir]) }
       it { is_expected.to contain_swift_proxy_config('filter:authtoken/paste.filter_factory').with_value('keystonemiddleware.auth_token:filter_factory') }
       it { is_expected.to contain_swift_proxy_config('filter:authtoken/www_authenticate_uri').with_value('http://127.0.0.1:5000') }
       it { is_expected.to contain_swift_proxy_config('filter:authtoken/auth_url').with_value('http://127.0.0.1:5000') }
@@ -99,6 +99,19 @@ describe 'swift::proxy::authtoken' do
     context "on #{os}" do
       let (:facts) do
         facts.merge(OSDefaults.get_facts())
+      end
+
+      let(:platform_params) do
+        case facts[:osfamily]
+        when 'Debian'
+          if facts[:os_package_type] == 'debian'
+            { :default_signing_dir => '/var/lib/swift' }
+          else
+            { :default_signing_dir => '/var/cache/swift' }
+          end
+        when 'RedHat'
+          { :default_signing_dir => '/var/cache/swift' }
+        end
       end
 
       it_configures 'swift::proxy::authtoken'
