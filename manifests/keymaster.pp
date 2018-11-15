@@ -5,7 +5,7 @@
 # [*api_class*]
 #   (Required) String. The api_class tells Castellan which key manager to 
 #   use to access the external key management system. The default value that
-#   accesses Barbican is
+#   accesses Barbican is 'barbican', which resolve to
 #   castellan.key_manager.barbican_key_manager.BarbicanKeyManager.
 #
 # [*key_id*]
@@ -66,7 +66,7 @@
 #
 class swift::keymaster(
 
-  $api_class           = 'castellan.key_manager.barbican_key_manager.BarbicanKeyManager',
+  $api_class           = 'barbican',
   $key_id              = undef,
   $username            = 'swift',
   $password            = undef,
