@@ -37,9 +37,9 @@ class swift::proxy::s3token(
   include ::swift::deps
 
   swift_proxy_config {
-    'filter:s3token/paste.filter_factory': value => 'keystonemiddleware.s3_token:filter_factory';
-    'filter:s3token/auth_host':            value => $auth_host;
-    'filter:s3token/auth_port':            value => $auth_port;
-    'filter:s3token/auth_protocol':        value => $auth_protocol;
+    'filter:s3token/use':           value => 'egg:swift3#s3token';
+    'filter:s3token/auth_host':     value => $auth_host;
+    'filter:s3token/auth_port':     value => $auth_port;
+    'filter:s3token/auth_protocol': value => $auth_protocol;
   }
 }
