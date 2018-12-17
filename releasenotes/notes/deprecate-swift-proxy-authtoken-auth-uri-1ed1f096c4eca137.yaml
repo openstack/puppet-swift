@@ -1,0 +1,5 @@
+---
+deprecations:
+  - |
+    swift::proxy::authtoken::auth_uri is now deprecated, please use the
+    www_authenticate_uri parameter instead.

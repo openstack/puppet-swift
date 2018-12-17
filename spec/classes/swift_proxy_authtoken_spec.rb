@@ -62,9 +62,9 @@ describe 'swift::proxy::authtoken' do
       it { is_expected.to contain_swift_proxy_config('filter:authtoken/include_service_catalog').with_value('false') }
     end
 
-    describe 'when overriding auth_uri' do
+    describe 'when overriding www_authenticate_uri' do
       let :params do
-        { :auth_uri => 'http://public.host/keystone/main' }
+        { :www_authenticate_uri => 'http://public.host/keystone/main' }
       end
 
       it { is_expected.to contain_swift_proxy_config('filter:authtoken/www_authenticate_uri').with_value('http://public.host/keystone/main') }
@@ -80,11 +80,11 @@ describe 'swift::proxy::authtoken' do
       it { is_expected.to contain_swift_proxy_config('filter:authtoken/auth_url').with_value('https://foo.bar:5000/') }
     end
 
-    describe "when both auth_uri and identity_uri are set" do
+    describe "when both www_authenticate_uri and identity_uri are set" do
       let :params do
         {
-          :auth_uri => 'https://foo.bar:5000/v2.0/',
-          :identity_uri => 'https://foo.bar:5000/'
+          :www_authenticate_uri => 'https://foo.bar:5000/v2.0/',
+          :identity_uri         => 'https://foo.bar:5000/'
         }
       end
 
