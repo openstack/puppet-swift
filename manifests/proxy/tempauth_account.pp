@@ -19,7 +19,7 @@ define swift::proxy::tempauth_account() {
   $account_data = strip(split($title,','))
   if $account_data[0] != '' {
     swift_proxy_config {
-      "filter:tempauth/${account_data[0]}": value => "${account_data[1]}";
+      "filter:tempauth/${account_data[0]}": value => $account_data[1];
     }
   }
 }
