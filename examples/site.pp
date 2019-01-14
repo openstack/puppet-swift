@@ -60,7 +60,6 @@ $swift_zone = hiera('swift_zone', 1)
 # configurations that need to be applied to all swift nodes
 
 $swift_keystone_db_password    = hiera('keystone_db_password', 'keystone_db_password')
-$keystone_admin_token          = hiera('admin_token', 'service_token')
 $swift_keystone_admin_email    = hiera('admin_email', 'keystone@localhost')
 $swift_keystone_admin_password = hiera('admin_password', 'ChangeMe')
 
@@ -91,7 +90,7 @@ node 'swift-keystone' {
   class { '::keystone':
     debug          => $debug,
     catalog_type   => 'sql',
-    admin_token    => $admin_token,
+    admin_password => $swift_keystone_admin_password,
     enabled        => $enabled,
     sql_connection => "mysql://keystone_admin:${swift_keystone_db_password}@127.0.0.1/keystone",
   }

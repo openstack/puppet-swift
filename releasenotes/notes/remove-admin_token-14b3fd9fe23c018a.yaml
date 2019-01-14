@@ -1,0 +1,4 @@
+---
+upgrade:
+  - |
+    The deprecated parameter admin_token in swift::proxy::authtoken is now removed.

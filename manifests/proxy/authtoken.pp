@@ -57,10 +57,6 @@
 #
 # == DEPRECATED
 #
-# [*admin_token*]
-#   (optional) Deprecated.
-#   Defaults to undef
-#
 # [*identity_uri*]
 #   (optional) Deprecated. Use auth_url instead.
 #   Defaults to undef
@@ -107,15 +103,10 @@ class swift::proxy::authtoken(
   $admin_tenant_name       = undef,
   $admin_password          = undef,
   $identity_uri            = undef,
-  $admin_token             = undef,
   $auth_uri                = undef,
 ) inherits swift::params {
 
   include ::swift::deps
-
-  if $admin_token {
-    warning('admin_token is deprecated, has no usage and will be removed in the O release')
-  }
 
   if $identity_uri {
     warning('identity_uri is deprecated and will be removed, please use auth_url instead')
