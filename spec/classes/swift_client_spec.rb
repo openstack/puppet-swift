@@ -40,11 +40,7 @@ describe 'swift::client' do
       let(:platform_params) do
         case facts[:osfamily]
         when 'Debian'
-          if facts[:os_package_type] == 'debian'
-            { :client_package_name => 'python3-swiftclient' }
-          else
-            { :client_package_name => 'python-swiftclient' }
-          end
+          { :client_package_name => 'python3-swiftclient' }
         when 'RedHat'
           { :client_package_name => 'python-swiftclient' }
         end
