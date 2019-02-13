@@ -36,7 +36,7 @@ Setup
 
 **What the swift module affects**
 
-* [Swift](https://wiki.openstack.org/wiki/Swift), the object storage service for OpenStack.
+* [Swift](https://docs.openstack.org/swift/latest/), the object storage service for OpenStack.
 
 ### Installing swift
 
