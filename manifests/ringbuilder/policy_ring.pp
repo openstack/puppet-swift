@@ -35,8 +35,8 @@ define swift::ringbuilder::policy_ring(
   $min_part_hours = undef,
 ) {
 
+  validate_legacy(Pattern[/^\d+$/], 'validate_re', $title, ['^\d+$'])
 
-  validate_re($title, '^\d+$')
   include ::swift::deps
   Class['swift'] -> Swift::Ringbuilder::Policy_ring[$title]
 

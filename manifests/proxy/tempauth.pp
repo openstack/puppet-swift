@@ -83,29 +83,29 @@ class swift::proxy::tempauth (
 
   include ::swift::deps
 
-  validate_array($account_user_list)
+  validate_legacy(Array, 'validate_array', $account_user_list)
 
   if ($reseller_prefix) {
-    validate_string($reseller_prefix)
+    validate_legacy(String, 'validate_string', $reseller_prefix)
     $reseller_prefix_upcase = upcase($reseller_prefix)
   }
 
   if ($token_life) {
-    validate_integer($token_life)
+    validate_legacy(Integer, 'validate_integer', $token_life)
   }
 
   if ($auth_prefix) {
-    validate_re($auth_prefix,'\/(.*)+\/')
+    validate_legacy(Pattern[/\/(.*)+\//], 'validate_re', $auth_prefix, ['\/(.*)+\/'])
   }
 
   if ($allow_overrides) {
-    validate_bool($allow_overrides)
+    validate_legacy(Boolean, 'validate_bool', $allow_overrides)
   }
 
   if ($storage_url_scheme) {
-    validate_re($storage_url_scheme, ['http','https','default'])
+    validate_legacy(Enum['http', 'https', 'default'], 'validate_re',
+      $storage_url_scheme, [['http', 'https', 'default']])
   }
-
 
   swift_proxy_config {
     'filter:tempauth/use':                value => 'egg:swift#tempauth';

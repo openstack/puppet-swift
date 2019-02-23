@@ -32,7 +32,7 @@ describe 'swift::storage::node' do
          :mnt_base_dir => '/srv/node' }
        end
 
-      it_raises 'a Puppet::Error', /The zone parameter must be an integer/
+      it { should raise_error(Puppet::Error) }
     end
 
     describe 'with valid preconditons and policy_index=1 should contain ring devices' do

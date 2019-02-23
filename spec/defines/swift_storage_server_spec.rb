@@ -36,7 +36,7 @@ describe 'swift::storage::server' do
         'foo'
       end
 
-      it_raises 'a Puppet::Error', /does not match/
+      it { should raise_error(Puppet::Error) }
     end
 
     ['account', 'object', 'container'].each do |t|
@@ -84,7 +84,7 @@ describe 'swift::storage::server' do
 
           describe "when pipeline is not passed an array" do
             let :params do req_params.merge({:pipeline => 'not an array'}) end
-            it_raises 'a Puppet::Error', /is not an Array/
+            it { should raise_error(Puppet::Error) }
           end
 
           describe "when replicator_concurrency is set" do

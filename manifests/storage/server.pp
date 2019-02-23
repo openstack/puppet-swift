@@ -209,11 +209,12 @@ define swift::storage::server(
 
   include "::swift::storage::${type}"
 
-  validate_re($name, '^\d+$')
-  validate_re($type, '^object|container|account$')
-  validate_array($pipeline)
-  validate_bool($allow_versions)
-  validate_bool($splice)
+  validate_legacy(Pattern[/^\d+$/], 'validate_re', $name, ['^\d+$'])
+  validate_legacy(Enum['object', 'container', 'account'], 'validate_re',
+    $type, ['^object|container|account$'])
+  validate_legacy(Array, 'validate_array', $pipeline)
+  validate_legacy(Boolean, 'validate_bool', $allow_versions)
+  validate_legacy(Boolean, 'validate_bool', $splice)
   # TODO - validate that name is an integer
 
   $bind_port = $name

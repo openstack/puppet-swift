@@ -35,9 +35,10 @@ class swift::config (
 ) {
 
   include ::swift::deps
-  validate_hash($swift_config)
-  validate_hash($swift_container_sync_realms_config)
-  validate_hash($swift_proxy_config)
+
+  validate_legacy(Hash, 'validate_hash', $swift_config)
+  validate_legacy(Hash, 'validate_hash', $swift_container_sync_realms_config)
+  validate_legacy(Hash, 'validate_hash', $swift_proxy_config)
 
   create_resources('swift_config', $swift_config)
   create_resources('swift_container_sync_realms_config', $swift_container_sync_realms_config)
