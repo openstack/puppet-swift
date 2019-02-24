@@ -1,0 +1,8 @@
+---
+upgrade:
+  - |
+    The default value for swift::dispersion::auth_url is changed
+    from http://127.0.0.1:5000/v2.0/ to http://127.0.0.1:5000/v3/
+  - |
+    The default value for swift::auth_file::auth_url is changed
+    from http://127.0.0.1:5000/v2.0/ to http://127.0.0.1:5000/v3/
