@@ -83,12 +83,12 @@ describe 'swift::proxy::authtoken' do
     describe "when both www_authenticate_uri and identity_uri are set" do
       let :params do
         {
-          :www_authenticate_uri => 'https://foo.bar:5000/v2.0/',
+          :www_authenticate_uri => 'https://foo.bar:5000/v3/',
           :identity_uri         => 'https://foo.bar:5000/'
         }
       end
 
-      it { is_expected.to contain_swift_proxy_config('filter:authtoken/www_authenticate_uri').with_value('https://foo.bar:5000/v2.0/') }
+      it { is_expected.to contain_swift_proxy_config('filter:authtoken/www_authenticate_uri').with_value('https://foo.bar:5000/v3/') }
       it { is_expected.to contain_swift_proxy_config('filter:authtoken/auth_url').with_value('https://foo.bar:5000/') }
     end
   end

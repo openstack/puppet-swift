@@ -13,7 +13,7 @@
 #
 # [*auth_url*]
 #   (optional) The authentication URL
-#   Defaults to 'http://127.0.0.1:5000/v2.0/'
+#   Defaults to 'http://127.0.0.1:5000/v3/'
 #
 # [*admin_password*]
 #   (required) The password for the swift user
@@ -22,7 +22,7 @@ class swift::auth_file (
   $admin_tenant,
   $admin_password,
   $admin_user      = 'admin',
-  $auth_url        = 'http://127.0.0.1:5000/v2.0/'
+  $auth_url        = 'http://127.0.0.1:5000/v3/'
 ) {
 
   include ::swift::deps
