@@ -170,9 +170,9 @@ class swift::proxy(
   include ::swift::deps
   Swift_config<| |> ~> Service['swift-proxy-server']
 
-  validate_bool($account_autocreate)
-  validate_bool($allow_account_management)
-  validate_array($pipeline)
+  validate_legacy(Boolean, 'validate_bool', $account_autocreate)
+  validate_legacy(Boolean, 'validate_bool', $allow_account_management)
+  validate_legacy(Array, 'validate_array', $pipeline)
 
   if($write_affinity_node_count and ! $write_affinity) {
     fail('Usage of write_affinity_node_count requires write_affinity to be set')

@@ -14,9 +14,11 @@ define swift::ringbuilder::rebalance(
 
   include ::swift::deps
 
-  validate_re($name, '^object|container|account$')
+  validate_legacy(Enum['object', 'container', 'account'], 'validate_re', $name,
+    ['^object|container|account$'])
+
   if $seed {
-    validate_re($seed, '^\d+$')
+    validate_legacy(Integer, 'validate_re', $seed, ['^\d+$'])
   }
 
   exec { "rebalance_${name}":

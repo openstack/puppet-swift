@@ -22,7 +22,7 @@ describe 'swift::storage::generic' do
         'foo'
       end
 
-      it_raises 'a Puppet::Error', /does not match/
+      it { should raise_error(Puppet::Error) }
     end
 
     %w(account object container).each do |t|

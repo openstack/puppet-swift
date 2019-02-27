@@ -230,7 +230,7 @@ describe 'swift::proxy' do
           [:account_autocreate, :allow_account_management].each do |param|
             it "should fail when #{param} is not passed a boolean" do
               params[param] = 'false'
-              should raise_error(Puppet::Error, /is not a boolean/)
+              should raise_error(Puppet::Error)
             end
           end
 

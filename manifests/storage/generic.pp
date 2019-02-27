@@ -46,7 +46,8 @@ define swift::storage::generic(
   Swift_config<| |> ~> Service["swift-${name}-auditor"]
   Swift_config<| |> ~> Service["swift-${name}-replicator"]
 
-  validate_re($name, '^object|container|account$')
+  validate_legacy(Enum['object', 'container', 'account'], 'validate_re',
+    $name, ['^object|container|account$'])
 
   package { "swift-${name}":
     ensure => $package_ensure,
