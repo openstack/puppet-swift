@@ -69,7 +69,8 @@ class swift::params {
       $signing_dir                       = '/var/cache/swift'
     }
     default: {
-        fail("Unsupported osfamily: ${::osfamily} for os ${::operatingsystem}")
+      fail("Unsupported osfamily: ${::osfamily} operatingsystem: ${::operatingsystem}, \
+module ${module_name} only support osfamily RedHat and Debian")
     }
   }
   $swift_init_service_names = [
