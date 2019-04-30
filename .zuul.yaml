@@ -20,6 +20,7 @@
       TripleO standalone Job running Object Storage specific Tempest tests.
     vars:
       featureset_override:
-        run_tempest: true
-        tempest_whitelist:
+        run_tempest: false
+        tempest_test_whitelist:
           - 'object_storage'
+        use_os_tempest: true
