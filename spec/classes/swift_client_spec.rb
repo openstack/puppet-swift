@@ -15,6 +15,7 @@ describe 'swift::client' do
       default_params.merge(params)
     end
 
+    it { is_expected.to contain_class('swift::deps') }
     it { is_expected.to contain_class('swift::params') }
 
     it 'installs swift client package' do
