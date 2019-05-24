@@ -1,0 +1,5 @@
+---
+upgrade:
+  - |
+    The default value for swift::keymaster::project_name has been changed
+    from 'service' to 'services'.

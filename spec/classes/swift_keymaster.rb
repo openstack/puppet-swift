@@ -5,7 +5,7 @@ describe 'swift::keymaster' do
     describe "when using default parameters" do
       it { is_expected.to contain_swift_keymaster_config('kms_keymaster/api_class').with_value('castellan.key_manager.barbican_key_manager.BarbicanKeyManager') }
       it { is_expected.to contain_swift_keymaster_config('kms_keymaster/username').with_value('swift') }
-      it { is_expected.to contain_swift_keymaster_config('kms_keymaster/project_name').with_value('service') }
+      it { is_expected.to contain_swift_keymaster_config('kms_keymaster/project_name').with_value('services') }
       it { is_expected.to contain_swift_keymaster_config('kms_keymaster/project_domain_id').with_value('default') }
       it { is_expected.to contain_swift_keymaster_config('kms_keymaster/user_domain_id').with_value('default') }
     end

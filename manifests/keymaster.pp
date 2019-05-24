@@ -65,12 +65,11 @@
 #   Thiago da Silva thiago@redhat.com
 #
 class swift::keymaster(
-
   $api_class           = 'barbican',
   $key_id              = undef,
   $username            = 'swift',
   $password            = undef,
-  $project_name        = 'service',
+  $project_name        = 'services',
   $project_id          = undef,
   $auth_endpoint       = undef,
   $project_domain_name = undef,
