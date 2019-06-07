@@ -27,14 +27,16 @@
 #   (Optional) The ensure state for the swift package.
 #   Defaults to present.
 #
-# [*client_package_ensure*]
-#   (Optional) The ensure state for the swift client package.
-#   Defaults to present.
-#
 # [*max_header_size*]
 #   (Optional) Max HTTP header size for incoming requests for all swift
 #   services. Recommended size is 32768 for PKI keystone tokens.
 #   Defaults to 8192
+#
+## DEPRECATED
+#
+# [*client_package_ensure*]
+#   (Optional) The ensure state for the swift client package.
+#   Defaults to undef
 #
 # == Dependencies
 #
@@ -52,13 +54,18 @@ class swift(
   $swift_hash_path_suffix = undef,
   $swift_hash_path_prefix = undef,
   $package_ensure         = 'present',
-  $client_package_ensure  = 'present',
   $max_header_size        = '8192',
+  # DEPRECATED
+  $client_package_ensure  = undef,
 ) {
 
   include ::swift::deps
   include ::swift::params
   include ::swift::client
+
+  if $client_package_ensure {
+    warning('swift::client_package_ensure is deprecated and has no effect')
+  }
 
   if ($swift_hash_path_prefix == undef and $swift_hash_path_suffix == undef) {
     fail('You must specify at least swift_hash_path_prefix or swift_hash_path_suffix')
