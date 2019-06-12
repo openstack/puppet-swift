@@ -1,0 +1,9 @@
+---
+upgrade:
+  - |
+    The swift::client_ensure_package parameter is deprecated and has no effect
+    if you use the swift::client class please define the ensure parameter there.
+deprecations:
+  - |
+    The swift::client_ensure_package parameter is deprecated, if you use the
+    swift::client class please define the ensure parameter there.

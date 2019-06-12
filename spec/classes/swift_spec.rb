@@ -79,13 +79,6 @@ describe 'swift' do
           'swift-hash/swift_hash_path_prefix').with_value('myprefix')
       end
     end
-
-    describe 'when overriding client_package_ensure parameter' do
-      it 'should effect ensure state of swift package' do
-        params[:client_package_ensure] = '2.0.2-1'
-        is_expected.to contain_package('swiftclient').with_ensure(params[:client_package_ensure])
-      end
-    end
   end
 
   on_supported_os({

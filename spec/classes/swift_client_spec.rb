@@ -7,7 +7,7 @@ describe 'swift::client' do
   end
 
   let :default_params do
-    { :package_ensure   => 'present' }
+    { :ensure   => 'present' }
   end
 
   shared_examples 'swift::client' do
@@ -21,7 +21,7 @@ describe 'swift::client' do
     it 'installs swift client package' do
       is_expected.to contain_package('swiftclient').with(
         :name   => platform_params[:client_package_name],
-        :ensure => p[:package_ensure],
+        :ensure => p[:ensure],
         :tag    => ['openstack','swift-support-package'],
       )
     end
