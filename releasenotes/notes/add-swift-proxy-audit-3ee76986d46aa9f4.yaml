@@ -1,0 +1,4 @@
+---
+features:
+  - |
+    Added swift::proxy::audit class to configure audit middleware for Swift proxy.
