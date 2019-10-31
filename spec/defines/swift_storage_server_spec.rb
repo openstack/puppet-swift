@@ -92,6 +92,16 @@ describe 'swift::storage::server' do
             it { is_expected.to contain_concat_fragment("swift-#{t}-#{title}").with_content(/\[#{t}-replicator\]\nconcurrency\s*=\s*42\s*$/m) }
           end
 
+          if t != 'object'
+            describe "when replicator_concurrency and replicator_interval are set" do
+              let :params do req_params.merge(
+                { :replicator_concurrency => 42,
+                  :replicator_interval => 42})
+              end
+              it { is_expected.to contain_concat_fragment("swift-#{t}-#{title}").with_content(/\[#{t}-replicator\]\nconcurrency\s*=\s*42\ninterval\s*=\s*42\s*$/m) }
+            end
+          end
+
           if t != 'account'
             describe "when updater_concurrency is set" do
               let :params do req_params.merge({:updater_concurrency => 73}) end

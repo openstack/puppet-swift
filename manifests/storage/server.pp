@@ -76,6 +76,10 @@
 #   (optional) Number of replicator workers to spawn.
 #   Defaults to 1.
 #
+# [*replicator_interval*]
+#   (optional) Minimum time for a pass to take, in seconds.
+#   Defaults to 30.
+#
 # [*updater_concurrency*]
 #   (optional) Number of updater workers to spawn.
 #   Defaults to 1.
@@ -164,6 +168,7 @@ define swift::storage::server(
   $workers                        = $::os_workers,
   $allow_versions                 = false,
   $replicator_concurrency         = 1,
+  $replicator_interval            = 30,
   $updater_concurrency            = 1,
   $reaper_concurrency             = 1,
   $log_facility                   = 'LOG_LOCAL2',
