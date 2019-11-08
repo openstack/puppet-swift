@@ -1,0 +1,5 @@
+---
+features:
+  - |
+    Added new parameter client_timeout to proxy class that can be used to
+    configure the timeout to read one chunk from a client.

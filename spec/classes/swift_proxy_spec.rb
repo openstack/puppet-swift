@@ -111,6 +111,7 @@ describe 'swift::proxy' do
               :read_affinity              => 'r1z1=100, r1=200',
               :write_affinity             => 'r1',
               :write_affinity_node_count  => '2 * replicas',
+              :client_timeout             => '120',
               :node_timeout               => '20',
               :cors_allow_origin          => 'http://foo.bar:1234,https://foo.bar',
             }
@@ -127,6 +128,7 @@ describe 'swift::proxy' do
           it { should contain_swift_proxy_config('DEFAULT/log_address').with_value('/dev/log') }
           it { should contain_swift_proxy_config('DEFAULT/cors_allow_origin').with_value('http://foo.bar:1234,https://foo.bar') }
           it { should contain_swift_proxy_config('DEFAULT/strict_cors_mode').with_value('true') }
+          it { should contain_swift_proxy_config('DEFAULT/client_timeout').with_value('120') }
           it { should contain_swift_proxy_config('pipeline:main/pipeline').with_value('swauth proxy-server') }
           it { should contain_swift_proxy_config('app:proxy-server/use').with_value('egg:swift#proxy') }
           it { should contain_swift_proxy_config('app:proxy-server/set log_name').with_value('swift-proxy-server') }

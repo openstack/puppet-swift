@@ -86,6 +86,10 @@
 #    Optional but requires write_affinity to be set.
 #    Defaults to undef.
 #
+#  [*client_timeout*]
+#    (optional) Configures client_timeout for swift proxy-server.
+#    Defaults to undef.
+#
 #  [*node_timeout*]
 #    (optional) Configures node_timeout for swift proxy-server
 #    Defaults to undef.
@@ -159,6 +163,7 @@ class swift::proxy(
   $read_affinity              = undef,
   $write_affinity             = undef,
   $write_affinity_node_count  = undef,
+  $client_timeout             = undef,
   $node_timeout               = undef,
   $manage_service             = true,
   $enabled                    = true,
@@ -222,6 +227,7 @@ class swift::proxy(
     'DEFAULT/log_address':                         value => $log_address;
     'DEFAULT/log_udp_host':                        value => $log_udp_host;
     'DEFAULT/log_udp_port':                        value => $log_udp_port;
+    'DEFAULT/client_timeout':                      value => $client_timeout;
     'pipeline:main/pipeline':                      value => join($pipeline, ' ');
     'app:proxy-server/use':                        value => 'egg:swift#proxy';
     'app:proxy-server/set log_name':               value => $log_name;
