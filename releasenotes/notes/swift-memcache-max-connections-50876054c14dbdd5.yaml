@@ -1,0 +1,6 @@
+---
+features:
+  - |
+    Added new parameter memcache_max_connections to proxy::cache class that
+    can be used to configure the maximum number of connections to each
+    memcached server per worker.
