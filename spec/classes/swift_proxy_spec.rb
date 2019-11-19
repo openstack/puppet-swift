@@ -63,6 +63,8 @@ describe 'swift::proxy' do
         it { should contain_swift_proxy_config('app:proxy-server/set log_level').with_value('INFO') }
         it { should contain_swift_proxy_config('app:proxy-server/set log_address').with_value('/dev/log') }
         it { should contain_swift_proxy_config('app:proxy-server/log_handoffs').with_value('true') }
+        it { should contain_swift_proxy_config('app:proxy-server/object_chunk_size').with_value('65536') }
+        it { should contain_swift_proxy_config('app:proxy-server/client_chunk_size').with_value('65536') }
         it { should contain_swift_proxy_config('app:proxy-server/allow_account_management').with_value('true') }
         it { should contain_swift_proxy_config('app:proxy-server/account_autocreate').with_value('true') }
         it { should contain_swift_proxy_config('app:proxy-server/max_containers_per_account').with_value(0) }
@@ -106,6 +108,8 @@ describe 'swift::proxy' do
               :account_autocreate         => false,
               :log_level                  => 'DEBUG',
               :log_name                   => 'swift-proxy-server',
+              :object_chunk_size          => '8192',
+              :client_chunk_size          => '8192',
               :max_containers_per_account => 10,
               :max_containers_whitelist   => 'project1,project2',
               :read_affinity              => 'r1z1=100, r1=200',
@@ -136,6 +140,8 @@ describe 'swift::proxy' do
           it { should contain_swift_proxy_config('app:proxy-server/set log_level').with_value('DEBUG') }
           it { should contain_swift_proxy_config('app:proxy-server/set log_address').with_value('/dev/log') }
           it { should contain_swift_proxy_config('app:proxy-server/log_handoffs').with_value('true') }
+          it { should contain_swift_proxy_config('app:proxy-server/object_chunk_size').with_value('8192') }
+          it { should contain_swift_proxy_config('app:proxy-server/client_chunk_size').with_value('8192') }
           it { should contain_swift_proxy_config('app:proxy-server/allow_account_management').with_value('false') }
           it { should contain_swift_proxy_config('app:proxy-server/account_autocreate').with_value('false') }
           it { should contain_swift_proxy_config('app:proxy-server/max_containers_per_account').with_value(10) }

@@ -17,13 +17,15 @@ log_udp_host = <%= @log_udp_host -%>
 log_udp_port = <%= @log_udp_port -%>
 <% end %>
 workers = <%= @workers %>
-<%- if @statsd_enabled -%>
+<% if @statsd_enabled -%>
 log_statsd_host = <%=@log_statsd_host%>
 log_statsd_port = <%=@log_statsd_port%>
 log_statsd_default_sample_rate = <%=@log_statsd_default_sample_rate%>
 log_statsd_sample_rate_factor = <%=@log_statsd_sample_rate_factor%>
 log_statsd_metric_prefix = <%=@log_statsd_metric_prefix%>
-<%- end -%>
+<% end -%>
+network_chunk_size = <%= @network_chunk_size%>
+disk_chunk_size = <%= @disk_chunk_size%>
 
 [pipeline:main]
 pipeline = <%= @pipeline.to_a.join(' ') %>
@@ -44,5 +46,8 @@ concurrency = <%= @replicator_concurrency %>
 concurrency = <%= @updater_concurrency %>
 
 [object-auditor]
+<% if @auditor_disk_chunk_size -%>
+disk_chunk_size = <%= @auditor_disk_chunk_size %>
+<% end -%>
 
 [object-reconstructor]

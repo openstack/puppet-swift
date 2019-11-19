@@ -143,6 +143,18 @@
 #   (optional) Prefix for data being sent to statsd.
 #   Defaults to ''
 #
+# [*network_chunk_size*]
+#   (optional) Size of chunks to read/write over the network.
+#   Defaults to 65536.
+#
+# [*disk_chunk_size*]
+#   (optional) Size of chunks to read/write to disk.
+#   Defaults to 65536.
+#
+# [*auditor_disk_chunk_size*]
+#   (optional) Object-auditor size of chunks to read/write to disk.
+#   Defaults to undef.
+#
 # [*splice*]
 #   (optional) Use splice for zero-copy object GETs. This requires Linux Kernel
 #   version 3.0 or greater.
@@ -181,6 +193,9 @@ define swift::storage::server(
   $log_statsd_default_sample_rate = '1.0',
   $log_statsd_sample_rate_factor  = '1.0',
   $log_statsd_metric_prefix       = '',
+  $network_chunk_size             = 65536,
+  $disk_chunk_size                = 65536,
+  $auditor_disk_chunk_size        = undef,
   $splice                         = false,
 ) {
 

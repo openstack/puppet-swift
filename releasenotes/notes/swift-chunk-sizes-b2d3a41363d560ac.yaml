@@ -1,0 +1,9 @@
+---
+features:
+  - |
+    On proxy class, added two new parameters object_chunk_size and
+    client_chunk_size, that can be used to configure chunk size to
+    read from object servers and from clients side.
+    On storage::server class, added three new parameters network_chunk_size,
+    disk_chunk_size and auditor_disk_chunk_size, that can be used to
+    configure chunk size to read/write over the network and to the disk.
