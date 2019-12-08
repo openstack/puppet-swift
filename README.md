@@ -169,7 +169,7 @@ The existing storage node and ringbuilder manifest will be:
   }
 
 # Build the existing ring
-  class { '::swift::ringbuilder':
+  class { 'swift::ringbuilder':
     part_power     => '14',
     replicas       => '1',
     min_part_hours => 1,
@@ -270,7 +270,7 @@ The port for which the proxy service will bind to when it starts.
 Configures [DLO middleware](https://docs.openstack.org/swift/latest/middleware.html#module-swift.common.middleware.dlo) for swift proxy.
 
 ```puppet
-class { '::swift::proxy::dlo':
+class { 'swift::proxy::dlo':
   rate_limit_after_segment    => '10',
   rate_limit_segments_per_sec => '1',
   max_get_time                => '86400'
@@ -432,19 +432,19 @@ a templated init or services file. This is managed by this provider.  For EL and
 * To use the swiftinit service provider set "service_provider" on the supported components you have defined in your config manifest.
 
 ```puppet
-  class { '::swift::storage::account':
+  class { 'swift::storage::account':
     service_provider => 'swiftinit',
   }
-  class { '::swift::storage::container':
+  class { 'swift::storage::container':
     service_provider => 'swiftinit',
   }
-  class { '::swift::storage::object':
+  class { 'swift::storage::object':
     service_provider => 'swiftinit',
   }
   class {'::swift::objectexpirer':
     service_provider => 'swiftinit',
   }
-  class { '::swift::proxy':
+  class { 'swift::proxy':
     service_provider => 'swiftinit',
   }
 ```

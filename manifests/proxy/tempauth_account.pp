@@ -13,7 +13,7 @@
 #
 define swift::proxy::tempauth_account() {
 
-  include ::swift::deps
+  include swift::deps
 
   # strip white space and split string into array elements around ','
   $account_data = strip(split($title,','))

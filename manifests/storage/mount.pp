@@ -28,7 +28,7 @@ define swift::storage::mount(
   $fstype       = 'xfs'
 ) {
 
-  include ::swift::deps
+  include swift::deps
 
   if($loopback){
     $options = 'noatime,nodiratime,nobarrier,loop'

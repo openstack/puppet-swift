@@ -34,7 +34,7 @@ class swift::storage::object(
   $service_provider = $::swift::params::service_provider
 ) inherits ::swift::params {
 
-  include ::swift::deps
+  include swift::deps
 
   swift::storage::generic { 'object':
     manage_service   => $manage_service,

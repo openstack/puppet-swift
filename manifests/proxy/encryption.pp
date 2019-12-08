@@ -3,7 +3,7 @@
 #
 # == Examples
 #
-#  include ::swift::proxy::encryption
+#  include swift::proxy::encryption
 #
 # == Parameters
 #
@@ -17,7 +17,7 @@ class swift::proxy::encryption (
   $disable_encryption = false
 ) {
 
-  include ::swift::deps
+  include swift::deps
 
   swift_proxy_config {
     'filter:encryption/use':                value => 'egg:swift#encryption';

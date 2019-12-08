@@ -137,7 +137,7 @@ class swift::proxy::ceilometer(
   $kombu_ssl_version          = $::os_service_default,
 ) inherits swift {
 
-  include ::swift::deps
+  include swift::deps
 
   User['swift'] {
     groups +> $group,

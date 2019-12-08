@@ -3,7 +3,7 @@
 #
 # == Examples
 #
-#  include ::swift::proxy::dlo
+#  include swift::proxy::dlo
 #
 # == Parameters
 #
@@ -34,7 +34,7 @@ class swift::proxy::dlo (
   $max_get_time                = '86400'
 ) {
 
-  include ::swift::deps
+  include swift::deps
 
   swift_proxy_config {
     'filter:dlo/use':                         value => 'egg:swift#dlo';

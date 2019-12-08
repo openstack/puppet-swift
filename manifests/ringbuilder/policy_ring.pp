@@ -37,7 +37,7 @@ define swift::ringbuilder::policy_ring(
 
   validate_legacy(Pattern[/^\d+$/], 'validate_re', $title, ['^\d+$'])
 
-  include ::swift::deps
+  include swift::deps
   Class['swift'] -> Swift::Ringbuilder::Policy_ring[$title]
 
   if $title == '0' {

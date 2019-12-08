@@ -29,7 +29,7 @@ define swift::storage::ext4(
   $loopback     = false
 ) {
 
-  include ::swift::deps
+  include swift::deps
   # does this have to be refreshonly?
   # how can I know if this drive has been formatted?
   exec { "mkfs-${name}":

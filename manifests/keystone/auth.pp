@@ -110,7 +110,7 @@ class swift::keystone::auth(
   $internal_url_s3        = 'http://127.0.0.1:8080',
 ) {
 
-  include ::swift::deps
+  include swift::deps
 
   if $service_name == $service_name_s3 {
       fail('swift::keystone::auth parameters service_name and service_name_s3 must be different.')

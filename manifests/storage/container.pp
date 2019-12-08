@@ -40,7 +40,7 @@ class swift::storage::container(
   $service_provider = $::swift::params::service_provider
 ) inherits ::swift::params {
 
-  include ::swift::deps
+  include swift::deps
 
   Swift_config<| |> ~> Service['swift-container-updater']
   Swift_config<| |> ~> Service['swift-container-sync']

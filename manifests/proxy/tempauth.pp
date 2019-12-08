@@ -81,7 +81,7 @@ class swift::proxy::tempauth (
   $storage_url_scheme = undef,
 ) {
 
-  include ::swift::deps
+  include swift::deps
 
   validate_legacy(Array, 'validate_array', $account_user_list)
 

@@ -7,7 +7,7 @@ define swift::ringsync(
   $ring_server
 ) {
 
-  include ::swift::deps
+  include swift::deps
 
   Exec { path => '/usr/bin' }
 

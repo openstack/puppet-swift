@@ -7,7 +7,7 @@
 #
 class swift::proxy::container_sync() {
 
-  include ::swift::deps
+  include swift::deps
 
   swift_proxy_config {
     'filter:container_sync/use': value => 'egg:swift#container_sync';

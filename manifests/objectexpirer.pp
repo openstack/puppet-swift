@@ -99,7 +99,7 @@ class swift::objectexpirer(
   $log_facility                  = 'LOG_LOCAL2',
 ) inherits ::swift::params {
 
-  include ::swift::deps
+  include swift::deps
   Swift_config<| |> ~> Service['swift-object-expirer']
   Swift_object_expirer_config<||> ~> Service['swift-object-expirer']
 

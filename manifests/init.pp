@@ -59,9 +59,9 @@ class swift(
   $client_package_ensure  = undef,
 ) {
 
-  include ::swift::deps
-  include ::swift::params
-  include ::swift::client
+  include swift::deps
+  include swift::params
+  include swift::client
 
   if $client_package_ensure {
     warning('swift::client_package_ensure is deprecated and has no effect')

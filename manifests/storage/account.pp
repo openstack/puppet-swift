@@ -34,7 +34,7 @@ class swift::storage::account(
   $service_provider = $::swift::params::service_provider
 ) inherits ::swift::params {
 
-  include ::swift::deps
+  include swift::deps
   Swift_config<| |> ~> Service['swift-account-reaper']
 
   swift::storage::generic { 'account':

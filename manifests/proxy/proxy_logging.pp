@@ -7,7 +7,7 @@
 #
 class swift::proxy::proxy_logging {
 
-  include ::swift::deps
+  include swift::deps
 
   swift_proxy_config {
     'filter:proxy-logging/use': value => 'egg:swift#proxy_logging';

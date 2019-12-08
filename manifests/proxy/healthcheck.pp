@@ -15,7 +15,7 @@
 #
 class swift::proxy::healthcheck() {
 
-  include ::swift::deps
+  include swift::deps
 
   swift_proxy_config {
     'filter:healthcheck/use': value => 'egg:swift#healthcheck';

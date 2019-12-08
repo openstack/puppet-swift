@@ -60,7 +60,7 @@ class swift::containerreconciler(
   $memcache_servers = ['127.0.0.1:11211'],
 ) inherits ::swift::params {
 
-  include ::swift::deps
+  include swift::deps
   Swift_config<| |> ~> Service['swift-container-reconciler']
   Swift_container_reconciler_config<||> ~> Service['swift-container-reconciler']
 

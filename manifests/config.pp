@@ -34,7 +34,7 @@ class swift::config (
   $swift_proxy_config                 = {},
 ) {
 
-  include ::swift::deps
+  include swift::deps
 
   validate_legacy(Hash, 'validate_hash', $swift_config)
   validate_legacy(Hash, 'validate_hash', $swift_container_sync_realms_config)

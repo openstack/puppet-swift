@@ -26,7 +26,7 @@ class swift::proxy::cache(
   $memcache_max_connections = '2'
 ) {
 
-  include ::swift::deps
+  include swift::deps
 
   # require the memcached class if its on the same machine
   if !empty(grep(any2array($memcache_servers), '127.0.0.1')) {

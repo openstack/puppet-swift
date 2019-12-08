@@ -26,7 +26,7 @@ class swift::proxy::staticweb(
   $url_base = $::os_service_default
 ) {
 
-  include ::swift::deps
+  include swift::deps
 
   swift_proxy_config {
     'filter:staticweb/use':              value => 'egg:swift#staticweb';

@@ -3,7 +3,7 @@
 #
 # == Examples
 #
-#  include ::swift::proxy::copy
+#  include swift::proxy::copy
 #
 # == Parameters
 #
@@ -19,7 +19,7 @@ class swift::proxy::copy (
   $object_post_as_copy = true
 ) {
 
-  include ::swift::deps
+  include swift::deps
 
   swift_proxy_config {
     'filter:copy/use':                 value => 'egg:swift#copy';

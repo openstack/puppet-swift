@@ -3,7 +3,7 @@
 #
 # == Examples
 #
-#  include ::swift::proxy::versioned_writes
+#  include swift::proxy::versioned_writes
 #
 # == Parameters
 #
@@ -15,7 +15,7 @@ class swift::proxy::versioned_writes (
   $allow_versioned_writes = false
 ) {
 
-  include ::swift::deps
+  include swift::deps
 
   swift_proxy_config {
     'filter:versioned_writes/use':                    value => 'egg:swift#versioned_writes';

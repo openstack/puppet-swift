@@ -106,7 +106,7 @@ class swift::proxy::authtoken(
   $auth_uri                = undef,
 ) inherits swift::params {
 
-  include ::swift::deps
+  include swift::deps
 
   if $identity_uri {
     warning('identity_uri is deprecated and will be removed, please use auth_url instead')

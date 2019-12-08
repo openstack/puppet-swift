@@ -12,7 +12,7 @@ define swift::ringbuilder::rebalance(
   $seed = undef
 ) {
 
-  include ::swift::deps
+  include swift::deps
 
   validate_legacy(Enum['object', 'container', 'account'], 'validate_re', $name,
     ['^object|container|account$'])

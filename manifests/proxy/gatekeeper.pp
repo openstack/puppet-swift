@@ -43,7 +43,7 @@ class swift::proxy::gatekeeper(
   $log_address  = '/dev/log'
 ) {
 
-  include ::swift::deps
+  include swift::deps
 
   swift_proxy_config {
     'filter:gatekeeper/use':              value => 'egg:swift#gatekeeper';

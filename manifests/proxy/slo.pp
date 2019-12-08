@@ -49,7 +49,7 @@ class swift::proxy::slo (
   $max_get_time                = '86400'
 ) {
 
-  include ::swift::deps
+  include swift::deps
 
   swift_proxy_config {
     'filter:slo/use':                         value => 'egg:swift#slo';

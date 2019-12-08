@@ -10,9 +10,9 @@ describe 'swift::proxy' do
       let :pre_condition do
         "class { memcached: max_memory => 1}
          class { swift: swift_hash_path_suffix => string }
-         include ::swift::proxy::healthcheck
-         include ::swift::proxy::cache
-         include ::swift::proxy::tempauth"
+         include swift::proxy::healthcheck
+         include swift::proxy::cache
+         include swift::proxy::tempauth"
       end
 
       describe 'without the proxy local network ip address being specified' do
@@ -82,9 +82,9 @@ describe 'swift::proxy' do
               class { memcached: max_memory => 1}
               class { swift: swift_hash_path_suffix => string }
               swift_proxy_config { 'foo/bar': value => 'foo' }
-              include ::swift::proxy::healthcheck
-              include ::swift::proxy::cache
-              include ::swift::proxy::tempauth
+              include swift::proxy::healthcheck
+              include swift::proxy::cache
+              include swift::proxy::tempauth
             "
           end
 
@@ -95,7 +95,7 @@ describe 'swift::proxy' do
           let :pre_condition do
             "class { memcached: max_memory => 1}
              class { swift: swift_hash_path_suffix => string }
-             include ::swift::proxy::swauth"
+             include swift::proxy::swauth"
           end
 
           let :params do
@@ -201,7 +201,7 @@ describe 'swift::proxy' do
             let :pre_condition do
               "class { memcached: max_memory => 1}
                class { swift: swift_hash_path_suffix => string }
-               include ::swift::proxy::swauth"
+               include swift::proxy::swauth"
             end
 
             it { should contain_swift_proxy_config('DEFAULT/bind_port').with_value('80') }
@@ -267,9 +267,9 @@ describe 'swift::proxy' do
     let :pre_condition do
       "class { memcached: max_memory => 1}
        class { swift: swift_hash_path_suffix => string }
-       include ::swift::proxy::healthcheck
-       include ::swift::proxy::cache
-       include ::swift::proxy::tempauth"
+       include swift::proxy::healthcheck
+       include swift::proxy::cache
+       include swift::proxy::tempauth"
     end
 
 

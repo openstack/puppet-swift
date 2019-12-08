@@ -19,7 +19,7 @@
 #
 class swift::proxy::container_quotas() {
 
-  include ::swift::deps
+  include swift::deps
 
   swift_proxy_config {
     'filter:container_quotas/use': value => 'egg:swift#container_quotas';

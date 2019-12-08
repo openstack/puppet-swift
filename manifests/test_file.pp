@@ -37,7 +37,7 @@ class swift::test_file (
   $user        = 'admin'
 ) {
 
-  include ::swift::deps
+  include swift::deps
 
   file { '/tmp/swift_test_file.rb':
     mode    => '0755',

@@ -38,7 +38,7 @@ define swift::storage::loopback(
   $fstype       = 'xfs'
 ) {
 
-  include ::swift::deps
+  include swift::deps
 
   if(!defined(File[$base_dir])) {
     file { $base_dir:

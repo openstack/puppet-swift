@@ -84,7 +84,7 @@ class swift::bench (
   $delete            = 'yes',
 ){
 
-  include ::swift::deps
+  include swift::deps
 
   swift_bench_config {
     'bench/auth':              value => $auth_url;

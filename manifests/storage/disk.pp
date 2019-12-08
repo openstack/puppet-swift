@@ -54,7 +54,7 @@ define swift::storage::disk(
   $ext_args     = '',
 ) {
 
-  include ::swift::deps
+  include swift::deps
 
   if(!defined(File[$mnt_base_dir])) {
     file { $mnt_base_dir:

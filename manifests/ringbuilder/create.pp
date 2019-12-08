@@ -39,7 +39,7 @@ define swift::ringbuilder::create(
   $user = 'swift'
 ) {
 
-  include ::swift::deps
+  include swift::deps
 
   validate_legacy(Enum['object', 'container', 'account'], 'validate_re', $name,
     ['^object|container|account$'])

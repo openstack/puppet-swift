@@ -41,8 +41,8 @@ define swift::storage::xfs(
   $mount_type  = 'path',
 ) {
 
-  include ::swift::deps
-  include ::swift::xfs
+  include swift::deps
+  include swift::xfs
 
   if $device == '' {
     $target_device = "/dev/${name}"

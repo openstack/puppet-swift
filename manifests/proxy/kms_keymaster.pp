@@ -3,7 +3,7 @@
 #
 # == Examples
 #
-#  include ::swift::proxy::kms_keymaster
+#  include swift::proxy::kms_keymaster
 #
 # == Parameters
 #
@@ -14,7 +14,7 @@ class swift::proxy::kms_keymaster (
   $keymaster_config_path = '/etc/swift/keymaster.conf'
 ) {
 
-  include ::swift::deps
+  include swift::deps
 
   swift_proxy_config {
     'filter:kms_keymaster/use':                   value => 'egg:swift#kms_keymaster';

@@ -38,8 +38,8 @@ define swift::storage::generic(
   $service_provider = $::swift::params::service_provider
 ) {
 
-  include ::swift::deps
-  include ::swift::params
+  include swift::deps
+  include swift::params
 
   Class['swift::storage'] -> Swift::Storage::Generic[$name]
   Swift_config<| |> ~> Service["swift-${name}-server"]

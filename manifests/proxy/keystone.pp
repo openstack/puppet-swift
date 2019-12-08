@@ -37,7 +37,7 @@ class swift::proxy::keystone(
   $is_admin            = undef
 ) {
 
-  include ::swift::deps
+  include swift::deps
 
   if $is_admin {
         warning('is_admin parameter is deprecated, has no effect and will be removed in a future release.')

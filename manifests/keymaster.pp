@@ -78,7 +78,7 @@ class swift::keymaster(
   $user_domain_id      = 'default',
 ) {
 
-  include ::swift::deps
+  include swift::deps
 
   swift_keymaster_config {
     'kms_keymaster/api_class': value => $api_class;

@@ -69,7 +69,7 @@ $swift_keystone_admin_password = hiera('admin_password', 'ChangeMe')
 node 'swift-keystone' {
 
   # set up mysql server
-  class { '::mysql::server':
+  class { 'mysql::server':
     config_hash => {
       # the priv grant fails on precise if I set a root password
       # TODO I should make sure that this works
@@ -83,11 +83,11 @@ node 'swift-keystone' {
   }
 
   # set up all openstack databases, users, grants
-  class { '::keystone::db::mysql':
+  class { 'keystone::db::mysql':
     password => $swift_keystone_db_password,
   }
 
-  class { '::keystone':
+  class { 'keystone':
     debug          => $debug,
     catalog_type   => 'sql',
     admin_password => $swift_keystone_admin_password,
@@ -96,15 +96,15 @@ node 'swift-keystone' {
   }
 
   # Setup the Keystone Identity Endpoint
-  class { '::keystone::endpoint': }
+  class { 'keystone::endpoint': }
 
   # set up keystone admin users
-  class { '::keystone::roles::admin':
+  class { 'keystone::roles::admin':
     email    => $swift_keystone_admin_email,
     password => $swift_keystone_admin_password,
   }
   # configure the keystone service user and endpoint
-  class { '::swift::keystone::auth':
+  class { 'swift::keystone::auth':
     password       => $swift_admin_password,
     public_address => $swift_proxy_node,
   }
@@ -121,7 +121,7 @@ node 'swift-keystone' {
 #
 node /swift-storage/ {
 
-  class { '::swift':
+  class { 'swift':
     # not sure how I want to deal with this shared secret
     swift_hash_path_suffix => $swift_shared_secret,
     package_ensure         => latest,
@@ -139,7 +139,7 @@ node /swift-storage/ {
   swift::storage::filter::healthcheck { $rings: }
 
   # install all swift storage servers together
-  class { '::swift::storage::all':
+  class { 'swift::storage::all':
     storage_local_net_ip => $swift_local_net_ip,
     object_pipeline      => $object_pipeline,
     container_pipeline   => $container_pipeline,
@@ -185,7 +185,7 @@ node /swift-storage/ {
 
 node /swift-proxy/ {
 
-  class { '::swift':
+  class { 'swift':
     # not sure how I want to deal with this shared secret
     swift_hash_path_suffix => $swift_shared_secret,
     package_ensure         => latest,
@@ -194,12 +194,12 @@ node /swift-proxy/ {
   # curl is only required so that I can run tests
   package { 'curl': ensure => present }
 
-  class { '::memcached':
+  class { 'memcached':
     listen_ip => '127.0.0.1',
   }
 
   # specify swift proxy and all of its middlewares
-  class { '::swift::proxy':
+  class { 'swift::proxy':
     proxy_local_net_ip => $swift_local_net_ip,
     pipeline           => [
       'bulk',
@@ -228,28 +228,28 @@ node /swift-proxy/ {
     '::swift::proxy::cache',
     '::swift::proxy::swift3',
   ]: }
-  class { '::swift::proxy::bulk':
+  class { 'swift::proxy::bulk':
     max_containers_per_extraction => 10000,
     max_failed_extractions        => 1000,
     max_deletes_per_request       => 10000,
     yield_frequency               => 60,
   }
-  class { '::swift::proxy::ratelimit':
+  class { 'swift::proxy::ratelimit':
     clock_accuracy         => 1000,
     max_sleep_time_seconds => 60,
     log_sleep_time_seconds => 0,
     rate_buffer_seconds    => 5,
     account_ratelimit      => 0,
   }
-  class { '::swift::proxy::s3token':
+  class { 'swift::proxy::s3token':
     # assume that the controller host is the swift api server
     auth_host => $swift_keystone_node,
     auth_port => '5000',
   }
-  class { '::swift::proxy::keystone':
+  class { 'swift::proxy::keystone':
     operator_roles => ['admin', 'SwiftOperator'],
   }
-  class { '::swift::proxy::authtoken':
+  class { 'swift::proxy::authtoken':
     password  => $swift_admin_password,
     # assume that the controller host is the swift api server
     auth_host => $swift_keystone_node,
@@ -262,7 +262,7 @@ node /swift-proxy/ {
   Ring_account_device <<| |>>
 
   # create the ring
-  class { '::swift::ringbuilder':
+  class { 'swift::ringbuilder':
     # the part power should be determined by assuming 100 partitions per drive
     part_power     => '18',
     replicas       => '3',
@@ -271,7 +271,7 @@ node /swift-proxy/ {
   }
 
   # sets up an rsync db that can be used to sync the ring DB
-  class { '::swift::ringserver':
+  class { 'swift::ringserver':
     local_net_ip => $swift_local_net_ip,
   }
 
@@ -281,7 +281,7 @@ node /swift-proxy/ {
   }
 
   # deploy a script that can be used for testing
-  class { '::swift::test_file':
+  class { 'swift::test_file':
     auth_server => $swift_keystone_node,
     password    => $swift_keystone_admin_password,
   }

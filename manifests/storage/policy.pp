@@ -71,7 +71,7 @@ define swift::storage::policy(
   $ec_object_segment_size  = undef,
 ) {
 
-  include ::swift::deps
+  include swift::deps
 
   Swift_storage_policy<| |> ~> Service<| tag == 'swift-service' |>
 

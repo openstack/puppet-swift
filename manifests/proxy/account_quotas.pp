@@ -19,7 +19,7 @@
 #
 class swift::proxy::account_quotas() {
 
-  include ::swift::deps
+  include swift::deps
 
   swift_proxy_config {
     'filter:account_quotas/use': value => 'egg:swift#account_quotas';

@@ -52,7 +52,7 @@ define swift::storage::node(
   $policy_index = undef,
 ) {
 
-  include ::swift::deps
+  include swift::deps
 
   validate_legacy(Integer, 'validate_re', $zone,
     ['^\d+$', 'The zone parameter must be an integer'])

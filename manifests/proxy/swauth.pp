@@ -21,7 +21,7 @@ class swift::proxy::swauth(
   $package_ensure = 'present'
 ) {
 
-  include ::swift::deps
+  include swift::deps
 
   package { 'python-swauth':
     ensure => $package_ensure,

@@ -48,7 +48,7 @@ class swift::proxy::ratelimit(
   $account_ratelimit = 0
 ) {
 
-  include ::swift::deps
+  include swift::deps
 
   swift_proxy_config {
     'filter:ratelimit/use':                    value => 'egg:swift#ratelimit';

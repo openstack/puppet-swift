@@ -52,7 +52,7 @@ class swift::proxy::tempurl (
   $outgoing_allow_headers  = undef,
 ) {
 
-  include ::swift::deps
+  include swift::deps
 
   if($methods) {
     if is_array($methods) {

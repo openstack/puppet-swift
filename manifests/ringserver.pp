@@ -30,11 +30,11 @@ class swift::ringserver(
   $max_connections = 5
 ) {
 
-  include ::swift::deps
+  include swift::deps
   Class['swift::ringbuilder'] -> Class['swift::ringserver']
 
   if !defined(Class['rsync::server']) {
-    class { '::rsync::server':
+    class { 'rsync::server':
       use_xinetd => true,
       address    => $local_net_ip,
       use_chroot => 'no',

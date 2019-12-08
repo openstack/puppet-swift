@@ -22,7 +22,7 @@ define swift::storage::filter::recon(
   $cache_path = '/var/cache/swift'
 ) {
 
-  include ::swift::deps
+  include swift::deps
 
   concat::fragment { "swift_recon_${name}":
     target  => "/etc/swift/${name}-server.conf",

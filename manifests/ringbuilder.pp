@@ -30,7 +30,7 @@ class swift::ringbuilder(
   $min_part_hours = undef
 ) {
 
-  include ::swift::deps
+  include swift::deps
   Class['swift'] -> Class['swift::ringbuilder']
 
   swift::ringbuilder::create{ ['object', 'account', 'container']:

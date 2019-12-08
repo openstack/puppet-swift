@@ -17,7 +17,7 @@
 #
 class swift::proxy::catch_errors() {
 
-  include ::swift::deps
+  include swift::deps
 
   swift_proxy_config {
     'filter:catch_errors/use': value => 'egg:swift#catch_errors';

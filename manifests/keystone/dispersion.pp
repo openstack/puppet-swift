@@ -36,7 +36,7 @@ class swift::keystone::dispersion(
   $tenant    = 'services'
 ) {
 
-  include ::swift::deps
+  include swift::deps
 
   keystone_user { $auth_user:
     ensure   => present,

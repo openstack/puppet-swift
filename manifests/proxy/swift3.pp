@@ -24,8 +24,8 @@ class swift::proxy::swift3(
   $ensure = 'present'
 ) {
 
-  include ::swift::deps
-  include ::swift::params
+  include swift::deps
+  include swift::params
 
   package { 'swift-plugin-s3':
     ensure => $ensure,

@@ -6,11 +6,11 @@ describe 'basic swift' do
 
     it 'should work with no errors' do
       pp= <<-EOS
-      include ::openstack_integration
-      include ::openstack_integration::repos
-      include ::openstack_integration::rabbitmq
-      include ::openstack_integration::mysql
-      include ::openstack_integration::keystone
+      include openstack_integration
+      include openstack_integration::repos
+      include openstack_integration::rabbitmq
+      include openstack_integration::mysql
+      include openstack_integration::keystone
 
       exec { 'setenforce 0':
         path   => '/bin:/sbin:/usr/bin:/usr/sbin',
@@ -20,21 +20,21 @@ describe 'basic swift' do
 
       package { 'curl': ensure => present }
 
-      class { '::memcached':
+      class { 'memcached':
         listen_ip => '127.0.0.1',
       }
 
       # Swift resources
-      class { '::swift':
+      class { 'swift':
         # not sure how I want to deal with this shared secret
         swift_hash_path_suffix => 'secrete',
         package_ensure    => latest,
       }
-      class { '::swift::keystone::auth':
+      class { 'swift::keystone::auth':
         password => 'a_big_secret',
       }
       # === Configure Storage
-      class { '::swift::storage':
+      class { 'swift::storage':
         storage_local_net_ip => '127.0.0.1',
       }
       # create xfs partitions on a loopback device and mounts them
@@ -84,7 +84,7 @@ describe 'basic swift' do
         weight       => 1,
         require      => Swift::Storage::Loopback['4'] ,
       }
-      class { '::swift::ringbuilder':
+      class { 'swift::ringbuilder':
         part_power     => '18',
         replicas       => '1',
         min_part_hours => 1,
@@ -94,15 +94,15 @@ describe 'basic swift' do
         replicas       => '3',
         min_part_hours => 1,
       }
-      class { '::swift::proxy':
+      class { 'swift::proxy':
         proxy_local_net_ip => '127.0.0.1',
         pipeline           => ['healthcheck', 'proxy-logging', 'cache', 'authtoken', 'keystone', 'dlo', 'proxy-server'],
         account_autocreate => true,
       }
-      class { '::swift::proxy::authtoken':
+      class { 'swift::proxy::authtoken':
         password => 'a_big_secret',
       }
-      class { '::swift::keystone::dispersion': } -> class { '::swift::dispersion': }
+      class { 'swift::keystone::dispersion': } -> class { 'swift::dispersion': }
       class {'::swift::objectexpirer':
         interval => 600,
       }
@@ -129,11 +129,11 @@ describe 'basic swift' do
 
     it 'should work with no errors' do
       swiftinit_pp= <<-EOS
-      include ::openstack_integration
-      include ::openstack_integration::repos
-      include ::openstack_integration::rabbitmq
-      include ::openstack_integration::mysql
-      include ::openstack_integration::keystone
+      include openstack_integration
+      include openstack_integration::repos
+      include openstack_integration::rabbitmq
+      include openstack_integration::mysql
+      include openstack_integration::keystone
 
       exec { 'setenforce 0':
         path   => '/bin:/sbin:/usr/bin:/usr/sbin',
@@ -143,21 +143,21 @@ describe 'basic swift' do
 
       package { 'curl': ensure => present }
 
-      class { '::memcached':
+      class { 'memcached':
         listen_ip => '127.0.0.1',
       }
 
       # Swift resources
-      class { '::swift':
+      class { 'swift':
         # not sure how I want to deal with this shared secret
         swift_hash_path_suffix => 'secrete',
         package_ensure    => latest,
       }
-      class { '::swift::keystone::auth':
+      class { 'swift::keystone::auth':
         password => 'a_big_secret',
       }
       # === Configure Storage
-      class { '::swift::storage':
+      class { 'swift::storage':
         storage_local_net_ip => '127.0.0.1',
       }
       # create xfs partitions on a loopback device and mounts them
@@ -207,16 +207,16 @@ describe 'basic swift' do
         weight       => 1,
         require      => Swift::Storage::Loopback['4'] ,
       }
-      class { '::swift::storage::account':
+      class { 'swift::storage::account':
         service_provider => 'swiftinit',
       }
-      class { '::swift::storage::container':
+      class { 'swift::storage::container':
         service_provider => 'swiftinit',
       }
-      class { '::swift::storage::object':
+      class { 'swift::storage::object':
         service_provider => 'swiftinit',
       }
-      class { '::swift::ringbuilder':
+      class { 'swift::ringbuilder':
         part_power     => '18',
         replicas       => '1',
         min_part_hours => 1,
@@ -226,16 +226,16 @@ describe 'basic swift' do
         replicas       => '3',
         min_part_hours => 1,
       }
-      class { '::swift::proxy':
+      class { 'swift::proxy':
         proxy_local_net_ip => '127.0.0.1',
         pipeline           => ['healthcheck', 'proxy-logging', 'cache', 'authtoken', 'keystone', 'dlo', 'proxy-server'],
         account_autocreate => true,
         service_provider   => 'swiftinit',
       }
-      class { '::swift::proxy::authtoken':
+      class { 'swift::proxy::authtoken':
         admin_password => 'a_big_secret',
       }
-      class { '::swift::keystone::dispersion': } -> class { '::swift::dispersion': }
+      class { 'swift::keystone::dispersion': } -> class { 'swift::dispersion': }
       class {'::swift::objectexpirer':
         interval         => 600,
         service_provider => 'swiftinit',

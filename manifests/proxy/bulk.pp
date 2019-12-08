@@ -44,7 +44,7 @@ class swift::proxy::bulk(
   $yield_frequency               = '60',
 ) {
 
-  include ::swift::deps
+  include swift::deps
 
   swift_proxy_config {
     'filter:bulk/use':                           value => 'egg:swift#bulk';

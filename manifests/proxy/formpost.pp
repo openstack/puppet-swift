@@ -17,7 +17,7 @@
 #
 class swift::proxy::formpost() {
 
-  include ::swift::deps
+  include swift::deps
 
   swift_proxy_config {
     'filter:formpost/use': value => 'egg:swift#formpost';

@@ -144,7 +144,7 @@ class swift::storage::all(
   $splice                         = false,
 ) {
 
-  include ::swift::deps
+  include swift::deps
 
   if ($object_port == '6000') {
     warning('The default port for the object storage server has changed from 6000 to 6200 and will be changed in a later release')
@@ -158,7 +158,7 @@ class swift::storage::all(
     warning('The default port for the account storage server has changed from 6002 to 6202 and will be changed in a later release')
   }
 
-  class { '::swift::storage':
+  class { 'swift::storage':
     storage_local_net_ip => $storage_local_net_ip,
   }
 

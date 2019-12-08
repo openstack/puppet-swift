@@ -18,7 +18,7 @@ class swift::proxy::s3api(
   $auth_pipeline_check = false
 ) {
 
-  include ::swift::deps
+  include swift::deps
 
   swift_proxy_config {
     'filter:s3api/use': value => 'egg:swift#s3api';

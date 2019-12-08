@@ -80,8 +80,8 @@ class swift::dispersion (
   $dump_json     = 'no'
 ) {
 
-  include ::swift::deps
-  include ::swift::params
+  include swift::deps
+  include swift::params
 
   Swift_dispersion_config<||> ~> Exec['swift-dispersion-populate']
 

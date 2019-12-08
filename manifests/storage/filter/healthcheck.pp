@@ -6,7 +6,7 @@
 define swift::storage::filter::healthcheck(
 ) {
 
-  include ::swift::deps
+  include swift::deps
 
   concat::fragment { "swift_healthcheck_${name}":
     target  => "/etc/swift/${name}-server.conf",

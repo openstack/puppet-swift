@@ -182,7 +182,7 @@ class swift::proxy(
   $purge_config               = false,
 ) inherits ::swift::params {
 
-  include ::swift::deps
+  include swift::deps
   Swift_config<| |> ~> Service['swift-proxy-server']
 
   validate_legacy(Boolean, 'validate_bool', $account_autocreate)

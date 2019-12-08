@@ -39,7 +39,7 @@ class swift::proxy::s3token(
   $auth_uri = 'http://127.0.0.1:5000'
 ) {
 
-  include ::swift::deps
+  include swift::deps
 
   if $auth_host and $auth_port and $auth_protocol {
     warning('Use of the auth_host, auth_port, and auth_protocol options have been deprecated in favor of auth_uri.')
