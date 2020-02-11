@@ -75,6 +75,10 @@
 #   (Optional) The password for the user
 #   Defaults to 'password'
 #
+# [*region_name*]
+#   (Optional) The region in which the identity server can be found.
+#   Defaults to $::os_service_default.
+#
 # [*notification_ssl_ca_file*]
 #   (optional) SSL certification authority file (valid only if SSL enabled).
 #   (string value)
@@ -129,6 +133,7 @@ class swift::proxy::ceilometer(
   $project_name               = 'services',
   $username                   = 'swift',
   $password                   = 'password',
+  $region_name                = $::os_service_default,
   $notification_ssl_ca_file   = $::os_service_default,
   $notification_ssl_cert_file = $::os_service_default,
   $notification_ssl_key_file  = $::os_service_default,
@@ -173,6 +178,7 @@ class swift::proxy::ceilometer(
     'filter:ceilometer/project_name':         value => $project_name;
     'filter:ceilometer/username':             value => $username;
     'filter:ceilometer/password':             value => $password;
+    'filter:ceilometer/region_name':          value => $region_name;
   }
 
   if $default_transport_url =~ /^rabbit.*/ {

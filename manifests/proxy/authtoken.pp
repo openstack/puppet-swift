@@ -49,6 +49,10 @@
 #   (Optional) id of domain for $username
 #   Defaults to 'default'
 #
+# [*region_name*]
+#   (Optional) The region in which the identity server can be found.
+#   Defaults to $::os_service_default.
+#
 # [*include_service_catalog*]
 #   (Optional) Indicate whether to set the X-Service-Catalog header. If False,
 #   middleware will not ask for service catalog on token validation and will
@@ -113,6 +117,7 @@ class swift::proxy::authtoken(
   $project_name                 = 'services',
   $username                     = 'swift',
   $password                     = 'password',
+  $region_name                  = $::os_service_default,
   $include_service_catalog      = false,
   $service_token_roles          = $::os_service_default,
   $service_token_roles_required = $::os_service_default,
@@ -177,6 +182,7 @@ class swift::proxy::authtoken(
     'filter:authtoken/project_name':                 value => $project_name_real;
     'filter:authtoken/username':                     value => $username_real;
     'filter:authtoken/password':                     value => $password_real;
+    'filter:authtoken/region_name':                  value => $region_name;
     'filter:authtoken/delay_auth_decision':          value => $delay_auth_decision;
     'filter:authtoken/cache':                        value => $cache;
     'filter:authtoken/include_service_catalog':      value => $include_service_catalog;

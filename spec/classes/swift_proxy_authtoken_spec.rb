@@ -29,6 +29,7 @@ describe 'swift::proxy::authtoken' do
       it { is_expected.to contain_swift_proxy_config('filter:authtoken/project_name').with_value('services') }
       it { is_expected.to contain_swift_proxy_config('filter:authtoken/username').with_value('swift') }
       it { is_expected.to contain_swift_proxy_config('filter:authtoken/password').with_value('password') }
+      it { is_expected.to contain_swift_proxy_config('filter:authtoken/region_name').with_value('<SERVICE DEFAULT>') }
       it { is_expected.to contain_swift_proxy_config('filter:authtoken/delay_auth_decision').with_value('1') }
       it { is_expected.to contain_swift_proxy_config('filter:authtoken/cache').with_value('swift.cache') }
       it { is_expected.to contain_swift_proxy_config('filter:authtoken/include_service_catalog').with_value('false') }
@@ -42,6 +43,7 @@ describe 'swift::proxy::authtoken' do
           :admin_tenant_name            => 'admin',
           :admin_user                   => 'swiftuser',
           :admin_password               => 'swiftpassword',
+          :region_name                  => 'region2',
           :cache                        => 'foo',
           :delay_auth_decision          => '0',
           :signing_dir                  => '/home/swift/keystone-signing',
@@ -61,6 +63,7 @@ describe 'swift::proxy::authtoken' do
       it { is_expected.to contain_swift_proxy_config('filter:authtoken/project_name').with_value('admin') }
       it { is_expected.to contain_swift_proxy_config('filter:authtoken/username').with_value('swiftuser') }
       it { is_expected.to contain_swift_proxy_config('filter:authtoken/password').with_value('swiftpassword') }
+      it { is_expected.to contain_swift_proxy_config('filter:authtoken/region_name').with_value('region2') }
       it { is_expected.to contain_swift_proxy_config('filter:authtoken/delay_auth_decision').with_value('0') }
       it { is_expected.to contain_swift_proxy_config('filter:authtoken/cache').with_value('foo') }
       it { is_expected.to contain_swift_proxy_config('filter:authtoken/include_service_catalog').with_value('false') }
