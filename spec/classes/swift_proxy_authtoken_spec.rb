@@ -32,17 +32,21 @@ describe 'swift::proxy::authtoken' do
       it { is_expected.to contain_swift_proxy_config('filter:authtoken/delay_auth_decision').with_value('1') }
       it { is_expected.to contain_swift_proxy_config('filter:authtoken/cache').with_value('swift.cache') }
       it { is_expected.to contain_swift_proxy_config('filter:authtoken/include_service_catalog').with_value('false') }
+      it { is_expected.to contain_swift_proxy_config('filter:authtoken/service_token_roles').with_value('<SERVICE DEFAULT>') }
+      it { is_expected.to contain_swift_proxy_config('filter:authtoken/service_token_roles_required').with_value('<SERVICE DEFAULT>') }
     end
 
     describe "when overriding parameters" do
       let :params do
         {
-          :admin_tenant_name   => 'admin',
-          :admin_user          => 'swiftuser',
-          :admin_password      => 'swiftpassword',
-          :cache               => 'foo',
-          :delay_auth_decision => '0',
-          :signing_dir         => '/home/swift/keystone-signing'
+          :admin_tenant_name            => 'admin',
+          :admin_user                   => 'swiftuser',
+          :admin_password               => 'swiftpassword',
+          :cache                        => 'foo',
+          :delay_auth_decision          => '0',
+          :signing_dir                  => '/home/swift/keystone-signing',
+          :service_token_roles          => ['service'],
+          :service_token_roles_required => true,
         }
       end
 
@@ -60,6 +64,8 @@ describe 'swift::proxy::authtoken' do
       it { is_expected.to contain_swift_proxy_config('filter:authtoken/delay_auth_decision').with_value('0') }
       it { is_expected.to contain_swift_proxy_config('filter:authtoken/cache').with_value('foo') }
       it { is_expected.to contain_swift_proxy_config('filter:authtoken/include_service_catalog').with_value('false') }
+      it { is_expected.to contain_swift_proxy_config('filter:authtoken/service_token_roles').with_value(['service']) }
+      it { is_expected.to contain_swift_proxy_config('filter:authtoken/service_token_roles_required').with_value(true) }
     end
 
     describe 'when overriding www_authenticate_uri' do

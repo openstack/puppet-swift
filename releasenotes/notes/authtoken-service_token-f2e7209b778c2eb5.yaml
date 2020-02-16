@@ -1,0 +1,6 @@
+---
+features:
+  - |
+    swift::proxy::authtoken::service_token_roles and 
+    swift::proxy::authtoken::service_token_roles_required were added to
+    add support for the authtoken parameters related to service token feature
