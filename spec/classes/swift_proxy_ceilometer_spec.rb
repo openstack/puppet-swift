@@ -32,14 +32,15 @@ describe 'swift::proxy::ceilometer' do
           :control_exchange      => 'swift',
           :nonblocking_notify    => true,
           :ignore_projects       => ['services'],
-	  :auth_uri              => 'http://127.0.0.1:5000',
-	  :auth_url              => 'http://127.0.0.1:5000',
-	  :auth_type             => 'password',
-	  :project_domain_name   => 'Default',
-	  :user_domain_name      => 'Default',
-	  :project_name          => 'services',
-	  :username              => 'swift',
-	  :password              => 'password',
+          :auth_uri              => 'http://127.0.0.1:5000',
+          :auth_url              => 'http://127.0.0.1:5000',
+          :auth_type             => 'password',
+          :project_domain_name   => 'Default',
+          :user_domain_name      => 'Default',
+          :project_name          => 'services',
+          :username              => 'swift',
+          :password              => 'password',
+          :region_name           => 'region2'
         }
       end
 
@@ -52,14 +53,15 @@ describe 'swift::proxy::ceilometer' do
         it { is_expected.to contain_swift_proxy_config('filter:ceilometer/control_exchange').with_value('swift') }
         it { is_expected.to contain_swift_proxy_config('filter:ceilometer/nonblocking_notify').with_value('true') }
         it { is_expected.to contain_swift_proxy_config('filter:ceilometer/ignore_projects').with_value(['services']) }
-	it { is_expected.to contain_swift_proxy_config('filter:ceilometer/auth_uri').with_value('http://127.0.0.1:5000') }
-	it { is_expected.to contain_swift_proxy_config('filter:ceilometer/auth_url').with_value('http://127.0.0.1:5000') }
+        it { is_expected.to contain_swift_proxy_config('filter:ceilometer/auth_uri').with_value('http://127.0.0.1:5000') }
+        it { is_expected.to contain_swift_proxy_config('filter:ceilometer/auth_url').with_value('http://127.0.0.1:5000') }
         it { is_expected.to contain_swift_proxy_config('filter:ceilometer/auth_type').with_value('password') }
         it { is_expected.to contain_swift_proxy_config('filter:ceilometer/project_domain_name').with_value('Default') }
         it { is_expected.to contain_swift_proxy_config('filter:ceilometer/user_domain_name').with_value('Default') }
         it { is_expected.to contain_swift_proxy_config('filter:ceilometer/project_name').with_value('services') }
         it { is_expected.to contain_swift_proxy_config('filter:ceilometer/username').with_value('swift') }
         it { is_expected.to contain_swift_proxy_config('filter:ceilometer/password').with_value('password') }
+        it { is_expected.to contain_swift_proxy_config('filter:ceilometer/region_name').with_value('region2') }
       end
 
       context 'with default transport url' do

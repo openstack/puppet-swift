@@ -1,0 +1,6 @@
+---
+features:
+  - |
+    Add swift::proxy::authtoken::region_name and
+    swift::proxy::ceilometer::region_name to specify keystone region
+    where we expect identity resources like swift user are created.
