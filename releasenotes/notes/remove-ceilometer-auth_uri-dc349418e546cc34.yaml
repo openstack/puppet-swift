@@ -1,0 +1,5 @@
+---
+deprecations:
+  - |
+    swift::proxy::ceilometer::auth_uri was deprecated and has no affect,
+    because auth_uri parameter is no more valid in ceilometer middleware.

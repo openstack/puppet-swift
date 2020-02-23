@@ -43,10 +43,6 @@
 #   What projects to ignore to send events to ceilometer
 #   Defaults to ['services']
 #
-# [*auth_uri*]
-#   (Optional) Complete public Identity API endpoint.
-#   Defaults to 'http://127.0.0.1:5000'
-#
 # [*auth_url*]
 #   (Optional) The URL to use for authentication.
 #   Defaults to 'http://127.0.0.1:5000'
@@ -106,6 +102,12 @@
 #   available on some distributions. (string value)
 #   Defaults to $::os_service_default
 #
+# == DEPRECATED
+#
+# [*auth_uri*]
+#   (Optional) Complete public Identity API endpoint.
+#   Defaults to undef
+#
 # == Examples
 #
 # == Authors
@@ -125,7 +127,6 @@ class swift::proxy::ceilometer(
   $group                      = 'ceilometer',
   $nonblocking_notify         = false,
   $ignore_projects            = ['services'],
-  $auth_uri                   = 'http://127.0.0.1:5000',
   $auth_url                   = 'http://127.0.0.1:5000',
   $auth_type                  = 'password',
   $project_domain_name        = 'Default',
@@ -140,6 +141,8 @@ class swift::proxy::ceilometer(
   $amqp_ssl_key_password      = $::os_service_default,
   $rabbit_use_ssl             = $::os_service_default,
   $kombu_ssl_version          = $::os_service_default,
+  # DEPRECATED PARAMETERS
+  $auth_uri                   = undef
 ) inherits swift {
 
   include swift::deps
@@ -162,6 +165,10 @@ class swift::proxy::ceilometer(
     group  => 'swift',
   }
 
+  if $auth_uri {
+    warning('The swift::proxy::ceilometer::auth_uri parameter was deperecated, and has no effect')
+  }
+
   swift_proxy_config {
     'filter:ceilometer/topic':                value => $topic;
     'filter:ceilometer/driver':               value => $driver;
@@ -170,7 +177,6 @@ class swift::proxy::ceilometer(
     'filter:ceilometer/paste.filter_factory': value => 'ceilometermiddleware.swift:filter_factory';
     'filter:ceilometer/nonblocking_notify':   value => $nonblocking_notify;
     'filter:ceilometer/ignore_projects':      value => $ignore_projects;
-    'filter:ceilometer/auth_uri':             value => $auth_uri;
     'filter:ceilometer/auth_url':             value => $auth_url;
     'filter:ceilometer/auth_type':            value => $auth_type;
     'filter:ceilometer/project_domain_name':  value => $project_domain_name;
