@@ -164,6 +164,10 @@
 #   version 3.0 or greater.
 #   Defaults to false.
 #
+# [*object_server_mb_per_sync*]
+#   (optional) Number of MB allocated for the cache.
+#   Defaults to 512, which is the swift default value.
+#
 define swift::storage::server(
   $type,
   $storage_local_net_ip,
@@ -202,6 +206,7 @@ define swift::storage::server(
   $disk_chunk_size                = 65536,
   $auditor_disk_chunk_size        = undef,
   $splice                         = false,
+  $object_server_mb_per_sync      = 512,
 ) {
 
   include swift::deps

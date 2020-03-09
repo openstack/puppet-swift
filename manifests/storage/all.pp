@@ -109,6 +109,10 @@
 #   (optional) Number of account server workers.
 #   Defaults to $::os_workers.
 #
+# [*object_server_mb_per_sync*]
+#   (optional) Number of MB allocated for the cache.
+#   Defaults to 512, which is the swift default value.
+#
 # [*splice*]
 #   (optional) Use splice for zero-copy object GETs. This requires Linux Kernel
 #   version 3.0 or greater.
@@ -141,6 +145,7 @@ class swift::storage::all(
   $account_server_workers         = $::os_workers,
   $container_server_workers       = $::os_workers,
   $object_server_workers          = $::os_workers,
+  $object_server_mb_per_sync      = 512,
   $splice                         = false,
 ) {
 
@@ -201,14 +206,15 @@ class swift::storage::all(
   }
 
   swift::storage::server { $object_port:
-    type             => 'object',
-    config_file_path => 'object-server.conf',
-    pipeline         => $object_pipeline,
-    log_facility     => $log_facility,
-    log_requests     => $log_requests,
-    incoming_chmod   => $incoming_chmod,
-    outgoing_chmod   => $outgoing_chmod,
-    workers          => $object_server_workers,
-    splice           => $splice,
+    type                      => 'object',
+    config_file_path          => 'object-server.conf',
+    pipeline                  => $object_pipeline,
+    log_facility              => $log_facility,
+    log_requests              => $log_requests,
+    incoming_chmod            => $incoming_chmod,
+    outgoing_chmod            => $outgoing_chmod,
+    workers                   => $object_server_workers,
+    splice                    => $splice,
+    object_server_mb_per_sync => $object_server_mb_per_sync,
   }
 }
