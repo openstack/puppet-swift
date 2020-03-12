@@ -4,6 +4,7 @@ describe 'swift::proxy::s3api' do
   shared_examples 'swift::proxy::s3api' do
     it { is_expected.to contain_swift_proxy_config('filter:s3api/use').with_value('egg:swift#s3api') }
     it { is_expected.to contain_swift_proxy_config('filter:s3api/auth_pipeline_check').with_value('false') }
+    it { is_expected.to contain_swift_proxy_config('filter:s3api/max_upload_part_num').with_value('1000') }
   end
 
   on_supported_os({
