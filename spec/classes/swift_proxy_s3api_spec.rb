@@ -1,10 +1,33 @@
 require 'spec_helper'
 
 describe 'swift::proxy::s3api' do
+
+  let :params do
+    {}
+  end
+
   shared_examples 'swift::proxy::s3api' do
-    it { is_expected.to contain_swift_proxy_config('filter:s3api/use').with_value('egg:swift#s3api') }
-    it { is_expected.to contain_swift_proxy_config('filter:s3api/auth_pipeline_check').with_value('false') }
-    it { is_expected.to contain_swift_proxy_config('filter:s3api/max_upload_part_num').with_value('1000') }
+    context 'with default parameters' do
+      it 'configures with default' do
+        is_expected.to contain_swift_proxy_config('filter:s3api/use').with_value('egg:swift#s3api')
+        is_expected.to contain_swift_proxy_config('filter:s3api/auth_pipeline_check').with_value('false')
+        is_expected.to contain_swift_proxy_config('filter:s3api/max_upload_part_num').with_value('1000')
+      end
+    end
+
+    context 'with overriding parameters' do
+      before do
+        params.merge!({
+          :auth_pipeline_check => true,
+          :max_upload_part_num => '2000'
+        })
+      end
+      it 'configures with overridden parameters' do
+        is_expected.to contain_swift_proxy_config('filter:s3api/use').with_value('egg:swift#s3api')
+        is_expected.to contain_swift_proxy_config('filter:s3api/auth_pipeline_check').with_value('true')
+        is_expected.to contain_swift_proxy_config('filter:s3api/max_upload_part_num').with_value('2000')
+      end
+    end
   end
 
   on_supported_os({
