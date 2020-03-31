@@ -43,7 +43,15 @@ describe 'swift::client' do
         when 'Debian'
           { :client_package_name => 'python3-swiftclient' }
         when 'RedHat'
-          { :client_package_name => 'python-swiftclient' }
+          if facts[:operatingsystem] == 'Fedora'
+            { :client_package_name => 'python3-swiftclient' }
+          else
+            if facts[:operatingsystemmajrelease] > '7'
+              { :client_package_name => 'python3-swiftclient' }
+            else
+              { :client_package_name => 'python-swiftclient' }
+            end
+          end
         end
       end
 
