@@ -22,5 +22,5 @@
       featureset_override:
         run_tempest: false
         tempest_test_whitelist:
-          - 'object_storage'
+          - 'tempest.api.object_storage'
         use_os_tempest: true
