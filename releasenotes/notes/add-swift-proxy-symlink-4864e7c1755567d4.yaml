@@ -1,0 +1,4 @@
+---
+features:
+  - |
+    Add swift::proxy::symlink class to configure symlink middleware for swift proxy.
