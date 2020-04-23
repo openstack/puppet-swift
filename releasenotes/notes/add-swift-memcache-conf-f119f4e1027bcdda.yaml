@@ -1,0 +1,4 @@
+---
+features:
+  - |
+    Support to configure memcache.conf file.
