@@ -1,0 +1,5 @@
+---
+features:
+  - |
+    Add swift::proxy::etag_quoter to configure etag_quoter middleware for swift
+    proxy.
