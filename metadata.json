@@ -10,6 +10,10 @@
             "version_requirement": ">=16.3.0 <17.0.0"
         },
         {
+            "name": "openstack/openstacklib",
+            "version_requirement": ">=16.3.0 <17.0.0"
+        },
+        {
             "name": "puppetlabs/rsync",
             "version_requirement": ">=1.1.0 <2.0.0"
         },
