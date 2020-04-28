@@ -1,4 +1,5 @@
 #
+# DEPRECATED!
 # Configure swift swift3.
 #
 # == Dependencies
@@ -7,7 +8,7 @@
 #
 # [*ensure*]
 #   Enable or not swift3 middleware
-#   Defaults to 'present'
+#   Defaults to undef
 #
 # == Examples
 #
@@ -21,19 +22,10 @@
 # Copyright 2012 eNovance licensing@enovance.com
 #
 class swift::proxy::swift3(
-  $ensure = 'present'
+  $ensure = undef
 ) {
 
-  include swift::deps
-  include swift::params
+  warning('swift::proxy::swift3 is deprecated and has no effect. \
+Use swift::proxy::s3api to use s3api middleware implemented in swift.')
 
-  package { 'swift-plugin-s3':
-    ensure => $ensure,
-    name   => $::swift::params::swift3,
-    tag    => ['openstack','swift-package']
-  }
-
-  swift_proxy_config {
-    'filter:swift3/use': value => 'egg:swift3#swift3';
-  }
 }
