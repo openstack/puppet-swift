@@ -16,7 +16,7 @@ swift
 4. [Usage - The classes, defines,functions and facts available in this module](#reference)
 5. [Implementation - An under-the-hood peek at what the module is doing](#implementation)
 6. [Limitations - OS compatibility, etc.](#limitations)
-7. [Beaker-Rspec - Beaker-rspec tests for the project](#beaker-rpsec)
+7. [Beaker-Rspec - Beaker-rspec tests for the project](#beaker-rspec)
 8. [Development - Guide for contributing to the module](#development)
 9. [Contributors - Those with commits](#contributors)
 
