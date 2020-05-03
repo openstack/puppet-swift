@@ -75,28 +75,6 @@
 #  true/false
 #  Defaults to $::os_service_default.
 #
-# == DEPRECATED
-#
-# [*identity_uri*]
-#   (optional) Deprecated. Use auth_url instead.
-#   Defaults to undef
-#
-# [*admin_user*]
-#   (optional) Deprecated. Use username instead.
-#   Defaults to undef
-#
-# [*admin_tenant_name*]
-#   (optional) Deprecated. Use project_name instead.
-#   Defaults to undef
-#
-# [*admin_password*]
-#   (optional) Deprecated. Use password instead.
-#   Defaults to undef
-#
-# [*auth_uri*]
-#   (Optional) Complete public Identity API endpoint.
-#   Defaults to 'http://127.0.0.1:5000'
-#
 # == Authors
 #
 #   Dan Bode dan@puppetlabs.com
@@ -121,41 +99,9 @@ class swift::proxy::authtoken(
   $include_service_catalog      = false,
   $service_token_roles          = $::os_service_default,
   $service_token_roles_required = $::os_service_default,
-  # DEPRECATED PARAMETERS
-  $admin_user                   = undef,
-  $admin_tenant_name            = undef,
-  $admin_password               = undef,
-  $identity_uri                 = undef,
-  $auth_uri                     = undef,
 ) inherits swift::params {
 
   include swift::deps
-
-  if $identity_uri {
-    warning('identity_uri is deprecated and will be removed, please use auth_url instead')
-  }
-
-  if $admin_user {
-    warning('admin_user is deprecated and will be removed, please use username instead')
-  }
-
-  if $admin_tenant_name {
-    warning('admin_tenant_name is deprecated and will be removed, please use project_name instead')
-  }
-
-  if $admin_password {
-    warning('admin_password is deprecated and will be removed, please use password instead')
-  }
-
-  if $auth_uri {
-    warning('auth_uri is deprecated, please use www_authenticate_uri')
-  }
-
-  $auth_url_real = pick($identity_uri, $auth_url)
-  $username_real = pick($admin_user, $username)
-  $project_name_real = pick($admin_tenant_name, $project_name)
-  $password_real = pick($admin_password, $password)
-  $www_authenticate_uri_real = pick($auth_uri, $www_authenticate_uri)
 
   if ($::os_package_type != 'debian') {
     file { $signing_dir:
@@ -174,14 +120,14 @@ class swift::proxy::authtoken(
     'filter:authtoken/log_name':                     value => 'swift';
     'filter:authtoken/signing_dir':                  value => $signing_dir;
     'filter:authtoken/paste.filter_factory':         value => 'keystonemiddleware.auth_token:filter_factory';
-    'filter:authtoken/www_authenticate_uri':         value => $www_authenticate_uri_real;
-    'filter:authtoken/auth_url':                     value => $auth_url_real;
+    'filter:authtoken/www_authenticate_uri':         value => $www_authenticate_uri;
+    'filter:authtoken/auth_url':                     value => $auth_url;
     'filter:authtoken/auth_plugin':                  value => $auth_plugin;
     'filter:authtoken/project_domain_id':            value => $project_domain_id;
     'filter:authtoken/user_domain_id':               value => $user_domain_id;
-    'filter:authtoken/project_name':                 value => $project_name_real;
-    'filter:authtoken/username':                     value => $username_real;
-    'filter:authtoken/password':                     value => $password_real;
+    'filter:authtoken/project_name':                 value => $project_name;
+    'filter:authtoken/username':                     value => $username;
+    'filter:authtoken/password':                     value => $password;
     'filter:authtoken/region_name':                  value => $region_name;
     'filter:authtoken/delay_auth_decision':          value => $delay_auth_decision;
     'filter:authtoken/cache':                        value => $cache;

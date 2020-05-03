@@ -233,7 +233,7 @@ describe 'basic swift' do
         service_provider   => 'swiftinit',
       }
       class { 'swift::proxy::authtoken':
-        admin_password => 'a_big_secret',
+        password => 'a_big_secret',
       }
       class { 'swift::keystone::dispersion': } -> class { 'swift::dispersion': }
       class {'::swift::objectexpirer':

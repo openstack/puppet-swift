@@ -20,10 +20,6 @@
 #    (Optional)
 #    Defaults to Undef.
 #
-# DEPRECATED PARAMETERS
-# [*is_admin*]
-#   Deprecated, this parameter does nothing.
-#
 # == Authors
 #
 #  Dan Bode dan@puppetlabs.com
@@ -33,15 +29,9 @@ class swift::proxy::keystone(
   $operator_roles      = ['admin', 'SwiftOperator'],
   $reseller_prefix     = 'AUTH_',
   $reseller_admin_role = undef,
-  # DEPRECATED PARAMETERS
-  $is_admin            = undef
 ) {
 
   include swift::deps
-
-  if $is_admin {
-        warning('is_admin parameter is deprecated, has no effect and will be removed in a future release.')
-  }
 
   swift_proxy_config {
     'filter:keystone/use':                 value => 'egg:swift#keystoneauth';

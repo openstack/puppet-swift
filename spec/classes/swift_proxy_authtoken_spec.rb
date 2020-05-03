@@ -40,9 +40,9 @@ describe 'swift::proxy::authtoken' do
     describe "when overriding parameters" do
       let :params do
         {
-          :admin_tenant_name            => 'admin',
-          :admin_user                   => 'swiftuser',
-          :admin_password               => 'swiftpassword',
+          :project_name                 => 'admin',
+          :username                     => 'swiftuser',
+          :password                    => 'swiftpassword',
           :region_name                  => 'region2',
           :cache                        => 'foo',
           :delay_auth_decision          => '0',
@@ -79,21 +79,21 @@ describe 'swift::proxy::authtoken' do
       it { is_expected.to contain_swift_proxy_config('filter:authtoken/www_authenticate_uri').with_value('http://public.host/keystone/main') }
     end
 
-    describe "when identity_uri is set" do
+    describe "when auth_url is set" do
       let :params do
         {
-          :identity_uri => 'https://foo.bar:5000/'
+          :auth_url => 'https://foo.bar:5000/'
         }
       end
 
       it { is_expected.to contain_swift_proxy_config('filter:authtoken/auth_url').with_value('https://foo.bar:5000/') }
     end
 
-    describe "when both www_authenticate_uri and identity_uri are set" do
+    describe "when both www_authenticate_uri and auth_url are set" do
       let :params do
         {
           :www_authenticate_uri => 'https://foo.bar:5000/v3/',
-          :identity_uri         => 'https://foo.bar:5000/'
+          :auth_url             => 'https://foo.bar:5000/'
         }
       end
 

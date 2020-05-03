@@ -1,0 +1,17 @@
+---
+deprecations:
+  - |
+    The following deprecated parameters were removed fron
+    ``swift::proxy::authtoken`` class.
+
+    - ``identity_uri``
+    - ``admin_user``
+    - ``admin_tenant_name``
+    - ``admin_password``
+    - ``auth_uri``
+
+  - |
+    The ``swift::proxy::keystone::is_admin`` parameter was removed.
+
+  - |
+    The ``swift::client_package_ensure`` parameter was removed.
