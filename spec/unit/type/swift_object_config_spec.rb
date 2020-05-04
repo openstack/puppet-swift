@@ -8,12 +8,12 @@ describe 'Puppet::Type.type(:swift_object_config)' do
 
   it 'should autorequire the package that install the file' do
     catalog = Puppet::Resource::Catalog.new
-    package = Puppet::Type.type(:package).new(:name => 'swift-object')
-    catalog.add_resource package, @swift_object_config
+    anchor = Puppet::Type.type(:anchor).new(:name => 'swift::install::end')
+    catalog.add_resource anchor, @swift_object_config
     dependency = @swift_object_config.autorequire
     expect(dependency.size).to eq(1)
     expect(dependency[0].target).to eq(@swift_object_config)
-    expect(dependency[0].source).to eq(package)
+    expect(dependency[0].source).to eq(anchor)
   end
 
 end

@@ -46,8 +46,8 @@ Puppet::Type.newtype(:swift_memcache_config) do
     defaultto('<SERVICE DEFAULT>')
   end
 
-  autorequire(:package) do
-    'swift'
+  autorequire(:anchor) do
+    ['swift::install::end']
   end
 
 end

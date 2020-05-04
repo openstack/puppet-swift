@@ -44,12 +44,8 @@ Puppet::Type.newtype(:swift_container_reconciler_config) do
   end
 
   # Require the package providing container-reconciler to be present
-  autorequire(:package) do
-    if Facter.value(:osfamily) == 'Debian'
-      'swift-container-reconciler'
-    elsif Facter.value(:osfamily) == 'RedHat'
-      'openstack-swift-container'
-    end
+  autorequire(:anchor) do
+    ['swift::install::end']
   end
 
 end

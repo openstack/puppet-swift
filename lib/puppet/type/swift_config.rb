@@ -47,8 +47,8 @@ Puppet::Type.newtype(:swift_config) do
   end
 
   # Require the swift.conf to be present
-  autorequire(:package) do
-    'swift'
+  autorequire(:anchor) do
+    ['swift::install::end']
   end
 
 end

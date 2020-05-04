@@ -46,8 +46,8 @@ Puppet::Type.newtype(:swift_container_config) do
     defaultto('<SERVICE DEFAULT>')
   end
 
-  autorequire(:package) do
-    'swift-container'
+  autorequire(:anchor) do
+    ['swift::install::end']
   end
 
 end

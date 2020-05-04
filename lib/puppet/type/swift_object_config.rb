@@ -46,8 +46,8 @@ Puppet::Type.newtype(:swift_object_config) do
     defaultto('<SERVICE DEFAULT>')
   end
 
-  autorequire(:package) do
-    'swift-object'
+  autorequire(:anchor) do
+    ['swift::install::end']
   end
 
 end
