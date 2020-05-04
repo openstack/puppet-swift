@@ -8,12 +8,12 @@ describe 'Puppet::Type.type(:swift_bench_config)' do
 
   it 'should autorequire the package that install the file' do
     catalog = Puppet::Resource::Catalog.new
-    package = Puppet::Type.type(:package).new(:name => 'swift')
-    catalog.add_resource package, @swift_bench_config
+    anchor = Puppet::Type.type(:anchor).new(:name => 'swift::install::end')
+    catalog.add_resource anchor, @swift_bench_config
     dependency = @swift_bench_config.autorequire
     expect(dependency.size).to eq(1)
     expect(dependency[0].target).to eq(@swift_bench_config)
-    expect(dependency[0].source).to eq(package)
+    expect(dependency[0].source).to eq(anchor)
   end
 
 end

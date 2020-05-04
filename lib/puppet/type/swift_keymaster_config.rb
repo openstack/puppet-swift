@@ -46,8 +46,8 @@ Puppet::Type.newtype(:swift_keymaster_config) do
     defaultto('<SERVICE DEFAULT>')
   end
 
-  autorequire(:package) do
-    'swift-proxy'
+  autorequire(:anchor) do
+    ['swift::install::end']
   end
 
 end

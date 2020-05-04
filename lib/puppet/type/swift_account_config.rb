@@ -46,8 +46,8 @@ Puppet::Type.newtype(:swift_account_config) do
     defaultto('<SERVICE DEFAULT>')
   end
 
-  autorequire(:package) do
-    'swift-account'
+  autorequire(:anchor) do
+    ['swift::install::end']
   end
 
 end
