@@ -207,7 +207,7 @@ node /swift-proxy/ {
       'healthcheck',
       'cache',
       'ratelimit',
-      'swift3',
+      's3api',
       's3token',
       'authtoken',
       'keystone',
@@ -226,7 +226,7 @@ node /swift-proxy/ {
     '::swift::proxy::container_quotas',
     '::swift::proxy::healthcheck',
     '::swift::proxy::cache',
-    '::swift::proxy::swift3',
+    '::swift::proxy::s3api',
   ]: }
   class { 'swift::proxy::bulk':
     max_containers_per_extraction => 10000,

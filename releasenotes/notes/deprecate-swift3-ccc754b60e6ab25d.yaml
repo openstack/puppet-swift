@@ -1,0 +1,11 @@
+---
+upgrade:
+  - |
+    puppet-swift now fails if swift3 is included in ``swift::proxy::pipeline``,
+    because it no longer supports configuration for swift3 middleware. Use
+    s3api instead to provide S3-compatible API.
+deprecations:
+  - |
+    The ``swift::proxy::swift3`` class has been deprecated because swift3
+    middleware is no longer maintained. Use ``swift::proxy::s3api`` instead
+    to use built-in s3api middleware in swift.

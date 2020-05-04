@@ -34,7 +34,6 @@ class swift::params {
       $account_auditor_service_name      = 'swift-account-auditor'
       $account_reaper_service_name       = 'swift-account-reaper'
       $account_replicator_service_name   = 'swift-account-replicator'
-      $swift3                            = 'swift-plugin-s3'
       if ($::os_package_type == 'debian') {
         $signing_dir = '/var/lib/swift'
       }else{
@@ -65,7 +64,6 @@ class swift::params {
       $account_auditor_service_name      = 'openstack-swift-account-auditor'
       $account_reaper_service_name       = 'openstack-swift-account-reaper'
       $account_replicator_service_name   = 'openstack-swift-account-replicator'
-      $swift3                            = 'openstack-swift-plugin-swift3'
       $signing_dir                       = '/var/cache/swift'
     }
     default: {
