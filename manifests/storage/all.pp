@@ -121,9 +121,9 @@
 class swift::storage::all(
   $storage_local_net_ip,
   $devices                        = '/srv/node',
-  $object_port                    = '6000',
-  $container_port                 = '6001',
-  $account_port                   = '6002',
+  $object_port                    = 6000,
+  $container_port                 = 6001,
+  $account_port                   = 6002,
   $object_pipeline                = undef,
   $container_pipeline             = undef,
   $allow_versions                 = false,
@@ -151,16 +151,19 @@ class swift::storage::all(
 
   include swift::deps
 
-  if ($object_port == '6000') {
-    warning('The default port for the object storage server has changed from 6000 to 6200 and will be changed in a later release')
+  if ("${$object_port}" == '6000') {
+    warning('The default port for the object storage server has changed \
+from 6000 to 6200 and will be changed in a later release')
   }
 
-  if ($container_port == '6001') {
-    warning('The default port for the container storage server has changed from 6001 to 6201 and will be changed in a later release')
+  if ("${container_port}" == '6001') {
+    warning('The default port for the container storage server has changed \
+from 6001 to 6201 and will be changed in a later release')
   }
 
-  if ($account_port == '6002') {
-    warning('The default port for the account storage server has changed from 6002 to 6202 and will be changed in a later release')
+  if ("${$account_port}" == '6002') {
+    warning('The default port for the account storage server has changed \
+from 6002 to 6202 and will be changed in a later release')
   }
 
   class { 'swift::storage':
@@ -182,7 +185,7 @@ class swift::storage::all(
     log_statsd_metric_prefix       => $log_statsd_metric_prefix,
   }
 
-  swift::storage::server { $account_port:
+  swift::storage::server { "${account_port}":
     type             => 'account',
     config_file_path => 'account-server.conf',
     pipeline         => $account_pipeline,
@@ -193,7 +196,7 @@ class swift::storage::all(
     workers          => $account_server_workers,
   }
 
-  swift::storage::server { $container_port:
+  swift::storage::server { "${container_port}":
     type             => 'container',
     config_file_path => 'container-server.conf',
     pipeline         => $container_pipeline,
@@ -205,7 +208,7 @@ class swift::storage::all(
     workers          => $container_server_workers,
   }
 
-  swift::storage::server { $object_port:
+  swift::storage::server { "${object_port}":
     type                      => 'object',
     config_file_path          => 'object-server.conf',
     pipeline                  => $object_pipeline,

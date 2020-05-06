@@ -11,9 +11,9 @@ describe 'swift::storage::all' do
   let :default_params do
     {
       :devices => '/srv/node',
-      :object_port => '6000',
-      :container_port => '6001',
-      :account_port => '6002',
+      :object_port => 6000,
+      :container_port => 6001,
+      :account_port => 6002,
       :log_facility => 'LOG_LOCAL2',
       :incoming_chmod => 'Du=rwx,g=rx,o=rx,Fu=rw,g=r,o=r',
       :outgoing_chmod => 'Du=rwx,g=rx,o=rx,Fu=rw,g=r,o=r',
@@ -30,13 +30,13 @@ describe 'swift::storage::all' do
       end
     end
 
-    [{  :storage_local_net_ip => '127.0.0.1' },
+    [{ :storage_local_net_ip => '127.0.0.1' },
      {
        :devices => '/tmp/node',
        :storage_local_net_ip => '10.0.0.1',
-       :object_port => '7000',
-       :container_port => '7001',
-       :account_port => '7002',
+       :object_port => "7000",
+       :container_port => "7001",
+       :account_port => "7002",
        :object_pipeline => ["healthcheck"],
        :container_pipeline => ["healthcheck"],
        :account_pipeline => ["healthcheck"],
