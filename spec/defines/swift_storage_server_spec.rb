@@ -129,6 +129,14 @@ describe 'swift::storage::server' do
              let :params do req_params.merge({ :splice => true, }) end
               it { is_expected.to contain_concat_fragment("swift-#{t}-#{title}").with_content(/^splice\s*=\s*true\s*$/) }
             end
+
+            describe "when client_timeout is not set" do
+             it { is_expected.to contain_concat_fragment("swift-#{t}-#{title}").with_content(/^client_timeout\s*=\s*60\s*$/) }
+            end
+            describe "when client_timeout is set" do
+             let :params do req_params.merge({ :client_timeout => 30, }) end
+              it { is_expected.to contain_concat_fragment("swift-#{t}-#{title}").with_content(/^client_timeout\s*=\s*30\s*$/) }
+            end
           end
 
           describe "when log_udp_port is set" do

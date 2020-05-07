@@ -159,6 +159,11 @@
 #   (optional) Object-auditor size of chunks to read/write to disk.
 #   Defaults to undef.
 #
+# [*client_timeout*]
+#   (optional) Object-server timeout in seconds to read one chunk from a client
+#   external services.
+#   Defaults to 60.
+#
 # [*splice*]
 #   (optional) Use splice for zero-copy object GETs. This requires Linux Kernel
 #   version 3.0 or greater.
@@ -204,6 +209,7 @@ define swift::storage::server(
   $log_statsd_metric_prefix       = '',
   $network_chunk_size             = 65536,
   $disk_chunk_size                = 65536,
+  $client_timeout                 = 60,
   $auditor_disk_chunk_size        = undef,
   $splice                         = false,
   $object_server_mb_per_sync      = 512,

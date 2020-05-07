@@ -26,6 +26,7 @@ log_statsd_metric_prefix = <%=@log_statsd_metric_prefix%>
 <% end -%>
 network_chunk_size = <%= @network_chunk_size%>
 disk_chunk_size = <%= @disk_chunk_size%>
+client_timeout = <%= @client_timeout %>
 
 [pipeline:main]
 pipeline = <%= @pipeline.to_a.join(' ') %>

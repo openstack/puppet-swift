@@ -1,0 +1,6 @@
+---
+features:
+  - |
+    A new parameter client_timeout has been added to the storage::server class
+    (useful only if type=object). It is similar to the client_timeout parameter
+    used in the proxy class, except that it is for object.
