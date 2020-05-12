@@ -203,16 +203,15 @@ class Puppet::Provider::SwiftRingBuilder < Puppet::Provider
   end
 
   def region=(region)
-    raise(Puppet::Error, "Changing the region of a device is not possible.")
+    raise(Puppet::Error, "Changing the region of a device is not yet supported.")
   end
 
   def zone
     ring[resource[:name]][:zone]
   end
 
-  # TODO - is updating the zone supported?
   def zone=(zone)
-    Puppet.warning('Setting zone is not yet supported, I am not even sure if it is supported')
+    raise(Puppet::Error, "Changing the zone of a device is not yet supported.")
   end
 
   def weight
