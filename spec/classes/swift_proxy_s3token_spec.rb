@@ -12,7 +12,7 @@ describe 'swift::proxy::s3token' do
       it { is_expected.to contain_swift_proxy_config('filter:s3token/auth_url').with_value('http://127.0.0.1:5000') }
       it { is_expected.to contain_swift_proxy_config('filter:s3token/auth_type').with_value('password') }
       it { is_expected.to contain_swift_proxy_config('filter:s3token/username').with_value('swift') }
-      it { is_expected.to contain_swift_proxy_config('filter:s3token/password').with_value('password') }
+      it { is_expected.to contain_swift_proxy_config('filter:s3token/password').with_value('password').with_secret(true) }
       it { is_expected.to contain_swift_proxy_config('filter:s3token/project_name').with_value('services') }
       it { is_expected.to contain_swift_proxy_config('filter:s3token/project_domain_id').with_value('default') }
       it { is_expected.to contain_swift_proxy_config('filter:s3token/user_domain_id').with_value('default') }
@@ -58,7 +58,7 @@ describe 'swift::proxy::s3token' do
       it { is_expected.to contain_swift_proxy_config('filter:s3token/auth_url').with_value('http://192.168.24.11:5000') }
       it { is_expected.to contain_swift_proxy_config('filter:s3token/auth_type').with_value('password') }
       it { is_expected.to contain_swift_proxy_config('filter:s3token/username').with_value('swift') }
-      it { is_expected.to contain_swift_proxy_config('filter:s3token/password').with_value('swift') }
+      it { is_expected.to contain_swift_proxy_config('filter:s3token/password').with_value('swift').with_secret(true) }
       it { is_expected.to contain_swift_proxy_config('filter:s3token/project_name').with_value('admin') }
       it { is_expected.to contain_swift_proxy_config('filter:s3token/project_domain_id').with_value('12345') }
       it { is_expected.to contain_swift_proxy_config('filter:s3token/user_domain_id').with_value('12345') }

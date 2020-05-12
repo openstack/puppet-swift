@@ -81,17 +81,17 @@ class swift::keymaster(
   include swift::deps
 
   swift_keymaster_config {
-    'kms_keymaster/api_class': value => $api_class;
-    'kms_keymaster/key_id': value => $key_id;
-    'kms_keymaster/username': value => $username;
-    'kms_keymaster/password': value => $password;
-    'kms_keymaster/project_name': value => $project_name;
-    'kms_keymaster/project_id': value => $project_id;
-    'kms_keymaster/auth_endpoint': value => $auth_endpoint;
+    'kms_keymaster/api_class':           value => $api_class;
+    'kms_keymaster/key_id':              value => $key_id;
+    'kms_keymaster/username':            value => $username;
+    'kms_keymaster/password':            value => $password, secret => true;
+    'kms_keymaster/project_name':        value => $project_name;
+    'kms_keymaster/project_id':          value => $project_id;
+    'kms_keymaster/auth_endpoint':       value => $auth_endpoint;
     'kms_keymaster/project_domain_name': value => $project_domain_name;
-    'kms_keymaster/user_domain_name': value => $user_domain_name;
-    'kms_keymaster/project_domain_id': value => $project_domain_id;
-    'kms_keymaster/user_domain_id': value => $user_domain_id;
+    'kms_keymaster/user_domain_name':    value => $user_domain_name;
+    'kms_keymaster/project_domain_id':   value => $project_domain_id;
+    'kms_keymaster/user_domain_id':      value => $user_domain_id;
   }
 }
 
