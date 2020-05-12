@@ -1,0 +1,4 @@
+---
+features:
+  - |
+    Add swift::proxy::domain_remap class to configure domain_remap middleware for swift proxy.
