@@ -89,7 +89,7 @@
 #
 class swift::keystone::auth(
   $auth_name              = 'swift',
-  $password               = 'swift_password',
+  $password               = undef,
   $tenant                 = 'services',
   $email                  = 'swift@localhost',
   $region                 = 'RegionOne',
@@ -111,6 +111,14 @@ class swift::keystone::auth(
 ) {
 
   include swift::deps
+
+  if $password == undef {
+    warning('Usage of the default password is deprecated and will be removed in a future release. \
+Please set password parameter')
+    $password_real = 'swift_password'
+  } else {
+    $password_real = $password
+  }
 
   if $service_name == $service_name_s3 {
       fail('swift::keystone::auth parameters service_name and service_name_s3 must be different.')
@@ -134,7 +142,7 @@ class swift::keystone::auth(
     service_description => $service_description,
     region              => $region,
     auth_name           => $auth_name,
-    password            => $password,
+    password            => $password_real,
     email               => $email,
     tenant              => $tenant,
     public_url          => $public_url,

@@ -16,6 +16,7 @@ describe 'swift::proxy::ceilometer' do
         }
       end
 
+      it { is_expected.to contain_swift_proxy_config('filter:ceilometer/password').with_value('password').with_secret(true) }
       it { is_expected.to contain_swift_proxy_config('filter:ceilometer/paste.filter_factory').with_value('ceilometermiddleware.swift:filter_factory') }
       it { is_expected.to contain_swift_proxy_config('filter:ceilometer/url').with_value('rabbit://user_1:user_1_passw@1.1.1.1:5673/rabbit').with_secret(true) }
       it { is_expected.to contain_swift_proxy_config('filter:ceilometer/nonblocking_notify').with_value('false') }
@@ -38,7 +39,7 @@ describe 'swift::proxy::ceilometer' do
           :user_domain_name      => 'Default',
           :project_name          => 'services',
           :username              => 'swift',
-          :password              => 'password',
+          :password              => 'mypassword',
           :region_name           => 'region2'
         }
       end
@@ -58,7 +59,7 @@ describe 'swift::proxy::ceilometer' do
         it { is_expected.to contain_swift_proxy_config('filter:ceilometer/user_domain_name').with_value('Default') }
         it { is_expected.to contain_swift_proxy_config('filter:ceilometer/project_name').with_value('services') }
         it { is_expected.to contain_swift_proxy_config('filter:ceilometer/username').with_value('swift') }
-        it { is_expected.to contain_swift_proxy_config('filter:ceilometer/password').with_value('password').with_secret(true) }
+        it { is_expected.to contain_swift_proxy_config('filter:ceilometer/password').with_value('mypassword').with_secret(true) }
         it { is_expected.to contain_swift_proxy_config('filter:ceilometer/region_name').with_value('region2') }
       end
 

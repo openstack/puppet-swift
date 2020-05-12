@@ -80,6 +80,10 @@ class swift::keymaster(
 
   include swift::deps
 
+  if $password == undef {
+    warning('password parameter is missing')
+  }
+
   swift_keymaster_config {
     'kms_keymaster/api_class':           value => $api_class;
     'kms_keymaster/key_id':              value => $key_id;
