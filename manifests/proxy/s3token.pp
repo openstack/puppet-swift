@@ -101,7 +101,7 @@ class swift::proxy::s3token(
   $auth_url              = 'http://127.0.0.1:5000',
   $auth_type             = 'password',
   $username              = 'swift',
-  $password              = 'password',
+  $password              = undef,
   $project_name          = 'services',
   $project_domain_id     = 'default',
   $user_domain_id        = 'default'
@@ -116,6 +116,13 @@ class swift::proxy::s3token(
     $auth_uri_real = $auth_uri
   }
 
+  if $password == undef {
+    warning('Usage of the default password is deprecated and will be removed in a future release. \
+Please set password parameter')
+    $password_real = 'password'
+  } else {
+    $password_real = $password
+  }
 
   swift_proxy_config {
     'filter:s3token/use':                   value => 'egg:swift#s3token';
@@ -127,7 +134,7 @@ class swift::proxy::s3token(
     'filter:s3token/auth_url':              value => $auth_url;
     'filter:s3token/auth_type':             value => $auth_type;
     'filter:s3token/username':              value => $username;
-    'filter:s3token/password':              value => $password, secret => true;
+    'filter:s3token/password':              value => $password_real, secret => true;
     'filter:s3token/project_name':          value => $project_name;
     'filter:s3token/project_domain_id':     value => $project_domain_id;
     'filter:s3token/user_domain_id':        value => $user_domain_id;

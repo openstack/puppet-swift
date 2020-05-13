@@ -94,7 +94,7 @@ class swift::proxy::authtoken(
   $user_domain_id               = 'default',
   $project_name                 = 'services',
   $username                     = 'swift',
-  $password                     = 'password',
+  $password                     = undef,
   $region_name                  = $::os_service_default,
   $include_service_catalog      = false,
   $service_token_roles          = $::os_service_default,
@@ -102,6 +102,14 @@ class swift::proxy::authtoken(
 ) inherits swift::params {
 
   include swift::deps
+
+  if $password == undef {
+    warning('Usage of the default password is deprecated and will be removed in a future release. \
+Please set password parameter')
+    $password_real = 'password'
+  } else {
+    $password_real = $password
+  }
 
   if ($::os_package_type != 'debian') {
     file { $signing_dir:
@@ -127,7 +135,7 @@ class swift::proxy::authtoken(
     'filter:authtoken/user_domain_id':               value => $user_domain_id;
     'filter:authtoken/project_name':                 value => $project_name;
     'filter:authtoken/username':                     value => $username;
-    'filter:authtoken/password':                     value => $password, secret => true;
+    'filter:authtoken/password':                     value => $password_real, secret => true;
     'filter:authtoken/region_name':                  value => $region_name;
     'filter:authtoken/delay_auth_decision':          value => $delay_auth_decision;
     'filter:authtoken/cache':                        value => $cache;
