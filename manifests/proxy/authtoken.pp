@@ -127,7 +127,7 @@ class swift::proxy::authtoken(
     'filter:authtoken/user_domain_id':               value => $user_domain_id;
     'filter:authtoken/project_name':                 value => $project_name;
     'filter:authtoken/username':                     value => $username;
-    'filter:authtoken/password':                     value => $password;
+    'filter:authtoken/password':                     value => $password, secret => true;
     'filter:authtoken/region_name':                  value => $region_name;
     'filter:authtoken/delay_auth_decision':          value => $delay_auth_decision;
     'filter:authtoken/cache':                        value => $cache;
