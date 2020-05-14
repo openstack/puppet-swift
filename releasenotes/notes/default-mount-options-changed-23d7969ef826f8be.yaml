@@ -1,0 +1,8 @@
+---
+features:
+  - |
+    The nobarrier XFS mount option is removed from kernel 4.19.0 and beyond.
+    It has no effect on kernel 4.10.0. Therefore, it is now removed from the
+    default mount options.
+    Also, puppet-swift now adds the nofail option, so that a swift store node
+    finishes to boot even if an HDD mount is failed.
