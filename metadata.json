@@ -27,11 +27,11 @@
         },
         {
             "name": "puppetlabs/concat",
-            "version_requirement": ">=1.0.0 <3.0.0"
+            "version_requirement": ">=1.0.0 <7.0.0"
         },
         {
             "name": "saz/memcached",
-            "version_requirement": ">=2.0.2 <3.0.0"
+            "version_requirement": ">=2.0.2 <3.5.0"
         }
     ],
     "description": "Installs and configures OpenStack Swift (Object Storage).",
