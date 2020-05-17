@@ -1,0 +1,6 @@
+---
+features:
+  - |
+    For s3token class, add more parameters: reseller_prefix, delay_auth_decision, http_timeout,
+    secret_cache_duration, and keystone credential parameters used for secret caching: auth_uri,
+    auth_type, username, password, project_name, project_domain_id, user_domain_id
