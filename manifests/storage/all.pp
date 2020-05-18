@@ -118,6 +118,10 @@
 #   version 3.0 or greater.
 #   Defaults to false.
 #
+# [*max_connections*]
+#   (optional) maximum number of simultaneous connections allowed for rsync.
+#   Defaults to 25.
+#
 class swift::storage::all(
   $storage_local_net_ip,
   $devices                        = '/srv/node',
@@ -147,6 +151,7 @@ class swift::storage::all(
   $object_server_workers          = $::os_workers,
   $object_server_mb_per_sync      = 512,
   $splice                         = false,
+  $max_connections                = 25,
 ) {
 
   include swift::deps
@@ -180,6 +185,7 @@ class swift::storage::all(
     log_statsd_default_sample_rate => $log_statsd_default_sample_rate,
     log_statsd_sample_rate_factor  => $log_statsd_sample_rate_factor,
     log_statsd_metric_prefix       => $log_statsd_metric_prefix,
+    max_connections                => $max_connections,
   }
 
   swift::storage::server { $account_port:

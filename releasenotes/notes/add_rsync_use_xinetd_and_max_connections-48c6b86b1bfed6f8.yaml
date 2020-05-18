@@ -1,0 +1,5 @@
+---
+features:
+  - |
+    Add rsync max_connections config and add rsync_use_xinetd
+    parameter to support to not use xinetd for rsync

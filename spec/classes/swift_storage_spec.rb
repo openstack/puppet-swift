@@ -22,6 +22,22 @@ describe 'swift::storage' do
         )}
       end
 
+      describe 'when the rsync_use_xinetd is specified' do
+        let :params do
+          {
+            :storage_local_net_ip => '127.0.0.1',
+            :rsync_use_xinetd     => false,
+          }
+        end
+
+        it { is_expected.to contain_class('rsync::server').with(
+          {:use_xinetd => false,
+           :address    => params[:storage_local_net_ip],
+           :use_chroot => 'no'
+          }
+        )}
+      end
+
       describe 'when local net ip is not specified' do
         if Puppet::Util::Package.versioncmp(Puppet.version, '4.3.0') >= 0
           it_raises 'a Puppet::Error', /expects a value for parameter 'storage_local_net_ip'/
