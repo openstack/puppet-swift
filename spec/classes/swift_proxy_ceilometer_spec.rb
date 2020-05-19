@@ -58,7 +58,7 @@ describe 'swift::proxy::ceilometer' do
         it { is_expected.to contain_swift_proxy_config('filter:ceilometer/user_domain_name').with_value('Default') }
         it { is_expected.to contain_swift_proxy_config('filter:ceilometer/project_name').with_value('services') }
         it { is_expected.to contain_swift_proxy_config('filter:ceilometer/username').with_value('swift') }
-        it { is_expected.to contain_swift_proxy_config('filter:ceilometer/password').with_value('password') }
+        it { is_expected.to contain_swift_proxy_config('filter:ceilometer/password').with_value('password').with_secret(true) }
         it { is_expected.to contain_swift_proxy_config('filter:ceilometer/region_name').with_value('region2') }
       end
 

@@ -28,7 +28,7 @@ describe 'swift::proxy::authtoken' do
       it { is_expected.to contain_swift_proxy_config('filter:authtoken/user_domain_id').with_value('default') }
       it { is_expected.to contain_swift_proxy_config('filter:authtoken/project_name').with_value('services') }
       it { is_expected.to contain_swift_proxy_config('filter:authtoken/username').with_value('swift') }
-      it { is_expected.to contain_swift_proxy_config('filter:authtoken/password').with_value('password') }
+      it { is_expected.to contain_swift_proxy_config('filter:authtoken/password').with_value('password').with_secret(true) }
       it { is_expected.to contain_swift_proxy_config('filter:authtoken/region_name').with_value('<SERVICE DEFAULT>') }
       it { is_expected.to contain_swift_proxy_config('filter:authtoken/delay_auth_decision').with_value('1') }
       it { is_expected.to contain_swift_proxy_config('filter:authtoken/cache').with_value('swift.cache') }
@@ -62,7 +62,7 @@ describe 'swift::proxy::authtoken' do
       it { is_expected.to contain_swift_proxy_config('filter:authtoken/user_domain_id').with_value('default') }
       it { is_expected.to contain_swift_proxy_config('filter:authtoken/project_name').with_value('admin') }
       it { is_expected.to contain_swift_proxy_config('filter:authtoken/username').with_value('swiftuser') }
-      it { is_expected.to contain_swift_proxy_config('filter:authtoken/password').with_value('swiftpassword') }
+      it { is_expected.to contain_swift_proxy_config('filter:authtoken/password').with_value('swiftpassword').with_secret(true) }
       it { is_expected.to contain_swift_proxy_config('filter:authtoken/region_name').with_value('region2') }
       it { is_expected.to contain_swift_proxy_config('filter:authtoken/delay_auth_decision').with_value('0') }
       it { is_expected.to contain_swift_proxy_config('filter:authtoken/cache').with_value('foo') }

@@ -21,7 +21,7 @@ describe 'swift::keymaster' do
       end
 
       it { is_expected.to contain_swift_keymaster_config('kms_keymaster/key_id').with_value('dummy_key_id') }
-      it { is_expected.to contain_swift_keymaster_config('kms_keymaster/password').with_value('fake_password') }
+      it { is_expected.to contain_swift_keymaster_config('kms_keymaster/password').with_value('fake_password').with_secret(true) }
       it { is_expected.to contain_swift_keymaster_config('kms_keymaster/auth_endpoint').with_value('http://127.0.0.1:5000') }
       it { is_expected.to contain_swift_keymaster_config('kms_keymaster/project_name').with_value('barbican_swift_service') }
     end

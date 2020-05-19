@@ -127,7 +127,7 @@ class swift::proxy::s3token(
     'filter:s3token/auth_url':              value => $auth_url;
     'filter:s3token/auth_type':             value => $auth_type;
     'filter:s3token/username':              value => $username;
-    'filter:s3token/password':              value => $password;
+    'filter:s3token/password':              value => $password, secret => true;
     'filter:s3token/project_name':          value => $project_name;
     'filter:s3token/project_domain_id':     value => $project_domain_id;
     'filter:s3token/user_domain_id':        value => $user_domain_id;

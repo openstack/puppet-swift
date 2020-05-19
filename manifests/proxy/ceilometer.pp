@@ -183,7 +183,7 @@ class swift::proxy::ceilometer(
     'filter:ceilometer/user_domain_name':     value => $user_domain_name;
     'filter:ceilometer/project_name':         value => $project_name;
     'filter:ceilometer/username':             value => $username;
-    'filter:ceilometer/password':             value => $password;
+    'filter:ceilometer/password':             value => $password, secret => true;
     'filter:ceilometer/region_name':          value => $region_name;
   }
 
