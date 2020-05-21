@@ -31,9 +31,9 @@ define swift::storage::mount(
   include swift::deps
 
   if($loopback){
-    $options = 'noatime,nodiratime,nobarrier,loop'
+    $options = 'noatime,nodiratime,nofail,loop'
   } else {
-    $options = 'noatime,nodiratime,nobarrier'
+    $options = 'noatime,nodiratime,nofail'
   }
 
   if($fstype == 'xfs'){

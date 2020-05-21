@@ -19,7 +19,7 @@ describe 'swift::storage::mount' do
         :ensure  => 'present',
         :device  => '/dev/sda',
         :fstype  => 'xfs',
-        :options => 'noatime,nodiratime,nobarrier,logbufs=8',
+        :options => 'noatime,nodiratime,nofail,logbufs=8',
       )}
     end
 
@@ -33,7 +33,7 @@ describe 'swift::storage::mount' do
 
       it { is_expected.to contain_mount('/srv/node/dans_mount_point').with(
         :device  => '/dev/sda',
-        :options => 'noatime,nodiratime,nobarrier,loop,logbufs=8'
+        :options => 'noatime,nodiratime,nofail,loop,logbufs=8'
       )}
     end
 
