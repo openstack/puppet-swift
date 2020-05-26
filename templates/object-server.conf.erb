@@ -43,6 +43,8 @@ mb_per_sync = <%= @object_server_mb_per_sync %>
 
 [object-replicator]
 concurrency = <%= @replicator_concurrency %>
+rsync_timeout = <%= @rsync_timeout%>
+rsync_bwlimit = <%= @rsync_bwlimit%>
 
 [object-updater]
 concurrency = <%= @updater_concurrency %>

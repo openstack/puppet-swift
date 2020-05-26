@@ -18,7 +18,9 @@ describe 'swift::storage::all' do
       :incoming_chmod  => 'Du=rwx,g=rx,o=rx,Fu=rw,g=r,o=r',
       :outgoing_chmod  => 'Du=rwx,g=rx,o=rx,Fu=rw,g=r,o=r',
       :log_requests    => true,
-      :max_connections => 25
+      :max_connections => 25,
+      :rsync_timeout   => 900,
+      :rsync_bwlimit   => 0
     }
   end
 
@@ -46,7 +48,9 @@ describe 'swift::storage::all' do
        :incoming_chmod       => '0644',
        :outgoing_chmod       => '0644',
        :log_requests         => false,
-       :max_connections      => 20
+       :max_connections      => 20,
+       :rsync_timeout        => 3600,
+       :rsync_bwlimit        => 1024
      }
     ].each do |param_set|
 
@@ -92,24 +96,26 @@ describe 'swift::storage::all' do
         it { is_expected.to contain_swift__storage__server(param_hash[:account_port]).with(
           {:type => 'account',
            :config_file_path => 'account-server.conf',
-           :incoming_chmod => param_hash[:incoming_chmod],
-           :outgoing_chmod => param_hash[:outgoing_chmod],
-           :pipeline => param_hash[:account_pipeline] || ['account-server'] }.merge(storage_server_defaults)
+           :incoming_chmod   => param_hash[:incoming_chmod],
+           :outgoing_chmod   => param_hash[:outgoing_chmod],
+           :pipeline         => param_hash[:account_pipeline] || ['account-server'] }.merge(storage_server_defaults)
         )}
         it { is_expected.to contain_swift__storage__server(param_hash[:object_port]).with(
           {:type => 'object',
            :config_file_path => 'object-server.conf',
-           :incoming_chmod => param_hash[:incoming_chmod],
-           :outgoing_chmod => param_hash[:outgoing_chmod],
-           :pipeline => param_hash[:object_pipeline] || ['object-server'],
-           :splice => param_hash[:splice] || false }.merge(storage_server_defaults)
+           :incoming_chmod   => param_hash[:incoming_chmod],
+           :outgoing_chmod   => param_hash[:outgoing_chmod],
+           :pipeline         => param_hash[:object_pipeline] || ['object-server'],
+           :splice           => param_hash[:splice] || false }.merge(storage_server_defaults),
+           :rsync_timeout    => param_hash[:rsync_timeout],
+           :rsync_bwlimit    => param_hash[:rsync_bwlimit],
         )}
         it { is_expected.to contain_swift__storage__server(param_hash[:container_port]).with(
           {:type => 'container',
            :config_file_path => 'container-server.conf',
-           :incoming_chmod => param_hash[:incoming_chmod],
-           :outgoing_chmod => param_hash[:outgoing_chmod],
-           :pipeline => param_hash[:container_pipeline] || ['container-server'] }.merge(storage_server_defaults)
+           :incoming_chmod   => param_hash[:incoming_chmod],
+           :outgoing_chmod   => param_hash[:outgoing_chmod],
+           :pipeline         => param_hash[:container_pipeline] || ['container-server'] }.merge(storage_server_defaults)
         )}
 
         it { is_expected.to contain_class('rsync::server').with(

@@ -106,6 +106,14 @@
 #   (optional) Number of MB allocated for the cache.
 #   Defaults to 512, which is the swift default value.
 #
+# [*rsync_timeout*]
+#   (optional) Max duration of a partition rsync.
+#   Default to 900.
+#
+# [*rsync_bwlimit*]
+#   (optional) Bandwidth limit for rsync in kB/s. 0 means unlimited.
+#   Default to 0.
+#
 # [*splice*]
 #   (optional) Use splice for zero-copy object GETs. This requires Linux Kernel
 #   version 3.0 or greater.
@@ -152,6 +160,8 @@ class swift::storage::all(
   $container_server_workers       = $::os_workers,
   $object_server_workers          = $::os_workers,
   $object_server_mb_per_sync      = 512,
+  $rsync_timeout                  = 900,
+  $rsync_bwlimit                  = 0,
   $splice                         = false,
   $max_connections                = 25,
   $rsync_use_xinetd               = $::swift::params::xinetd_available,
@@ -239,5 +249,7 @@ from 6002 to 6202 and will be changed in a later release')
     workers                   => $object_server_workers,
     splice                    => $splice,
     object_server_mb_per_sync => $object_server_mb_per_sync,
+    rsync_timeout             => $rsync_timeout,
+    rsync_bwlimit             => $rsync_bwlimit,
   }
 }

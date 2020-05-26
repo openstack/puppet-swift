@@ -137,6 +137,22 @@ describe 'swift::storage::server' do
              let :params do req_params.merge({ :client_timeout => 30, }) end
               it { is_expected.to contain_concat_fragment("swift-#{t}-#{title}").with_content(/^client_timeout\s*=\s*30\s*$/) }
             end
+
+            describe "when rsync_timeout is not set" do
+              it { is_expected.to contain_concat_fragment("swift-#{t}-#{title}").with_content(/^rsync_timeout\s*=\s*900\s*$/) }
+            end
+            describe "when rsync_timeout is set" do
+             let :params do req_params.merge({ :rsync_timeout => 600, }) end
+              it { is_expected.to contain_concat_fragment("swift-#{t}-#{title}").with_content(/^rsync_timeout\s*=\s*600\s*$/) }
+            end
+
+            describe "when rsync_bwlimit is not set" do
+              it { is_expected.to contain_concat_fragment("swift-#{t}-#{title}").with_content(/^rsync_bwlimit\s*=\s*0\s*$/) }
+            end
+            describe "when rsync_bwlimit is set" do
+             let :params do req_params.merge({ :rsync_bwlimit => 2048, }) end
+              it { is_expected.to contain_concat_fragment("swift-#{t}-#{title}").with_content(/^rsync_bwlimit\s*=\s*2048\s*$/) }
+            end
           end
 
           describe "when log_udp_port is set" do

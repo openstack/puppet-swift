@@ -160,6 +160,14 @@
 #   external services.
 #   Defaults to 60.
 #
+# [*rsync_timeout*]
+#   (optional) Max duration of a partition rsync.
+#   Default to 900.
+#
+# [*rsync_bwlimit*]
+#   (optional) Bandwidth limit for rsync in kB/s. 0 means unlimited.
+#   Default to 0.
+#
 # [*splice*]
 #   (optional) Use splice for zero-copy object GETs. This requires Linux Kernel
 #   version 3.0 or greater.
@@ -212,6 +220,8 @@ define swift::storage::server(
   $disk_chunk_size                = 65536,
   $client_timeout                 = 60,
   $auditor_disk_chunk_size        = undef,
+  $rsync_timeout                  = 900,
+  $rsync_bwlimit                  = 0,
   $splice                         = false,
   $object_server_mb_per_sync      = 512,
   # DEPRECATED PARAMETERS
