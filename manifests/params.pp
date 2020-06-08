@@ -34,11 +34,6 @@ class swift::params {
       $account_auditor_service_name      = 'swift-account-auditor'
       $account_reaper_service_name       = 'swift-account-reaper'
       $account_replicator_service_name   = 'swift-account-replicator'
-      if ($::os_package_type == 'debian') {
-        $signing_dir = '/var/lib/swift'
-      }else{
-        $signing_dir = '/var/cache/swift'
-      }
     }
     'RedHat': {
       $package_name                      = 'openstack-swift'
@@ -64,7 +59,6 @@ class swift::params {
       $account_auditor_service_name      = 'openstack-swift-account-auditor'
       $account_reaper_service_name       = 'openstack-swift-account-reaper'
       $account_replicator_service_name   = 'openstack-swift-account-replicator'
-      $signing_dir                       = '/var/cache/swift'
     }
     default: {
       fail("Unsupported osfamily: ${::osfamily} operatingsystem: ${::operatingsystem}, \
