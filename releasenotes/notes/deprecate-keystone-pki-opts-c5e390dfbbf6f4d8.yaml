@@ -1,0 +1,5 @@
+---
+deprecations:
+  - |
+    The ``swift::proxy::authtoken::signing_dir`` parameter has been deprecated
+    and has no effect now.

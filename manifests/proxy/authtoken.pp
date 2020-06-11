@@ -9,10 +9,6 @@
 #   delegate the authorization decision to downstream WSGI components. Boolean value
 #   Defaults to 1
 #
-# [*signing_dir*]
-#    The cache directory for signing certificates.
-#    Defaults to $::swift::params::signing_dir
-#
 # [*cache*]
 #    The cache backend to use
 #    Optional. Defaults to 'swift.cache'
@@ -75,6 +71,12 @@
 #  true/false
 #  Defaults to $::os_service_default.
 #
+# DEPRECATED PARAMETERS
+#
+# [*signing_dir*]
+#    The cache directory for signing certificates.
+#    Defaults to undef
+#
 # == Authors
 #
 #   Dan Bode dan@puppetlabs.com
@@ -85,7 +87,6 @@
 #
 class swift::proxy::authtoken(
   $delay_auth_decision          = 1,
-  $signing_dir                  = $::swift::params::signing_dir,
   $cache                        = 'swift.cache',
   $www_authenticate_uri         = 'http://127.0.0.1:5000',
   $auth_url                     = 'http://127.0.0.1:5000',
@@ -99,6 +100,8 @@ class swift::proxy::authtoken(
   $include_service_catalog      = false,
   $service_token_roles          = $::os_service_default,
   $service_token_roles_required = $::os_service_default,
+  # DEPRECATED PARAMETERS
+  $signing_dir                  = undef
 ) inherits swift::params {
 
   include swift::deps
@@ -111,22 +114,12 @@ Please set password parameter')
     $password_real = $password
   }
 
-  if ($::os_package_type != 'debian') {
-    file { $signing_dir:
-      ensure                  => directory,
-      mode                    => '0700',
-      owner                   => 'swift',
-      group                   => 'swift',
-      selinux_ignore_defaults => true,
-      require                 => Anchor['swift::config::begin'],
-      before                  => Anchor['swift::config::end'],
-    }
+  if $signing_dir != undef {
+    warning('The signing_dir parameter was deprecated and has no effect')
   }
-
 
   swift_proxy_config {
     'filter:authtoken/log_name':                     value => 'swift';
-    'filter:authtoken/signing_dir':                  value => $signing_dir;
     'filter:authtoken/paste.filter_factory':         value => 'keystonemiddleware.auth_token:filter_factory';
     'filter:authtoken/www_authenticate_uri':         value => $www_authenticate_uri;
     'filter:authtoken/auth_url':                     value => $auth_url;
