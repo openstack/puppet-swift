@@ -14,7 +14,7 @@
 #
 # == Example
 #
-# include ::swift::proxy::symlink
+# include swift::proxy::symlink
 #
 # == Parameters
 #

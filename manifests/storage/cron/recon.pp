@@ -53,8 +53,8 @@ class swift::storage::cron::recon(
   $configfile = '/etc/swift/object-server.conf',
   $user       = 'swift'
 ) {
-  include ::swift::deps
-  include ::swift::params
+  include swift::deps
+  include swift::params
 
   cron { 'swift-recon-cron':
     command     => "swift-recon-cron ${configfile}",

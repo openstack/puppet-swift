@@ -22,7 +22,7 @@ class swift::proxy::audit (
   $audit_map_file = '/etc/pycadf/swift_api_audit_map.conf',
 ) {
 
-  include ::swift::deps
+  include swift::deps
 
   swift_proxy_config {
     'filter:audit/paste.filter_factory': value => $filter_factory;
