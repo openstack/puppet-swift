@@ -71,6 +71,11 @@
 #  true/false
 #  Defaults to $::os_service_default.
 #
+# [*interface*]
+#  (Optional) Interface to use for the Identity API endpoint. Valid values are
+#  "public", "internal" or "admin".
+#  Defaults to $::os_service_default.
+#
 # == DEPRECATED
 #
 # [*identity_uri*]
@@ -116,6 +121,7 @@ class swift::proxy::authtoken(
   $include_service_catalog      = false,
   $service_token_roles          = $::os_service_default,
   $service_token_roles_required = $::os_service_default,
+  $interface                    = $::os_service_default,
   # DEPRECATED PARAMETERS
   $admin_user                   = undef,
   $admin_tenant_name            = undef,
@@ -182,5 +188,6 @@ class swift::proxy::authtoken(
     'filter:authtoken/include_service_catalog':      value => $include_service_catalog;
     'filter:authtoken/service_token_roles':          value => $service_token_roles;
     'filter:authtoken/service_token_roles_required': value => $service_token_roles_required;
+    'filter:authtoken/interface':                    value => $interface,
   }
 }
