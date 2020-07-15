@@ -19,6 +19,7 @@ describe 'swift::proxy::authtoken' do
       it { is_expected.to contain_swift_proxy_config('filter:authtoken/include_service_catalog').with_value('false') }
       it { is_expected.to contain_swift_proxy_config('filter:authtoken/service_token_roles').with_value('<SERVICE DEFAULT>') }
       it { is_expected.to contain_swift_proxy_config('filter:authtoken/service_token_roles_required').with_value('<SERVICE DEFAULT>') }
+      it { is_expected.to contain_swift_proxy_config('filter:authtoken/interface').with_value('<SERVICE DEFAULT>') }
     end
 
     describe "when overriding parameters" do
@@ -26,12 +27,13 @@ describe 'swift::proxy::authtoken' do
         {
           :project_name                 => 'admin',
           :username                     => 'swiftuser',
-          :password                    => 'swiftpassword',
+          :password                     => 'swiftpassword',
           :region_name                  => 'region2',
           :cache                        => 'foo',
           :delay_auth_decision          => '0',
           :service_token_roles          => ['service'],
           :service_token_roles_required => true,
+          :interface                    => 'internal',
         }
       end
 
@@ -51,6 +53,7 @@ describe 'swift::proxy::authtoken' do
       it { is_expected.to contain_swift_proxy_config('filter:authtoken/include_service_catalog').with_value('false') }
       it { is_expected.to contain_swift_proxy_config('filter:authtoken/service_token_roles').with_value(['service']) }
       it { is_expected.to contain_swift_proxy_config('filter:authtoken/service_token_roles_required').with_value(true) }
+      it { is_expected.to contain_swift_proxy_config('filter:authtoken/interface').with_value('internal') }
     end
 
     describe 'when overriding www_authenticate_uri' do
