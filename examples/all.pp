@@ -59,7 +59,7 @@ class { 'swift::proxy':
   account_autocreate => true,
   require            => Class['swift::ringbuilder'],
 }
-class { ['::swift::proxy::healthcheck', '::swift::proxy::cache']: }
+class { ['swift::proxy::healthcheck', 'swift::proxy::cache']: }
 
 class { 'swift::proxy::tempauth':
   account_user_list => [

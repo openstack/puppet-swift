@@ -221,12 +221,12 @@ node /swift-proxy/ {
 
   # configure all of the middlewares
   class { [
-    '::swift::proxy::account_quotas',
-    '::swift::proxy::catch_errors',
-    '::swift::proxy::container_quotas',
-    '::swift::proxy::healthcheck',
-    '::swift::proxy::cache',
-    '::swift::proxy::s3api',
+    'swift::proxy::account_quotas',
+    'swift::proxy::catch_errors',
+    'swift::proxy::container_quotas',
+    'swift::proxy::healthcheck',
+    'swift::proxy::cache',
+    'swift::proxy::s3api',
   ]: }
   class { 'swift::proxy::bulk':
     max_containers_per_extraction => 10000,
