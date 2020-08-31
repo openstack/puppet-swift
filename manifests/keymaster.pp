@@ -56,6 +56,10 @@
 #   id may also be specified.
 #   Defaults to 'default' (note the capitalization).
 #
+# [*meta_version_to_write*]
+#   (Optional) Int. The version of crypto metadata to write.
+#   Defaults to 1.
+#
 # == Dependencies
 #
 # None
@@ -65,17 +69,18 @@
 #   Thiago da Silva thiago@redhat.com
 #
 class swift::keymaster(
-  $api_class           = 'barbican',
-  $key_id              = undef,
-  $username            = 'swift',
-  $password            = undef,
-  $project_name        = 'services',
-  $project_id          = undef,
-  $auth_endpoint       = undef,
-  $project_domain_name = undef,
-  $user_domain_name    = undef,
-  $project_domain_id   = 'default',
-  $user_domain_id      = 'default',
+  $api_class             = 'barbican',
+  $key_id                = undef,
+  $username              = 'swift',
+  $password              = undef,
+  $project_name          = 'services',
+  $project_id            = undef,
+  $auth_endpoint         = undef,
+  $project_domain_name   = undef,
+  $user_domain_name      = undef,
+  $project_domain_id     = 'default',
+  $user_domain_id        = 'default',
+  $meta_version_to_write = 1,
 ) {
 
   include swift::deps
@@ -85,17 +90,18 @@ class swift::keymaster(
   }
 
   swift_keymaster_config {
-    'kms_keymaster/api_class':           value => $api_class;
-    'kms_keymaster/key_id':              value => $key_id;
-    'kms_keymaster/username':            value => $username;
-    'kms_keymaster/password':            value => $password, secret => true;
-    'kms_keymaster/project_name':        value => $project_name;
-    'kms_keymaster/project_id':          value => $project_id;
-    'kms_keymaster/auth_endpoint':       value => $auth_endpoint;
-    'kms_keymaster/project_domain_name': value => $project_domain_name;
-    'kms_keymaster/user_domain_name':    value => $user_domain_name;
-    'kms_keymaster/project_domain_id':   value => $project_domain_id;
-    'kms_keymaster/user_domain_id':      value => $user_domain_id;
+    'kms_keymaster/api_class':             value => $api_class;
+    'kms_keymaster/key_id':                value => $key_id;
+    'kms_keymaster/username':              value => $username;
+    'kms_keymaster/password':              value => $password, secret => true;
+    'kms_keymaster/project_name':          value => $project_name;
+    'kms_keymaster/project_id':            value => $project_id;
+    'kms_keymaster/auth_endpoint':         value => $auth_endpoint;
+    'kms_keymaster/project_domain_name':   value => $project_domain_name;
+    'kms_keymaster/user_domain_name':      value => $user_domain_name;
+    'kms_keymaster/project_domain_id':     value => $project_domain_id;
+    'kms_keymaster/user_domain_id':        value => $user_domain_id;
+    'kms_keymaster/meta_version_to_write': value => $meta_version_to_write;
   }
 }
 
