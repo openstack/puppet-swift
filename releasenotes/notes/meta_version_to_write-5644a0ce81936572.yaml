@@ -1,0 +1,14 @@
+---
+features:
+  - |
+    Added a new meta_version_to_write for the keymaster config.
+upgrade:
+  - |
+    When upgrading from Swift 2.20.0 or Swift 2.19.1 or earlier, set
+    meta_version_to_write to 1. When upgrading from 2.25.0 or earlier, set
+    meta_version_to_write to 2. After upgrading all proxy servers, set this to
+    3 (currently the highest version).
+critical:
+  - |
+    Failing to set the correct version of meta_version_to_write can lead to
+    unrecoverable data.

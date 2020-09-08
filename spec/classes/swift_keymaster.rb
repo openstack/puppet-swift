@@ -8,6 +8,7 @@ describe 'swift::keymaster' do
       it { is_expected.to contain_swift_keymaster_config('kms_keymaster/project_name').with_value('services') }
       it { is_expected.to contain_swift_keymaster_config('kms_keymaster/project_domain_id').with_value('default') }
       it { is_expected.to contain_swift_keymaster_config('kms_keymaster/user_domain_id').with_value('default') }
+      it { is_expected.to contain_swift_keymaster_config('kms_keymaster/meta_version_to_write').with_value('1') }
     end
 
     describe "when overriding default parameters" do
@@ -17,6 +18,7 @@ describe 'swift::keymaster' do
           :password => 'fake_password',
           :auth_endpoint => 'http://127.0.0.1:5000',
           :project_name => 'barbican_swift_service',
+          :meta_version_to_write => 3,
         }
       end
 
@@ -24,6 +26,7 @@ describe 'swift::keymaster' do
       it { is_expected.to contain_swift_keymaster_config('kms_keymaster/password').with_value('fake_password').with_secret(true) }
       it { is_expected.to contain_swift_keymaster_config('kms_keymaster/auth_endpoint').with_value('http://127.0.0.1:5000') }
       it { is_expected.to contain_swift_keymaster_config('kms_keymaster/project_name').with_value('barbican_swift_service') }
+      it { is_expected.to contain_swift_keymaster_config('kms_keymaster/meta_version_to_write').with_value('3') }
     end
   end
 
