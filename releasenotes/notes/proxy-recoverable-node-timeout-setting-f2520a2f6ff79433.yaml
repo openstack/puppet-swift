@@ -1,0 +1,7 @@
+---
+features:
+  - |
+    Adds a new proxy config option to set recoverable_node_timeout. This
+    setting defaults to node_timeout, which affects HEAD, GET and PUT requests.
+    However, it makes sense to keep the timeout for GET and HEAD requests
+    shorter to allow quicker recovery and prevent client timeouts.

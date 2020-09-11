@@ -102,6 +102,10 @@
 #    (optional) Configures node_timeout for swift proxy-server
 #    Defaults to undef.
 #
+#  [*recoverable_node_timeout*]
+#    (optional) Configures recoverable_node_timeout for swift proxy-server
+#    Defaults to undef.
+#
 #  [*enabled*]
 #    (optional) Should the service be enabled.
 #    Defaults to true
@@ -175,6 +179,7 @@ class swift::proxy(
   $write_affinity_node_count  = undef,
   $client_timeout             = undef,
   $node_timeout               = undef,
+  $recoverable_node_timeout   = undef,
   $manage_service             = true,
   $enabled                    = true,
   $package_ensure             = 'present',
@@ -260,6 +265,7 @@ and swift::proxy::s3api instead')
     'app:proxy-server/write_affinity':             value => $write_affinity;
     'app:proxy-server/write_affinity_node_count':  value => $write_affinity_node_count;
     'app:proxy-server/node_timeout':               value => $node_timeout;
+    'app:proxy-server/recoverable_node_timeout':   value => $recoverable_node_timeout;
   }
 
   if $cors_allow_origin {

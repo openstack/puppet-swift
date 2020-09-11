@@ -117,6 +117,7 @@ describe 'swift::proxy' do
               :write_affinity_node_count  => '2 * replicas',
               :client_timeout             => '120',
               :node_timeout               => '20',
+              :recoverable_node_timeout   => '15',
               :cors_allow_origin          => 'http://foo.bar:1234,https://foo.bar',
             }
           end
@@ -151,6 +152,7 @@ describe 'swift::proxy' do
           it { should contain_swift_proxy_config('app:proxy-server/write_affinity').with_value('r1') }
           it { should contain_swift_proxy_config('app:proxy-server/write_affinity_node_count').with_value('2 * replicas') }
           it { should contain_swift_proxy_config('app:proxy-server/node_timeout').with_value('20') }
+          it { should contain_swift_proxy_config('app:proxy-server/recoverable_node_timeout').with_value('15') }
         end
 
         describe "when log udp port is set" do
@@ -170,6 +172,7 @@ describe 'swift::proxy' do
                 :write_affinity            => 'r1',
                 :write_affinity_node_count => '2 * replicas',
                 :node_timeout              => '20',
+                :recoverable_node_timeout  => '15',
                 :cors_allow_origin         => 'http://foo.bar:1234,https://foo.bar',
               }
             end
@@ -194,6 +197,7 @@ describe 'swift::proxy' do
                 :write_affinity            => 'r1',
                 :write_affinity_node_count => '2 * replicas',
                 :node_timeout              => '20',
+                :recoverable_node_timeout  => '15',
                 :cors_allow_origin         => 'http://foo.bar:1234,https://foo.bar',
               }
             end
@@ -231,6 +235,7 @@ describe 'swift::proxy' do
             it { should contain_swift_proxy_config('app:proxy-server/write_affinity').with_value('r1') }
             it { should contain_swift_proxy_config('app:proxy-server/write_affinity_node_count').with_value('2 * replicas') }
             it { should contain_swift_proxy_config('app:proxy-server/node_timeout').with_value('20') }
+            it { should contain_swift_proxy_config('app:proxy-server/recoverable_node_timeout').with_value('15') }
           end
         end
 
