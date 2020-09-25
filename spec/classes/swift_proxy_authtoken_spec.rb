@@ -7,7 +7,7 @@ describe 'swift::proxy::authtoken' do
       it { is_expected.to contain_swift_proxy_config('filter:authtoken/paste.filter_factory').with_value('keystonemiddleware.auth_token:filter_factory') }
       it { is_expected.to contain_swift_proxy_config('filter:authtoken/www_authenticate_uri').with_value('http://127.0.0.1:5000') }
       it { is_expected.to contain_swift_proxy_config('filter:authtoken/auth_url').with_value('http://127.0.0.1:5000') }
-      it { is_expected.to contain_swift_proxy_config('filter:authtoken/auth_plugin').with_value('password') }
+      it { is_expected.to contain_swift_proxy_config('filter:authtoken/auth_type').with_value('password') }
       it { is_expected.to contain_swift_proxy_config('filter:authtoken/project_domain_id').with_value('default') }
       it { is_expected.to contain_swift_proxy_config('filter:authtoken/user_domain_id').with_value('default') }
       it { is_expected.to contain_swift_proxy_config('filter:authtoken/project_name').with_value('services') }
@@ -20,6 +20,7 @@ describe 'swift::proxy::authtoken' do
       it { is_expected.to contain_swift_proxy_config('filter:authtoken/service_token_roles').with_value('<SERVICE DEFAULT>') }
       it { is_expected.to contain_swift_proxy_config('filter:authtoken/service_token_roles_required').with_value('<SERVICE DEFAULT>') }
       it { is_expected.to contain_swift_proxy_config('filter:authtoken/interface').with_value('<SERVICE DEFAULT>') }
+      it { is_expected.to contain_swift_proxy_config('filter:authtoken/auth_plugin').with_ensure('absent') }
     end
 
     describe "when overriding parameters" do
@@ -41,7 +42,7 @@ describe 'swift::proxy::authtoken' do
       it { is_expected.to contain_swift_proxy_config('filter:authtoken/paste.filter_factory').with_value('keystonemiddleware.auth_token:filter_factory') }
       it { is_expected.to contain_swift_proxy_config('filter:authtoken/www_authenticate_uri').with_value('http://127.0.0.1:5000') }
       it { is_expected.to contain_swift_proxy_config('filter:authtoken/auth_url').with_value('http://127.0.0.1:5000') }
-      it { is_expected.to contain_swift_proxy_config('filter:authtoken/auth_plugin').with_value('password') }
+      it { is_expected.to contain_swift_proxy_config('filter:authtoken/auth_type').with_value('password') }
       it { is_expected.to contain_swift_proxy_config('filter:authtoken/project_domain_id').with_value('default') }
       it { is_expected.to contain_swift_proxy_config('filter:authtoken/user_domain_id').with_value('default') }
       it { is_expected.to contain_swift_proxy_config('filter:authtoken/project_name').with_value('admin') }
@@ -54,6 +55,7 @@ describe 'swift::proxy::authtoken' do
       it { is_expected.to contain_swift_proxy_config('filter:authtoken/service_token_roles').with_value(['service']) }
       it { is_expected.to contain_swift_proxy_config('filter:authtoken/service_token_roles_required').with_value(true) }
       it { is_expected.to contain_swift_proxy_config('filter:authtoken/interface').with_value('internal') }
+      it { is_expected.to contain_swift_proxy_config('filter:authtoken/auth_plugin').with_ensure('absent') }
     end
 
     describe 'when overriding www_authenticate_uri' do

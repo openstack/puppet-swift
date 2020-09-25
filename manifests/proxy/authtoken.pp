@@ -21,7 +21,7 @@
 #   (Optional) The URL to use for authentication.
 #   Defaults to 'http://127.0.0.1:5000'
 #
-# [*auth_plugin*]
+# [*auth_type*]
 #   (Optional) The plugin for authentication
 #   Defaults to 'password'
 #
@@ -82,6 +82,10 @@
 #    The cache directory for signing certificates.
 #    Defaults to undef
 #
+# [*auth_plugin*]
+#   (Optional) The plugin for authentication
+#   Defaults to undef
+#
 # == Authors
 #
 #   Dan Bode dan@puppetlabs.com
@@ -95,7 +99,7 @@ class swift::proxy::authtoken(
   $cache                        = 'swift.cache',
   $www_authenticate_uri         = 'http://127.0.0.1:5000',
   $auth_url                     = 'http://127.0.0.1:5000',
-  $auth_plugin                  = 'password',
+  $auth_type                    = 'password',
   $project_domain_id            = 'default',
   $user_domain_id               = 'default',
   $project_name                 = 'services',
@@ -107,7 +111,8 @@ class swift::proxy::authtoken(
   $service_token_roles_required = $::os_service_default,
   $interface                    = $::os_service_default,
   # DEPRECATED PARAMETERS
-  $signing_dir                  = undef
+  $signing_dir                  = undef,
+  $auth_plugin                  = undef,
 ) inherits swift::params {
 
   include swift::deps
@@ -124,12 +129,19 @@ Please set password parameter')
     warning('The signing_dir parameter was deprecated and has no effect')
   }
 
+  if $auth_plugin != undef {
+    warning('auth_plugin is deprecated. please use auth_type instead')
+    $auth_type_real = $auth_plugin
+  } else {
+    $auth_type_real = $auth_type
+  }
+
   swift_proxy_config {
     'filter:authtoken/log_name':                     value => 'swift';
     'filter:authtoken/paste.filter_factory':         value => 'keystonemiddleware.auth_token:filter_factory';
     'filter:authtoken/www_authenticate_uri':         value => $www_authenticate_uri;
     'filter:authtoken/auth_url':                     value => $auth_url;
-    'filter:authtoken/auth_plugin':                  value => $auth_plugin;
+    'filter:authtoken/auth_type':                    value => $auth_type_real;
     'filter:authtoken/project_domain_id':            value => $project_domain_id;
     'filter:authtoken/user_domain_id':               value => $user_domain_id;
     'filter:authtoken/project_name':                 value => $project_name;
@@ -142,5 +154,10 @@ Please set password parameter')
     'filter:authtoken/service_token_roles':          value => $service_token_roles;
     'filter:authtoken/service_token_roles_required': value => $service_token_roles_required;
     'filter:authtoken/interface':                    value => $interface,
+  }
+
+  # cleanup the deprecated parameter
+  swift_proxy_config {
+    'filter:authtoken/auth_plugin': ensure => 'absent';
   }
 }
