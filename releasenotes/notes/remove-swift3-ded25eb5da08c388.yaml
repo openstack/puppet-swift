@@ -1,0 +1,4 @@
+---
+upgrade:
+  - |
+    The ``swift::proxy::swift3`` class has been removed.
