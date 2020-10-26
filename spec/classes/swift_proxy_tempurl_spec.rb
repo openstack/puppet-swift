@@ -9,7 +9,7 @@ describe 'swift::proxy::tempurl' do
      'incoming_allow_headers',
      'outgoing_remove_headers',
      'outgoing_allow_headers' ].each do |h|
-       it { is_expected.to_not contain_swift_proxy_config("filter:tempurl/#{h}").with_value('') }
+       it { is_expected.to contain_swift_proxy_config("filter:tempurl/#{h}").with_value('<SERVICE DEFAULT>') }
      end
 
      context "when params are set" do

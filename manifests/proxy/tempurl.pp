@@ -6,27 +6,27 @@
 #  [*methods*]
 #    Methods allowed with Temp URLs.
 #    Example: ['GET','HEAD','PUT','POST','DELETE'] or 'GET HEAD PUT POST DELETE'
-#    Optional. Defaults to undef.
+#    Optional. Defaults to $::os_service_default.
 #
 #  [*incoming_remove_headers*]
 #    The headers to remove from incoming requests.
 #    Example: ['x-timestamp'] or 'x-timestamp'
-#    Optional. Defaults to undef.
+#    Optional. Defaults to $::os_service_default.
 #
 #  [*incoming_allow_headers*]
 #    The headers allowed as exceptions to incoming_remove_headers
 #    Example: ['*'] or '*'
-#    Optional. Defaults to undef.
+#    Optional. Defaults to $::os_service_default.
 #
 #  [*outgoing_remove_headers*]
 #    The headers to remove from outgoing responses
 #    Example: ['x-object-meta-*'] or 'x-object-meta-*'
-#    Optional. Defaults to undef.
+#    Optional. Defaults to $::os_service_default.
 #
 #  [*outgoing_allow_headers*]
 #    The headers allowed as exceptions to outgoing_remove_headers
 #    Example: ['x-object-meta-public-*'] or 'x-object-meta-public-*'
-#    Optional. Defaults to undef.
+#    Optional. Defaults to $::os_service_default.
 #
 # == Examples
 #
@@ -45,55 +45,20 @@
 # Copyright 2012 eNovance licensing@enovance.com
 #
 class swift::proxy::tempurl (
-  $methods                 = undef,
-  $incoming_remove_headers = undef,
-  $incoming_allow_headers  = undef,
-  $outgoing_remove_headers = undef,
-  $outgoing_allow_headers  = undef,
+  $methods                 = $::os_service_default,
+  $incoming_remove_headers = $::os_service_default,
+  $incoming_allow_headers  = $::os_service_default,
+  $outgoing_remove_headers = $::os_service_default,
+  $outgoing_allow_headers  = $::os_service_default,
 ) {
 
   include swift::deps
 
-  if($methods) {
-    if is_array($methods) {
-      $methods_real = join($methods,' ')
-    } elsif is_string($methods) {
-      $methods_real = $methods
-    }
-  }
-
-  if($incoming_remove_headers) {
-    if is_array($incoming_remove_headers) {
-      $incoming_remove_headers_real = join($incoming_remove_headers,' ')
-    } elsif is_string($incoming_remove_headers) {
-      $incoming_remove_headers_real = $incoming_remove_headers
-    }
-  }
-
-  if($incoming_allow_headers) {
-    if is_array($incoming_allow_headers) {
-      $incoming_allow_headers_real = join($incoming_allow_headers,' ')
-    } elsif is_string($incoming_allow_headers) {
-      $incoming_allow_headers_real = $incoming_allow_headers
-    }
-  }
-
-  if($outgoing_remove_headers) {
-    if is_array($outgoing_remove_headers) {
-      $outgoing_remove_headers_real = join($outgoing_remove_headers,' ')
-    } elsif is_string($outgoing_remove_headers) {
-      $outgoing_remove_headers_real = $outgoing_remove_headers
-    }
-  }
-
-  if($outgoing_allow_headers) {
-    if is_array($outgoing_allow_headers) {
-      $outgoing_allow_headers_real = join($outgoing_allow_headers,' ')
-    } elsif is_string($outgoing_allow_headers) {
-      $outgoing_allow_headers_real = $outgoing_allow_headers
-    }
-  }
-
+  $methods_real                 = join(any2array($methods), ' ')
+  $incoming_remove_headers_real = join(any2array($incoming_remove_headers), ' ')
+  $incoming_allow_headers_real  = join(any2array($incoming_allow_headers), ' ')
+  $outgoing_remove_headers_real = join(any2array($outgoing_remove_headers), ' ')
+  $outgoing_allow_headers_real  = join(any2array($outgoing_allow_headers), ' ')
 
   swift_proxy_config {
     'filter:tempurl/use':                     value => 'egg:swift#tempurl';
