@@ -77,7 +77,7 @@
             "version_requirement": ">= 6.0.0 < 7.0.0"
         }
     ],
-    "source": "git://github.com/openstack/puppet-swift.git",
+    "source": "https://opendev.org/openstack/puppet-swift.git",
     "summary": "Puppet module for OpenStack Swift",
     "version": "18.0.0"
 }
