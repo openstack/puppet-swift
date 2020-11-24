@@ -177,6 +177,20 @@
 #   (optional) Number of MB allocated for the cache.
 #   Defaults to 512, which is the swift default value.
 #
+# [*container_sharder_auto_shard*]
+#   (optional) If the auto_shard option is true then the sharder will
+#   automatically select containers to shard, scan for shard ranges,
+#   and select shards to shrink.
+#   Default to false.
+#
+# [*container_sharder_concurrency*]
+#   (optional) Number of replication workers to spawn.
+#   Default to 8.
+#
+# [*container_sharder_interval*]
+#   (optional) Time in seconds to wait between sharder cycles.
+#   Default to 30.
+#
 # DEPRECATED PARAMETERS
 #
 # [*allow_versions*]
@@ -224,6 +238,11 @@ define swift::storage::server(
   $rsync_bwlimit                  = 0,
   $splice                         = false,
   $object_server_mb_per_sync      = 512,
+  # These parameters only apply to container-server.conf,
+  # and define options for the container-sharder service.
+  $container_sharder_auto_shard   = false,
+  $container_sharder_concurrency  = 8,
+  $container_sharder_interval     = 30,
   # DEPRECATED PARAMETERS
   $allow_versions                 = undef,
 ) {

@@ -27,6 +27,7 @@ class swift::params {
       $container_auditor_service_name    = 'swift-container-auditor'
       $container_replicator_service_name = 'swift-container-replicator'
       $container_updater_service_name    = 'swift-container-updater'
+      $container_sharder_service_name    = 'swift-container-sharder'
       $container_sync_service_name       = 'swift-container-sync'
       $container_reconciler_service_name = 'swift-container-reconciler'
       $account_package_name              = 'swift-account'
@@ -54,6 +55,7 @@ class swift::params {
       $container_auditor_service_name    = 'openstack-swift-container-auditor'
       $container_replicator_service_name = 'openstack-swift-container-replicator'
       $container_updater_service_name    = 'openstack-swift-container-updater'
+      $container_sharder_service_name    = 'openstack-swift-container-sharder'
       $container_sync_service_name       = 'openstack-swift-container-sync'
       $container_reconciler_service_name = 'openstack-swift-container-reconciler'
       $account_package_name              = 'openstack-swift-account'
@@ -88,6 +90,7 @@ module ${module_name} only support osfamily RedHat and Debian")
     'swift-container-auditor',
     'swift-container-replicator',
     'swift-container-server',
+    'swift-container-sharder',
     'swift-container-sync',
     'swift-container-updater',
     'swift-container-reconciler',
