@@ -7,11 +7,11 @@
         },
         {
             "name": "openstack/keystone",
-            "version_requirement": ">=18.0.0 <19.0.0"
+            "version_requirement": ">=18.1.0 <19.0.0"
         },
         {
             "name": "openstack/openstacklib",
-            "version_requirement": ">=18.0.0 <19.0.0"
+            "version_requirement": ">=18.1.0 <19.0.0"
         },
         {
             "name": "puppetlabs/rsync",
@@ -79,5 +79,5 @@
     ],
     "source": "https://opendev.org/openstack/puppet-swift.git",
     "summary": "Puppet module for OpenStack Swift",
-    "version": "18.0.0"
+    "version": "18.1.0"
 }
