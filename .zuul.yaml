@@ -19,6 +19,7 @@
     description: |
       TripleO standalone Job running Object Storage specific Tempest tests.
     vars:
+      build_container_images: true
       featureset_override:
         run_tempest: false
         tempest_test_whitelist:
