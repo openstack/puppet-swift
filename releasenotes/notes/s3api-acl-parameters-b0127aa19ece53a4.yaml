@@ -1,0 +1,9 @@
+---
+features:
+  - |
+    The following parameters have been added to the ``swift::proxy::s3api``
+    class to support more ACL parameters of s3api middleware.
+
+    - ``allow_no_owner``
+    - ``s3_acl``
+    - ``check_bucket_owner``
