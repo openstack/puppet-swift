@@ -5,6 +5,10 @@
 #
 # == Parameters
 #
+# [*location*]
+#   A region name of the swift cluster.
+#   Defaults to $::os_service_default.
+#
 # [*auth_pipeline_check*]
 #   Enable pipeline order check
 #   Defaults to 'false'
@@ -20,6 +24,7 @@
 #   Defaults to undef
 #
 class swift::proxy::s3api(
+  $location            = $::os_service_default,
   $auth_pipeline_check = false,
   $max_upload_part_num = 1000,
   # DEPRECATED PARAMETERS
@@ -34,6 +39,7 @@ class swift::proxy::s3api(
 
   swift_proxy_config {
     'filter:s3api/use':                 value => 'egg:swift#s3api';
+    'filter:s3api/location':            value => $location;
     'filter:s3api/auth_pipeline_check': value => $auth_pipeline_check;
     'filter:s3api/max_upload_part_num': value => $max_upload_part_num;
   }

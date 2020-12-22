@@ -10,6 +10,7 @@ describe 'swift::proxy::s3api' do
     context 'with default parameters' do
       it 'configures with default' do
         is_expected.to contain_swift_proxy_config('filter:s3api/use').with_value('egg:swift#s3api')
+        is_expected.to contain_swift_proxy_config('filter:s3api/location').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_swift_proxy_config('filter:s3api/auth_pipeline_check').with_value('false')
         is_expected.to contain_swift_proxy_config('filter:s3api/max_upload_part_num').with_value('1000')
       end
@@ -18,12 +19,14 @@ describe 'swift::proxy::s3api' do
     context 'with overriding parameters' do
       before do
         params.merge!({
+          :location            => 'regionOne',
           :auth_pipeline_check => true,
           :max_upload_part_num => '2000'
         })
       end
       it 'configures with overridden parameters' do
         is_expected.to contain_swift_proxy_config('filter:s3api/use').with_value('egg:swift#s3api')
+        is_expected.to contain_swift_proxy_config('filter:s3api/location').with_value('regionOne')
         is_expected.to contain_swift_proxy_config('filter:s3api/auth_pipeline_check').with_value('true')
         is_expected.to contain_swift_proxy_config('filter:s3api/max_upload_part_num').with_value('2000')
       end

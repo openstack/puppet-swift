@@ -1,0 +1,5 @@
+---
+features:
+  - |
+    The new ``swift::proxy::s3api::location`` parameter has been added to set
+    a region of the Swift cluster.
