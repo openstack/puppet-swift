@@ -1,0 +1,16 @@
+---
+features:
+  - |
+    The following parameters have been added to the ``swift::proxy::s3api``
+    class.
+
+    - ``dns_compliant_bucket_names``
+    - ``max_bucket_listing``
+    - ``max_parts_listing``
+    - ``max_multi_delete_objects``
+    - ``multi_delete_concurrency``
+    - ``storage_domain``
+    - ``allow_multipart_uploads``
+    - ``force_swift_request_proxy_log``
+    - ``min_segment_size``
+    - ``log_name``
