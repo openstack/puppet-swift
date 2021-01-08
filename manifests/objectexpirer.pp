@@ -71,6 +71,32 @@
 #    pipeline, e.g. ['catch_errors', 'cache', 'proxy-server']
 #    Defaults to ['127.0.0.1:11211']
 #
+# [*cache_tls_enabled*]
+#   (Optional) Global toggle for TLS usage when comunicating with
+#   the caching servers.
+#   Default to false
+#
+# [*cache_tls_cafile*]
+#   (Optional) Path to a file of concatenated CA certificates in PEM
+#   format necessary to establish the caching server's authenticity.
+#   If tls_enabled is False, this option is ignored.
+#   Defaults to undef
+#
+# [*cache_tls_certfile*]
+#   (Optional) Path to a single file in PEM format containing the
+#   client's certificate as well as any number of CA certificates
+#   needed to establish the certificate's authenticity. This file
+#   is only required when client side authentication is necessary.
+#   If tls_enabled is False, this option is ignored.
+#   Defaults to undef
+#
+# [*cache_tls_keyfile*]
+#   (Optional) Path to a single file containing the client's private
+#   key in. Otherwhise the private key will be taken from the file
+#   specified in tls_certfile. If tls_enabled is False, this option
+#   is ignored.
+#   Defaults to undef
+#
 #  [*log_level*]
 #    (optional) Log level.
 #    Defaults to 'INFO'.
@@ -95,6 +121,10 @@ class swift::objectexpirer(
   $report_interval               = 300,
   $service_provider              = $::swift::params::service_provider,
   $memcache_servers              = ['127.0.0.1:11211'],
+  $cache_tls_enabled             = false,
+  $cache_tls_cafile              = undef,
+  $cache_tls_certfile            = undef,
+  $cache_tls_keyfile             = undef,
   $log_level                     = 'INFO',
   $log_facility                  = 'LOG_LOCAL2',
 ) inherits ::swift::params {
@@ -118,6 +148,10 @@ class swift::objectexpirer(
 
     swift_object_expirer_config {
       'filter:cache/memcache_servers': value => join(any2array($memcache_servers), ',');
+      'filter:cache/tls_enabled':      value => $cache_tls_enabled;
+      'filter:cache/tls_cafile':       value => $cache_tls_cafile;
+      'filter:cache/tls_certfile':     value => $cache_tls_certfile;
+      'filter:cache/tls_keyfile':      value => $cache_tls_keyfile;
     }
 
     # require the memcached class if it is on the same machine
