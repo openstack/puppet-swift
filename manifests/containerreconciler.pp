@@ -48,16 +48,46 @@
 #    e.g. ['catch_errors', 'proxy-logging', 'cache', 'proxy-server']
 #    Defaults to ['127.0.0.1:11211']
 #
+# [*cache_tls_enabled*]
+#   (Optional) Global toggle for TLS usage when comunicating with
+#   the caching servers.
+#   Default to false
+#
+# [*cache_tls_cafile*]
+#   (Optional) Path to a file of concatenated CA certificates in PEM
+#   format necessary to establish the caching server's authenticity.
+#   If tls_enabled is False, this option is ignored.
+#   Defaults to undef
+#
+# [*cache_tls_certfile*]
+#   (Optional) Path to a single file in PEM format containing the
+#   client's certificate as well as any number of CA certificates
+#   needed to establish the certificate's authenticity. This file
+#   is only required when client side authentication is necessary.
+#   If tls_enabled is False, this option is ignored.
+#   Defaults to undef
+#
+# [*cache_tls_keyfile*]
+#   (Optional) Path to a single file containing the client's private
+#   key in. Otherwhise the private key will be taken from the file
+#   specified in tls_certfile. If tls_enabled is False, this option
+#   is ignored.
+#   Defaults to undef
+#
 class swift::containerreconciler(
-  $manage_service   = true,
-  $enabled          = true,
-  $package_ensure   = 'present',
-  $pipeline         = ['catch_errors', 'proxy-logging', 'proxy-server'],
-  $interval         = 300,
-  $reclaim_age      = 604800,
-  $request_tries    = 3,
-  $service_provider = $::swift::params::service_provider,
-  $memcache_servers = ['127.0.0.1:11211'],
+  $manage_service     = true,
+  $enabled            = true,
+  $package_ensure     = 'present',
+  $pipeline           = ['catch_errors', 'proxy-logging', 'proxy-server'],
+  $interval           = 300,
+  $reclaim_age        = 604800,
+  $request_tries      = 3,
+  $service_provider   = $::swift::params::service_provider,
+  $memcache_servers   = ['127.0.0.1:11211'],
+  $cache_tls_enabled  = false,
+  $cache_tls_cafile   = $::os_service_default,
+  $cache_tls_certfile = $::os_service_default,
+  $cache_tls_keyfile  = $::os_service_default,
 ) inherits ::swift::params {
 
   include swift::deps
@@ -69,6 +99,10 @@ class swift::containerreconciler(
 
     swift_container_reconciler_config {
       'filter:cache/memcache_servers': value => join(any2array($memcache_servers), ',');
+      'filter:cache/tls_enabled':      value => $cache_tls_enabled;
+      'filter:cache/tls_cafile':       value => $cache_tls_cafile;
+      'filter:cache/tls_certfile':     value => $cache_tls_certfile;
+      'filter:cache/tls_keyfile':      value => $cache_tls_keyfile;
     }
 
     # require the memcached class if it is on the same machine

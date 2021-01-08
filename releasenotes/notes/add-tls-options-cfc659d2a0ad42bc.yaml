@@ -1,0 +1,4 @@
+---
+features:
+  - |
+    Add TLS options for Memcached TLS connections.
