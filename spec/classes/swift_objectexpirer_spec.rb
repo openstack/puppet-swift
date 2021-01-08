@@ -18,7 +18,9 @@ describe 'swift::objectexpirer' do
       :report_interval               => 300,
       :log_facility                  => 'LOG_LOCAL2',
       :log_level                     => 'INFO',
-      :memcache_servers              => ['127.0.0.1:11211'] }
+      :memcache_servers              => ['127.0.0.1:11211'],
+      :cache_tls_enabled             => false,
+    }
   end
 
   let :params do
