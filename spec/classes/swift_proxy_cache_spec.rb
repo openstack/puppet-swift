@@ -22,6 +22,7 @@ describe 'swift::proxy::cache' do
 
         it { is_expected.to contain_swift_proxy_config('filter:cache/use').with_value('egg:swift#memcache') }
         it { is_expected.to contain_swift_proxy_config('filter:cache/memcache_servers').with_value('127.0.0.1:11211') }
+        it { is_expected.to contain_swift_proxy_config('filter:cache/tls_enabled').with_value(false) }
         it { is_expected.to contain_swift_proxy_config('filter:cache/memcache_max_connections').with_value(2) }
       end
 
@@ -41,6 +42,15 @@ describe 'swift::proxy::cache' do
 
         it { is_expected.to contain_swift_proxy_config('filter:cache/use').with_value('egg:swift#memcache') }
         it { is_expected.to contain_swift_proxy_config('filter:cache/memcache_servers').with_value('10.0.0.1:1,10.0.0.2:2') }
+      end
+
+      describe 'with overridden cache TLS enabled' do
+        let :params do
+          {:tls_enabled => true}
+        end
+
+        it { is_expected.to contain_swift_proxy_config('filter:cache/use').with_value('egg:swift#memcache') }
+        it { is_expected.to contain_swift_proxy_config('filter:cache/tls_enabled').with_value(true) }
       end
 
       describe 'with overridden memcache max connections' do

@@ -3,14 +3,16 @@ require 'spec_helper'
 describe 'swift::containerreconciler' do
 
   let :default_params do
-    { :manage_service   => true,
-      :enabled          => true,
-      :package_ensure   => 'present',
-      :pipeline         => ['catch_errors', 'proxy-logging', 'proxy-server'],
-      :interval         => 300,
-      :reclaim_age      => 604800,
-      :request_tries    => 3,
-      :memcache_servers => ['127.0.0.1:11211'] }
+    { :manage_service    => true,
+      :enabled           => true,
+      :package_ensure    => 'present',
+      :pipeline          => ['catch_errors', 'proxy-logging', 'proxy-server'],
+      :interval          => 300,
+      :reclaim_age       => 604800,
+      :request_tries     => 3,
+      :memcache_servers  => ['127.0.0.1:11211'],
+      :cache_tls_enabled => false,
+    }
   end
 
   let :params do
