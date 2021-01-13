@@ -25,7 +25,7 @@ Puppet::Type.newtype(:swift_storage_policy) do
   newproperty(:aliases) do
     desc 'Storage policy aliases'
     validate do |value|
-      value_match = /([a-zA-Z\d\-]+,\s+)+[a-zA-Z\d\-]+/.match(value)
+      value_match = /^(\s*[a-zA-Z\d\-]+\s*)(,\s*[a-zA-Z\d\-]+\s*)*$/.match(value)
       next unless value_match.nil? || !value_match[0].eql?(value)
       fail('aliases must contain only letters, digits or a dash in a comma separated string')
     end
