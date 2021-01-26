@@ -212,12 +212,6 @@ class swift::proxy(
     warning('pipeline parameter must contain proxy-server')
   }
 
-  # TODO(tkajinam): Remove this when we remove swift::proxy::swift3
-  if member($pipeline, 'swift3') {
-    fail('swift3 is no longer supported by puppet-swift. Use s3api middleware \
-and swift::proxy::s3api instead')
-  }
-
   if($auth_type == 'tempauth' and ! $account_autocreate ){
     fail('account_autocreate must be set to true when auth_type is tempauth')
   }

@@ -259,17 +259,6 @@ describe 'swift::proxy' do
           end
         end
 
-        describe 'when unsupported swift3 is used' do
-          let :params do
-            {
-              :pipeline => ['swift3', 'swauth', 'proxy-server']
-            }
-          end
-
-          it 'should fail if swift3 is included in pipeline' do
-            should raise_error(Puppet::Error)
-          end
-        end
       end
     end
   end
