@@ -6,7 +6,7 @@ describe 'swift::objectexpirer' do
     { :manage_service                => true,
       :enabled                       => true,
       :package_ensure                => 'present',
-      :pipeline                      => ['catch_errors', 'proxy-server'],
+      :pipeline                      => ['catch_errors', 'proxy-logging', 'cache', 'proxy-server'],
       :auto_create_account_prefix    => '.',
       :concurrency                   => 1,
       :expiring_objects_account_name => 'expiring_objects',
@@ -60,6 +60,8 @@ describe 'swift::objectexpirer' do
           'object-expirer/log_level').with_value(p[:log_level])
         is_expected.to contain_swift_object_expirer_config(
           'object-expirer/log_facility').with_value(p[:log_facility])
+        is_expected.to contain_swift_object_expirer_config(
+          'filter:cache/memcache_servers').with_value(p[:memcache_servers])
       end
 
       it 'configures object-expirer service' do
@@ -82,17 +84,16 @@ describe 'swift::objectexpirer' do
       end
     end
 
-    context 'when including cache in pipeline' do
+    context 'when cache is not included in pipeline' do
       before do
         params.merge!(
-          :pipeline         => ['catch_errors', 'cache', 'proxy-server'],
-          :memcache_servers => ['127.0.0.1:11211'],
+          :pipeline => ['catch_errors', 'proxy-logging', 'proxy-server'],
         )
       end
 
-      it 'configures memcache servers' do
-        is_expected.to contain_swift_object_expirer_config(
-          'filter:cache/memcache_servers').with_value(p[:memcache_servers])
+      it 'should not configure memcache servers' do
+        is_expected.to_not contain_swift_object_expirer_config(
+          'filter:cache/memcache_servers')
       end
     end
 

@@ -1,0 +1,7 @@
+---
+upgrade:
+  - |
+    Default value of the ``swift::objectexpirer::pipeline`` parameter has been
+    changed and now includes ``proxy-logging`` and ``cache`` by default.
+    The updated value is consistent with the one described in the default
+    object-expirer.conf in swift.
