@@ -15,7 +15,7 @@
 #
 #  [*pipeline*]
 #    (optional) The list of elements of the object expirer pipeline.
-#    Defaults to ['catch_errors', 'cache', 'proxy-server']
+#    Defaults to ['catch_errors', 'proxy-logging', 'cache', 'proxy-server']
 #
 #  [*auto_create_account_prefix*]
 #    (optional) Prefix to use when automatically creating accounts.
@@ -68,7 +68,7 @@
 #    (optional)
 #    A list of the memcache servers to be used. Entries should be in the
 #    form host:port. This value is only used if 'cache' is added to the
-#    pipeline, e.g. ['catch_errors', 'cache', 'proxy-server']
+#    pipeline, e.g. ['catch_errors', 'proxy-logging', 'cache', 'proxy-server']
 #    Defaults to ['127.0.0.1:11211']
 #
 # [*cache_tls_enabled*]
@@ -109,7 +109,7 @@ class swift::objectexpirer(
   $manage_service                = true,
   $enabled                       = true,
   $package_ensure                = 'present',
-  $pipeline                      = ['catch_errors', 'proxy-server'],
+  $pipeline                      = ['catch_errors', 'proxy-logging', 'cache', 'proxy-server'],
   $auto_create_account_prefix    = '.',
   $concurrency                   = 1,
   $expiring_objects_account_name = 'expiring_objects',
@@ -158,6 +158,10 @@ class swift::objectexpirer(
     if !empty(grep(any2array($memcache_servers), '127.0.0.1')) {
       Class['::memcached'] -> Class['::swift::objectexpirer']
     }
+  }
+
+  swift_object_expirer_config {
+    'filter:proxy-logging/use': value => 'egg:swift#proxy_logging'
   }
 
   swift_object_expirer_config {
