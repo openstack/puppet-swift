@@ -1,0 +1,4 @@
+---
+features:
+  - |
+    The new ``swift::proxy::listing_formats`` class has been added.
