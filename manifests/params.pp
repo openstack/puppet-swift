@@ -34,6 +34,7 @@ class swift::params {
       $account_auditor_service_name      = 'swift-account-auditor'
       $account_reaper_service_name       = 'swift-account-reaper'
       $account_replicator_service_name   = 'swift-account-replicator'
+      $ceilometermiddleware_package_name = "python${pyvers}-ceilometermiddleware"
     }
     'RedHat': {
       $package_name                      = 'openstack-swift'
@@ -59,6 +60,7 @@ class swift::params {
       $account_auditor_service_name      = 'openstack-swift-account-auditor'
       $account_reaper_service_name       = 'openstack-swift-account-reaper'
       $account_replicator_service_name   = 'openstack-swift-account-replicator'
+      $ceilometermiddleware_package_name = "python${pyvers}-ceilometermiddleware"
     }
     default: {
       fail("Unsupported osfamily: ${::osfamily} operatingsystem: ${::operatingsystem}, \

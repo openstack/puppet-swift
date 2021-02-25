@@ -21,6 +21,12 @@ describe 'swift::proxy::ceilometer' do
       it { is_expected.to contain_swift_proxy_config('filter:ceilometer/url').with_value('rabbit://user_1:user_1_passw@1.1.1.1:5673/rabbit').with_secret(true) }
       it { is_expected.to contain_swift_proxy_config('filter:ceilometer/nonblocking_notify').with_value('false') }
       it { is_expected.to contain_user('swift').with_groups('ceilometer') }
+
+      it { is_expected.to contain_package('python-ceilometermiddleware').with(
+        :ensure => 'present',
+        :name   => platform_params[:ceilometermiddleware_package_name],
+        :tag    => ['openstack', 'swift-support-package'],
+      )}
     end
 
     describe "when overriding default parameters with rabbit driver" do
@@ -109,6 +115,24 @@ describe 'swift::proxy::ceilometer' do
       let (:facts) do
         facts.merge!(OSDefaults.get_facts())
       end
+
+      let(:platform_params) do
+        case facts[:osfamily]
+        when 'Debian'
+          { :ceilometermiddleware_package_name => 'python3-ceilometermiddleware' }
+        when 'RedHat'
+          if facts[:operatingsystem] == 'Fedora'
+            { :ceilometermiddleware_package_name => 'python3-ceilometermiddleware' }
+          else
+            if facts[:operatingsystemmajrelease] > '7'
+              { :ceilometermiddleware_package_name => 'python3-ceilometermiddleware' }
+            else
+              { :ceilometermiddleware_package_name => 'python-ceilometermiddleware' }
+            end
+          end
+        end
+      end
+
       it_behaves_like 'swift::proxy::ceilometer'
     end
   end

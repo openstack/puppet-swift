@@ -206,6 +206,7 @@ Please set password parameter')
 
   package { 'python-ceilometermiddleware':
     ensure => $ensure,
+    name   => $::swift::params::ceilometermiddleware_package_name,
     tag    => ['openstack', 'swift-support-package'],
   }
 
