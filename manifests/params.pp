@@ -6,8 +6,9 @@ class swift::params {
   include openstacklib::defaults
   $pyvers = $::openstacklib::defaults::pyvers
 
-  $client_package   = "python${pyvers}-swiftclient"
-  $service_provider = undef
+  $client_package        = "python${pyvers}-swiftclient"
+  $dnspython_pakage_name = "python${pyvers}-dnspython"
+  $service_provider      = undef
 
   case $::osfamily {
     'Debian': {
