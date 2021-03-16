@@ -21,7 +21,6 @@ describe 'swift::proxy::ceilometer' do
       it { is_expected.to contain_swift_proxy_config('filter:ceilometer/url').with_value('rabbit://user_1:user_1_passw@1.1.1.1:5673/rabbit').with_secret(true) }
       it { is_expected.to contain_swift_proxy_config('filter:ceilometer/nonblocking_notify').with_value('false') }
       it { is_expected.to contain_user('swift').with_groups('ceilometer') }
-      it { is_expected.to contain_file('/var/log/ceilometer/swift-proxy-server.log').with(:owner => 'swift', :group => 'swift', :mode => '0664') }
     end
 
     describe "when overriding default parameters with rabbit driver" do
