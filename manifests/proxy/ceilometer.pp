@@ -154,15 +154,7 @@ class swift::proxy::ceilometer(
   Package<| tag == 'ceilometer-package' |> -> User['swift']
 
   if defined(Service['swift-proxy-server']) {
-    File['/var/log/ceilometer/swift-proxy-server.log'] -> Service['swift-proxy-server']
     Package['python-ceilometermiddleware'] -> Service['swift-proxy-server']
-  }
-
-  file { '/var/log/ceilometer/swift-proxy-server.log':
-    ensure => file,
-    mode   => '0664',
-    owner  => 'swift',
-    group  => 'swift',
   }
 
   if $auth_uri {
