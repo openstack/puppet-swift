@@ -21,7 +21,9 @@
 #    one of the following auth_types: tempauth, swauth, keystone.
 #    Each of the specified elements also need to be declared externally
 #    as a puppet class with the exception of proxy-server.
-#    Defaults to ['healthcheck', 'cache', 'tempauth', 'proxy-server']
+#    Defaults to ['catch_errors', 'gatekeeper', 'healthcheck', 'proxy-logging',
+#    'cache', 'listing_formats', 'tempauth', 'copy', 'proxy-logging',
+#    'proxy-server'].
 #
 #  [*workers*]
 #    (optional) Number of threads to process requests.
@@ -156,7 +158,9 @@
 class swift::proxy(
   $proxy_local_net_ip,
   $port                       = '8080',
-  $pipeline                   = ['healthcheck', 'cache', 'tempauth', 'proxy-server'],
+  $pipeline                   = [
+    'catch_errors', 'gatekeeper', 'healthcheck', 'proxy-logging', 'cache',
+    'listing_formats', 'tempauth', 'copy', 'proxy-logging', 'proxy-server'],
   $workers                    = $::os_workers,
   $allow_account_management   = true,
   $account_autocreate         = true,

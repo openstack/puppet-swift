@@ -1,0 +1,13 @@
+---
+upgrade:
+  - |
+    The default value of ``swift::proxy::pipeline`` has been updated to enable
+    some fundamental middlewares by default.
+    Because of this change, the following classes should be included unless
+    the pipeline parameter is explicitly set.
+
+    - ``swift::proxy::catch_errors``
+    - ``swift::proxy::gatekeeper``
+    - ``swift::proxy::proxy_logging``
+    - ``swift::proxy::listing_formats``
+    - ``swift::proxy::copy``

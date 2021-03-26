@@ -10,9 +10,14 @@ describe 'swift::proxy' do
       let :pre_condition do
         "class { memcached: max_memory => 1}
          class { swift: swift_hash_path_suffix => string }
+         include swift::proxy::catch_errors
+         include swift::proxy::gatekeeper
          include swift::proxy::healthcheck
+         include swift::proxy::proxy_logging
          include swift::proxy::cache
-         include swift::proxy::tempauth"
+         include swift::proxy::listing_formats
+         include swift::proxy::tempauth
+         include swift::proxy::copy"
       end
 
       describe 'without the proxy local network ip address being specified' do
@@ -56,7 +61,9 @@ describe 'swift::proxy' do
         it { should contain_swift_proxy_config('DEFAULT/log_level').with_value('INFO') }
         it { should contain_swift_proxy_config('DEFAULT/log_headers').with_value('False') }
         it { should contain_swift_proxy_config('DEFAULT/log_address').with_value('/dev/log') }
-        it { should contain_swift_proxy_config('pipeline:main/pipeline').with_value('healthcheck cache tempauth proxy-server') }
+        it { should contain_swift_proxy_config('pipeline:main/pipeline').with_value(
+          ['catch_errors', 'gatekeeper', 'healthcheck', 'proxy-logging', 'cache',
+           'listing_formats', 'tempauth', 'copy', 'proxy-logging', 'proxy-server'].join(' ')) }
         it { should contain_swift_proxy_config('app:proxy-server/use').with_value('egg:swift#proxy') }
         it { should contain_swift_proxy_config('app:proxy-server/set log_name').with_value('proxy-server') }
         it { should contain_swift_proxy_config('app:proxy-server/set log_facility').with_value('LOG_LOCAL2') }
@@ -71,9 +78,15 @@ describe 'swift::proxy' do
         it { should contain_swift_proxy_config('app:proxy-server/max_containers_whitelist').with_value('<SERVICE DEFAULT>') }
 
         it { should contain_service('swift-proxy-server').with_require([
+          'Class[Swift::Proxy::Catch_errors]',
+          'Class[Swift::Proxy::Gatekeeper]',
           'Class[Swift::Proxy::Healthcheck]',
+          'Class[Swift::Proxy::Proxy_logging]',
           'Class[Swift::Proxy::Cache]',
+          'Class[Swift::Proxy::Listing_formats]',
           'Class[Swift::Proxy::Tempauth]',
+          'Class[Swift::Proxy::Copy]',
+          'Class[Swift::Proxy::Proxy_logging]',
         ])}
 
         describe "when using swift_proxy_config resource" do
@@ -82,9 +95,14 @@ describe 'swift::proxy' do
               class { memcached: max_memory => 1}
               class { swift: swift_hash_path_suffix => string }
               swift_proxy_config { 'foo/bar': value => 'foo' }
+              include swift::proxy::catch_errors
+              include swift::proxy::gatekeeper
               include swift::proxy::healthcheck
+              include swift::proxy::proxy_logging
               include swift::proxy::cache
+              include swift::proxy::listing_formats
               include swift::proxy::tempauth
+              include swift::proxy::copy
             "
           end
 
@@ -273,11 +291,15 @@ describe 'swift::proxy' do
     let :pre_condition do
       "class { memcached: max_memory => 1}
        class { swift: swift_hash_path_suffix => string }
+       include swift::proxy::catch_errors
+       include swift::proxy::gatekeeper
        include swift::proxy::healthcheck
+       include swift::proxy::proxy_logging
        include swift::proxy::cache
-       include swift::proxy::tempauth"
+       include swift::proxy::listing_formats
+       include swift::proxy::tempauth
+       include swift::proxy::copy"
     end
-
 
     [{ :enabled => true, :manage_service => true },
      { :enabled => false, :manage_service => true }].each do |param_hash|
