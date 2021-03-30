@@ -1,0 +1,4 @@
+---
+features:
+  - |
+    Support for the cname_lookup middlehware has been added.
