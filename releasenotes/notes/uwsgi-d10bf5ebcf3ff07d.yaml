@@ -1,0 +1,9 @@
+---
+features:
+  - |
+    3 new classes swift::wsgi::uwsgi_proxy, swift::wsgi::uwsgi_account and
+    swift::wsgi::uwsgi_container exist to allow configuring uwsgi in
+    operating systems that support this (ie: currently Debian). This helps
+    configuring the number of processes and listen socket.
+    Also, 3 new swift_proxy_uwsgi_config, swift_account_uwsgi_config, and
+    swift_container_uwsgi_config providers now exist.
