@@ -189,7 +189,7 @@ class swift::proxy(
   $package_ensure             = 'present',
   $service_provider           = $::swift::params::service_provider,
   $purge_config               = false,
-) inherits ::swift::params {
+) inherits swift::params {
 
   include swift::deps
   Swift_config<| |> ~> Service['swift-proxy-server']

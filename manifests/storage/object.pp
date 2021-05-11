@@ -32,7 +32,7 @@ class swift::storage::object(
   $package_ensure   = 'present',
   $config_file_name = 'object-server.conf',
   $service_provider = $::swift::params::service_provider
-) inherits ::swift::params {
+) inherits swift::params {
 
   include swift::deps
 

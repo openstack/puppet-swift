@@ -38,7 +38,7 @@ class swift::storage::container(
   $allowed_sync_hosts = ['127.0.0.1'],
   $config_file_name   = 'container-server.conf',
   $service_provider = $::swift::params::service_provider
-) inherits ::swift::params {
+) inherits swift::params {
 
   include swift::deps
 

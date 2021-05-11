@@ -127,7 +127,7 @@ class swift::objectexpirer(
   $cache_tls_keyfile             = undef,
   $log_level                     = 'INFO',
   $log_facility                  = 'LOG_LOCAL2',
-) inherits ::swift::params {
+) inherits swift::params {
 
   include swift::deps
   Swift_config<| |> ~> Service['swift-object-expirer']
@@ -156,7 +156,7 @@ class swift::objectexpirer(
 
     # require the memcached class if it is on the same machine
     if !empty(grep(any2array($memcache_servers), '127.0.0.1')) {
-      Class['::memcached'] -> Class['::swift::objectexpirer']
+      Class['memcached'] -> Class['swift::objectexpirer']
     }
   }
 

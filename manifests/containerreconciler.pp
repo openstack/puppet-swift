@@ -88,7 +88,7 @@ class swift::containerreconciler(
   $cache_tls_cafile   = $::os_service_default,
   $cache_tls_certfile = $::os_service_default,
   $cache_tls_keyfile  = $::os_service_default,
-) inherits ::swift::params {
+) inherits swift::params {
 
   include swift::deps
   Swift_config<| |> ~> Service['swift-container-reconciler']
@@ -107,7 +107,7 @@ class swift::containerreconciler(
 
     # require the memcached class if it is on the same machine
     if !empty(grep(any2array($memcache_servers), '127.0.0.1')) {
-      Class['::memcached'] -> Class['::swift::containerreconciler']
+      Class['memcached'] -> Class['swift::containerreconciler']
     }
   }
 

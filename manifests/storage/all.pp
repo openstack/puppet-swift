@@ -12,9 +12,6 @@
 #  [*object_port*] Port where object storage server should be hosted.
 #    Optional. Defaults to 6000.
 #
-#  [*allow_versions*] Boolean to enable the versioning in swift container
-#    Optional. Default to false.
-#
 #  [*container_port*] Port where the container storage server should be hosted.
 #    Optional. Defaults to 6001.
 #
