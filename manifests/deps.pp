@@ -59,6 +59,12 @@ class swift::deps {
   -> Swift_container_uwsgi_config<||>
   ~> Anchor['swift::config::end']
 
+  # drive-audit.conf is not used by swift services, so any change in the file
+  # should not trigger restarting services.
+  Anchor['swift::config::begin']
+  -> Swift_drive_audit_config<||>
+  -> Anchor['swift::config::end']
+
   # Support packages need to be installed in the install phase, but we don't
   # put them in the chain above because we don't want any false dependencies
   # between packages with the swift-package tag and the swift-support-package
