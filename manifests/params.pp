@@ -4,10 +4,9 @@
 #
 class swift::params {
   include openstacklib::defaults
-  $pyvers = $::openstacklib::defaults::pyvers
 
-  $client_package        = "python${pyvers}-swiftclient"
-  $dnspython_pakage_name = "python${pyvers}-dnspython"
+  $client_package        = 'python3-swiftclient'
+  $dnspython_pakage_name = 'python3-dnspython'
   $service_provider      = undef
 
   case $::osfamily {
@@ -35,7 +34,7 @@ class swift::params {
       $account_auditor_service_name      = 'swift-account-auditor'
       $account_reaper_service_name       = 'swift-account-reaper'
       $account_replicator_service_name   = 'swift-account-replicator'
-      $ceilometermiddleware_package_name = "python${pyvers}-ceilometermiddleware"
+      $ceilometermiddleware_package_name = 'python3-ceilometermiddleware'
     }
     'RedHat': {
       $package_name                      = 'openstack-swift'
@@ -61,7 +60,7 @@ class swift::params {
       $account_auditor_service_name      = 'openstack-swift-account-auditor'
       $account_reaper_service_name       = 'openstack-swift-account-reaper'
       $account_replicator_service_name   = 'openstack-swift-account-replicator'
-      $ceilometermiddleware_package_name = "python${pyvers}-ceilometermiddleware"
+      $ceilometermiddleware_package_name = 'python3-ceilometermiddleware'
     }
     default: {
       fail("Unsupported osfamily: ${::osfamily} operatingsystem: ${::operatingsystem}, \

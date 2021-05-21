@@ -121,15 +121,7 @@ describe 'swift::proxy::ceilometer' do
         when 'Debian'
           { :ceilometermiddleware_package_name => 'python3-ceilometermiddleware' }
         when 'RedHat'
-          if facts[:operatingsystem] == 'Fedora'
-            { :ceilometermiddleware_package_name => 'python3-ceilometermiddleware' }
-          else
-            if facts[:operatingsystemmajrelease] > '7'
-              { :ceilometermiddleware_package_name => 'python3-ceilometermiddleware' }
-            else
-              { :ceilometermiddleware_package_name => 'python-ceilometermiddleware' }
-            end
-          end
+          { :ceilometermiddleware_package_name => 'python3-ceilometermiddleware' }
         end
       end
 
