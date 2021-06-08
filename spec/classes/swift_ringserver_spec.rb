@@ -4,19 +4,19 @@ require 'spec_helper'
 WebMock.disable_net_connect!(:allow => "169.254.169.254")
 
 describe 'swift::ringserver' do
+  let :params do
+    { :local_net_ip      => '127.0.0.1',
+      :max_connections   => 5,
+      :rsync_use_xinetd  => true,
+    }
+  end
+
   shared_examples 'swift::ringserver' do
     context 'when storage.pp was already included' do
       let :pre_condition do
         "class { 'swift::storage': storage_local_net_ip  => '127.0.0.1' }
          class {'swift' : swift_hash_path_suffix => 'eee' }
          include swift::ringbuilder"
-      end
-
-      let :params do
-        {
-          :local_net_ip    => '127.0.0.1',
-          :max_connections => 5
-        }
       end
 
       it 'does not create the rsync::server class' do
@@ -39,13 +39,6 @@ describe 'swift::ringserver' do
       let :pre_condition do
         "class {'swift' : swift_hash_path_suffix => 'eee' }
          include swift::ringbuilder"
-      end
-
-      let :params do
-        {
-          :local_net_ip    => '127.0.0.1',
-          :max_connections => 5
-        }
       end
 
       it 'does create the rsync::server class' do
@@ -77,7 +70,7 @@ describe 'swift::ringserver' do
         facts.merge(OSDefaults.get_facts())
       end
 
-      it_configures 'swift::ringserver'
+      it_behaves_like 'swift::ringserver'
     end
   end
 end

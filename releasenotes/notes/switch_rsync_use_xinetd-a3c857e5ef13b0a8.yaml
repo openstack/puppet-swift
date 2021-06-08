@@ -1,0 +1,8 @@
+---
+features:
+  - |
+    The new rsync_use_xinetd parameter has been added to the following classes,
+    to add the ability to enable/disable usage of xinetd to run rsync server.
+
+    - ``swift::ringserver``
+    - ``swift::storage::all``

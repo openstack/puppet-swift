@@ -11,6 +11,10 @@
 #   (optional) maximum connections to rsync server
 #   Defaults to 5
 #
+# [*rsync_use_xinetd*]
+#   (optional) Override whether to use xinetd to manage rsync service
+#   Defaults to swift::params::xinetd_available
+#
 # == Dependencies
 #
 #   Class['swift']
@@ -27,15 +31,20 @@
 #
 class swift::ringserver(
   $local_net_ip,
-  $max_connections = 5
-) {
+  $max_connections = 5,
+  $rsync_use_xinetd = $::swift::params::xinetd_available,
+) inherits swift::params {
 
   include swift::deps
   Class['swift::ringbuilder'] -> Class['swift::ringserver']
 
+  if $rsync_use_xinetd and ! $::swift::params::xinetd_available {
+    fail('xinetd is not available in this distro')
+  }
+
   if !defined(Class['rsync::server']) {
     class { 'rsync::server':
-      use_xinetd => true,
+      use_xinetd => $rsync_use_xinetd,
       address    => $local_net_ip,
       use_chroot => 'no',
     }
