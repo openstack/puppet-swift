@@ -36,6 +36,7 @@ class swift::params {
       $account_reaper_service_name       = 'swift-account-reaper'
       $account_replicator_service_name   = 'swift-account-replicator'
       $ceilometermiddleware_package_name = "python${pyvers}-ceilometermiddleware"
+      $xinetd_available                  = true
     }
     'RedHat': {
       $package_name                      = 'openstack-swift'
@@ -62,6 +63,11 @@ class swift::params {
       $account_reaper_service_name       = 'openstack-swift-account-reaper'
       $account_replicator_service_name   = 'openstack-swift-account-replicator'
       $ceilometermiddleware_package_name = "python${pyvers}-ceilometermiddleware"
+      if (Integer.new($::os['release']['major']) > 8) {
+        $xinetd_available                = false
+      } else {
+        $xinetd_available                = true
+      }
     }
     default: {
       fail("Unsupported osfamily: ${::osfamily} operatingsystem: ${::operatingsystem}, \

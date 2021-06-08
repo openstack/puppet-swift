@@ -122,6 +122,10 @@
 #   (optional) maximum number of simultaneous connections allowed for rsync.
 #   Defaults to 25.
 #
+# [*rsync_use_xinetd*]
+#   (optional) Override whether to use xinetd to manage rsync service
+#   Defaults to swift::params::xinetd_available
+#
 class swift::storage::all(
   $storage_local_net_ip,
   $devices                        = '/srv/node',
@@ -152,7 +156,8 @@ class swift::storage::all(
   $object_server_mb_per_sync      = 512,
   $splice                         = false,
   $max_connections                = 25,
-) {
+  $rsync_use_xinetd               = $::swift::params::xinetd_available,
+) inherits swift::params {
 
   include swift::deps
 
@@ -171,8 +176,13 @@ from 6001 to 6201 and will be changed in a later release')
 from 6002 to 6202 and will be changed in a later release')
   }
 
+  if $rsync_use_xinetd and ! $::swift::params::xinetd_available {
+    fail('xinetd is not available in this distro')
+  }
+
   class { 'swift::storage':
     storage_local_net_ip => $storage_local_net_ip,
+    rsync_use_xinetd     => $rsync_use_xinetd,
   }
 
   Swift::Storage::Server {

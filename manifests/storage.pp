@@ -8,8 +8,9 @@
 #  [*storage_local_net_ip*] ip address that the swift servers should
 #    bind to. Required.
 #
-#  [*rsync_use_xinetd*] indicate if xinetd should be used to manage
-#  rsync service, Default to True.
+#  [*rsync_use_xinetd*]
+#   (optional) Override whether to use xinetd to manage rsync service
+#   Defaults to swift::params::xinetd_available
 #
 # == Dependencies
 #
@@ -25,10 +26,14 @@
 #
 class swift::storage(
   $storage_local_net_ip,
-  $rsync_use_xinetd = true,
-) {
+  $rsync_use_xinetd = $::swift::params::xinetd_available,
+) inherits swift::params {
 
   include swift::deps
+
+  if $rsync_use_xinetd and ! $::swift::params::xinetd_available {
+    fail('xinetd is not available in this distro')
+  }
 
   if !defined(Class['rsync::server']){
     class{ 'rsync::server':
