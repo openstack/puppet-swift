@@ -28,7 +28,6 @@ describe 'swift::storage::disk' do
       :device       => '/dev/sdb',
       :mnt_base_dir => '/srv/node',
       :byte_size    => '1024',
-      :subscribe    => 'Exec[create_partition_label-sdb]',
       :loopback     =>  false
     ) }
   end

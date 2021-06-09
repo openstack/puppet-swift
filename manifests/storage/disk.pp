@@ -33,6 +33,19 @@
 #   (optional) The external command that will be used in parted command.
 #   Default to ''. For making partitions, it would be 'mkpart primary 0% 100%'.
 #
+# [*manage_partition*]
+#   (optional) If set to false, skip calling parted which can, in some cases,
+#   increase the load on the server. This is to set to false only after the
+#   server is fully setup or if the partition was created outside of puppet.
+#   Defaults to true.
+#
+# [*manage_filesystem*]
+#   (optional) If set to false, skip calling xfs_admin -l to check if a
+#   partition needs to be formated with mkfs.xfs, which can, in some cases,
+#   increase the load on the server. This is to set to false only after the
+#   server is fully setup, or if the filesystem was created outside of puppet.
+#   Defaults to true.
+#
 # =Example=
 #
 # Simply add one disk sdb:
@@ -48,10 +61,12 @@
 # TODO(yuxcer): maybe we can remove param $base_dir
 #
 define swift::storage::disk(
-  $base_dir     = '/dev',
-  $mnt_base_dir = '/srv/node',
-  $byte_size    = '1024',
-  $ext_args     = '',
+  $base_dir          = '/dev',
+  $mnt_base_dir      = '/srv/node',
+  $byte_size         = '1024',
+  $ext_args          = '',
+  $manage_partition  = true,
+  $manage_filesystem = true,
 ) {
 
   include swift::deps
@@ -66,19 +81,22 @@ define swift::storage::disk(
     }
   }
 
-  exec { "create_partition_label-${name}":
-    command => "parted -s ${base_dir}/${name} mklabel gpt ${ext_args}",
-    path    => ['/usr/bin/', '/sbin','/bin'],
-    onlyif  => ["test -b ${base_dir}/${name}","parted ${base_dir}/${name} print|tail -1|grep 'Error'"],
-    before  => Anchor['swift::config::end'],
+  if $manage_partition {
+    exec { "create_partition_label-${name}":
+      command => "parted -s ${base_dir}/${name} mklabel gpt ${ext_args}",
+      path    => ['/usr/bin/', '/sbin','/bin'],
+      onlyif  => ["test -b ${base_dir}/${name}","parted ${base_dir}/${name} print|tail -1|grep 'Error'"],
+      before  => Anchor['swift::config::end'],
+    }
+    Exec["create_partition_label-${name}"] ~> Swift::Storage::Xfs<| title == $name |>
   }
 
   swift::storage::xfs { $name:
-    device       => "${base_dir}/${name}",
-    mnt_base_dir => $mnt_base_dir,
-    byte_size    => $byte_size,
-    loopback     => false,
-    subscribe    => Exec["create_partition_label-${name}"],
+    device            => "${base_dir}/${name}",
+    mnt_base_dir      => $mnt_base_dir,
+    byte_size         => $byte_size,
+    loopback          => false,
+    manage_filesystem => $manage_filesystem,
   }
 
 }

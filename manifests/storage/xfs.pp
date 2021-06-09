@@ -21,6 +21,13 @@
 #   (optional) Define if the device is mounted by the device partition path or UUID.
 #   Defaults to 'path'.
 #
+# [*manage_filesystem*]
+#   (optional) If set to false, skip calling xfs_admin -l to check if a
+#   partition needs to be formated with mkfs.xfs, which can, in some cases,
+#   increase the load on the server. This is to set to false only after the
+#   server is fully setup, or if the filesystem was created outside of puppet.
+#   Defaults to true.
+#
 # Sample usage:
 #
 # swift::storage::xfs {
@@ -34,11 +41,12 @@
 # it already has an XFS FS, and mounts de FS in /srv/node/sdX
 #
 define swift::storage::xfs(
-  $device       = '',
-  $byte_size    = '1024',
-  $mnt_base_dir = '/srv/node',
-  $loopback     = false,
-  $mount_type  = 'path',
+  $device            = '',
+  $byte_size         = '1024',
+  $mnt_base_dir      = '/srv/node',
+  $loopback          = false,
+  $mount_type        = 'path',
+  $manage_filesystem = true,
 ) {
 
   include swift::deps
@@ -77,11 +85,19 @@ define swift::storage::xfs(
   # If it's not a valid XFS FS, command will return 1
   # so we format it. If device has a valid XFS FS, command returns 0
   # So we do NOT touch it.
-  exec { "mkfs-${name}":
-    command => "mkfs.xfs -f -i size=${byte_size} ${target_device}",
-    path    => ['/sbin/', '/usr/sbin/'],
-    unless  => "xfs_admin -l ${target_device}",
-    before  => Anchor['swift::config::end'],
+  if $manage_filesystem {
+    exec { "mkfs-${name}":
+      command => "mkfs.xfs -f -i size=${byte_size} ${target_device}",
+      path    => ['/sbin/', '/usr/sbin/'],
+      unless  => "xfs_admin -l ${target_device}",
+      before  => Anchor['swift::config::end'],
+    }
+    Package<| title == 'xfsprogs' |>
+    ~> Exec<| title == "mkfs-${name}" |>
+    ~> Swift::Storage::Mount<| title == $name |>
+  } else {
+    Package<| title == 'xfsprogs' |>
+    ~> Swift::Storage::Mount<| title == $name |>
   }
 
   swift::storage::mount { $name:
@@ -90,8 +106,5 @@ define swift::storage::xfs(
     loopback     => $loopback,
   }
 
-  Package<| title == 'xfsprogs' |>
-  ~> Exec<| title == "mkfs-${name}" |>
-  ~> Swift::Storage::Mount<| title == $name |>
 
 }

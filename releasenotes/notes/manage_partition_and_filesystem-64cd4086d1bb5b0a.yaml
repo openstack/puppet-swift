@@ -1,0 +1,13 @@
+---
+features:
+  - |
+    The class swift::storage::disk now has 2 new parameters called
+    manage_partition and manage_filesystem. The swift::storage::xfs now has
+    a new parameter manage_filesystem. Both have a value of true by default.
+    These new options may be used to skip running parted and xfs_admin once
+    the storage disks are setup. The goal is to avoid the kernel to flush
+    the HDD buffer, which can seriously increase the load and IO wait on a
+    (busy) production server. These parameters should be left to true when
+    setting-up a new server, or when changing a disk, and can be set to false
+    otherwise, or always set to false if the formating is done outside of
+    puppet.
