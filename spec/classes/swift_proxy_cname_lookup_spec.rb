@@ -56,15 +56,7 @@ describe 'swift::proxy::cname_lookup' do
         when 'Debian'
           { :dnspython_package_name => 'python3-dnspython' }
         when 'RedHat'
-          if facts[:operatingsystem] == 'Fedora'
-            { :dnspython_package_name => 'python3-dnspython' }
-          else
-            if facts[:operatingsystemmajrelease] > '7'
-              { :dnspython_package_name => 'python3-dnspython' }
-            else
-              { :dnspython_package_name => 'python-dnspython' }
-            end
-          end
+          { :dnspython_package_name => 'python3-dnspython' }
         end
       end
 
