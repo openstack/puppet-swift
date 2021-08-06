@@ -82,11 +82,7 @@ class swift::proxy::domain_remap(
 
   include swift::deps
 
-  if !is_service_default($reseller_prefixes) and is_array($reseller_prefixes) {
-    $reseller_prefixes_str = join($reseller_prefixes, ',')
-  } else {
-    $reseller_prefixes_str = $reseller_prefixes
-  }
+  $reseller_prefixes_real = join(any2array($reseller_prefixes), ',')
 
   swift_proxy_config {
     'filter:domain_remap/use':                      value => 'egg:swift#domain_remap';
@@ -97,7 +93,7 @@ class swift::proxy::domain_remap(
     'filter:domain_remap/set log_address':          value => $log_address;
     'filter:domain_remap/storage_domain' :          value => $storage_domain;
     'filter:domain_remap/path_root':                value => $path_root;
-    'filter:domain_remap/reseller_prefixes':        value => $reseller_prefixes_str;
+    'filter:domain_remap/reseller_prefixes':        value => $reseller_prefixes_real;
     'filter:domain_remap/default_reseller_prefix':  value => $default_reseller_prefix;
     'filter:domain_remap/mangle_client_paths':      value => $mangle_client_paths;
   }
