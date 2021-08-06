@@ -226,11 +226,8 @@ define swift::storage::server(
   }
 
   # Warn if ${type-server} isn't included in the pipeline
-  if is_array($pipeline) {
-    if !member($pipeline, "${type}-server") {
-      warning("swift storage server ${type} must specify ${type}-server")
-    }
-  } elsif $pipeline != "${type}-server" {
+  $pipeline_array = any2array($pipeline)
+  if !member($pipeline_array, "${type}-server") {
     warning("swift storage server ${type} must specify ${type}-server")
   }
 
