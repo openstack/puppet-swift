@@ -1,0 +1,4 @@
+---
+features:
+  - |
+    Adds new parameters to set system and project reader role configs in Swift.

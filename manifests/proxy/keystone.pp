@@ -20,23 +20,39 @@
 #    (Optional)
 #    Defaults to Undef.
 #
+#  [*project_reader_roles*]
+#    Project reader roles are similar to account owners, but are not
+#    allowed to write any data.
+#    (Optional)
+#    Default to $::os_service_default
+#
+#  [*system_reader_roles*]
+#    System reader roles are similar to reseller_admin_roles, but are not
+#    allowed to write any data.
+#    (Optional)
+#    Default to $::os_service_default
+#
 # == Authors
 #
 #  Dan Bode dan@puppetlabs.com
 #  Francois Charlier fcharlier@ploup.net
 #
 class swift::proxy::keystone(
-  $operator_roles      = ['admin', 'SwiftOperator'],
-  $reseller_prefix     = 'AUTH_',
-  $reseller_admin_role = undef,
+  $operator_roles       = ['admin', 'SwiftOperator'],
+  $reseller_prefix      = 'AUTH_',
+  $reseller_admin_role  = undef,
+  $project_reader_roles = $::os_service_default,
+  $system_reader_roles  = $::os_service_default,
 ) {
 
   include swift::deps
 
   swift_proxy_config {
-    'filter:keystone/use':                 value => 'egg:swift#keystoneauth';
-    'filter:keystone/operator_roles':      value => join(any2array($operator_roles), ', ');
-    'filter:keystone/reseller_prefix':     value => $reseller_prefix;
-    'filter:keystone/reseller_admin_role': value => $reseller_admin_role;
+    'filter:keystone/use':                  value => 'egg:swift#keystoneauth';
+    'filter:keystone/operator_roles':       value => join(any2array($operator_roles), ', ');
+    'filter:keystone/reseller_prefix':      value => $reseller_prefix;
+    'filter:keystone/reseller_admin_role':  value => $reseller_admin_role;
+    'filter:keystone/project_reader_roles': value => join(any2array($project_reader_roles), ', ');
+    'filter:keystone/system_reader_roles':  value => join(any2array($system_reader_roles), ', ');
   }
 }
