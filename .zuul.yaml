@@ -19,9 +19,14 @@
     description: |
       TripleO standalone Job running Object Storage specific Tempest tests.
     vars:
-      build_container_images: true
+      consumer_job: true
+      build_container_images: false
+      remove_tags:
+        - build
       featureset_override:
         run_tempest: false
         tempest_test_whitelist:
           - 'tempest.api.object_storage.test_object_services.ObjectTest'
         use_os_tempest: true
+    dependencies:
+      - tripleo-puppet-ci-centos-8-content-provider
