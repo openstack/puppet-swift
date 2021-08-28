@@ -1,0 +1,5 @@
+---
+features:
+  - |
+    Now service type of the swift service and swift_s3 service is configurable
+    by the ``service_type`` parameter.

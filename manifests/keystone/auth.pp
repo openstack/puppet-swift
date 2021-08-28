@@ -55,6 +55,14 @@
 #   (optional) Name of the s3 service.
 #   Defaults to 'swift_s3'
 #
+# [*service_type*]
+#   (Optional) Type of service.
+#   Defaults to 'object-store'.
+#
+# [*service_type_s3*]
+#   (Optional) Type of s3 service.
+#   Defaults to 's3'.
+#
 # [*service_description*]
 #   (optional) Description for keystone service.
 #   Defaults to 'Openstack Object-Store Service'.
@@ -96,6 +104,8 @@ class swift::keystone::auth(
   $operator_roles         = ['admin', 'SwiftOperator'],
   $service_name           = 'swift',
   $service_name_s3        = 'swift_s3',
+  $service_type           = 'object-store',
+  $service_type_s3        = 's3',
   $service_description    = 'Openstack Object-Store Service',
   $service_description_s3 = 'Openstack S3 Service',
   $configure_endpoint     = true,
@@ -127,10 +137,10 @@ Please set password parameter')
   # Establish that keystone auth and endpoints are properly setup before
   # managing any type of swift related service.
   if $configure_endpoint {
-    Keystone_endpoint["${region}/${service_name}::object-store"] -> Swift::Service<||>
+    Keystone_endpoint["${region}/${service_name}::${service_type}"] -> Swift::Service<||>
   }
   if $configure_s3_endpoint {
-    Keystone_endpoint["${region}/${service_name_s3}::s3"] -> Swift::Service<||>
+    Keystone_endpoint["${region}/${service_name_s3}::${service_type_s3}"] -> Swift::Service<||>
   }
 
   keystone::resource::service_identity { 'swift':
@@ -138,7 +148,7 @@ Please set password parameter')
     configure_user      => $configure_user,
     configure_user_role => $configure_user_role,
     service_name        => $service_name,
-    service_type        => 'object-store',
+    service_type        => $service_type,
     service_description => $service_description,
     region              => $region,
     auth_name           => $auth_name,
@@ -156,7 +166,7 @@ Please set password parameter')
     configure_endpoint  => $configure_s3_endpoint,
     configure_service   => $configure_s3_endpoint,
     service_name        => $service_name_s3,
-    service_type        => 's3',
+    service_type        => $service_type_s3,
     service_description => $service_description_s3,
     region              => $region,
     public_url          => $public_url_s3,
