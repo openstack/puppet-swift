@@ -15,7 +15,7 @@
 
 - job:
     name: puppet-swift-tripleo-standalone
-    parent: tripleo-puppet-ci-centos-7-standalone
+    parent: tripleo-puppet-ci-centos-8-standalone
     description: |
       TripleO standalone Job running Object Storage specific Tempest tests.
     vars:
