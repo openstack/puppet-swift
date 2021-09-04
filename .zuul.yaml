@@ -8,22 +8,10 @@
       - release-notes-jobs-python3
     check:
       jobs:
-        - tripleo-ci-centos-8-content-provider
-        - puppet-swift-tripleo-standalone:
-            vars: &standalone_consumer_vars
-              consumer_job: true
-              build_container_images: false
-              remove_tags:
-                - build
-            dependencies:
-              - tripleo-ci-centos-8-content-provider
+        - puppet-swift-tripleo-standalone
     gate:
       jobs:
-        - tripleo-ci-centos-8-content-provider
-        - puppet-swift-tripleo-standalone:
-            vars: *standalone_consumer_vars
-            dependencies:
-              - tripleo-ci-centos-8-content-provider
+        - puppet-swift-tripleo-standalone
 
 - job:
     name: puppet-swift-tripleo-standalone
