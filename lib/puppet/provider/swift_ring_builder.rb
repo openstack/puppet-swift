@@ -222,7 +222,7 @@ class Puppet::Provider::SwiftRingBuilder < Puppet::Provider
 
   def weight=(weight)
     swift_ring_builder(
-      builder_file_path,
+      builder_file_path(policy_index),
       'set_weight',
       "d#{ring[device_path][:id]}",
       resource[:weight]
@@ -252,7 +252,7 @@ class Puppet::Provider::SwiftRingBuilder < Puppet::Provider
 
   def meta=(meta)
     swift_ring_builder(
-      builder_file_path,
+      builder_file_path(policy_index),
       'set_info',
       "d#{ring[device_path][:id]}",
       "_#{resource[:meta]}"
