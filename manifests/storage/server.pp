@@ -68,10 +68,6 @@
 #   See https://docs.openstack.org/swift/latest/deployment_guide.html#general-service-tuning
 #   Defaults to $::os_workers.
 #
-# [*allow_versions*]
-#   (optional) Enable/Disable object versioning feature
-#   Defaults to 'false'.
-#
 # [*replicator_concurrency*]
 #   (optional) Number of replicator workers to spawn.
 #   Defaults to 1.
@@ -173,6 +169,12 @@
 #   (optional) Number of MB allocated for the cache.
 #   Defaults to 512, which is the swift default value.
 #
+# DEPRECATED PARAMETERS
+#
+# [*allow_versions*]
+#   (optional) Enable/Disable object versioning feature
+#   Defaults to undef.
+#
 define swift::storage::server(
   $type,
   $storage_local_net_ip,
@@ -187,7 +189,6 @@ define swift::storage::server(
   $servers_per_port               = 0,
   $user                           = 'swift',
   $workers                        = $::os_workers,
-  $allow_versions                 = false,
   $replicator_concurrency         = 1,
   $replicator_interval            = 30,
   $updater_concurrency            = 1,
@@ -213,9 +214,15 @@ define swift::storage::server(
   $auditor_disk_chunk_size        = undef,
   $splice                         = false,
   $object_server_mb_per_sync      = 512,
+  # DEPRECATED PARAMETERS
+  $allow_versions                 = undef,
 ) {
 
   include swift::deps
+
+  if $allow_versions != undef {
+    warning('The allow_versions parameter is deprecated and will be removed in a future release')
+  }
 
   if ($incoming_chmod == '0644') {
     warning('The default incoming_chmod set to 0644 may yield in error prone directories and will be changed in a later release.')
@@ -241,7 +248,6 @@ define swift::storage::server(
   validate_legacy(Enum['object', 'container', 'account'], 'validate_re',
     $type, ['^object|container|account$'])
   validate_legacy(Array, 'validate_array', $pipeline)
-  validate_legacy(Boolean, 'validate_bool', $allow_versions)
   validate_legacy(Boolean, 'validate_bool', $splice)
   # TODO - validate that name is an integer
 

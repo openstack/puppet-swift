@@ -1,0 +1,8 @@
+---
+deprecations:
+  - |
+    The following two parameters have been deprecated, and will be removed
+    in a future release.
+
+    - ``swift::storage::all::allow_versions``
+    - ``swift::storage::server::allow_versions``
