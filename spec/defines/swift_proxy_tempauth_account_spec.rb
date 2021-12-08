@@ -19,7 +19,7 @@ describe 'swift::proxy::tempauth_account' do
         facts.merge(OSDefaults.get_facts())
       end
 
-      it_configures 'swift::proxy::tempauth_acount'
+      it_configures 'swift::proxy::tempauth_account'
     end
   end
 end
