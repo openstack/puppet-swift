@@ -1,0 +1,8 @@
+---
+features:
+  - |
+    The ``swift::proxy::container_sync`` class now supports the following two
+    parameters of the ``container_sync`` middleware.
+
+    - ``allow_full_urls``
+    - ``current``
