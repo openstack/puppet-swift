@@ -15,10 +15,6 @@
 #  (Optional) Max manifest size.
 #  Defaults to 2097152.
 #
-# [*min_segment_size*]
-#  (Optional) minimal segment size
-#  Defaults to 1048576.
-#
 # [*rate_limit_under_size*]
 #  (Optional) Rate limiting applies only to segments smaller than this size.
 #  Defaults to $::os_service_default.
@@ -31,7 +27,7 @@
 # [*rate_limit_segments_per_sec*]
 #  (Optional) Once segment rate-limiting kicks in for an object, limit segments
 #  served to N per second. 0 means no rate-limiting.
-#  Defaults to 0.
+#  Defaults to 1.
 #
 # [*max_get_time*]
 #  (Optional) Time limit on GET requests (seconds).
@@ -57,6 +53,12 @@
 #  of segments using query params like `?multipart-manifest=delete&async=on`.
 #  Defaults to $::os_service_default.
 #
+# DEPRECATED PARAMETERS
+#
+# [*min_segment_size*]
+#  (Optional) minimal segment size
+#  Defaults to undef.
+#
 # == Authors
 #
 #   Xingchao Yu  yuxcer@gmail.com
@@ -68,24 +70,31 @@
 class swift::proxy::slo (
   $max_manifest_segments       = '1000',
   $max_manifest_size           = '2097152',
-  $min_segment_size            = '1048576',
   $rate_limit_under_size       = $::os_service_default,
   $rate_limit_after_segment    = '10',
-  $rate_limit_segments_per_sec = '0',
+  $rate_limit_segments_per_sec = '1',
   $max_get_time                = '86400',
   $concurrency                 = $::os_service_default,
   $delete_concurrency          = $::os_service_default,
   $yield_frequency             = $::os_service_default,
   $allow_async_delete          = $::os_service_default,
+  # DEPRECATED PARAMETERS
+  $min_segment_size            = undef,
 ) {
 
   include swift::deps
+
+  if $min_segment_size != undef {
+    warning('The swift::proxy::slo::min_segment_size parameter is deprecated and has no effect.')
+  }
+  swift_proxy_config {
+    'filter:slo/min_segment_size': ensure => absent;
+  }
 
   swift_proxy_config {
     'filter:slo/use':                         value => 'egg:swift#slo';
     'filter:slo/max_manifest_segments':       value => $max_manifest_segments;
     'filter:slo/max_manifest_size':           value => $max_manifest_size;
-    'filter:slo/min_segment_size':            value => $min_segment_size;
     'filter:slo/rate_limit_under_size':       value => $rate_limit_under_size;
     'filter:slo/rate_limit_after_segment':    value => $rate_limit_after_segment;
     'filter:slo/rate_limit_segments_per_sec': value => $rate_limit_segments_per_sec;

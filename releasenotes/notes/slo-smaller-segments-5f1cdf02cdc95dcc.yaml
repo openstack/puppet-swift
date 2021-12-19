@@ -1,0 +1,10 @@
+---
+upgrade:
+  - |
+    Default value of the ``swift::proxy::slo::rate_limit_segments_per_sec``
+    parameter has been changed from ``0`` to ``1``.
+
+deprecations:
+  - |
+    The ``swift::proxy::slo::min_segment_size`` parameter has been deprecated
+    and has no effect now.
