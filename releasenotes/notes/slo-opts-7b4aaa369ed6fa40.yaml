@@ -1,0 +1,11 @@
+---
+features:
+  - |
+    The following four parameters have been added to the ``swift::proxy::slo``
+    class.
+
+    - ``rate_limit_under_size``
+    - ``concurrency``
+    - ``delete_concurrency``
+    - ``yield_frequency``
+    - ``allow_async_delete``
