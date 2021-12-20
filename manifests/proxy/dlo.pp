@@ -8,17 +8,18 @@
 # == Parameters
 #
 # [*rate_limit_after_segment*]
-# Start rate-limiting DLO segment serving after the Nth segment of a segmented object.
-# Default to 10.
+#  (Optional) Start rate-limiting DLO segment serving after the Nth segment of
+#  a segmented object.
+#  Defaults to $::os_service_default.
 #
 # [*rate_limit_segments_per_sec*]
-# Once segment rate-limiting kicks in for an object, limit segments served to N per second.
-# 0 means no rate-limiting.
-# Default to 1.
+#  (Optional) Once segment rate-limiting kicks in for an object, limit segments
+#  served to N per second. 0 means no rate-limiting.
+#  Defaults to $::os_service_default.
 #
 # [*max_get_time*]
-# Time limit on GET requests (seconds).
-# Default to 86400.
+#  (Optional) Time limit on GET requests (seconds).
+#  Defaults to $::os_service_default.
 #
 # == Authors
 #
@@ -29,9 +30,9 @@
 # Copyright 2015 Mirantis Inc, unless otherwise noted.
 #
 class swift::proxy::dlo (
-  $rate_limit_after_segment    = '10',
-  $rate_limit_segments_per_sec = '1',
-  $max_get_time                = '86400'
+  $rate_limit_after_segment    = $::os_service_default,
+  $rate_limit_segments_per_sec = $::os_service_default,
+  $max_get_time                = $::os_service_default,
 ) {
 
   include swift::deps
