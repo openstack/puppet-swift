@@ -35,13 +35,13 @@
 # [*yield_frequency*]
 # The frequency the server will spit out an ' ' to keep the connection alive
 # while its processing the request.
-# Default to 60.
+# Default to 10.
 #
 class swift::proxy::bulk(
   $max_containers_per_extraction = '10000',
   $max_failed_extractions        = '1000',
   $max_deletes_per_request       = '10000',
-  $yield_frequency               = '60',
+  $yield_frequency               = '10',
 ) {
 
   include swift::deps
