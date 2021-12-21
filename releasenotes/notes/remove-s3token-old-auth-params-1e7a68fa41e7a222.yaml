@@ -1,0 +1,9 @@
+---
+upgrade:
+  - |
+    The following three deprecated parameters have been removed from
+    the ``swift::proxy::s3token`` class.
+
+    - ``auth_host``
+    - ``auth_port``
+    - ``auth_protocol``
