@@ -9,11 +9,11 @@
 #
 # [*max_manifest_segments*]
 #  (Optional) Max manifest segments.
-#  Defaults to 1000.
+#  Defaults to $::os_service_default.
 #
 # [*max_manifest_size*]
 #  (Optional) Max manifest size.
-#  Defaults to 8388608.
+#  Defaults to $::os_service_default.
 #
 # [*rate_limit_under_size*]
 #  (Optional) Rate limiting applies only to segments smaller than this size.
@@ -22,16 +22,16 @@
 # [*rate_limit_after_segment*]
 #  (Optional) Start rate-limiting SLO segment serving after the Nth segment of
 #  a segmented object.
-#  Defaults to 10.
+#  Defaults to $::os_service_default.
 #
 # [*rate_limit_segments_per_sec*]
 #  (Optional) Once segment rate-limiting kicks in for an object, limit segments
 #  served to N per second. 0 means no rate-limiting.
-#  Defaults to 1.
+#  Defaults to $::os_service_default.
 #
 # [*max_get_time*]
 #  (Optional) Time limit on GET requests (seconds).
-#  Defaults to 86400.
+#  Defaults to $::os_service_default.
 #
 # [*concurrency*]
 #  (Optional) Limit how many subrequests may be executed concurrently.
@@ -68,12 +68,12 @@
 # Copyright 2014 UnitedStack licensing@unitedstack.com
 #
 class swift::proxy::slo (
-  $max_manifest_segments       = '1000',
-  $max_manifest_size           = '8388608',
+  $max_manifest_segments       = $::os_service_default,
+  $max_manifest_size           = $::os_service_default,
   $rate_limit_under_size       = $::os_service_default,
-  $rate_limit_after_segment    = '10',
-  $rate_limit_segments_per_sec = '1',
-  $max_get_time                = '86400',
+  $rate_limit_after_segment    = $::os_service_default,
+  $rate_limit_segments_per_sec = $::os_service_default,
+  $max_get_time                = $::os_service_default,
   $concurrency                 = $::os_service_default,
   $delete_concurrency          = $::os_service_default,
   $yield_frequency             = $::os_service_default,
