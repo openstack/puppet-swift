@@ -13,7 +13,7 @@
 #
 # [*max_manifest_size*]
 #  (Optional) Max manifest size.
-#  Defaults to 2097152.
+#  Defaults to 8388608.
 #
 # [*rate_limit_under_size*]
 #  (Optional) Rate limiting applies only to segments smaller than this size.
@@ -69,7 +69,7 @@
 #
 class swift::proxy::slo (
   $max_manifest_segments       = '1000',
-  $max_manifest_size           = '2097152',
+  $max_manifest_size           = '8388608',
   $rate_limit_under_size       = $::os_service_default,
   $rate_limit_after_segment    = '10',
   $rate_limit_segments_per_sec = '1',
