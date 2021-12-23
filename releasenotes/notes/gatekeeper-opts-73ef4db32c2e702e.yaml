@@ -1,0 +1,8 @@
+---
+features:
+  - |
+    The following two parameters have been added to
+    the ``swift::proxy::gatekeeper`` class.
+
+    - ``shunt_inbound_x_timestamp``
+    - ``allow_reserved_names_header``
