@@ -7,7 +7,6 @@ describe 'swift::ringserver' do
   let :params do
     { :local_net_ip      => '127.0.0.1',
       :max_connections   => 5,
-      :rsync_use_xinetd  => true,
     }
   end
 
@@ -43,7 +42,7 @@ describe 'swift::ringserver' do
 
       it 'does create the rsync::server class' do
         is_expected.to contain_class('rsync::server').with({
-          'use_xinetd' => 'true',
+          'use_xinetd' => platform_params[:xinetd_available],
           'address'    => '127.0.0.1',
           'use_chroot' => 'no'
         })
@@ -68,6 +67,19 @@ describe 'swift::ringserver' do
     context "on #{os}" do
       let (:facts) do
         facts.merge(OSDefaults.get_facts())
+      end
+
+      let (:platform_params) do
+        case facts[:osfamily]
+        when 'Debian'
+            { :xinetd_available => true }
+        when 'RedHat'
+          if facts[:operatingsystemmajrelease] > '8'
+            { :xinetd_available => false }
+          else
+            { :xinetd_available => true }
+          end
+        end
       end
 
       it_behaves_like 'swift::ringserver'
