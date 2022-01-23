@@ -178,10 +178,4 @@ Please set password parameter')
     #Roles like "admin" may be defined elsewhere, so use ensure_resource
     ensure_resource('keystone_role', $operator_roles, { 'ensure' => 'present' })
   }
-
-  # Backward compatibility
-  if $configure_user {
-    Keystone_user[$auth_name] -> Keystone_user_role["${auth_name}@${tenant}"]
-  }
-
 }
