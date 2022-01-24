@@ -97,9 +97,12 @@ describe 'swift::storage::server' do
         is_expected.to contain_swift_account_config('DEFAULT/log_statsd_sample_rate_factor').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_swift_account_config('DEFAULT/log_statsd_metric_prefix').with_value('<SERVICE DEFAULT>')
 
+        is_expected.to contain_swift_account_config('account-auditor/').with_ensure('present')
+        is_expected.to contain_swift_account_config('account-replicator/').with_ensure('present')
         is_expected.to contain_swift_account_config('account-replicator/rsync_module').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_swift_account_config('account-replicator/concurrency').with_value(1)
         is_expected.to contain_swift_account_config('account-replicator/interval').with_value('<SERVICE DEFAULT>')
+        is_expected.to contain_swift_account_config('account-reaper/').with_ensure('present')
         is_expected.to contain_swift_account_config('account-reaper/concurrency').with_value(1)
       }
 
@@ -218,10 +221,14 @@ describe 'swift::storage::server' do
         is_expected.to contain_swift_container_config('DEFAULT/log_statsd_metric_prefix').with_value('<SERVICE DEFAULT>')
 
         is_expected.to contain_swift_container_config('DEFAULT/allowed_sync_hosts').with_value('127.0.0.1')
+        is_expected.to contain_swift_container_config('container-auditor/').with_ensure('present')
+        is_expected.to contain_swift_container_config('container-replicator/').with_ensure('present')
         is_expected.to contain_swift_container_config('container-replicator/rsync_module').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_swift_container_config('container-replicator/concurrency').with_value(1)
         is_expected.to contain_swift_container_config('container-replicator/interval').with_value('<SERVICE DEFAULT>')
+        is_expected.to contain_swift_container_config('container-updater/').with_ensure('present')
         is_expected.to contain_swift_container_config('container-updater/concurrency').with_value(1)
+        is_expected.to contain_swift_container_config('container-sharder/').with_ensure('present')
         is_expected.to contain_swift_container_config('container-sharder/auto_shard').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_swift_container_config('container-sharder/concurrency').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_swift_container_config('container-sharder/interval').with_value('<SERVICE DEFAULT>')
@@ -347,13 +354,17 @@ describe 'swift::storage::server' do
         is_expected.to contain_swift_object_config('DEFAULT/client_timeout').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_swift_object_config('app:object-server/splice').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_swift_object_config('app:object-server/mb_per_sync').with_value('<SERVICE DEFAULT>')
+        is_expected.to contain_swift_object_config('object-auditor/').with_ensure('present')
         is_expected.to contain_swift_object_config('object-auditor/disk_chunk_size').with_value('<SERVICE DEFAULT>')
+        is_expected.to contain_swift_object_config('object-replicator/').with_ensure('present')
         is_expected.to contain_swift_object_config('object-replicator/rsync_module').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_swift_object_config('object-replicator/rsync_module').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_swift_object_config('object-replicator/concurrency').with_value(1)
         is_expected.to contain_swift_object_config('object-replicator/rsync_timeout').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_swift_object_config('object-replicator/rsync_bwlimit').with_value('<SERVICE DEFAULT>')
+        is_expected.to contain_swift_object_config('object-updater/').with_ensure('present')
         is_expected.to contain_swift_object_config('object-updater/concurrency').with_value(1)
+        is_expected.to contain_swift_object_config('object-reconstructor/').with_ensure('present')
       }
 
       context 'with customized pipeline' do

@@ -70,6 +70,10 @@ describe 'basic swift_config resource' do
         ensure_absent_val => 'toto',
       }
 
+      swift_account_config { 'thisshouldexist3/' :
+        ensure => present,
+      }
+
       swift_bench_config { 'DEFAULT/thisshouldexist' :
         value => 'foo',
       }
@@ -106,6 +110,10 @@ describe 'basic swift_config resource' do
         ensure_absent_val => 'toto',
       }
 
+      swift_container_config { 'thisshouldexist3/' :
+        ensure => present,
+      }
+
       swift_dispersion_config { 'DEFAULT/thisshouldexist' :
         value => 'foo',
       }
@@ -140,6 +148,10 @@ describe 'basic swift_config resource' do
       swift_object_config { 'DEFAULT/thisshouldnotexist2' :
         value             => 'toto',
         ensure_absent_val => 'toto',
+      }
+
+      swift_object_config { 'thisshouldexist3/' :
+        ensure => present,
       }
 
       swift_proxy_config { 'DEFAULT/thisshouldexist' :
@@ -185,16 +197,16 @@ describe 'basic swift_config resource' do
       apply_manifest(pp, :catch_changes => true)
     end
 
-    $swift_files = [ '/etc/swift/swift.conf',
-                     '/etc/swift/account-server.conf',
-                     '/etc/swift/swift-bench.conf',
-                     '/etc/swift/container-server.conf',
-                     '/etc/swift/dispersion.conf',
-                     '/etc/swift/object-server.conf',
-                     '/etc/swift/proxy-server.conf',
-                     '/etc/swift/container-sync-realms.conf']
+    swift_files = [ '/etc/swift/swift.conf',
+                    '/etc/swift/account-server.conf',
+                    '/etc/swift/swift-bench.conf',
+                    '/etc/swift/container-server.conf',
+                    '/etc/swift/dispersion.conf',
+                    '/etc/swift/object-server.conf',
+                    '/etc/swift/proxy-server.conf',
+                    '/etc/swift/container-sync-realms.conf']
 
-    $swift_files.each do |swift_conf_file|
+    swift_files.each do |swift_conf_file|
       describe file(swift_conf_file) do
         it { is_expected.to exist }
         it { is_expected.to contain('thisshouldexist=foo') }
@@ -204,6 +216,16 @@ describe 'basic swift_config resource' do
           subject { super().content }
           it { is_expected.to_not match /thisshouldnotexist/ }
         end
+      end
+    end
+
+    server_files = [ '/etc/swift/account-server.conf',
+                     '/etc/swift/container-server.conf',
+                     '/etc/swift/object-server.conf']
+
+    server_files.each do |swift_conf_file|
+      describe file(swift_conf_file) do
+        it { is_expected.to contain('thisshouldexist3') }
       end
     end
 

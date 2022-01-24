@@ -435,17 +435,14 @@ define swift::storage::server(
       $type_opts = {
         # account-server
         # account-auditor
+        'account-auditor/'               => {'ensure' => present},
         # account-replicator
+        'account-replicator/'            => {'ensure' => present},
         'account-replicator/concurrency' => {'value'  => $replicator_concurrency},
         'account-replicator/interval'    => {'value'  => $replicator_interval},
         # account-reaper
+        'account-reaper/'                => {'ensure' => present},
         'account-reaper/concurrency'     => {'value'  => $reaper_concurrency},
-      }
-
-      file_line { 'account-reaper':
-        path => $config_file_full_path,
-        line => '[account-reaper]',
-        tag  => 'swift-config-file',
       }
     }
     'container': {
@@ -453,32 +450,21 @@ define swift::storage::server(
         'DEFAULT/allowed_sync_hosts'       => {'value'  => join($::swift::storage::container::allowed_sync_hosts, ',')},
         # container-server
         # container-auditor
+        'container-auditor/'               => {'ensure' => present},
         # container-replicator
+        'container-replicator/'            => {'ensure' => present},
         'container-replicator/concurrency' => {'value'  => $replicator_concurrency},
         'container-replicator/interval'    => {'value'  => $replicator_interval},
         # container-updater
+        'container-updater/'               => {'ensure' => present},
         'container-updater/concurrency'    => {'value'  => $updater_concurrency},
         # container-sync
+        'container-sync/'                  => {'ensure' => present},
         # container-sharder
+        'container-sharder/'               => {'ensure' => present},
         'container-sharder/auto_shard'     => {'value'  => $container_sharder_auto_shard},
         'container-sharder/concurrency'    => {'value'  => $container_sharder_concurrency},
         'container-sharder/interval'       => {'value'  => $container_sharder_interval},
-      }
-
-      file_line { 'container-updater':
-        path => $config_file_full_path,
-        line => '[container-updater]',
-        tag  => 'swift-config-file',
-      }
-      file_line { 'container-sync':
-        path => $config_file_full_path,
-        line => '[container-sync]',
-        tag  => 'swift-config-file',
-      }
-      file_line { 'container-sharder':
-        path => $config_file_full_path,
-        line => '[container-sharder]',
-        tag  => 'swift-config-file',
       }
     }
     'object': {
@@ -491,25 +477,18 @@ define swift::storage::server(
         'app:object-server/splice'        => {'value'  => $splice},
         'app:object-server/mb_per_sync'   => {'value'  => $object_server_mb_per_sync},
         # object-auditor
+        'object-auditor/'                 => {'ensure' => present},
         'object-auditor/disk_chunk_size'  => {'value'  => $auditor_disk_chunk_size},
         # object-replicator
+        'object-replicator/'              => {'ensure' => present},
         'object-replicator/concurrency'   => {'value'  => $replicator_concurrency},
         'object-replicator/rsync_timeout' => {'value'  => $rsync_timeout},
         'object-replicator/rsync_bwlimit' => {'value'  => $rsync_bwlimit},
         # object-updater
+        'object-updater/'                 => {'ensure' => present},
         'object-updater/concurrency'      => {'value'  => $updater_concurrency},
         # object-reconstructor
-      }
-
-      file_line { 'object-updater':
-        path => $config_file_full_path,
-        line => '[object-updater]',
-        tag  => 'swift-config-file',
-      }
-      file_line { 'object-reconstructor':
-        path => $config_file_full_path,
-        line => '[object-reconstructor]',
-        tag  => 'swift-config-file',
+        'object-reconstructor/'           => {'ensure' => present},
       }
     }
     default: {

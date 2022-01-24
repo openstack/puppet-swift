@@ -4,7 +4,7 @@ Puppet::Type.newtype(:swift_container_config) do
 
   newparam(:name, :namevar => true) do
     desc 'Section/setting name to manage from /etc/swift/container-server.conf'
-    newvalues(/\S+\/\S+/)
+    newvalues(/\S+\/\S*/)
   end
 
   newproperty(:value) do
