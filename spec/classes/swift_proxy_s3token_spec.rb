@@ -12,11 +12,11 @@ describe 'swift::proxy::s3token' do
       it { is_expected.to contain_swift_proxy_config('filter:s3token/auth_url').with_value('http://127.0.0.1:5000') }
       it { is_expected.to contain_swift_proxy_config('filter:s3token/auth_type').with_value('password') }
       it { is_expected.to contain_swift_proxy_config('filter:s3token/username').with_value('swift') }
+      it { is_expected.to contain_swift_proxy_config('filter:s3token/user_domain_id').with_value('default') }
       it { is_expected.to contain_swift_proxy_config('filter:s3token/password').with_value('password').with_secret(true) }
       it { is_expected.to contain_swift_proxy_config('filter:s3token/project_name').with_value('services') }
       it { is_expected.to contain_swift_proxy_config('filter:s3token/project_domain_id').with_value('default') }
-      it { is_expected.to contain_swift_proxy_config('filter:s3token/user_domain_id').with_value('default') }
-
+      it { is_expected.to contain_swift_proxy_config('filter:s3token/system_scope').with_value('<SERVICE DEFAULT>') }
     end
 
     describe "when overriding default parameters" do
@@ -34,7 +34,6 @@ describe 'swift::proxy::s3token' do
           :project_name           => 'admin',
           :project_domain_id      => '12345',
           :user_domain_id         => '12345'
-
         }
       end
 
@@ -46,10 +45,23 @@ describe 'swift::proxy::s3token' do
       it { is_expected.to contain_swift_proxy_config('filter:s3token/auth_url').with_value('http://192.168.24.11:5000') }
       it { is_expected.to contain_swift_proxy_config('filter:s3token/auth_type').with_value('password') }
       it { is_expected.to contain_swift_proxy_config('filter:s3token/username').with_value('swift') }
+      it { is_expected.to contain_swift_proxy_config('filter:s3token/user_domain_id').with_value('12345') }
       it { is_expected.to contain_swift_proxy_config('filter:s3token/password').with_value('swift').with_secret(true) }
       it { is_expected.to contain_swift_proxy_config('filter:s3token/project_name').with_value('admin') }
       it { is_expected.to contain_swift_proxy_config('filter:s3token/project_domain_id').with_value('12345') }
-      it { is_expected.to contain_swift_proxy_config('filter:s3token/user_domain_id').with_value('12345') }
+      it { is_expected.to contain_swift_proxy_config('filter:s3token/system_scope').with_value('<SERVICE DEFAULT>') }
+    end
+
+    describe 'when system_scope is set' do
+      let :params do
+        {
+          :system_scope => 'all'
+        }
+      end
+
+      it { is_expected.to contain_swift_proxy_config('filter:s3token/project_name').with_value('<SERVICE DEFAULT>') }
+      it { is_expected.to contain_swift_proxy_config('filter:s3token/project_domain_id').with_value('<SERVICE DEFAULT>') }
+      it { is_expected.to contain_swift_proxy_config('filter:s3token/system_scope').with_value('all') }
     end
   end
 

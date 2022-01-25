@@ -29,6 +29,10 @@
 #   (Optional) The name of the service user
 #   Defaults to 'swift'
 #
+# [*user_domain_id*]
+#   (Optional) id of domain for $username
+#   Defaults to 'default'
+#
 # [*password*]
 #   (Optional) The password for the user
 #   Defaults to 'password'
@@ -41,9 +45,9 @@
 #   (Optional) id of domain for $project_name
 #   Defaults to 'default'
 #
-# [*user_domain_id*]
-#   (Optional) id of domain for $username
-#   Defaults to 'default'
+# [*system_scope*]
+#   (Optional) Scope for system operations
+#   Defaults to $::os_service_default
 #
 # [*region_name*]
 #   (Optional) The region in which the identity server can be found.
@@ -105,11 +109,12 @@ class swift::proxy::authtoken(
   $www_authenticate_uri         = 'http://127.0.0.1:5000',
   $auth_url                     = 'http://127.0.0.1:5000',
   $auth_type                    = 'password',
-  $project_domain_id            = 'default',
-  $user_domain_id               = 'default',
-  $project_name                 = 'services',
   $username                     = 'swift',
+  $user_domain_id               = 'default',
   $password                     = undef,
+  $project_name                 = 'services',
+  $project_domain_id            = 'default',
+  $system_scope                 = $::os_service_default,
   $region_name                  = $::os_service_default,
   $include_service_catalog      = false,
   $service_token_roles          = $::os_service_default,
@@ -142,17 +147,26 @@ Please set password parameter')
     $auth_type_real = $auth_type
   }
 
+  if is_service_default($system_scope) {
+    $project_name_real = $project_name
+    $project_domain_id_real = $project_domain_id
+  } else {
+    $project_name_real = $::os_service_default
+    $project_domain_id_real = $::os_service_default
+  }
+
   swift_proxy_config {
     'filter:authtoken/log_name':                     value => 'swift';
     'filter:authtoken/paste.filter_factory':         value => 'keystonemiddleware.auth_token:filter_factory';
     'filter:authtoken/www_authenticate_uri':         value => $www_authenticate_uri;
     'filter:authtoken/auth_url':                     value => $auth_url;
     'filter:authtoken/auth_type':                    value => $auth_type_real;
-    'filter:authtoken/project_domain_id':            value => $project_domain_id;
-    'filter:authtoken/user_domain_id':               value => $user_domain_id;
-    'filter:authtoken/project_name':                 value => $project_name;
     'filter:authtoken/username':                     value => $username;
+    'filter:authtoken/user_domain_id':               value => $user_domain_id;
     'filter:authtoken/password':                     value => $password_real, secret => true;
+    'filter:authtoken/project_name':                 value => $project_name_real;
+    'filter:authtoken/project_domain_id':            value => $project_domain_id_real;
+    'filter:authtoken/system_scope':                 value => $system_scope;
     'filter:authtoken/region_name':                  value => $region_name;
     'filter:authtoken/delay_auth_decision':          value => $delay_auth_decision;
     'filter:authtoken/cache':                        value => $cache;

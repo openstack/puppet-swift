@@ -59,13 +59,17 @@
 #   (Optional) name of domain for $project_name
 #   Defaults to 'default'
 #
-# [*user_domain_name*]
-#   (Optional) name of domain for $username
-#   Defaults to 'default'
+# [*system_scope*]
+#   (Optional) Scope for system operations
+#   Defaults to $::os_service_default
 #
 # [*username*]
 #   (Optional) The name of the service user
 #   Defaults to 'swift'
+#
+# [*user_domain_name*]
+#   (Optional) name of domain for $username
+#   Defaults to 'default'
 #
 # [*password*]
 #   (Optional) The password for the user
@@ -129,10 +133,11 @@ class swift::proxy::ceilometer(
   $ignore_projects            = ['services'],
   $auth_url                   = 'http://127.0.0.1:5000',
   $auth_type                  = 'password',
-  $project_domain_name        = 'Default',
-  $user_domain_name           = 'Default',
   $project_name               = 'services',
+  $project_domain_name        = 'Default',
+  $system_scope               = $::os_service_default,
   $username                   = 'swift',
+  $user_domain_name           = 'Default',
   $password                   = undef,
   $region_name                = $::os_service_default,
   $notification_ssl_ca_file   = $::os_service_default,
@@ -169,6 +174,14 @@ Please set password parameter')
     $password_real = $password
   }
 
+  if is_service_default($system_scope) {
+    $project_name_real = $project_name
+    $project_domain_name_real = $project_domain_name
+  } else {
+    $project_name_real = $::os_service_default
+    $project_domain_name_real = $::os_service_default
+  }
+
   swift_proxy_config {
     'filter:ceilometer/topic':                value => $topic;
     'filter:ceilometer/driver':               value => $driver;
@@ -179,10 +192,11 @@ Please set password parameter')
     'filter:ceilometer/ignore_projects':      value => $ignore_projects;
     'filter:ceilometer/auth_url':             value => $auth_url;
     'filter:ceilometer/auth_type':            value => $auth_type;
-    'filter:ceilometer/project_domain_name':  value => $project_domain_name;
-    'filter:ceilometer/user_domain_name':     value => $user_domain_name;
-    'filter:ceilometer/project_name':         value => $project_name;
+    'filter:ceilometer/project_name':         value => $project_name_real;
+    'filter:ceilometer/project_domain_name':  value => $project_domain_name_real;
+    'filter:ceilometer/system_scope':         value => $system_scope;
     'filter:ceilometer/username':             value => $username;
+    'filter:ceilometer/user_domain_name':     value => $user_domain_name;
     'filter:ceilometer/password':             value => $password_real, secret => true;
     'filter:ceilometer/region_name':          value => $region_name;
   }

@@ -45,6 +45,11 @@
 #   The name of the service user
 #   Defaults to swift
 #
+# [*user_domain_id*]
+#   (Optional) Keystone credentials used for secret caching
+#   id of domain for $username
+#   Defaults to default
+#
 # [*password*]
 #   (Optional) Keystone credentials used for secret caching
 #   The password for the user
@@ -60,10 +65,9 @@
 #   id of domain for $project_name
 #   Defaults to default
 #
-# [*user_domain_id*]
-#   (Optional) Keystone credentials used for secret caching
-#   id of domain for $username
-#   Defaults to default
+# [*system_scope*]
+#   (Optional) Scope for system operations
+#   Defaults to $::os_service_default
 #
 # == Dependencies
 #
@@ -86,10 +90,11 @@ class swift::proxy::s3token(
   $auth_url              = 'http://127.0.0.1:5000',
   $auth_type             = 'password',
   $username              = 'swift',
+  $user_domain_id        = 'default',
   $password              = undef,
   $project_name          = 'services',
   $project_domain_id     = 'default',
-  $user_domain_id        = 'default'
+  $system_scope          = $::os_service_default,
 ) {
 
   include swift::deps
@@ -102,6 +107,14 @@ Please set password parameter')
     $password_real = $password
   }
 
+  if is_service_default($system_scope) {
+    $project_name_real = $project_name
+    $project_domain_id_real = $project_domain_id
+  } else {
+    $project_name_real = $::os_service_default
+    $project_domain_id_real = $::os_service_default
+  }
+
   swift_proxy_config {
     'filter:s3token/use':                   value => 'egg:swift#s3token';
     'filter:s3token/auth_uri':              value => $auth_uri;
@@ -112,9 +125,10 @@ Please set password parameter')
     'filter:s3token/auth_url':              value => $auth_url;
     'filter:s3token/auth_type':             value => $auth_type;
     'filter:s3token/username':              value => $username;
-    'filter:s3token/password':              value => $password_real, secret => true;
-    'filter:s3token/project_name':          value => $project_name;
-    'filter:s3token/project_domain_id':     value => $project_domain_id;
     'filter:s3token/user_domain_id':        value => $user_domain_id;
+    'filter:s3token/password':              value => $password_real, secret => true;
+    'filter:s3token/project_name':          value => $project_name_real;
+    'filter:s3token/project_domain_id':     value => $project_domain_id_real;
+    'filter:s3token/system_scope':          value => $system_scope;
   }
 }

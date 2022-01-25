@@ -60,10 +60,11 @@ describe 'swift::proxy::ceilometer' do
         it { is_expected.to contain_swift_proxy_config('filter:ceilometer/ignore_projects').with_value(['services']) }
         it { is_expected.to contain_swift_proxy_config('filter:ceilometer/auth_url').with_value('http://127.0.0.1:5000') }
         it { is_expected.to contain_swift_proxy_config('filter:ceilometer/auth_type').with_value('password') }
-        it { is_expected.to contain_swift_proxy_config('filter:ceilometer/project_domain_name').with_value('Default') }
-        it { is_expected.to contain_swift_proxy_config('filter:ceilometer/user_domain_name').with_value('Default') }
         it { is_expected.to contain_swift_proxy_config('filter:ceilometer/project_name').with_value('services') }
+        it { is_expected.to contain_swift_proxy_config('filter:ceilometer/project_domain_name').with_value('Default') }
+        it { is_expected.to contain_swift_proxy_config('filter:ceilometer/system_scope').with_value('<SERVICE DEFAULT>') }
         it { is_expected.to contain_swift_proxy_config('filter:ceilometer/username').with_value('swift') }
+        it { is_expected.to contain_swift_proxy_config('filter:ceilometer/user_domain_name').with_value('Default') }
         it { is_expected.to contain_swift_proxy_config('filter:ceilometer/password').with_value('mypassword').with_secret(true) }
         it { is_expected.to contain_swift_proxy_config('filter:ceilometer/region_name').with_value('region2') }
       end
@@ -105,6 +106,19 @@ describe 'swift::proxy::ceilometer' do
         )}
       end
 
+    end
+
+    describe 'when system_scope is set' do
+      let :params do
+        {
+          :default_transport_url => 'rabbit://user_1:user_1_passw@1.1.1.1:5673/rabbit',
+          :system_scope          => 'all'
+        }
+      end
+
+      it { is_expected.to contain_swift_proxy_config('filter:ceilometer/project_name').with_value('<SERVICE DEFAULT>') }
+      it { is_expected.to contain_swift_proxy_config('filter:ceilometer/project_domain_name').with_value('<SERVICE DEFAULT>') }
+      it { is_expected.to contain_swift_proxy_config('filter:ceilometer/system_scope').with_value('all') }
     end
   end
 

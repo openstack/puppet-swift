@@ -19,6 +19,18 @@
 #   (Optional) The tenant to use for the swift service user
 #   Defaults to 'services'
 #
+# [*roles*]
+#   (Optional) List of roles assigned to swift user.
+#   Defaults to ['admin']
+#
+# [*system_scope*]
+#   (Optional) Scope for system operations.
+#   Defaults to 'all'
+#
+# [*system_roles*]
+#   (Optional) List of system roles assigned to swift user.
+#   Defaults to []
+#
 # [*email*]
 #   (Optional) The email address for the swift service user
 #   Defaults to 'swift@localhost'
@@ -99,6 +111,9 @@ class swift::keystone::auth(
   $auth_name              = 'swift',
   $password               = undef,
   $tenant                 = 'services',
+  $roles                  = ['admin'],
+  $system_scope           = 'all',
+  $system_roles           = [],
   $email                  = 'swift@localhost',
   $region                 = 'RegionOne',
   $operator_roles         = ['admin', 'SwiftOperator'],
@@ -155,6 +170,9 @@ Please set password parameter')
     password            => $password_real,
     email               => $email,
     tenant              => $tenant,
+    roles               => $roles,
+    system_scope        => $system_scope,
+    system_roles        => $system_roles,
     public_url          => $public_url,
     admin_url           => $admin_url,
     internal_url        => $internal_url,
