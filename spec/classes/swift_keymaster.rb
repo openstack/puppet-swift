@@ -8,7 +8,7 @@ describe 'swift::keymaster' do
       it { is_expected.to contain_swift_keymaster_config('kms_keymaster/project_name').with_value('services') }
       it { is_expected.to contain_swift_keymaster_config('kms_keymaster/project_domain_id').with_value('default') }
       it { is_expected.to contain_swift_keymaster_config('kms_keymaster/user_domain_id').with_value('default') }
-      it { is_expected.to contain_swift_keymaster_config('kms_keymaster/meta_version_to_write').with_value('1') }
+      it { is_expected.to contain_swift_keymaster_config('kms_keymaster/meta_version_to_write').with_value('<SERVICE DEFAULT>') }
     end
 
     describe "when overriding default parameters" do
