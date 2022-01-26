@@ -1,0 +1,16 @@
+---
+features:
+  - |
+    The ``system_scope`` parameter has been added to the following classes.
+
+    - ``swift::proxy::authtoken``
+    - ``swift::proxy::ceilometer``
+    - ``swift::proxy::s3token``
+
+  - |
+    The ``swift::keystone::auth`` class now supports customizing roles
+    assigned to the swift service user.
+
+  - |
+    The ``swift::keystone::auth`` class now supports defining assignmet of
+    system-scoped roles to the swift service user.

@@ -8,11 +8,12 @@ describe 'swift::proxy::authtoken' do
       it { is_expected.to contain_swift_proxy_config('filter:authtoken/www_authenticate_uri').with_value('http://127.0.0.1:5000') }
       it { is_expected.to contain_swift_proxy_config('filter:authtoken/auth_url').with_value('http://127.0.0.1:5000') }
       it { is_expected.to contain_swift_proxy_config('filter:authtoken/auth_type').with_value('password') }
-      it { is_expected.to contain_swift_proxy_config('filter:authtoken/project_domain_id').with_value('default') }
-      it { is_expected.to contain_swift_proxy_config('filter:authtoken/user_domain_id').with_value('default') }
-      it { is_expected.to contain_swift_proxy_config('filter:authtoken/project_name').with_value('services') }
       it { is_expected.to contain_swift_proxy_config('filter:authtoken/username').with_value('swift') }
+      it { is_expected.to contain_swift_proxy_config('filter:authtoken/user_domain_id').with_value('default') }
       it { is_expected.to contain_swift_proxy_config('filter:authtoken/password').with_value('password').with_secret(true) }
+      it { is_expected.to contain_swift_proxy_config('filter:authtoken/project_name').with_value('services') }
+      it { is_expected.to contain_swift_proxy_config('filter:authtoken/project_domain_id').with_value('default') }
+      it { is_expected.to contain_swift_proxy_config('filter:authtoken/system_scope').with_value('<SERVICE DEFAULT>') }
       it { is_expected.to contain_swift_proxy_config('filter:authtoken/region_name').with_value('<SERVICE DEFAULT>') }
       it { is_expected.to contain_swift_proxy_config('filter:authtoken/delay_auth_decision').with_value('1') }
       it { is_expected.to contain_swift_proxy_config('filter:authtoken/cache').with_value('swift.cache') }
@@ -27,9 +28,9 @@ describe 'swift::proxy::authtoken' do
     describe "when overriding parameters" do
       let :params do
         {
-          :project_name                 => 'admin',
           :username                     => 'swiftuser',
           :password                     => 'swiftpassword',
+          :project_name                 => 'admin',
           :region_name                  => 'region2',
           :cache                        => 'foo',
           :delay_auth_decision          => '0',
@@ -45,11 +46,12 @@ describe 'swift::proxy::authtoken' do
       it { is_expected.to contain_swift_proxy_config('filter:authtoken/www_authenticate_uri').with_value('http://127.0.0.1:5000') }
       it { is_expected.to contain_swift_proxy_config('filter:authtoken/auth_url').with_value('http://127.0.0.1:5000') }
       it { is_expected.to contain_swift_proxy_config('filter:authtoken/auth_type').with_value('password') }
-      it { is_expected.to contain_swift_proxy_config('filter:authtoken/project_domain_id').with_value('default') }
-      it { is_expected.to contain_swift_proxy_config('filter:authtoken/user_domain_id').with_value('default') }
-      it { is_expected.to contain_swift_proxy_config('filter:authtoken/project_name').with_value('admin') }
       it { is_expected.to contain_swift_proxy_config('filter:authtoken/username').with_value('swiftuser') }
+      it { is_expected.to contain_swift_proxy_config('filter:authtoken/user_domain_id').with_value('default') }
       it { is_expected.to contain_swift_proxy_config('filter:authtoken/password').with_value('swiftpassword').with_secret(true) }
+      it { is_expected.to contain_swift_proxy_config('filter:authtoken/project_name').with_value('admin') }
+      it { is_expected.to contain_swift_proxy_config('filter:authtoken/project_domain_id').with_value('default') }
+      it { is_expected.to contain_swift_proxy_config('filter:authtoken/system_scope').with_value('<SERVICE DEFAULT>') }
       it { is_expected.to contain_swift_proxy_config('filter:authtoken/region_name').with_value('region2') }
       it { is_expected.to contain_swift_proxy_config('filter:authtoken/delay_auth_decision').with_value('0') }
       it { is_expected.to contain_swift_proxy_config('filter:authtoken/cache').with_value('foo') }
@@ -89,6 +91,18 @@ describe 'swift::proxy::authtoken' do
 
       it { is_expected.to contain_swift_proxy_config('filter:authtoken/www_authenticate_uri').with_value('https://foo.bar:5000/v3/') }
       it { is_expected.to contain_swift_proxy_config('filter:authtoken/auth_url').with_value('https://foo.bar:5000/') }
+    end
+
+    describe 'when system_scope is set' do
+      let :params do
+        {
+          :system_scope => 'all'
+        }
+      end
+
+      it { is_expected.to contain_swift_proxy_config('filter:authtoken/project_name').with_value('<SERVICE DEFAULT>') }
+      it { is_expected.to contain_swift_proxy_config('filter:authtoken/project_domain_id').with_value('<SERVICE DEFAULT>') }
+      it { is_expected.to contain_swift_proxy_config('filter:authtoken/system_scope').with_value('all') }
     end
   end
 
