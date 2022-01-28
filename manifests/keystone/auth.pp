@@ -149,13 +149,11 @@ Please set password parameter')
       fail('swift::keystone::auth parameters service_name and service_name_s3 must be different.')
   }
 
-  # Establish that keystone auth and endpoints are properly setup before
-  # managing any type of swift related service.
   if $configure_endpoint {
-    Keystone_endpoint["${region}/${service_name}::${service_type}"] -> Swift::Service<||>
+    Keystone_endpoint["${region}/${service_name}::${service_type}"] -> Anchor['swift::service::end']
   }
   if $configure_s3_endpoint {
-    Keystone_endpoint["${region}/${service_name_s3}::${service_type_s3}"] -> Swift::Service<||>
+    Keystone_endpoint["${region}/${service_name_s3}::${service_type_s3}"] -> Anchor['swift::service::end']
   }
 
   keystone::resource::service_identity { 'swift':
