@@ -1,5 +1,6 @@
 # == Class: swift::test_file
 #
+# DEPRECATED !!
 # Deploys a file that can be used to verify your swift installation.
 #
 # === Parameters
@@ -38,6 +39,8 @@ class swift::test_file (
 ) {
 
   include swift::deps
+
+  warning('The swift::test_file class is deprecated and will be removed in a future release.')
 
   file { '/tmp/swift_test_file.rb':
     mode    => '0755',

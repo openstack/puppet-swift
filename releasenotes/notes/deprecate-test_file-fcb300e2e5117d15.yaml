@@ -1,0 +1,5 @@
+---
+deprecations:
+  - |
+    The ``swift::test_file`` class has been deprecated and will be removed
+    in a future release.

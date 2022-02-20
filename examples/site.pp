@@ -279,10 +279,4 @@ node /swift-proxy/ {
   @@swift::ringsync { ['account', 'object', 'container']:
     ring_server => $swift_local_net_ip,
   }
-
-  # deploy a script that can be used for testing
-  class { 'swift::test_file':
-    auth_server => $swift_keystone_node,
-    password    => $swift_keystone_admin_password,
-  }
 }
