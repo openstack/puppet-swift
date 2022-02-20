@@ -50,6 +50,7 @@ define swift::storage::xfs(
 ) {
 
   include swift::deps
+  include swift::params
   include swift::xfs
 
   if $device == '' {
@@ -74,8 +75,8 @@ define swift::storage::xfs(
   if(!defined(File[$mnt_base_dir])) {
     file { $mnt_base_dir:
       ensure  => directory,
-      owner   => 'swift',
-      group   => 'swift',
+      owner   => $::swift::params::user,
+      group   => $::swift::params::group,
       require => Anchor['swift::config::begin'],
       before  => Anchor['swift::config::end'],
     }

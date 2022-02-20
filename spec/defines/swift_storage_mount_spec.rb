@@ -1,8 +1,6 @@
 require 'spec_helper'
 
 describe 'swift::storage::mount' do
-  # TODO add unit tests
-
   let :title do
     'dans_mount_point'
   end
@@ -44,16 +42,16 @@ describe 'swift::storage::mount' do
         }
       end
 
-      let :facts do
-        {
+      before do
+        facts.merge!({
           :selinux => 'true',
-        }
+        })
       end
 
       it { is_expected.to contain_exec("restorecon_mount_dans_mount_point").with(
-        {:command     => "restorecon /srv/node/dans_mount_point",
-         :path        => ['/usr/sbin', '/sbin'],
-         :refreshonly => true}
+        :command     => "restorecon /srv/node/dans_mount_point",
+        :path        => ['/usr/sbin', '/sbin'],
+        :refreshonly => true
       )}
     end
   end

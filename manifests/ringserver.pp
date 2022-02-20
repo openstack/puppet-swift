@@ -53,8 +53,8 @@ class swift::ringserver(
   rsync::server::module { 'swift_server':
     path            => '/etc/swift',
     lock_file       => '/var/lock/swift_server.lock',
-    uid             => 'swift',
-    gid             => 'swift',
+    uid             => $::swift::params::user,
+    gid             => $::swift::params::group,
     max_connections => $max_connections,
     read_only       => true,
   }

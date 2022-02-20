@@ -58,8 +58,8 @@ define swift::storage::generic(
 
   file { "/etc/swift/${name}-server/":
     ensure => directory,
-    owner  => 'swift',
-    group  => 'swift',
+    owner  => $::swift::params::user,
+    group  => $::swift::params::group,
     tag    => 'swift-file',
   }
 

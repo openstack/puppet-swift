@@ -29,6 +29,7 @@ define swift::storage::mount(
 ) {
 
   include swift::deps
+  include swift::params
 
   if($loopback){
     $options = 'noatime,nodiratime,nofail,loop'
@@ -46,8 +47,8 @@ define swift::storage::mount(
   # needs to exist
   file { "${mnt_base_dir}/${name}":
     ensure  => directory,
-    owner   => 'swift',
-    group   => 'swift',
+    owner   => $::swift::params::user,
+    group   => $::swift::params::group,
     require => Anchor['swift::config::begin'],
     before  => Anchor['swift::config::end'],
   }

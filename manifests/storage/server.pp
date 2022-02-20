@@ -20,11 +20,11 @@
 #
 # [*owner*]
 #   (optional) Owner (uid) of rsync server.
-#   Defaults to 'swift'.
+#   Defaults to $::swift::params::user.
 #
 # [*group*]
 #   (optional) Group (gid) of rsync server.
-#   Defaults to 'swift'.
+#   Defaults to $::swift::params::group.
 #
 # [*max_connections*]
 #   (optional) maximum number of simultaneous connections allowed.
@@ -57,7 +57,7 @@
 #
 # [*user*]
 #   (optional) User to run as
-#   Defaults to 'swift'.
+#   Defaults to $::swift::params::user.
 #
 # [*workers*]
 #   (optional) Override the number of pre-forked workers that will accept
@@ -187,15 +187,15 @@ define swift::storage::server(
   $type,
   $storage_local_net_ip,
   $devices                        = '/srv/node',
-  $owner                          = 'swift',
-  $group                          = 'swift',
+  $owner                          = undef,
+  $group                          = undef,
   $incoming_chmod                 = 'Du=rwx,g=rx,o=rx,Fu=rw,g=r,o=r',
   $outgoing_chmod                 = 'Du=rwx,g=rx,o=rx,Fu=rw,g=r,o=r',
   $max_connections                = 25,
   $pipeline                       = ["${type}-server"],
   $mount_check                    = true,
   $servers_per_port               = 0,
-  $user                           = 'swift',
+  $user                           = undef,
   $workers                        = $::os_workers,
   $replicator_concurrency         = 1,
   $replicator_interval            = 30,
@@ -226,9 +226,12 @@ define swift::storage::server(
   $object_server_mb_per_sync      = 512,
   # DEPRECATED PARAMETERS
   $allow_versions                 = undef,
-) {
+){
 
   include swift::deps
+  include swift::params
+
+  $user_real = pick($user, $::swift::params::user)
 
   if $allow_versions != undef {
     warning('The allow_versions parameter is deprecated and will be removed in a future release')
@@ -266,8 +269,8 @@ define swift::storage::server(
   rsync::server::module { $type:
     path            => $devices,
     lock_file       => "/var/lock/${type}.lock",
-    uid             => $owner,
-    gid             => $group,
+    uid             => pick($owner, $::swift::params::user),
+    gid             => pick($group, $::swift::params::group),
     incoming_chmod  => $incoming_chmod,
     outgoing_chmod  => $outgoing_chmod,
     max_connections => $max_connections,
@@ -275,8 +278,8 @@ define swift::storage::server(
   }
 
   concat { "/etc/swift/${config_file_path}":
-    owner   => $owner,
-    group   => $group,
+    owner   => pick($owner, $::swift::params::user),
+    group   => pick($group, $::swift::params::group),
     notify  => Anchor['swift::config::end'],
     require => Anchor['swift::install::end'],
     tag     => 'swift-concat',
