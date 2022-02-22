@@ -68,9 +68,9 @@ class swift(
   }
 
   File {
-    owner   => 'swift',
-    group   => 'swift',
-    tag     => 'swift-file',
+    owner => $::swift::params::user,
+    group => $::swift::params::group,
+    tag   => 'swift-file',
   }
 
   file { '/etc/swift':

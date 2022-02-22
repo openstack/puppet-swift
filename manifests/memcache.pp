@@ -75,8 +75,8 @@ class swift::memcache (
 
   file { '/etc/swift/memcache.conf':
     ensure => file,
-    owner  => 'swift',
-    group  => 'swift',
+    owner  => $::swift::params::user,
+    group  => $::swift::params::group,
     mode   => '0640',
   }
 
