@@ -1,0 +1,5 @@
+---
+features:
+  - |
+    Now puppet-swift supports configurations required by the container-sharder
+    service.

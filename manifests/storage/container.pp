@@ -80,4 +80,14 @@ class swift::storage::container(
     service_require        => Package['swift-container'],
     service_subscribe      => Concat["/etc/swift/${config_file_name}"],
   }
+
+  swift::service { 'swift-container-sharder':
+    os_family_service_name => $::swift::params::container_sharder_service_name,
+    service_ensure         => $service_ensure,
+    enabled                => $enabled,
+    config_file_name       => $config_file_name,
+    service_provider       => $service_provider,
+    service_require        => Package['swift-container'],
+    service_subscribe      => Concat["/etc/swift/${config_file_name}"],
+  }
 }
