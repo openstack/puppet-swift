@@ -109,6 +109,14 @@ class swift::containerreconciler(
     if !empty(grep(any2array($memcache_servers), '127.0.0.1')) {
       Class['memcached'] -> Class['swift::containerreconciler']
     }
+  } else {
+    swift_container_reconciler_config {
+      'filter:cache/memcache_servers': ensure => absent;
+      'filter:cache/tls_enabled':      ensure => absent;
+      'filter:cache/tls_cafile':       ensure => absent;
+      'filter:cache/tls_certfile':     ensure => absent;
+      'filter:cache/tls_keyfile':      ensure => absent;
+    }
   }
 
   swift_container_reconciler_config {
