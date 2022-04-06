@@ -20,17 +20,17 @@
 #
 #  [*interval*]
 #    (optional) Minimum time for a pass to take, in seconds.
-#    Defaults to 300.
+#    Defaults to $::os_service_default
 #
 #  [*reclaim_age*]
 #    (optional) The reconciler will re-attempt reconciliation if the source
 #    object is not available up to reclaim_age seconds before it gives up and
 #    deletes the entry in the queue.
-#    Defaults to 604800 (1 week).
+#    Defaults to $::os_service_default
 #
 #  [*request_tries*]
 #    (optional) Server errors from requests will be retried by default
-#    Defaults to 3.
+#    Defaults to $::os_service_default
 #
 #  [*service_provider*]
 #    (optional)
@@ -57,7 +57,7 @@
 #   (Optional) Path to a file of concatenated CA certificates in PEM
 #   format necessary to establish the caching server's authenticity.
 #   If tls_enabled is False, this option is ignored.
-#   Defaults to undef
+#   Defaults to $::os_service_default
 #
 # [*cache_tls_certfile*]
 #   (Optional) Path to a single file in PEM format containing the
@@ -65,23 +65,23 @@
 #   needed to establish the certificate's authenticity. This file
 #   is only required when client side authentication is necessary.
 #   If tls_enabled is False, this option is ignored.
-#   Defaults to undef
+#   Defaults to $::os_service_default
 #
 # [*cache_tls_keyfile*]
 #   (Optional) Path to a single file containing the client's private
 #   key in. Otherwhise the private key will be taken from the file
 #   specified in tls_certfile. If tls_enabled is False, this option
 #   is ignored.
-#   Defaults to undef
+#   Defaults to $::os_service_default
 #
 class swift::containerreconciler(
   $manage_service     = true,
   $enabled            = true,
   $package_ensure     = 'present',
   $pipeline           = ['catch_errors', 'proxy-logging', 'proxy-server'],
-  $interval           = 300,
-  $reclaim_age        = 604800,
-  $request_tries      = 3,
+  $interval           = $::os_service_default,
+  $reclaim_age        = $::os_service_default,
+  $request_tries      = $::os_service_default,
   $service_provider   = $::swift::params::service_provider,
   $memcache_servers   = ['127.0.0.1:11211'],
   $cache_tls_enabled  = false,

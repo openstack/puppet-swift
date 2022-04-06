@@ -7,9 +7,9 @@ describe 'swift::containerreconciler' do
       :enabled           => true,
       :package_ensure    => 'present',
       :pipeline          => ['catch_errors', 'proxy-logging', 'proxy-server'],
-      :interval          => 300,
-      :reclaim_age       => 604800,
-      :request_tries     => 3,
+      :interval          => '<SERVICE DEFAULT>',
+      :reclaim_age       => '<SERVICE DEFAULT>',
+      :request_tries     => '<SERVICE DEFAULT>',
       :memcache_servers  => ['127.0.0.1:11211'],
       :cache_tls_enabled => false,
     }
