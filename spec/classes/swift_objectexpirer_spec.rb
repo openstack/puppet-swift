@@ -92,8 +92,8 @@ describe 'swift::objectexpirer' do
       end
 
       it 'should not configure memcache servers' do
-        is_expected.to_not contain_swift_object_expirer_config(
-          'filter:cache/memcache_servers')
+        is_expected.to contain_swift_object_expirer_config(
+          'filter:cache/memcache_servers').with_ensure('absent')
       end
     end
 

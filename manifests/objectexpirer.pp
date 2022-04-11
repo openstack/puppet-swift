@@ -158,6 +158,14 @@ class swift::objectexpirer(
     if !empty(grep(any2array($memcache_servers), '127.0.0.1')) {
       Class['memcached'] -> Class['swift::objectexpirer']
     }
+  } else {
+    swift_object_expirer_config {
+      'filter:cache/memcache_servers': ensure => absent;
+      'filter:cache/tls_enabled':      ensure => absent;
+      'filter:cache/tls_cafile':       ensure => absent;
+      'filter:cache/tls_certfile':     ensure => absent;
+      'filter:cache/tls_keyfile':      ensure => absent;
+    }
   }
 
   swift_object_expirer_config {
