@@ -43,7 +43,7 @@ describe 'swift::dispersion' do
         is_expected.to contain_swift_dispersion_config(
           'dispersion/auth_user').with_value("#{p[:auth_tenant]}:#{p[:auth_user]}")
         is_expected.to contain_swift_dispersion_config(
-          'dispersion/auth_key').with_value(p[:auth_pass])
+          'dispersion/auth_key').with_value(p[:auth_pass]).with_secret(true)
         is_expected.to contain_swift_dispersion_config(
           'dispersion/endpoint_type').with_value(p[:endpoint_type])
         is_expected.to contain_swift_dispersion_config(

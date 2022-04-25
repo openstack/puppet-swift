@@ -95,7 +95,7 @@ class swift::dispersion (
   swift_dispersion_config {
     'dispersion/auth_url':            value => $auth_url;
     'dispersion/auth_user':           value => "${auth_tenant}:${auth_user}";
-    'dispersion/auth_key':            value => $auth_pass;
+    'dispersion/auth_key':            value => $auth_pass, secret => true;
     'dispersion/auth_version':        value => $auth_version;
     'dispersion/endpoint_type':       value => $endpoint_type;
     'dispersion/swift_dir':           value => $swift_dir;
