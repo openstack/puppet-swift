@@ -59,12 +59,10 @@ class swift(
     fail('You must specify at least swift_hash_path_prefix or swift_hash_path_suffix')
   }
 
-  if !defined(Package['swift']) {
-    package { 'swift':
-      ensure => $package_ensure,
-      name   => $::swift::params::package_name,
-      tag    => ['openstack', 'swift-package'],
-    }
+  package { 'swift':
+    ensure => $package_ensure,
+    name   => $::swift::params::package_name,
+    tag    => ['openstack', 'swift-package'],
   }
 
   File {
