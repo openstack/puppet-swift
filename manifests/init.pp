@@ -65,32 +65,10 @@ class swift(
     tag    => ['openstack', 'swift-package'],
   }
 
-  File {
-    owner => $::swift::params::user,
-    group => $::swift::params::group,
-    tag   => 'swift-file',
-  }
-
-  file { '/etc/swift':
-    ensure => directory,
-  }
   user {'swift':
     ensure  => present,
     require => Anchor['swift::install::end'],
   }
-  file { '/var/lib/swift':
-    ensure => directory,
-  }
-  file { '/var/run/swift':
-    ensure                  => directory,
-    selinux_ignore_defaults => true,
-  }
-
-  file { '/etc/swift/swift.conf':
-    ensure => file,
-  }
-
-  File['/etc/swift/swift.conf'] -> Swift_config<||>
 
   swift_config {
     'swift-hash/swift_hash_path_suffix': value => $swift_hash_path_suffix;
