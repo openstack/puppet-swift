@@ -74,7 +74,7 @@ class swift::proxy::cname_lookup(
 
   package { 'python-dnspython':
     ensure => 'present',
-    name   => $::swift::params::dnspython_pakage_name,
+    name   => $::swift::params::dnspython_package_name,
     tag    => ['openstack', 'swift-support-package'],
   }
 }
