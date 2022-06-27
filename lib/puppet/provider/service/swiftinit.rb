@@ -46,7 +46,7 @@ Puppet::Type.type(:service).provide :swiftinit, :parent => :service do
   end
 
   def refresh
-    if (@paramaters[:ensure] == running)
+    if (@parameters[:ensure] == running)
       provider.restart
     else
       debug 'Skipping restart, service is not running'
