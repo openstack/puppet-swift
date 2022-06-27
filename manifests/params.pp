@@ -5,11 +5,11 @@
 class swift::params {
   include openstacklib::defaults
 
-  $client_package        = 'python3-swiftclient'
-  $dnspython_pakage_name = 'python3-dnspython'
-  $service_provider      = undef
-  $user                  = 'swift'
-  $group                 = 'swift'
+  $client_package         = 'python3-swiftclient'
+  $dnspython_package_name = 'python3-dnspython'
+  $service_provider       = undef
+  $user                   = 'swift'
+  $group                  = 'swift'
 
   case $::osfamily {
     'Debian': {
