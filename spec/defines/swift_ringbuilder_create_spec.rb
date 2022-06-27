@@ -24,7 +24,7 @@ describe 'swift::ringbuilder::create' do
             :min_part_hours => 2,
             :user => 'root'}].each do |param_set|
 
-            describe "when #{param_set == {} ? "using default" : "specifying"} class parame ters" do
+            describe "when #{param_set == {} ? "using default" : "specifying"} class parameters" do
               let :param_hash do
                 default_params.merge(param_set)
               end

@@ -163,7 +163,7 @@ class swift::proxy::ceilometer(
   }
 
   if $auth_uri {
-    warning('The swift::proxy::ceilometer::auth_uri parameter was deperecated, and has no effect')
+    warning('The swift::proxy::ceilometer::auth_uri parameter was deprecated, and has no effect')
   }
 
   if $password == undef {

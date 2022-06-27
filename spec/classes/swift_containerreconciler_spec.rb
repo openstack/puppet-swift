@@ -48,7 +48,7 @@ describe 'swift::containerreconciler' do
       end
     end
 
-    context 'when overridding parameters' do
+    context 'when overriding parameters' do
       before do
         params.merge!(
           :interval      => '600',

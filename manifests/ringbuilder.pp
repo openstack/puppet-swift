@@ -1,5 +1,5 @@
 # Used to configure nodes that are responsible for managing swift rings.
-# Rings are used to make decicions about how to map objects in the cluster
+# Rings are used to make decisions about how to map objects in the cluster
 #
 # Specifies the following relationship:
 #  Rings should be created before any devices are added to them
@@ -7,7 +7,7 @@
 # == Parameters
 #  [*part_power*] The total number of partitions that should exist in the ring.
 #    This is expressed as a power of 2.
-#  [*replicas*] Numer of replicas that should be maintained of each stored object.
+#  [*replicas*] Number of replicas that should be maintained of each stored object.
 #  [*min_part_hours*] Minimum amount of time before partitions can be moved.
 #
 # == Dependencies

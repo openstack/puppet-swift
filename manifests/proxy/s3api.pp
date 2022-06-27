@@ -18,7 +18,7 @@
 #   Defaults to $::os_service_default.
 #
 # [*max_bucket_listing*]
-#   The default maximum nuber of objects returned in the GET Bucket response.
+#   The default maximum number of objects returned in the GET Bucket response.
 #   Defaults to $::os_service_default.
 #
 # [*max_parts_listing*]

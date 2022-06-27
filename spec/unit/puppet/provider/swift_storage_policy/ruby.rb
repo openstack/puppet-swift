@@ -120,7 +120,7 @@ default = false
 
     it 'swift_storage_policy resources should create correct items in swift.conf and pass error checking' do
       # Testing the complete flow/cases of creating swift_storage_policy resources here in one block.
-      # Spliting cases up across multiple "it" blocks doesn't appear to work well for a provider that calls
+      # Splitting cases up across multiple "it" blocks doesn't appear to work well for a provider that calls
       # flush.  It appears that the testing needs to be done in one "it" block to duplicate the state puppet
       # would find when pre-fetching and flushing resources during a run.
       validate_file(swift_conf_no_policy, provider0.class.get_swift_conf_file)

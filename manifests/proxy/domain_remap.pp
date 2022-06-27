@@ -55,7 +55,7 @@
 #
 # [*default_reseller_prefix*]
 # The default reseller_prefix.
-# It will be used if none of reseller_prexies match
+# It will be used if none of reseller_prefixes match
 # Default to $::os_service_default
 #
 # [*mangle_client_paths*]

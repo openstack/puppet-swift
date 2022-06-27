@@ -68,7 +68,7 @@ class swift::deps {
   # Support packages need to be installed in the install phase, but we don't
   # put them in the chain above because we don't want any false dependencies
   # between packages with the swift-package tag and the swift-support-package
-  # tag.  Note: the package resources here will have a 'before' relationshop on
+  # tag.  Note: the package resources here will have a 'before' relationship on
   # the swift::install::end anchor.  The line between swift-support-package and
   # swift-package should be whether or not swift services would need to be
   # restarted if the package state was changed.

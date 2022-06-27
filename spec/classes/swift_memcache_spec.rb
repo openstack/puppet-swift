@@ -33,7 +33,7 @@ describe 'swift::memcache' do
         'memcache/io_timeout').with_value('<SERVICE DEFAULT>') }
     end
 
-    describe 'when overridding parameters' do
+    describe 'when overriding parameters' do
       let :params do
         {
           :memcache_servers               => ['1.1.1.1:11211', '2.2.2.2:11211'],
