@@ -1,4 +1,4 @@
-# Used to build an aditional object ring for a storage policy.
+# Used to build an additional object ring for a storage policy.
 # The namevar/name of this class must be an integer.
 #
 #
@@ -11,7 +11,7 @@
 #
 #  [*part_power*] The total number of partitions that should exist in the ring.
 #    This is expressed as a power of 2.
-#  [*replicas*] Numer of replicas that should be maintained of each stored object.
+#  [*replicas*] Number of replicas that should be maintained of each stored object.
 #  [*min_part_hours*] Minimum amount of time before partitions can be moved.
 #
 # == Dependencies

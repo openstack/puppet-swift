@@ -451,7 +451,7 @@ a templated init or services file. This is managed by this provider.  For EL and
 Moving from the default service providers to the swiftinit service provider is supported.  On the next puppet run after setting the swiftinit service provider swift services are stopped on the old provider and immediately started using swift-init.  This provides a supported upgrade path with no downtime.
 
 The swiftinit service provider uses the following service type parameters to
-manage swift services in a non standard way.
+manage swift services in a non-standard way.
 
 * `manifest` is used to pass in the config file the service should be
 configured with. Ex `object-server.conf`
@@ -462,7 +462,7 @@ To aid with input validation to the swiftinit provider there is a defined type s
 ### Class: swift::service
 
 This is a wrapper defined type for the swift service providers.
-It provides a centraziled location to manage and validate input for use to the default
+It provides a centralized location to manage and validate input for use to the default
 and  swiftinit service providers.
 
 ####`namevar`

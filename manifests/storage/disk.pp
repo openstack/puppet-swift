@@ -41,7 +41,7 @@
 #
 # [*manage_filesystem*]
 #   (optional) If set to false, skip calling xfs_admin -l to check if a
-#   partition needs to be formated with mkfs.xfs, which can, in some cases,
+#   partition needs to be formatted with mkfs.xfs, which can, in some cases,
 #   increase the load on the server. This is to set to false only after the
 #   server is fully setup, or if the filesystem was created outside of puppet.
 #   Defaults to true.

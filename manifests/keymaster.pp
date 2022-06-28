@@ -41,10 +41,10 @@
 #   [filter:authtoken] in proxy-server.conf.
 #
 # [*project_domain_name*]
-#   (Optional) String. The project domain name may optionally be specififed.
+#   (Optional) String. The project domain name may optionally be specified.
 #
 # [*user_domain_name*]
-#   (Optional) String. The user domain name may optionally be specififed.
+#   (Optional) String. The user domain name may optionally be specified.
 #
 # [*project_domain_id*]
 #   (Optional) String. Instead of the project domain name, the project domain

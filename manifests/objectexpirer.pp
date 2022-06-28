@@ -72,7 +72,7 @@
 #    Defaults to ['127.0.0.1:11211']
 #
 # [*cache_tls_enabled*]
-#   (Optional) Global toggle for TLS usage when comunicating with
+#   (Optional) Global toggle for TLS usage when communicating with
 #   the caching servers.
 #   Default to false
 #
@@ -92,7 +92,7 @@
 #
 # [*cache_tls_keyfile*]
 #   (Optional) Path to a single file containing the client's private
-#   key in. Otherwhise the private key will be taken from the file
+#   key in. Otherwise the private key will be taken from the file
 #   specified in tls_certfile. If tls_enabled is False, this option
 #   is ignored.
 #   Defaults to undef

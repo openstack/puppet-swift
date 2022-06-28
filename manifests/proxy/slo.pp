@@ -44,7 +44,7 @@
 #  Defaults to $::os_service_default.
 #
 # [*yield_frequency*]
-#  (Optional) Frequency, in seconds, to yield whitespace ahed of the final
+#  (Optional) Frequency, in seconds, to yield whitespace ahead of the final
 #  response.
 #  Defaults to $::os_service_default.
 #

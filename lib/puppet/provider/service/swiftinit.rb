@@ -91,7 +91,7 @@ Puppet::Type.type(:service).provide :swiftinit, :parent => :service do
     end
   end
 
-  # Disable the service at boot. For Redhat and Debain,
+  # Disable the service at boot. For Redhat and Debian,
   # delete services file and notify systemctl.  For Ubuntu < 16.04
   # remove init file.
   def disable

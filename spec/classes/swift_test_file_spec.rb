@@ -23,7 +23,7 @@ describe 'swift::test_file' do
       end
     end
 
-    describe 'when overridding' do
+    describe 'when overriding' do
       let :params do
         default_params.merge({
           :auth_server => '127.0.0.2',

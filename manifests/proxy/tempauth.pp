@@ -57,7 +57,7 @@
 #        },
 #      ]
 #
-#    it will gerenate these lines
+#    it will generate these lines
 #      user_admin_admin = admin .admin .reseller_admin
 #      user_bar_foo = pass
 #

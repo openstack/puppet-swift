@@ -16,7 +16,7 @@
 # [*byte_size*]
 #   (optional) The byte size that dd uses when it creates the file system.
 #   Defaults to '1024', block size for the disk.  For very large partitions, this should be larger
-#   It is recommened to use 1024 to ensure that the metadata can fit in a single inode.
+#   It is recommend to use 1024 to ensure that the metadata can fit in a single inode.
 #
 # [*loopback*]
 #   (optional) Define if the device must be mounted as a loopback or not

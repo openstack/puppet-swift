@@ -7,7 +7,7 @@
 #   Defaults to 'present'
 #
 # [*swauth_endpoint*]
-#   (optional) The endpoint used to autenticate to Swauth WSGI.
+#   (optional) The endpoint used to authenticate to Swauth WSGI.
 #   Defaults to '127.0.0.1'
 #
 # [*swauth_super_admin_key*]

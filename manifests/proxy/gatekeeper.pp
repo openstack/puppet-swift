@@ -8,7 +8,7 @@
 # == Parameters
 #
 # [*shunt_inbound_x_timestamp*]
-#  (Optional) Disallow clients to set arbitary X-Timestamps on uploade objects.
+#  (Optional) Disallow clients to set arbitrary X-Timestamps on uploaded objects.
 #  Defaults to $::os_service_default.
 #
 # [*allow_reserved_names_header*]
