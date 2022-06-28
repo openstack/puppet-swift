@@ -127,12 +127,6 @@
 #   (optional) Override whether to use xinetd to manage rsync service
 #   Defaults to swift::params::xinetd_available
 #
-# DEPRECATED PARAMETERS
-#
-#  [*allow_versions*]
-#    (optional) Enable/Disable object versioning feature
-#    Defaults to undef
-#
 class swift::storage::all(
   $storage_local_net_ip,
   $devices                        = '/srv/node',
@@ -165,15 +159,9 @@ class swift::storage::all(
   $splice                         = false,
   $max_connections                = 25,
   $rsync_use_xinetd               = $::swift::params::xinetd_available,
-  # DEPRECATED PARAMETERS
-  $allow_versions                 = undef,
 ) inherits swift::params {
 
   include swift::deps
-
-  if $allow_versions != undef {
-    warning('The allow_versions parameter is deprecated and will be removed in a future release')
-  }
 
   if ("${$object_port}" == '6000') {
     warning('The default port for the object storage server has changed \
@@ -231,7 +219,6 @@ from 6002 to 6202 and will be changed in a later release')
     config_file_path => 'container-server.conf',
     pipeline         => $container_pipeline,
     log_facility     => $log_facility,
-    allow_versions   => $allow_versions,
     log_requests     => $log_requests,
     incoming_chmod   => $incoming_chmod,
     outgoing_chmod   => $outgoing_chmod,

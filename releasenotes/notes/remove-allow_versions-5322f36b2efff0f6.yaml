@@ -1,0 +1,8 @@
+---
+upgrade:
+  - |
+    The following two parameters have been removed.
+
+    - ``swift::storage::all::allow_versions``
+    - ``swift::storage::server::allow_versions``
+

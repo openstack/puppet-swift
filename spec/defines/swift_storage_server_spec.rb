@@ -115,10 +115,7 @@ describe 'swift::storage::server' do
           end
 
           if t == 'container'
-            describe "when allow_versioning is set" do
-             let :params do req_params.merge({ :allow_versions => false, }) end
-              it { is_expected.to contain_concat_fragment("swift-#{t}-#{title}").with_content(/\[app:container-server\]\nallow_versions\s*=\s*false\s*$/m) }
-            end
+            # Nothing to test now
           end
 
           if t == 'object'

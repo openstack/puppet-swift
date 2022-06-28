@@ -191,12 +191,6 @@
 #   (optional) Time in seconds to wait between sharder cycles.
 #   Default to 30.
 #
-# DEPRECATED PARAMETERS
-#
-# [*allow_versions*]
-#   (optional) Enable/Disable object versioning feature
-#   Defaults to undef.
-#
 define swift::storage::server(
   $type,
   $storage_local_net_ip,
@@ -243,18 +237,12 @@ define swift::storage::server(
   $container_sharder_auto_shard   = false,
   $container_sharder_concurrency  = 8,
   $container_sharder_interval     = 30,
-  # DEPRECATED PARAMETERS
-  $allow_versions                 = undef,
 ){
 
   include swift::deps
   include swift::params
 
   $user_real = pick($user, $::swift::params::user)
-
-  if $allow_versions != undef {
-    warning('The allow_versions parameter is deprecated and will be removed in a future release')
-  }
 
   if ($incoming_chmod == '0644') {
     warning('The default incoming_chmod set to 0644 may yield in error prone directories and will be changed in a later release.')
