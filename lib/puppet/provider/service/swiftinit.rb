@@ -20,10 +20,8 @@ Puppet::Type.type(:service).provide :swiftinit, :parent => :service do
       # Transition block for systemd systems.  If swift-init reports service is
       # not running then send stop to systemctl so that service can be started
       # with swift-init and fully managed by this provider.
-      if !default_provider_upstart?
-        systemctl_run('stop', [resource[:pattern]], false)
-        systemctl_run('disable', [resource[:pattern]], false)
-      end
+      systemctl_run('stop', [resource[:pattern]], false)
+      systemctl_run('disable', [resource[:pattern]], false)
       return :stopped
     end
   end
@@ -57,16 +55,7 @@ Puppet::Type.type(:service).provide :swiftinit, :parent => :service do
   # presence then checking if file content matches this provider and not
   # distro provided.  Also on Redhat/Debian checks systemctl status.
   def enabled?
-    if default_provider_upstart?
-      if Puppet::FileSystem.exist?("/etc/init/#{resource[:pattern]}.conf")
-        current_conf = File.read("/etc/init/#{resource[:pattern]}.conf")
-        if current_conf.eql? upstart_template
-          return :true
-        end
-      else
-        return :false
-      end
-    elsif Puppet::FileSystem.exist?("/etc/systemd/system/#{resource[:pattern]}.service")
+    if Puppet::FileSystem.exist?("/etc/systemd/system/#{resource[:pattern]}.service")
       current_conf = File.read("/etc/systemd/system/#{resource[:pattern]}.service")
       if !current_conf.eql? systemd_template
         return :false
@@ -82,26 +71,18 @@ Puppet::Type.type(:service).provide :swiftinit, :parent => :service do
   # Enable the service at boot.  For Redhat and Debian create services
   # file and notify systemctl.  For Ubuntu < 16.04 create init file.
   def enable
-    if default_provider_upstart?
-      File.open("/etc/init/#{resource[:pattern]}.conf", 'w') { |file| file.write(upstart_template) }
-    else
-      File.open("/etc/systemd/system/#{resource[:pattern]}.service", 'w') { |file| file.write(systemd_template) }
-      systemctl_run('daemon-reload', nil, true)
-      systemctl_run('enable', [resource[:pattern]], false)
-    end
+    File.open("/etc/systemd/system/#{resource[:pattern]}.service", 'w') { |file| file.write(systemd_template) }
+    systemctl_run('daemon-reload', nil, true)
+    systemctl_run('enable', [resource[:pattern]], false)
   end
 
   # Disable the service at boot. For Redhat and Debain,
   # delete services file and notify systemctl.  For Ubuntu < 16.04
   # remove init file.
   def disable
-    if default_provider_upstart?
-      File.delete("/etc/init/#{resource[:pattern]}.conf")
-    else
-      systemctl_run('disable', [resource[:pattern]], false)
-      File.delete("/etc/systemd/system/#{resource[:pattern]}.service")
-      systemctl_run('daemon-reload', nil, true)
-    end
+    systemctl_run('disable', [resource[:pattern]], false)
+    File.delete("/etc/systemd/system/#{resource[:pattern]}.service")
+    systemctl_run('daemon-reload', nil, true)
   end
 
   # Wrapper to handle swift-init calls on supported osfamily
@@ -155,38 +136,6 @@ Puppet::Type.type(:service).provide :swiftinit, :parent => :service do
       return nil
     else return ".#{resource[:manifest].split('.conf')[1]}"
     end
-  end
-
-  # If OS is ubuntu and < 16 then assume upstart default provider.
-  def default_provider_upstart?
-    if Facter.value(:operatingsystem) == 'Ubuntu' && Facter.value(:operatingsystemmajrelease) < '16'
-      return true
-    else
-      return false
-    end
-  end
-
-  # Begin service template boot section.
-  def upstart_template
-    %(# swift-#{type}-#{subtype}
-#
-# Starts the swift-#{type}-#{subtype}.
-
-description     "SWIFT #{type} #{subtype}"
-author          "Puppet"
-
-start on runlevel [2345]
-stop on runlevel [016]
-
-pre-start script
-if [ -f /etc/swift/#{resource[:manifest]} ]; then
-  exec /usr/bin/swift-init #{type}-#{subtype} start
-else
-  exit 1
-fi
-end script
-
-post-stop exec /usr/bin/swift-init #{type}-#{subtype} stop)
   end
 
   def systemd_template
