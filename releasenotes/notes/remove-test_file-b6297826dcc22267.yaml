@@ -1,0 +1,4 @@
+---
+upgrade:
+  - |
+    The ``swift::test_file`` class has been removed.
