@@ -65,11 +65,6 @@ class swift(
     tag    => ['openstack', 'swift-package'],
   }
 
-  user {'swift':
-    ensure  => present,
-    require => Anchor['swift::install::end'],
-  }
-
   swift_config {
     'swift-hash/swift_hash_path_suffix': value => $swift_hash_path_suffix;
     'swift-hash/swift_hash_path_prefix': value => $swift_hash_path_prefix;

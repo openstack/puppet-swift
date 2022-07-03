@@ -20,7 +20,6 @@ describe 'swift::proxy::ceilometer' do
       it { is_expected.to contain_swift_proxy_config('filter:ceilometer/paste.filter_factory').with_value('ceilometermiddleware.swift:filter_factory') }
       it { is_expected.to contain_swift_proxy_config('filter:ceilometer/url').with_value('rabbit://user_1:user_1_passw@1.1.1.1:5673/rabbit').with_secret(true) }
       it { is_expected.to contain_swift_proxy_config('filter:ceilometer/nonblocking_notify').with_value('false') }
-      it { is_expected.to contain_user('swift').with_groups('ceilometer') }
 
       it { is_expected.to contain_package('python-ceilometermiddleware').with(
         :ensure => 'present',
@@ -31,8 +30,7 @@ describe 'swift::proxy::ceilometer' do
 
     describe "when overriding default parameters with rabbit driver" do
       let :params do
-        { :group                 => 'www-data',
-          :default_transport_url => 'rabbit://user_1:user_1_passw@1.1.1.1:5673/rabbit',
+        { :default_transport_url => 'rabbit://user_1:user_1_passw@1.1.1.1:5673/rabbit',
           :driver                => 'messagingv2',
           :topic                 => 'notifications',
           :control_exchange      => 'swift',
@@ -50,7 +48,6 @@ describe 'swift::proxy::ceilometer' do
       end
 
       context 'with single rabbit host' do
-        it { is_expected.to contain_user('swift').with_groups('www-data') }
         it { is_expected.to contain_swift_proxy_config('filter:ceilometer/paste.filter_factory').with_value('ceilometermiddleware.swift:filter_factory') }
         it { is_expected.to contain_swift_proxy_config('filter:ceilometer/url').with_value('rabbit://user_1:user_1_passw@1.1.1.1:5673/rabbit').with_secret(true) }
         it { is_expected.to contain_swift_proxy_config('filter:ceilometer/driver').with_value('messagingv2') }

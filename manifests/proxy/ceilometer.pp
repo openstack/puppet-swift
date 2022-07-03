@@ -29,12 +29,6 @@
 #   Enable or not ceilometer fragment
 #   Defaults to 'present'
 #
-# [*group*]
-#   Group name to add to 'swift' user.
-#   ceilometer/eventlet: set 'ceilometer' (default)
-#   ceilometer/wsgi: set $::apache::group
-#   Defaults to 'ceilometer'
-#
 # [*nonblocking_notify*]
 #   Whether to send events to messaging driver in a background thread
 #   Defaults to false
@@ -112,6 +106,10 @@
 #   (Optional) Complete public Identity API endpoint.
 #   Defaults to undef
 #
+# [*group*]
+#   Group name to add to 'swift' user.
+#   Defaults to undef
+#
 # == Examples
 #
 # == Authors
@@ -128,7 +126,6 @@ class swift::proxy::ceilometer(
   $topic                      = undef,
   $control_exchange           = undef,
   $ensure                     = 'present',
-  $group                      = 'ceilometer',
   $nonblocking_notify         = false,
   $ignore_projects            = ['services'],
   $auth_url                   = 'http://127.0.0.1:5000',
@@ -147,16 +144,11 @@ class swift::proxy::ceilometer(
   $rabbit_use_ssl             = $::os_service_default,
   $kombu_ssl_version          = $::os_service_default,
   # DEPRECATED PARAMETERS
-  $auth_uri                   = undef
+  $auth_uri                   = undef,
+  $group                      = undef,
 ) inherits swift {
 
   include swift::deps
-
-  User['swift'] {
-    groups +> $group,
-  }
-
-  Package<| tag == 'ceilometer-package' |> -> User['swift']
 
   if defined(Service['swift-proxy-server']) {
     Package['python-ceilometermiddleware'] -> Service['swift-proxy-server']
@@ -164,6 +156,10 @@ class swift::proxy::ceilometer(
 
   if $auth_uri {
     warning('The swift::proxy::ceilometer::auth_uri parameter was deprecated, and has no effect')
+  }
+
+  if $group != undef {
+    warning('The group parameer has been deprecated and has no effect now.')
   }
 
   if $password == undef {
