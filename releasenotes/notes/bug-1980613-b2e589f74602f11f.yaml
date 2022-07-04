@@ -1,0 +1,6 @@
+---
+fixes:
+  - |
+    Now the ``swift::ringbuilder::create`` defined type generates a ring
+    builder file by root user, instead of swift user, by default. Set the user
+    parameter if a different should be used.

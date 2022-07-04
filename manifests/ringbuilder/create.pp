@@ -12,7 +12,7 @@
 #  [*min_part_hours*] Time before a partition can be moved.
 #    Optional. Defaults to 24.
 #  [*user*] User to run as
-#    Optional. Defaults to 'swift'
+#    Optional. Defaults to 'root'
 #
 
 # == Examples
@@ -21,7 +21,7 @@
 #     part_power     => 19,
 #     replicas       => 5,
 #     min_part_hours => 1,
-#     user           => 'swift',
+#     user           => 'root',
 #   }
 #
 # == Authors
@@ -33,10 +33,10 @@
 # Copyright 2011 Puppetlabs Inc, unless otherwise noted.
 #
 define swift::ringbuilder::create(
-  $part_power = 18,
-  $replicas = 3,
+  $part_power     = 18,
+  $replicas       = 3,
   $min_part_hours = 24,
-  $user = 'swift'
+  $user           = 'root'
 ) {
 
   include swift::deps
