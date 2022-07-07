@@ -244,14 +244,6 @@ define swift::storage::server(
 
   $user_real = pick($user, $::swift::params::user)
 
-  if ($incoming_chmod == '0644') {
-    warning('The default incoming_chmod set to 0644 may yield in error prone directories and will be changed in a later release.')
-  }
-
-  if ($outgoing_chmod == '0644') {
-    warning('The default outgoing_chmod set to 0644 may yield in error prone directories and will be changed in a later release.')
-  }
-
   # Warn if ${type-server} isn't included in the pipeline
   $pipeline_array = any2array($pipeline)
   if !member($pipeline_array, "${type}-server") {
