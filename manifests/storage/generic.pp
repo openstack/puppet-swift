@@ -42,9 +42,6 @@ define swift::storage::generic(
   include swift::params
 
   Class['swift::storage'] -> Swift::Storage::Generic[$name]
-  Swift_config<| |> ~> Service["swift-${name}-server"]
-  Swift_config<| |> ~> Service["swift-${name}-auditor"]
-  Swift_config<| |> ~> Service["swift-${name}-replicator"]
 
   validate_legacy(Enum['object', 'container', 'account'], 'validate_re',
     $name, ['^object|container|account$'])
@@ -53,14 +50,14 @@ define swift::storage::generic(
     ensure => $package_ensure,
     name   => getvar("::swift::params::${name}_package_name"),
     tag    => ['openstack', 'swift-package'],
-    before => Service["swift-${name}-server", "swift-${name}-replicator"],
   }
 
   file { "/etc/swift/${name}-server/":
-    ensure => directory,
-    owner  => $::swift::params::user,
-    group  => $::swift::params::group,
-    tag    => 'swift-file',
+    ensure  => directory,
+    owner   => $::swift::params::user,
+    group   => $::swift::params::group,
+    require => Anchor['swift::config::begin'],
+    before  => Anchor['swift::config::end'],
   }
 
   if $manage_service {
@@ -77,7 +74,6 @@ define swift::storage::generic(
     enabled                => $enabled,
     config_file_name       => $config_file_name,
     service_provider       => $service_provider,
-    service_subscribe      => Package["swift-${name}"],
   }
 
   swift::service { "swift-${name}-replicator":
@@ -86,7 +82,6 @@ define swift::storage::generic(
     enabled                => $enabled,
     config_file_name       => $config_file_name,
     service_provider       => $service_provider,
-    service_subscribe      => Package["swift-${name}"],
   }
 
   swift::service { "swift-${name}-auditor":
@@ -95,6 +90,5 @@ define swift::storage::generic(
     enabled                => $enabled,
     config_file_name       => $config_file_name,
     service_provider       => $service_provider,
-    service_subscribe      => Package["swift-${name}"],
   }
 }

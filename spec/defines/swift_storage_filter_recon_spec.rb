@@ -2,29 +2,31 @@ require 'spec_helper'
 
 describe 'swift::storage::filter::recon' do
   let :title do
-    'dummy'
+    'account'
   end
 
   shared_examples 'swift::storage::filter::recon' do
     describe 'when passing default parameters' do
-      it 'should build the fragment with correct content' do
-        is_expected.to contain_concat_fragment('swift_recon_dummy').with_content('
-[filter:recon]
-use = egg:swift#recon
-recon_cache_path = /var/cache/swift
-')
+      it 'should configure the recon middleware' do
+        is_expected.to contain_swift_account_config('filter:recon/use').\
+          with_value('egg:swift#recon')
+        is_expected.to contain_swift_account_config('filter:recon/recon_cache_path').\
+          with_value('<SERVICE DEFAULT>')
       end
     end
 
     describe 'when overriding default parameters' do
       let :params do
         {
-          :cache_path => '/some/other/path'
+          :cache_path => '/var/cache/swift'
         }
       end
 
-      it 'should build the fragment with correct content' do
-        is_expected.to contain_concat_fragment('swift_recon_dummy').with_content(/recon_cache_path = \/some\/other\/path/)
+      it 'should configure the recon middleware' do
+        is_expected.to contain_swift_account_config('filter:recon/use').\
+          with_value('egg:swift#recon')
+        is_expected.to contain_swift_account_config('filter:recon/recon_cache_path').\
+          with_value('/var/cache/swift')
       end
     end
   end

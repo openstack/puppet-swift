@@ -2,15 +2,13 @@ require 'spec_helper'
 
 describe 'swift::storage::filter::healthcheck' do
   let :title do
-    'dummy'
+    'account'
   end
 
   shared_examples 'swift::storage::filter::healthcheck' do
-    it 'should build the fragment with correct content' do
-      is_expected.to contain_concat_fragment('swift_healthcheck_dummy').with_content('
-[filter:healthcheck]
-use = egg:swift#healthcheck
-')
+    it 'should configure the healthcheck middleware' do
+      is_expected.to contain_swift_account_config('filter:healthcheck/use').\
+        with_value('egg:swift#healthcheck')
     end
   end
 

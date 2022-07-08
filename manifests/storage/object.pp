@@ -58,8 +58,6 @@ class swift::storage::object(
     enabled                => $enabled,
     config_file_name       => $config_file_name,
     service_provider       => $service_provider,
-    require                => Anchor['swift::install::end'],
-    service_subscribe      => Concat["/etc/swift/${config_file_name}"],
   }
 
   swift::service { 'swift-object-reconstructor':
@@ -68,8 +66,6 @@ class swift::storage::object(
     enabled                => $enabled,
     config_file_name       => $config_file_name,
     service_provider       => $service_provider,
-    require                => Anchor['swift::install::end'],
-    service_subscribe      => Concat["/etc/swift/${config_file_name}"],
   }
 
 }
