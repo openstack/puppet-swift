@@ -54,8 +54,10 @@ define swift::storage::node(
 
   include swift::deps
 
-  validate_legacy(Integer, 'validate_re', $zone,
-    ['^\d+$', 'The zone parameter must be an integer'])
+  if ! $zone =~ Integer {
+    validate_legacy(Pattern[/^\d+$/], 'validate_re', $zone,
+      ['^\d+$', 'The zone parameter must be an integer'])
+  }
 
   Swift::Storage::Server {
     storage_local_net_ip => $storage_local_net_ip,
