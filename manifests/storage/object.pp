@@ -50,22 +50,21 @@ class swift::storage::object(
     } else {
       $service_ensure = 'stopped'
     }
-  }
 
-  swift::service { 'swift-object-updater':
-    os_family_service_name => $::swift::params::object_updater_service_name,
-    service_ensure         => $service_ensure,
-    enabled                => $enabled,
-    config_file_name       => $config_file_name,
-    service_provider       => $service_provider,
-  }
+    swift::service { 'swift-object-updater':
+      os_family_service_name => $::swift::params::object_updater_service_name,
+      service_ensure         => $service_ensure,
+      enabled                => $enabled,
+      config_file_name       => $config_file_name,
+      service_provider       => $service_provider,
+    }
 
-  swift::service { 'swift-object-reconstructor':
-    os_family_service_name => $::swift::params::object_reconstructor_service_name,
-    service_ensure         => $service_ensure,
-    enabled                => $enabled,
-    config_file_name       => $config_file_name,
-    service_provider       => $service_provider,
+    swift::service { 'swift-object-reconstructor':
+      os_family_service_name => $::swift::params::object_reconstructor_service_name,
+      service_ensure         => $service_ensure,
+      enabled                => $enabled,
+      config_file_name       => $config_file_name,
+      service_provider       => $service_provider,
+    }
   }
-
 }

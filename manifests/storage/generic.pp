@@ -66,29 +66,29 @@ define swift::storage::generic(
     } else {
       $service_ensure = 'stopped'
     }
-  }
 
-  swift::service { "swift-${name}-server":
-    os_family_service_name => getvar("::swift::params::${name}_server_service_name"),
-    service_ensure         => $service_ensure,
-    enabled                => $enabled,
-    config_file_name       => $config_file_name,
-    service_provider       => $service_provider,
-  }
+    swift::service { "swift-${name}-server":
+      os_family_service_name => getvar("::swift::params::${name}_server_service_name"),
+      service_ensure         => $service_ensure,
+      enabled                => $enabled,
+      config_file_name       => $config_file_name,
+      service_provider       => $service_provider,
+    }
 
-  swift::service { "swift-${name}-replicator":
-    os_family_service_name => getvar("::swift::params::${name}_replicator_service_name"),
-    service_ensure         => $service_ensure,
-    enabled                => $enabled,
-    config_file_name       => $config_file_name,
-    service_provider       => $service_provider,
-  }
+    swift::service { "swift-${name}-replicator":
+      os_family_service_name => getvar("::swift::params::${name}_replicator_service_name"),
+      service_ensure         => $service_ensure,
+      enabled                => $enabled,
+      config_file_name       => $config_file_name,
+      service_provider       => $service_provider,
+    }
 
-  swift::service { "swift-${name}-auditor":
-    os_family_service_name => getvar("::swift::params::${name}_auditor_service_name"),
-    service_ensure         => $service_ensure,
-    enabled                => $enabled,
-    config_file_name       => $config_file_name,
-    service_provider       => $service_provider,
+    swift::service { "swift-${name}-auditor":
+      os_family_service_name => getvar("::swift::params::${name}_auditor_service_name"),
+      service_ensure         => $service_ensure,
+      enabled                => $enabled,
+      config_file_name       => $config_file_name,
+      service_provider       => $service_provider,
+    }
   }
 }

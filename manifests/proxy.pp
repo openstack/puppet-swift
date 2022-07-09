@@ -192,7 +192,6 @@ class swift::proxy(
 ) inherits swift::params {
 
   include swift::deps
-  Swift_config<| |> ~> Service['swift-proxy-server']
 
   validate_legacy(Boolean, 'validate_bool', $account_autocreate)
   validate_legacy(Boolean, 'validate_bool', $allow_account_management)
@@ -316,15 +315,23 @@ class swift::proxy(
     } else {
       $service_ensure = 'stopped'
     }
-  }
 
-  # Require 'swift::proxy::' classes for each of the elements in pipeline.
-  swift::service { 'swift-proxy-server':
-    os_family_service_name => $::swift::params::proxy_server_service_name,
-    service_ensure         => $service_ensure,
-    enabled                => $enabled,
-    config_file_name       => 'proxy-server.conf',
-    service_provider       => $service_provider,
-    service_require        => Class[$required_classes]
+    # Require 'swift::proxy::' classes for each of the elements in pipeline.
+    swift::service { 'swift-proxy-server':
+      os_family_service_name => $::swift::params::proxy_server_service_name,
+      service_ensure         => $service_ensure,
+      enabled                => $enabled,
+      config_file_name       => 'proxy-server.conf',
+      service_provider       => $service_provider,
+      service_require        => Class[$required_classes]
+    }
+  } else {
+    exec { 'vadate-proxy-pipeline':
+      command     => '/usr/bin/true',
+      refreshonly => true,
+      require     => Class[$required_classes],
+      before      => Anchor['swift::config::end'],
+    }
+    Swift_Proxy_config<||> ~> Exec['vadate-proxy-pipeline']
   }
 }

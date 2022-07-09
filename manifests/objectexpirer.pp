@@ -200,13 +200,13 @@ class swift::objectexpirer(
     } else {
       $service_ensure = 'stopped'
     }
-  }
 
-  swift::service { 'swift-object-expirer':
-    os_family_service_name => $::swift::params::object_expirer_service_name,
-    service_ensure         => $service_ensure,
-    enabled                => $enabled,
-    config_file_name       => 'object-expirer.conf',
-    service_provider       => $service_provider,
+    swift::service { 'swift-object-expirer':
+      os_family_service_name => $::swift::params::object_expirer_service_name,
+      service_ensure         => $service_ensure,
+      enabled                => $enabled,
+      config_file_name       => 'object-expirer.conf',
+      service_provider       => $service_provider,
+    }
   }
 }

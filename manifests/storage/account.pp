@@ -50,13 +50,13 @@ class swift::storage::account(
     } else {
       $service_ensure = 'stopped'
     }
-  }
 
-  swift::service { 'swift-account-reaper':
-    os_family_service_name => $::swift::params::account_reaper_service_name,
-    service_ensure         => $service_ensure,
-    enabled                => $enabled,
-    config_file_name       => $config_file_name,
-    service_provider       => $service_provider,
+    swift::service { 'swift-account-reaper':
+      os_family_service_name => $::swift::params::account_reaper_service_name,
+      service_ensure         => $service_ensure,
+      enabled                => $enabled,
+      config_file_name       => $config_file_name,
+      service_provider       => $service_provider,
+    }
   }
 }

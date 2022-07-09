@@ -47,28 +47,22 @@ describe 'swift::storage::object' do
       end
     end
 
-    context 'with disabled service managing and service provider' do
+    context 'with disabled service management' do
       before do
         params.merge!({
-          :manage_service   => false,
-          :enabled          => false,
-          :service_provider => 'swiftinit',
+          :manage_service => false,
         })
       end
 
-      it 'configures services' do
-        { 'swift-object-server'        => 'swift-object-server',
-          'swift-object-reconstructor' => 'swift-object-reconstructor',
-          'swift-object-replicator'    => 'swift-object-replicator',
-          'swift-object-updater'       => 'swift-object-updater',
-          'swift-object-auditor'       => 'swift-object-auditor' }.each do |service_alias, service_name|
-          is_expected.to contain_service(service_alias).with(
-            :ensure   => nil,
-            :name     => service_name,
-            :enable   => false,
-            :tag      => 'swift-service',
-            :provider => 'swiftinit',
-          )
+      it 'does not configure services' do
+        [
+          'swift-object-server',
+          'swift-object-reconstructor',
+          'swift-object-replicator',
+          'swift-object-updater',
+          'swift-object-auditor'
+        ].each do |service_alias|
+          is_expected.to_not contain_service(service_alias)
         end
       end
     end

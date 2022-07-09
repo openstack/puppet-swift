@@ -322,23 +322,15 @@ describe 'swift::proxy' do
       end
     end
 
-    context 'with disabled service managing and service provider' do
+    context 'with disabled service management' do
       before do
         params.merge!({
-          :manage_service   => false,
-          :enabled          => false,
-          :service_provider => 'swiftinit',
+          :manage_service => false,
         })
       end
 
-      it 'configures swift-proxy-server service' do
-        should contain_service('swift-proxy-server').with(
-          :ensure    => nil,
-          :name      => 'swift-proxy-server',
-          :provider  => 'swiftinit',
-          :enable    => false,
-          :hasstatus => true,
-        )
+      it 'does not configure swift-proxy-server service' do
+        should_not contain_service('swift-proxy-server')
       end
     end
   end

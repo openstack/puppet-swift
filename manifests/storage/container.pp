@@ -56,29 +56,29 @@ class swift::storage::container(
     } else {
       $service_ensure = 'stopped'
     }
-  }
 
-  swift::service { 'swift-container-updater':
-    os_family_service_name => $::swift::params::container_updater_service_name,
-    service_ensure         => $service_ensure,
-    enabled                => $enabled,
-    config_file_name       => $config_file_name,
-    service_provider       => $service_provider,
-  }
+    swift::service { 'swift-container-updater':
+      os_family_service_name => $::swift::params::container_updater_service_name,
+      service_ensure         => $service_ensure,
+      enabled                => $enabled,
+      config_file_name       => $config_file_name,
+      service_provider       => $service_provider,
+    }
 
-  swift::service { 'swift-container-sync':
-    os_family_service_name => $::swift::params::container_sync_service_name,
-    service_ensure         => $service_ensure,
-    enabled                => $enabled,
-    config_file_name       => $config_file_name,
-    service_provider       => $service_provider,
-  }
+    swift::service { 'swift-container-sync':
+      os_family_service_name => $::swift::params::container_sync_service_name,
+      service_ensure         => $service_ensure,
+      enabled                => $enabled,
+      config_file_name       => $config_file_name,
+      service_provider       => $service_provider,
+    }
 
-  swift::service { 'swift-container-sharder':
-    os_family_service_name => $::swift::params::container_sharder_service_name,
-    service_ensure         => $service_ensure,
-    enabled                => $enabled,
-    config_file_name       => $config_file_name,
-    service_provider       => $service_provider,
+    swift::service { 'swift-container-sharder':
+      os_family_service_name => $::swift::params::container_sharder_service_name,
+      service_ensure         => $service_ensure,
+      enabled                => $enabled,
+      config_file_name       => $config_file_name,
+      service_provider       => $service_provider,
+    }
   }
 }
