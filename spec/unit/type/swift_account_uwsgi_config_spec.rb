@@ -33,7 +33,7 @@ describe 'Puppet::Type.type(:swift_account_uwsgi_config)' do
     expect(@swift_account_uwsgi_config[:value]).to eq('bar')
   end
 
-  it 'should not accept a value with whitespace' do
+  it 'should accept a value with whitespace' do
     @swift_account_uwsgi_config[:value] = 'b ar'
     expect(@swift_account_uwsgi_config[:value]).to eq('b ar')
   end
