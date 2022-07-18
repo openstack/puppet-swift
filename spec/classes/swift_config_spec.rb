@@ -11,6 +11,11 @@ describe 'swift::config' do
         'DEFAULT/foo' => { 'value'  => 'fooValue' },
         'DEFAULT/bar' => { 'value'  => 'barValue' },
         'DEFAULT/baz' => { 'ensure' => 'absent' }
+      },
+      :swift_internal_client_config => {
+        'DEFAULT/foo' => { 'value'  => 'fooValue' },
+        'DEFAULT/bar' => { 'value'  => 'barValue' },
+        'DEFAULT/baz' => { 'ensure' => 'absent' }
       }
     }
   end
@@ -26,6 +31,12 @@ describe 'swift::config' do
       is_expected.to contain_swift_proxy_config('DEFAULT/foo').with_value('fooValue')
       is_expected.to contain_swift_proxy_config('DEFAULT/bar').with_value('barValue')
       is_expected.to contain_swift_proxy_config('DEFAULT/baz').with_ensure('absent')
+    end
+
+    it 'configures arbitrary swift internal client configurations' do
+      is_expected.to contain_swift_internal_client_config('DEFAULT/foo').with_value('fooValue')
+      is_expected.to contain_swift_internal_client_config('DEFAULT/bar').with_value('barValue')
+      is_expected.to contain_swift_internal_client_config('DEFAULT/baz').with_ensure('absent')
     end
   end
 
