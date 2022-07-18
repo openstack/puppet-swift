@@ -42,6 +42,10 @@ class swift::deps {
   ~> Anchor['swift::config::end']
 
   Anchor['swift::config::begin']
+  -> Swift_internal_client_config<||>
+  ~> Anchor['swift::config::end']
+
+  Anchor['swift::config::begin']
   -> File<| tag == 'swift-file' |>
   -> Concat<| tag == 'swift-concat' |>
   ~> Anchor['swift::config::end']
