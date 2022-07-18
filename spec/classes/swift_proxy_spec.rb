@@ -69,12 +69,12 @@ describe 'swift::proxy' do
         it { should contain_swift_proxy_config('app:proxy-server/set log_facility').with_value('LOG_LOCAL2') }
         it { should contain_swift_proxy_config('app:proxy-server/set log_level').with_value('INFO') }
         it { should contain_swift_proxy_config('app:proxy-server/set log_address').with_value('/dev/log') }
-        it { should contain_swift_proxy_config('app:proxy-server/log_handoffs').with_value('true') }
-        it { should contain_swift_proxy_config('app:proxy-server/object_chunk_size').with_value('65536') }
-        it { should contain_swift_proxy_config('app:proxy-server/client_chunk_size').with_value('65536') }
+        it { should contain_swift_proxy_config('app:proxy-server/log_handoffs').with_value('<SERVICE DEFAULT>') }
+        it { should contain_swift_proxy_config('app:proxy-server/object_chunk_size').with_value('<SERVICE DEFAULT>') }
+        it { should contain_swift_proxy_config('app:proxy-server/client_chunk_size').with_value('<SERVICE DEFAULT>') }
         it { should contain_swift_proxy_config('app:proxy-server/allow_account_management').with_value('true') }
         it { should contain_swift_proxy_config('app:proxy-server/account_autocreate').with_value('true') }
-        it { should contain_swift_proxy_config('app:proxy-server/max_containers_per_account').with_value(0) }
+        it { should contain_swift_proxy_config('app:proxy-server/max_containers_per_account').with_value('<SERVICE DEFAULT>') }
         it { should contain_swift_proxy_config('app:proxy-server/max_containers_whitelist').with_value('<SERVICE DEFAULT>') }
 
         it { should contain_service('swift-proxy-server').with_require([
@@ -158,7 +158,7 @@ describe 'swift::proxy' do
           it { should contain_swift_proxy_config('app:proxy-server/set log_facility').with_value('LOG_LOCAL2') }
           it { should contain_swift_proxy_config('app:proxy-server/set log_level').with_value('DEBUG') }
           it { should contain_swift_proxy_config('app:proxy-server/set log_address').with_value('/dev/log') }
-          it { should contain_swift_proxy_config('app:proxy-server/log_handoffs').with_value('true') }
+          it { should contain_swift_proxy_config('app:proxy-server/log_handoffs').with_value('<SERVICE DEFAULT>') }
           it { should contain_swift_proxy_config('app:proxy-server/object_chunk_size').with_value('8192') }
           it { should contain_swift_proxy_config('app:proxy-server/client_chunk_size').with_value('8192') }
           it { should contain_swift_proxy_config('app:proxy-server/allow_account_management').with_value('false') }
@@ -211,6 +211,7 @@ describe 'swift::proxy' do
                 :log_name                  => 'swift-proxy-server',
                 :log_udp_host              => '127.0.0.1',
                 :log_udp_port              => '514',
+                :log_handoffs              => true,
                 :read_affinity             => 'r1z1=100, r1=200',
                 :write_affinity            => 'r1',
                 :write_affinity_node_count => '2 * replicas',
