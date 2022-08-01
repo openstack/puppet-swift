@@ -1,0 +1,6 @@
+---
+deprecations:
+  - |
+    The ``swift::proxy::swauth`` class, which configures the ``swauth``
+    middleware, has been deprecated and will be removed in a future release,
+    because the middleware is no longer maintained.

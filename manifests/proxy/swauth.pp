@@ -23,6 +23,8 @@ class swift::proxy::swauth(
 
   include swift::deps
 
+  warning('Support for swauth has been deprecaed and will be removed in a futue release.')
+
   package { 'python-swauth':
     ensure => $package_ensure,
     tag    => 'swift-package',
