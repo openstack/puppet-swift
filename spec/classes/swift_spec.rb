@@ -28,8 +28,6 @@ describe 'swift' do
         }
       end
 
-      it {is_expected.to contain_user('swift')}
-
       it 'configures swift.conf' do
         is_expected.to contain_swift_config(
           'swift-hash/swift_hash_path_suffix').with_value('string')

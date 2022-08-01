@@ -1,0 +1,5 @@
+---
+deprecations:
+  - |
+    The ``swift::proxy::ceilometer::group`` parameter has been deprecated and
+    has no effect now.
