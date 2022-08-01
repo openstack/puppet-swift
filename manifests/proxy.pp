@@ -64,16 +64,16 @@
 #    Defaults to 'LOG_LOCAL2'.
 #
 #  [*log_handoffs*]
-#     (optional) If True, the proxy will log whenever it has to failover to a handoff node
-#     Defaults to true.
+#    (optional) If True, the proxy will log whenever it has to failover to a handoff node
+#    Defaults to $::os_service_default.
 #
 #  [*object_chunk_size*]
-#     (optional) Chunk size to read from object servers.
-#     Default to 65536.
+#    (optional) Chunk size to read from object servers.
+#    Defaults to $::os_service_default.
 #
 #  [*client_chunk_size*]
-#     (optional) Chunk size to read from clients.
-#     Default to 65536.
+#    (optional) Chunk size to read from clients.
+#    Defaults to $::os_service_default.
 #
 #  [*max_containers_per_account*]
 #     (optional) If set to a positive value, will limit container number per account.
@@ -170,13 +170,13 @@ class swift::proxy(
   $log_address                = '/dev/log',
   $log_level                  = 'INFO',
   $log_facility               = 'LOG_LOCAL2',
-  $log_handoffs               = true,
+  $log_handoffs               = $::os_service_default,
   $log_name                   = 'proxy-server',
   $cors_allow_origin          = undef,
   $strict_cors_mode           = true,
-  $object_chunk_size          = 65536,
-  $client_chunk_size          = 65536,
-  $max_containers_per_account = 0,
+  $object_chunk_size          = $::os_service_default,
+  $client_chunk_size          = $::os_service_default,
+  $max_containers_per_account = $::os_service_default,
   $max_containers_whitelist   = $::os_service_default,
   $read_affinity              = undef,
   $write_affinity             = undef,
