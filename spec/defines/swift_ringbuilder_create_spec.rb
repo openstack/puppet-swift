@@ -6,7 +6,7 @@ describe 'swift::ringbuilder::create' do
       :part_power     => 18,
       :replicas       => 3,
       :min_part_hours => 24,
-      :user           => 'swift'
+      :user           => 'root'
     }
   end
 
@@ -22,7 +22,7 @@ describe 'swift::ringbuilder::create' do
             {:part_power => 19,
             :replicas => 6,
             :min_part_hours => 2,
-            :user => 'root'}].each do |param_set|
+            :user => 'swift'}].each do |param_set|
 
             describe "when #{param_set == {} ? "using default" : "specifying"} class parameters" do
               let :param_hash do
