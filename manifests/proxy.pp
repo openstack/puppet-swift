@@ -94,19 +94,19 @@
 #  [*write_affinity_node_count*]
 #    (optional) Configures write_affinity_node_count for proxy-server.
 #    Optional but requires write_affinity to be set.
-#    Defaults to undef.
+#    Defaults to $::os_service_default.
 #
 #  [*client_timeout*]
 #    (optional) Configures client_timeout for swift proxy-server.
-#    Defaults to undef.
+#    Defaults to $::os_service_default.
 #
 #  [*node_timeout*]
 #    (optional) Configures node_timeout for swift proxy-server
-#    Defaults to undef.
+#    Defaults to $::os_service_default.
 #
 #  [*recoverable_node_timeout*]
 #    (optional) Configures recoverable_node_timeout for swift proxy-server
-#    Defaults to undef.
+#    Defaults to $::os_service_default.
 #
 #  [*enabled*]
 #    (optional) Should the service be enabled.
@@ -180,10 +180,10 @@ class swift::proxy(
   $max_containers_whitelist   = $::os_service_default,
   $read_affinity              = undef,
   $write_affinity             = undef,
-  $write_affinity_node_count  = undef,
-  $client_timeout             = undef,
-  $node_timeout               = undef,
-  $recoverable_node_timeout   = undef,
+  $write_affinity_node_count  = $::os_service_default,
+  $client_timeout             = $::os_service_default,
+  $node_timeout               = $::os_service_default,
+  $recoverable_node_timeout   = $::os_service_default,
   $manage_service             = true,
   $enabled                    = true,
   $package_ensure             = 'present',
@@ -198,7 +198,7 @@ class swift::proxy(
   validate_legacy(Boolean, 'validate_bool', $allow_account_management)
   validate_legacy(Array, 'validate_array', $pipeline)
 
-  if($write_affinity_node_count and ! $write_affinity) {
+  if (!is_service_default($write_affinity_node_count) and !$write_affinity) {
     fail('Usage of write_affinity_node_count requires write_affinity to be set')
   }
 
@@ -260,8 +260,6 @@ class swift::proxy(
     'app:proxy-server/account_autocreate':         value => $account_autocreate;
     'app:proxy-server/max_containers_per_account': value => $max_containers_per_account;
     'app:proxy-server/max_containers_whitelist':   value => $max_containers_whitelist;
-    'app:proxy-server/write_affinity':             value => $write_affinity;
-    'app:proxy-server/write_affinity_node_count':  value => $write_affinity_node_count;
     'app:proxy-server/node_timeout':               value => $node_timeout;
     'app:proxy-server/recoverable_node_timeout':   value => $recoverable_node_timeout;
   }
@@ -275,6 +273,18 @@ class swift::proxy(
     swift_proxy_config {
       'DEFAULT/cors_allow_origin': value => $::os_service_default;
       'DEFAULT/strict_cors_mode':  value => $::os_service_default;
+    }
+  }
+
+  if $write_affinity {
+    swift_proxy_config {
+      'app:proxy-server/write_affinity':            value => $write_affinity;
+      'app:proxy-server/write_affinity_node_count': value => $write_affinity_node_count;
+    }
+  } else {
+    swift_proxy_config {
+      'app:proxy-server/write_affinity':            value => $::os_service_default;
+      'app:proxy-server/write_affinity_node_count': value => $::os_service_default;
     }
   }
 

@@ -61,6 +61,7 @@ describe 'swift::proxy' do
         it { should contain_swift_proxy_config('DEFAULT/log_level').with_value('INFO') }
         it { should contain_swift_proxy_config('DEFAULT/log_headers').with_value('False') }
         it { should contain_swift_proxy_config('DEFAULT/log_address').with_value('/dev/log') }
+        it { should contain_swift_proxy_config('DEFAULT/client_timeout').with_value('<SERVICE DEFAULT>') }
         it { should contain_swift_proxy_config('pipeline:main/pipeline').with_value(
           ['catch_errors', 'gatekeeper', 'healthcheck', 'proxy-logging', 'cache',
            'listing_formats', 'tempauth', 'copy', 'proxy-logging', 'proxy-server'].join(' ')) }
@@ -76,6 +77,10 @@ describe 'swift::proxy' do
         it { should contain_swift_proxy_config('app:proxy-server/account_autocreate').with_value('true') }
         it { should contain_swift_proxy_config('app:proxy-server/max_containers_per_account').with_value('<SERVICE DEFAULT>') }
         it { should contain_swift_proxy_config('app:proxy-server/max_containers_whitelist').with_value('<SERVICE DEFAULT>') }
+        it { should contain_swift_proxy_config('app:proxy-server/write_affinity').with_value('<SERVICE DEFAULT>') }
+        it { should contain_swift_proxy_config('app:proxy-server/write_affinity_node_count').with_value('<SERVICE DEFAULT>') }
+        it { should contain_swift_proxy_config('app:proxy-server/node_timeout').with_value('<SERVICE DEFAULT>') }
+        it { should contain_swift_proxy_config('app:proxy-server/recoverable_node_timeout').with_value('<SERVICE DEFAULT>') }
 
         it { should contain_service('swift-proxy-server').with_require([
           'Class[Swift::Proxy::Catch_errors]',
