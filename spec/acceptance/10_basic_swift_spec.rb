@@ -11,6 +11,7 @@ describe 'basic swift' do
       include openstack_integration::apache
       include openstack_integration::rabbitmq
       include openstack_integration::mysql
+      include openstack_integration::memcached
       include openstack_integration::keystone
 
       exec { 'setenforce 0':
@@ -20,10 +21,6 @@ describe 'basic swift' do
       }
 
       package { 'curl': ensure => present }
-
-      class { 'memcached':
-        listen_ip => '127.0.0.1',
-      }
 
       # Swift resources
       class { 'swift':
@@ -135,6 +132,7 @@ describe 'basic swift' do
       include openstack_integration::apache
       include openstack_integration::rabbitmq
       include openstack_integration::mysql
+      include openstack_integration::memcached
       include openstack_integration::keystone
 
       exec { 'setenforce 0':
@@ -144,10 +142,6 @@ describe 'basic swift' do
       }
 
       package { 'curl': ensure => present }
-
-      class { 'memcached':
-        listen_ip => '127.0.0.1',
-      }
 
       # Swift resources
       class { 'swift':
