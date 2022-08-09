@@ -1,0 +1,15 @@
+---
+features:
+  - |
+    The ``swift::proxy::ceilometer`` class now supports the following new
+    parameters to manage options for Rabbit driver in oslo.messaging library.
+
+    - ``rabbit_ha_queues``
+    - ``heartbeat_timeout_threshold``
+    - ``heartbeat_rate``
+    - ``heartbeat_in_pthread``
+    - ``rabbit_qos_prefetch_count``
+    - ``amqp_durable_queues``
+    - ``kombu_reconnect_delay``
+    - ``kombu_failover_strategy``
+    - ``kombu_compression``
