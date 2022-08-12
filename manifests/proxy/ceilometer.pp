@@ -210,9 +210,7 @@ class swift::proxy::ceilometer(
 
   include swift::deps
 
-  if defined(Service['swift-proxy-server']) {
-    Package['python-ceilometermiddleware'] -> Service['swift-proxy-server']
-  }
+  Package['python-ceilometermiddleware'] ~> Service<| title == 'swift-proxy-server' |>
 
   if $auth_uri {
     warning('The swift::proxy::ceilometer::auth_uri parameter was deprecated, and has no effect')
