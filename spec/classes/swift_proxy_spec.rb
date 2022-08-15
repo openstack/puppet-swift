@@ -21,11 +21,7 @@ describe 'swift::proxy' do
       end
 
       describe 'without the proxy local network ip address being specified' do
-        if Puppet::Util::Package.versioncmp(Puppet.version, '4.3.0') >= 0
-          it_raises 'a Puppet::Error', /expects a value for parameter 'proxy_local_net_ip'/
-        else
-          it_raises 'a Puppet::Error', /Must pass proxy_local_net_ip/
-        end
+        it_raises 'a Puppet::Error', /expects a value for parameter 'proxy_local_net_ip'/
       end
 
       describe 'when proxy_local_net_ip is set' do

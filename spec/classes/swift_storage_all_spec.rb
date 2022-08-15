@@ -26,11 +26,7 @@ describe 'swift::storage::all' do
 
   shared_examples 'swift::storage::all' do
     describe 'when an internal network ip is not specified' do
-      if Puppet::Util::Package.versioncmp(Puppet.version, '4.3.0') >= 0
-        it_raises 'a Puppet::Error', /expects a value for parameter 'storage_local_net_ip'/
-      else
-        it_raises 'a Puppet::Error', /Must pass storage_local_net_ip/
-      end
+      it_raises 'a Puppet::Error', /expects a value for parameter 'storage_local_net_ip'/
     end
 
     [{ :storage_local_net_ip => '127.0.0.1' },
