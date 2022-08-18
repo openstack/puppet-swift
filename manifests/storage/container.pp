@@ -37,13 +37,10 @@ class swift::storage::container(
   $package_ensure     = 'present',
   $allowed_sync_hosts = ['127.0.0.1'],
   $config_file_name   = 'container-server.conf',
-  $service_provider = $::swift::params::service_provider
+  $service_provider   = $::swift::params::service_provider
 ) inherits swift::params {
 
   include swift::deps
-
-  Swift_config<| |> ~> Service['swift-container-updater']
-  Swift_config<| |> ~> Service['swift-container-sync']
 
   swift::storage::generic { 'container':
     manage_service   => $manage_service,
@@ -67,8 +64,6 @@ class swift::storage::container(
     enabled                => $enabled,
     config_file_name       => $config_file_name,
     service_provider       => $service_provider,
-    service_require        => Package['swift-container'],
-    service_subscribe      => Concat["/etc/swift/${config_file_name}"],
   }
 
   swift::service { 'swift-container-sync':
@@ -77,8 +72,6 @@ class swift::storage::container(
     enabled                => $enabled,
     config_file_name       => $config_file_name,
     service_provider       => $service_provider,
-    service_require        => Package['swift-container'],
-    service_subscribe      => Concat["/etc/swift/${config_file_name}"],
   }
 
   swift::service { 'swift-container-sharder':
@@ -87,7 +80,5 @@ class swift::storage::container(
     enabled                => $enabled,
     config_file_name       => $config_file_name,
     service_provider       => $service_provider,
-    service_require        => Package['swift-container'],
-    service_subscribe      => Concat["/etc/swift/${config_file_name}"],
   }
 }

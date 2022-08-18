@@ -1,0 +1,8 @@
+---
+features:
+  - |
+    The ``swift::config`` class now supports the following three parameters.
+
+    - ``swift_account_config``
+    - ``swift_container_config``
+    - ``swift_object_config``

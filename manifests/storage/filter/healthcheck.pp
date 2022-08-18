@@ -8,9 +8,9 @@ define swift::storage::filter::healthcheck(
 
   include swift::deps
 
-  concat::fragment { "swift_healthcheck_${name}":
-    target  => "/etc/swift/${name}-server.conf",
-    content => template('swift/healthcheck.conf.erb'),
-    order   => '25',
-  }
+  $config_type = "swift_${name}_config"
+
+  create_resources($config_type, {
+    'filter:healthcheck/use' => {'value' => 'egg:swift#healthcheck'},
+  })
 }

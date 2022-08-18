@@ -45,11 +45,6 @@ class swift::deps {
   -> Swift_internal_client_config<||>
   ~> Anchor['swift::config::end']
 
-  Anchor['swift::config::begin']
-  -> File<| tag == 'swift-file' |>
-  -> Concat<| tag == 'swift-concat' |>
-  ~> Anchor['swift::config::end']
-
   # On any uwsgi config change, we must restart Swift.
   Anchor['swift::config::begin']
   -> Swift_proxy_uwsgi_config<||>

@@ -53,7 +53,7 @@
 #   "local" ring devices across all storage policies.  This can help provide
 #   the isolation of threads_per_disk without the severe overhead.  The default
 #   value of 0 disables this feature.
-#   Defaults to 0.
+#   Default to $::os_service_default.
 #
 # [*user*]
 #   (optional) User to run as
@@ -74,7 +74,7 @@
 #
 # [*replicator_interval*]
 #   (optional) Minimum time for a pass to take, in seconds.
-#   Defaults to 30.
+#   Default to $::os_service_default.
 #
 # [*updater_concurrency*]
 #   (optional) Number of updater workers to spawn.
@@ -112,14 +112,14 @@
 #   good for seeing errors if true
 #   Defaults to true.
 #
-#  [*config_file_path*]
-#    (optional) The configuration file name.
-#    Starting at the path "/etc/swift/"
-#    Defaults to "${type}-server.conf"
+# [*config_file_path*]
+#   (optional) The configuration file name.
+#   Starting at the path "/etc/swift/"
+#   Defaults to "${type}-server.conf"
 #
 # [*statsd_enabled*]
-#  (optional) Should statsd configuration items be writen out to config files
-#  Defaults to false.
+#   (optional) Should statsd configuration items be writen out to config files
+#   Defaults to false.
 #
 # [*log_statsd_host*]
 #   (optional) statsd host to send data to.
@@ -127,69 +127,69 @@
 #
 # [*log_statsd_port*]
 #   (optional) statsd port to send data to.
-#   Defaults to 8125
+#   Defaults to $::os_service_default.
 #
 # [*log_statsd_default_sample_rate*]
 #   (optional) Default sample rate for data. This should be a number between 0
 #   and 1. According to the documentation this should be set to 1 and the
 #   sample rate factor should be adjusted.
-#   Defaults to '1.0'
+#   Defaults to $::os_service_default.
 #
 # [*log_statsd_sample_rate_factor*]
 #   (optional) sample rate factor for data.
-#   Defaults to '1.0'
+#   Defaults to $::os_service_default.
 #
 # [*log_statsd_metric_prefix*]
 #   (optional) Prefix for data being sent to statsd.
-#   Defaults to ''
+#   Defaults to $::os_service_default
 #
 # [*network_chunk_size*]
 #   (optional) Size of chunks to read/write over the network.
-#   Defaults to 65536.
+#   Default to $::os_service_default.
 #
 # [*disk_chunk_size*]
 #   (optional) Size of chunks to read/write to disk.
-#   Defaults to 65536.
+#   Default to $::os_service_default.
 #
 # [*auditor_disk_chunk_size*]
 #   (optional) Object-auditor size of chunks to read/write to disk.
-#   Defaults to undef.
+#   Default to $::os_service_default.
 #
 # [*client_timeout*]
 #   (optional) Object-server timeout in seconds to read one chunk from a client
 #   external services.
-#   Defaults to 60.
+#   Default to $::os_service_default.
 #
 # [*rsync_timeout*]
 #   (optional) Max duration of a partition rsync.
-#   Default to 900.
+#   Default to $::os_service_default.
 #
 # [*rsync_bwlimit*]
 #   (optional) Bandwidth limit for rsync in kB/s. 0 means unlimited.
-#   Default to 0.
+#   Default to $::os_service_default.
 #
 # [*splice*]
 #   (optional) Use splice for zero-copy object GETs. This requires Linux Kernel
 #   version 3.0 or greater.
-#   Defaults to false.
+#   Default to $::os_service_default.
 #
 # [*object_server_mb_per_sync*]
 #   (optional) Number of MB allocated for the cache.
-#   Defaults to 512, which is the swift default value.
+#   Default to $::os_service_default.
 #
 # [*container_sharder_auto_shard*]
 #   (optional) If the auto_shard option is true then the sharder will
 #   automatically select containers to shard, scan for shard ranges,
 #   and select shards to shrink.
-#   Default to false.
+#   Default to $::os_service_default.
 #
 # [*container_sharder_concurrency*]
 #   (optional) Number of replication workers to spawn.
-#   Default to 8.
+#   Default to $::os_service_default.
 #
 # [*container_sharder_interval*]
 #   (optional) Time in seconds to wait between sharder cycles.
-#   Default to 30.
+#   Default to $::os_service_default.
 #
 define swift::storage::server(
   $type,
@@ -202,11 +202,11 @@ define swift::storage::server(
   $max_connections                = 25,
   $pipeline                       = ["${type}-server"],
   $mount_check                    = true,
-  $servers_per_port               = 0,
+  $servers_per_port               = $::os_service_default,
   $user                           = undef,
   $workers                        = $::os_workers,
   $replicator_concurrency         = 1,
-  $replicator_interval            = 30,
+  $replicator_interval            = $::os_service_default,
   $updater_concurrency            = 1,
   $reaper_concurrency             = 1,
   $log_facility                   = 'LOG_LOCAL2',
@@ -220,23 +220,23 @@ define swift::storage::server(
   $config_file_path               = "${type}-server.conf",
   $statsd_enabled                 = false,
   $log_statsd_host                = 'localhost',
-  $log_statsd_port                = 8125,
-  $log_statsd_default_sample_rate = '1.0',
-  $log_statsd_sample_rate_factor  = '1.0',
-  $log_statsd_metric_prefix       = '',
-  $network_chunk_size             = 65536,
-  $disk_chunk_size                = 65536,
-  $client_timeout                 = 60,
-  $auditor_disk_chunk_size        = undef,
-  $rsync_timeout                  = 900,
-  $rsync_bwlimit                  = 0,
-  $splice                         = false,
-  $object_server_mb_per_sync      = 512,
+  $log_statsd_port                = $::os_service_default,
+  $log_statsd_default_sample_rate = $::os_service_default,
+  $log_statsd_sample_rate_factor  = $::os_service_default,
+  $log_statsd_metric_prefix       = $::os_service_default,
+  $network_chunk_size             = $::os_service_default,
+  $disk_chunk_size                = $::os_service_default,
+  $client_timeout                 = $::os_service_default,
+  $auditor_disk_chunk_size        = $::os_service_default,
+  $rsync_timeout                  = $::os_service_default,
+  $rsync_bwlimit                  = $::os_service_default,
+  $splice                         = $::os_service_default,
+  $object_server_mb_per_sync      = $::os_service_default,
   # These parameters only apply to container-server.conf,
   # and define options for the container-sharder service.
-  $container_sharder_auto_shard   = false,
-  $container_sharder_concurrency  = 8,
-  $container_sharder_interval     = 30,
+  $container_sharder_auto_shard   = $::os_service_default,
+  $container_sharder_concurrency  = $::os_service_default,
+  $container_sharder_interval     = $::os_service_default,
 ){
 
   include swift::deps
@@ -260,11 +260,15 @@ define swift::storage::server(
   validate_legacy(Enum['object', 'container', 'account'], 'validate_re',
     $type, ['^object|container|account$'])
   validate_legacy(Array, 'validate_array', $pipeline)
-  validate_legacy(Boolean, 'validate_bool', $splice)
-  # TODO - validate that name is an integer
+
+  if ! is_service_default($splice) {
+    validate_legacy(Boolean, 'validate_bool', $splice)
+  }
 
   $bind_port = $name
 
+  # rsync::server should be included before rsync::server::module
+  include swift::storage
   rsync::server::module { $type:
     path            => $devices,
     lock_file       => "/var/lock/${type}.lock",
@@ -276,13 +280,8 @@ define swift::storage::server(
     read_only       => false,
   }
 
-  concat { "/etc/swift/${config_file_path}":
-    owner   => pick($owner, $::swift::params::user),
-    group   => pick($group, $::swift::params::group),
-    notify  => Anchor['swift::config::end'],
-    require => Anchor['swift::install::end'],
-    tag     => 'swift-concat',
-  }
+  $config_file_full_path = "/etc/swift/${config_file_path}"
+
 
   $required_middlewares = split(
     inline_template(
@@ -292,24 +291,183 @@ define swift::storage::server(
         end.join(',')
       %>"), ',')
 
-  # you can now add your custom fragments at the user level
-  concat::fragment { "swift-${type}-${name}":
-    target  => "/etc/swift/${config_file_path}",
-    content => template("swift/${type}-server.conf.erb"),
-    order   => '00',
-    # require classes for each of the elements of the pipeline
-    # this is to ensure the user gets reasonable elements if he
-    # does not specify the backends for every specified element of
-    # the pipeline
+  file { $config_file_full_path:
+    ensure  => present,
+    owner   => pick($owner, $::swift::params::user),
+    group   => pick($group, $::swift::params::group),
+    replace => false,
+    tag     => 'swift-config-file',
     before  => $required_middlewares,
-    require => Anchor['swift::install::end'],
+  }
+
+  # common settings
+  $common_opts = {
+    'DEFAULT/devices'                     => {'value'  => $devices},
+    'DEFAULT/bind_ip'                     => {'value'  => $storage_local_net_ip},
+    'DEFAULT/bind_port'                   => {'value'  => $bind_port},
+    'DEFAULT/mount_check'                 => {'value'  => $mount_check},
+    'DEFAULT/user'                        => {'value'  => $user_real},
+    'DEFAULT/workers'                     => {'value'  => $workers},
+    'DEFAULT/log_name'                    => {'value'  => $log_name},
+    'DEFAULT/log_facility'                => {'value'  => $log_facility},
+    'DEFAULT/log_level'                   => {'value'  => $log_level},
+    'DEFAULT/log_address'                 => {'value'  => $log_address},
+    # pipeline
+    'pipeline:main/pipeline'              => {'value'  => join($pipeline, ' ')},
+    # server
+    "app:${type}-server/use"              => {'value'  => "egg:swift#${type}"},
+    "app:${type}-server/set log_name"     => {'value'  => $log_name},
+    "app:${type}-server/set log_facility" => {'value'  => $log_facility},
+    "app:${type}-server/set log_level"    => {'value'  => $log_level},
+    "app:${type}-server/set log_requests" => {'value'  => $log_requests},
+    "app:${type}-server/set log_address"  => {'value'  => $log_address},
+    # auditor
+    # replicator
+  }
+
+  file_line { "${type}-auditor":
+    path => $config_file_full_path,
+    line => "[${type}-auditor]",
+    tag  => 'swift-config-file',
+  }
+
+  file_line { "${type}-replicator":
+    path => $config_file_full_path,
+    line => "[${type}-replicator]",
+    tag  => 'swift-config-file',
+  }
+
+  Anchor['swift::config::begin']
+    -> File[$config_file_full_path]
+    -> File_line<| path == $config_file_full_path |>
+    ~> Anchor['swift::config::end']
+
+  # udp log transfer
+  if $log_udp_host {
+    $log_udp_opts = {
+      'DEFAULT/log_udp_host' => {'value' => $log_udp_host},
+      'DEFAULT/log_udp_port' => {'value' => pick($log_udp_port, $::os_service_default)},
+    }
+  } else {
+    $log_udp_opts = {
+      'DEFAULT/log_udp_host' => {'value' => $::os_service_default},
+      'DEFAULT/log_udp_port' => {'value' => $::os_service_default},
+    }
+  }
+
+  # statsd
+  if $statsd_enabled {
+    $log_statsd_opts = {
+      'DEFAULT/log_statsd_host'                => {'value' => $log_statsd_host},
+      'DEFAULT/log_statsd_port'                => {'value' => $log_statsd_port},
+      'DEFAULT/log_statsd_default_sample_rate' => {'value' => $log_statsd_default_sample_rate},
+      'DEFAULT/log_statsd_sample_rate_factor'  => {'value' => $log_statsd_sample_rate_factor},
+      'DEFAULT/log_statsd_metric_prefix'       => {'value' => $log_statsd_metric_prefix},
+    }
+  } else {
+    $log_statsd_opts = {
+      'DEFAULT/log_statsd_host'                => {'value' => $::os_service_default},
+      'DEFAULT/log_statsd_port'                => {'value' => $::os_service_default},
+      'DEFAULT/log_statsd_default_sample_rate' => {'value' => $::os_service_default},
+      'DEFAULT/log_statsd_sample_rate_factor'  => {'value' => $::os_service_default},
+      'DEFAULT/log_statsd_metric_prefix'       => {'value' => $::os_service_default},
+    }
   }
 
   case $type {
-    'object':    { Concat["/etc/swift/${config_file_path}"] -> Swift_object_config <||> }
-    'container': { Concat["/etc/swift/${config_file_path}"] -> Swift_container_config <||> }
-    'account':   { Concat["/etc/swift/${config_file_path}"] -> Swift_account_config <||> }
-    default  :   { warning("swift storage server ${type} must specify ${type}-server") }
+    'account': {
+      $type_opts = {
+        # account-server
+        # account-auditor
+        # account-replicator
+        'account-replicator/concurrency' => {'value'  => $replicator_concurrency},
+        'account-replicator/interval'    => {'value'  => $replicator_interval},
+        # account-reaper
+        'account-reaper/concurrency'     => {'value'  => $reaper_concurrency},
+      }
 
+      file_line { 'account-reaper':
+        path => $config_file_full_path,
+        line => '[account-reaper]',
+        tag  => 'swift-config-file',
+      }
+    }
+    'container': {
+      $type_opts = {
+        'DEFAULT/allowed_sync_hosts'       => {'value'  => join($::swift::storage::container::allowed_sync_hosts, ',')},
+        # container-server
+        # container-auditor
+        # container-replicator
+        'container-replicator/concurrency' => {'value'  => $replicator_concurrency},
+        'container-replicator/interval'    => {'value'  => $replicator_interval},
+        # container-updater
+        'container-updater/concurrency'    => {'value'  => $updater_concurrency},
+        # container-sync
+        # container-sharder
+        'container-sharder/auto_shard'     => {'value'  => $container_sharder_auto_shard},
+        'container-sharder/concurrency'    => {'value'  => $container_sharder_concurrency},
+        'container-sharder/interval'       => {'value'  => $container_sharder_interval},
+      }
+
+      file_line { 'container-updater':
+        path => $config_file_full_path,
+        line => '[container-updater]',
+        tag  => 'swift-config-file',
+      }
+      file_line { 'container-sync':
+        path => $config_file_full_path,
+        line => '[container-sync]',
+        tag  => 'swift-config-file',
+      }
+      file_line { 'container-sharder':
+        path => $config_file_full_path,
+        line => '[container-sharder]',
+        tag  => 'swift-config-file',
+      }
+    }
+    'object': {
+      $type_opts = {
+        'DEFAULT/servers_per_port'        => {'value'  => $servers_per_port},
+        'DEFAULT/network_chunk_size'      => {'value'  => $network_chunk_size},
+        'DEFAULT/disk_chunk_size'         => {'value'  => $disk_chunk_size},
+        'DEFAULT/client_timeout'          => {'value'  => $client_timeout},
+        # object-server
+        'app:object-server/splice'        => {'value'  => $splice},
+        'app:object-server/mb_per_sync'   => {'value'  => $object_server_mb_per_sync},
+        # object-auditor
+        'object-auditor/disk_chunk_size'  => {'value'  => pick($auditor_disk_chunk_size, $::os_service_default)},
+        # object-replicator
+        'object-replicator/concurrency'   => {'value'  => $replicator_concurrency},
+        'object-replicator/rsync_timeout' => {'value'  => $rsync_timeout},
+        'object-replicator/rsync_bwlimit' => {'value'  => $rsync_bwlimit},
+        # object-updater
+        'object-updater/concurrency'      => {'value'  => $updater_concurrency},
+        # object-reconstructor
+      }
+
+      file_line { 'object-updater':
+        path => $config_file_full_path,
+        line => '[object-updater]',
+        tag  => 'swift-config-file',
+      }
+      file_line { 'object-reconstructor':
+        path => $config_file_full_path,
+        line => '[object-reconstructor]',
+        tag  => 'swift-config-file',
+      }
+    }
+    default: {
+      # nothing to do
+    }
   }
+
+  create_resources("swift_${type}_config", merge(
+    $common_opts,
+    $log_udp_opts,
+    $log_statsd_opts,
+    $type_opts,
+  ), {
+    #'path'    => $config_file_full_path,
+    'require' => File[$config_file_full_path]
+  })
 }

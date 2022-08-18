@@ -35,7 +35,6 @@ class swift::storage::account(
 ) inherits swift::params {
 
   include swift::deps
-  Swift_config<| |> ~> Service['swift-account-reaper']
 
   swift::storage::generic { 'account':
     manage_service   => $manage_service,
@@ -59,7 +58,5 @@ class swift::storage::account(
     enabled                => $enabled,
     config_file_name       => $config_file_name,
     service_provider       => $service_provider,
-    service_require        => Package['swift-account'],
-    service_subscribe      => Concat["/etc/swift/${config_file_name}"],
   }
 }
