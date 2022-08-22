@@ -14,8 +14,10 @@ define swift::ringbuilder::rebalance(
 
   include swift::deps
 
-  validate_legacy(Enum['object', 'container', 'account'], 'validate_re', $name,
-    ['^object|container|account$'])
+  validate_legacy(
+    Pattern[/^(object(-(\d)+)?|container|account)$/], 'validate_re', $name,
+    ['^(object(-(\d)+)?|container|account)$']
+  )
 
   if $seed {
     validate_legacy(Integer, 'validate_re', $seed, ['^\d+$'])

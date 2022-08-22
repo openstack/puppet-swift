@@ -12,7 +12,7 @@ describe 'swift::ringbuilder::create' do
 
   shared_examples 'swift::ringbuilder::create' do
     describe 'with allowed titles' do
-      ['object', 'container', 'account'].each do |type|
+      ['object', 'container', 'account', 'object-1', 'object-123'].each do |type|
         describe "when title is #{type}" do
           let :title do
             type
@@ -46,11 +46,15 @@ describe 'swift::ringbuilder::create' do
     end
 
     describe 'with an invalid title' do
-      let :title do
-        'invalid'
-      end
+      ['invalid', 'container-1', 'account-1', 'object-a', 'object-12a'].each do |type|
+        describe "when title is #{type}" do
+          let :title do
+            type
+          end
 
-      it { should raise_error(Puppet::Error) }
+          it { should raise_error(Puppet::Error) }
+        end
+      end
     end
   end
 
