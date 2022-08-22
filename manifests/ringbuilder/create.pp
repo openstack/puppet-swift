@@ -41,8 +41,10 @@ define swift::ringbuilder::create(
 
   include swift::deps
 
-  validate_legacy(Enum['object', 'container', 'account'], 'validate_re', $name,
-    ['^object|container|account$'])
+  validate_legacy(
+    Pattern[/^(object(-(\d)+)?|container|account)$/], 'validate_re', $name,
+    ['^(object(-(\d)+)?|container|account)$']
+  )
 
   exec { "create_${name}":
     command => "swift-ring-builder /etc/swift/${name}.builder create ${part_power} ${replicas} ${min_part_hours}",
