@@ -25,7 +25,7 @@ describe 'swift' do
         is_expected.to contain_swift_config(
           'swift-hash/swift_hash_path_prefix').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_swift_config(
-          'swift-constraints/max_header_size').with_value(8192)
+          'swift-constraints/max_header_size').with_value('<SERVICE DEFAULT>')
       end
 
       it {
@@ -47,12 +47,12 @@ describe 'swift' do
 
     context 'with max_header_size' do
       before do
-        params.merge!({:max_header_size => 16384})
+        params.merge!({:max_header_size => 8192})
       end
 
       it 'should configure swift.conf' do
         is_expected.to contain_swift_config(
-          'swift-constraints/max_header_size').with_value(16384)
+          'swift-constraints/max_header_size').with_value(8192)
       end
     end
 
