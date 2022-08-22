@@ -18,6 +18,15 @@
 #   (optional) The directory where the physical storage device will be mounted.
 #   Defaults to '/srv/node'.
 #
+# [*rsync_module_per_device*]
+#   (optional) Define one rsync module per device. If this is set to true, then
+#   the device_names must be set with an array of device names.
+#   Defaults to false.
+#
+# [*device_names*]
+#   (optional) List of devices to set as an rsync module list in rsyncd.conf.
+#   Defaults to an empty array.
+#
 # [*owner*]
 #   (optional) Owner (uid) of rsync server.
 #   Defaults to $::swift::params::user.
@@ -195,6 +204,8 @@ define swift::storage::server(
   $type,
   $storage_local_net_ip,
   $devices                        = '/srv/node',
+  $rsync_module_per_device        = false,
+  $device_names                   = [],
   $owner                          = undef,
   $group                          = undef,
   $incoming_chmod                 = 'Du=rwx,g=rx,o=rx,Fu=rw,g=r,o=r',
@@ -260,6 +271,7 @@ define swift::storage::server(
   validate_legacy(Enum['object', 'container', 'account'], 'validate_re',
     $type, ['^object|container|account$'])
   validate_legacy(Array, 'validate_array', $pipeline)
+  validate_legacy(Array, 'validate_array', $device_names)
 
   if ! is_service_default($splice) {
     validate_legacy(Boolean, 'validate_bool', $splice)
@@ -269,15 +281,36 @@ define swift::storage::server(
 
   # rsync::server should be included before rsync::server::module
   include swift::storage
-  rsync::server::module { $type:
-    path            => $devices,
-    lock_file       => "/var/lock/${type}.lock",
-    uid             => pick($owner, $::swift::params::user),
-    gid             => pick($group, $::swift::params::group),
-    incoming_chmod  => $incoming_chmod,
-    outgoing_chmod  => $outgoing_chmod,
-    max_connections => $max_connections,
-    read_only       => false,
+  if $rsync_module_per_device {
+    if empty($device_names) {
+      fail('device_names is required when rsync_module_per_device is true')
+    }
+
+    $device_names.each |String $device_name| {
+      rsync::server::module { "${type}_${device_name}":
+        path            => $devices,
+        lock_file       => "/var/lock/${type}_${device_name}.lock",
+        uid             => pick($owner, $::swift::params::user),
+        gid             => pick($group, $::swift::params::group),
+        incoming_chmod  => $incoming_chmod,
+        outgoing_chmod  => $outgoing_chmod,
+        max_connections => $max_connections,
+        read_only       => false,
+      }
+    }
+    $rsync_module = "{replication_ip}::${type}_{device}"
+  } else {
+    rsync::server::module { $type:
+      path            => $devices,
+      lock_file       => "/var/lock/${type}.lock",
+      uid             => pick($owner, $::swift::params::user),
+      gid             => pick($group, $::swift::params::group),
+      incoming_chmod  => $incoming_chmod,
+      outgoing_chmod  => $outgoing_chmod,
+      max_connections => $max_connections,
+      read_only       => false,
+    }
+    $rsync_module = $::os_service_default
   }
 
   $config_file_full_path = "/etc/swift/${config_file_path}"
@@ -323,6 +356,7 @@ define swift::storage::server(
     "app:${type}-server/set log_address"  => {'value'  => $log_address},
     # auditor
     # replicator
+    "${type}-replicator/rsync_module"     => {'value'  => $rsync_module},
   }
 
   file_line { "${type}-auditor":

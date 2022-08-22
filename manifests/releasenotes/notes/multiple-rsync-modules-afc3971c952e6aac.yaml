@@ -1,0 +1,8 @@
+---
+features:
+  - |
+    It is now possible to use one rsync module per device. This is useful as
+    it allows to set the number of rsync connection per device, instead of it
+    being a gloval value per server. For it, two new parameters exist in the
+    class `storage::server`: `rsync_module_per_device` that enables this
+    new feature, and `device_names` that defines the list of devices.
