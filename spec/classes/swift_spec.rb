@@ -24,8 +24,6 @@ describe 'swift' do
           'swift-hash/swift_hash_path_suffix').with_value('string')
         is_expected.to contain_swift_config(
           'swift-hash/swift_hash_path_prefix').with_value('<SERVICE DEFAULT>')
-        is_expected.to contain_swift_config(
-          'swift-constraints/max_header_size').with_value('<SERVICE DEFAULT>')
       end
 
       it {
