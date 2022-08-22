@@ -19,42 +19,42 @@
 #
 #  [*auto_create_account_prefix*]
 #    (optional) Prefix to use when automatically creating accounts.
-#    Defaults to '.'.
+#    Defaults to $::os_service_default.
 #
 #  [*concurrency*]
 #    (optional) Number of replication workers to spawn.
-#    Defaults to 1.
+#    Defaults to $::os_service_default.
 #
 #  [*expiring_objects_account_name*]
 #    (optional) Account name used for expiring objects.
-#    Defaults to 'expiring_objects'.
+#    Defaults to $::os_service_default.
 #
 #  [*interval*]
 #    (optional) Minimum time for a pass to take, in seconds.
-#    Defaults to 300.
+#    Defaults to $::os_service_default.
 #
 #  [*process*]
 #    (optional) Which part of the work defined by $processes
 #    will this instance take.
-#    Defaults to 0.
+#    Defaults to $::os_service_default.
 #
 #  [*processes*]
 #    (optional) How many parts to divide the work into, one part per
 #    process. 0 means a single process will do all work.
-#    Defaults to 0.
+#    Defaults to $::os_service_default.
 #
 #  [*reclaim_age*]
 #    (optional) Time elapsed in seconds before an object can be
 #    reclaimed.
-#    Defaults to 604800 (1 week).
+#    Defaults to $::os_service_default.
 #
 #  [*recon_cache_path*]
 #    (optional) Directory where stats for a few items will be stored.
-#    Defaults to '/var/cache/swift'.
+#    Defaults to $::os_service_default.
 #
 #  [*report_interval*]
 #    (optional) Report interval, in seconds.
-#    Defaults to 300.
+#    Defaults to $::os_service_default.
 #
 #  [*service_provider*]
 #    (optional)
@@ -110,15 +110,15 @@ class swift::objectexpirer(
   $enabled                       = true,
   $package_ensure                = 'present',
   $pipeline                      = ['catch_errors', 'proxy-logging', 'cache', 'proxy-server'],
-  $auto_create_account_prefix    = '.',
-  $concurrency                   = 1,
-  $expiring_objects_account_name = 'expiring_objects',
-  $interval                      = 300,
-  $process                       = 0,
-  $processes                     = 0,
-  $reclaim_age                   = 604800,
-  $recon_cache_path              = '/var/cache/swift',
-  $report_interval               = 300,
+  $auto_create_account_prefix    = $::os_service_default,
+  $concurrency                   = $::os_service_default,
+  $expiring_objects_account_name = $::os_service_default,
+  $interval                      = $::os_service_default,
+  $process                       = $::os_service_default,
+  $processes                     = $::os_service_default,
+  $reclaim_age                   = $::os_service_default,
+  $recon_cache_path              = $::os_service_default,
+  $report_interval               = $::os_service_default,
   $service_provider              = $::swift::params::service_provider,
   $memcache_servers              = ['127.0.0.1:11211'],
   $cache_tls_enabled             = false,
