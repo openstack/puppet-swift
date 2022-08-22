@@ -94,19 +94,30 @@ describe 'basic swift' do
       }
       class { 'swift::proxy':
         proxy_local_net_ip => '127.0.0.1',
-        pipeline           => ['healthcheck', 'proxy-logging', 'cache', 'authtoken', 'keystone', 'dlo', 'proxy-server'],
+        pipeline           => [
+          'catch_errors', 'gatekeeper', 'healthcheck', 'proxy-logging',
+          'cache', 'authtoken', 'keystone', 'symlink', 'proxy-logging',
+          'proxy-server'
+        ],
         account_autocreate => true,
       }
       class { 'swift::proxy::authtoken':
         password => 'a_big_secret',
       }
       class { 'swift::keystone::dispersion': } -> class { 'swift::dispersion': }
-      class {'::swift::objectexpirer':
+      class { 'swift::objectexpirer':
         interval => 600,
       }
       class {
-        [ '::swift::proxy::healthcheck', '::swift::proxy::proxy_logging', '::swift::proxy::cache',
-        '::swift::proxy::keystone', '::swift::proxy::dlo' ]:
+        [
+          'swift::proxy::catch_errors',
+          'swift::proxy::gatekeeper',
+          'swift::proxy::healthcheck',
+          'swift::proxy::proxy_logging',
+          'swift::proxy::cache',
+          'swift::proxy::keystone',
+          'swift::proxy::symlink'
+        ]:
       }
       EOS
 
@@ -224,7 +235,11 @@ describe 'basic swift' do
       }
       class { 'swift::proxy':
         proxy_local_net_ip => '127.0.0.1',
-        pipeline           => ['healthcheck', 'proxy-logging', 'cache', 'authtoken', 'keystone', 'dlo', 'proxy-server'],
+        pipeline           => [
+          'catch_errors', 'gatekeeper', 'healthcheck', 'proxy-logging',
+          'cache', 'authtoken', 'keystone', 'symlink', 'proxy-logging',
+          'proxy-server'
+        ],
         account_autocreate => true,
         service_provider   => 'swiftinit',
       }
@@ -232,13 +247,20 @@ describe 'basic swift' do
         password => 'a_big_secret',
       }
       class { 'swift::keystone::dispersion': } -> class { 'swift::dispersion': }
-      class {'::swift::objectexpirer':
+      class { 'swift::objectexpirer':
         interval         => 600,
         service_provider => 'swiftinit',
       }
       class {
-        [ '::swift::proxy::healthcheck', '::swift::proxy::proxy_logging', '::swift::proxy::cache',
-        '::swift::proxy::keystone', '::swift::proxy::dlo' ]:
+        [
+          'swift::proxy::catch_errors',
+          'swift::proxy::gatekeeper',
+          'swift::proxy::healthcheck',
+          'swift::proxy::proxy_logging',
+          'swift::proxy::cache',
+          'swift::proxy::keystone',
+          'swift::proxy::symlink'
+        ]:
       }
       EOS
 
