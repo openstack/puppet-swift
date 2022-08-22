@@ -5,11 +5,10 @@ describe 'swift' do
     let :params do
       {
         :swift_hash_path_suffix => 'string',
-        :max_header_size   => '16384',
       }
     end
 
-    describe 'when no swift hash is specified' do
+    context 'when no swift hash is specified' do
       let :params do
         {}
       end
@@ -19,20 +18,14 @@ describe 'swift' do
       end
     end
 
-    describe 'when using the default value for package_ensure' do
-      let :file_defaults do
-        {
-          :owner   => 'swift',
-          :group   => 'swift',
-          :tag     => 'swift-file',
-        }
-      end
-
-      it 'configures swift.conf' do
+    context 'when using defaults' do
+      it 'should configure swift.conf' do
         is_expected.to contain_swift_config(
           'swift-hash/swift_hash_path_suffix').with_value('string')
         is_expected.to contain_swift_config(
-          'swift-constraints/max_header_size').with_value('16384')
+          'swift-hash/swift_hash_path_prefix').with_value('<SERVICE DEFAULT>')
+        is_expected.to contain_swift_config(
+          'swift-constraints/max_header_size').with_value(8192)
       end
 
       it {
@@ -42,14 +35,41 @@ describe 'swift' do
       }
     end
 
-    describe 'when overriding package_ensure parameter' do
+    context 'when overriding package_ensure parameter' do
+      before do
+        params.merge!({:package_ensure => '1.12.0-1'})
+      end
+
       it 'should effect ensure state of swift package' do
-        params[:package_ensure] = '1.12.0-1'
         is_expected.to contain_package('swift').with_ensure(params[:package_ensure])
       end
     end
 
-    describe 'when providing swift_hash_path_prefix and swift_hash_path_suffix' do
+    context 'with max_header_size' do
+      before do
+        params.merge!({:max_header_size => 16384})
+      end
+
+      it 'should configure swift.conf' do
+        is_expected.to contain_swift_config(
+          'swift-constraints/max_header_size').with_value(16384)
+      end
+    end
+
+    context 'with only swift_hash_path_prefix' do
+      let :params do
+        { :swift_hash_path_prefix => 'string' }
+      end
+
+      it 'should configure swift.conf' do
+        is_expected.to contain_swift_config(
+          'swift-hash/swift_hash_path_suffix').with_value('<SERVICE DEFAULT>')
+        is_expected.to contain_swift_config(
+          'swift-hash/swift_hash_path_prefix').with_value('string')
+      end
+    end
+
+    context 'when providing swift_hash_path_prefix and swift_hash_path_suffix' do
       let (:params) do
         {
           :swift_hash_path_suffix => 'mysuffix',

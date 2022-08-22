@@ -45,17 +45,17 @@
 # Copyright 2011 Puppetlabs Inc, unless otherwise noted.
 #
 class swift(
-  $swift_hash_path_suffix = undef,
-  $swift_hash_path_prefix = undef,
+  $swift_hash_path_suffix = $::os_service_default,
+  $swift_hash_path_prefix = $::os_service_default,
   $package_ensure         = 'present',
-  $max_header_size        = '8192',
+  $max_header_size        = 8192,
 ) {
 
   include swift::deps
   include swift::params
   include swift::client
 
-  if ($swift_hash_path_prefix == undef and $swift_hash_path_suffix == undef) {
+  if is_service_default($swift_hash_path_prefix) and is_service_default($swift_hash_path_suffix) {
     fail('You must specify at least swift_hash_path_prefix or swift_hash_path_suffix')
   }
 
