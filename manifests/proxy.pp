@@ -212,8 +212,8 @@ class swift::proxy(
     warning('no auth type provided in the pipeline')
   }
 
-  if(! member($pipeline, 'proxy-server')) {
-    warning('pipeline parameter must contain proxy-server')
+  if empty($pipeline) or $pipeline[-1] != 'proxy-server' {
+    fail('proxy-server must be the last element in pipeline')
   }
 
   if($auth_type == 'tempauth' and ! $account_autocreate ){

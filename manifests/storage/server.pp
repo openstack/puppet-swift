@@ -257,9 +257,10 @@ define swift::storage::server(
 
   # Warn if ${type-server} isn't included in the pipeline
   $pipeline_array = any2array($pipeline)
-  if !member($pipeline_array, "${type}-server") {
-    warning("swift storage server ${type} must specify ${type}-server")
+  if empty($pipeline_array) or $pipeline_array[-1] != "${type}-server" {
+    fail("${type}-server must be the last element in pipeline")
   }
+
 
   if ($log_udp_port and !$log_udp_host) {
     fail ('log_udp_port requires log_udp_host to be set')

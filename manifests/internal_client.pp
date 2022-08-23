@@ -62,8 +62,8 @@ class swift::internal_client (
 
   validate_legacy(Array, 'validate_array', $pipeline)
 
-  if(! member($pipeline, 'proxy-server')) {
-    warning('pipeline parameter must contain proxy-server')
+  if empty($pipeline) or $pipeline[-1] != 'proxy-server' {
+    fail('proxy-server must be the last element in pipeline')
   }
 
   swift_internal_client_config {
