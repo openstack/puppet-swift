@@ -29,8 +29,8 @@
 #
 # [*max_header_size*]
 #   (Optional) Max HTTP header size for incoming requests for all swift
-#   services. Recommended size is 32768 for PKI keystone tokens.
-#   Defaults to 8192
+#   services.
+#   Defaults to $::os_service_default
 #
 # == Dependencies
 #
@@ -48,7 +48,7 @@ class swift(
   $swift_hash_path_suffix = $::os_service_default,
   $swift_hash_path_prefix = $::os_service_default,
   $package_ensure         = 'present',
-  $max_header_size        = 8192,
+  $max_header_size        = $::os_service_default,
 ) {
 
   include swift::deps
