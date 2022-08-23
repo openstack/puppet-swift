@@ -94,6 +94,7 @@ describe 'swift::storage::server' do
         is_expected.to contain_swift_account_config('DEFAULT/log_statsd_sample_rate_factor').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_swift_account_config('DEFAULT/log_statsd_metric_prefix').with_value('<SERVICE DEFAULT>')
 
+        is_expected.to contain_swift_account_config('account-replicator/rsync_module').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_swift_account_config('account-replicator/concurrency').with_value(1)
         is_expected.to contain_swift_account_config('account-replicator/interval').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_swift_account_config('account-reaper/concurrency').with_value(1)
@@ -117,6 +118,37 @@ describe 'swift::storage::server' do
         it {
           is_expected.to contain_swift_account_config('pipeline:main/pipeline').with_value('healthcheck recon account-server')
         }
+      end
+
+      context 'with rsync_module_per_device' do
+        before do
+          params.merge!({
+            :rsync_module_per_device => true,
+            :device_names            => ['sda', 'sdb'],
+          })
+
+          it { is_expected.to contain_rsync__server__module('account_sda').with(
+            :path            => '/srv/node',
+            :lock_file       => '/var/lock/account_sda.lock',
+            :uid             => 'swift',
+            :gid             => 'swift',
+            :incoming_chmod  => 'Du=rwx,g=rx,o=rx,Fu=rw,g=r,o=r',
+            :outgoing_chmod  => 'Du=rwx,g=rx,o=rx,Fu=rw,g=r,o=r',
+            :max_connections => 25,
+            :read_only       => false,
+          )}
+          it { is_expected.to contain_rsync__server__module('account_sdb').with(
+            :path            => '/srv/node',
+            :lock_file       => '/var/lock/account_sdb.lock',
+            :uid             => 'swift',
+            :gid             => 'swift',
+            :incoming_chmod  => 'Du=rwx,g=rx,o=rx,Fu=rw,g=r,o=r',
+            :outgoing_chmod  => 'Du=rwx,g=rx,o=rx,Fu=rw,g=r,o=r',
+            :max_connections => 25,
+            :read_only       => false,
+          )}
+          it { is_expected.to contain_swift_account_config('account-replicator/rsync_module').with_value('{replication_ip}::account_{device}') }
+        end
       end
     end
 
@@ -180,6 +212,7 @@ describe 'swift::storage::server' do
         is_expected.to contain_swift_container_config('DEFAULT/log_statsd_metric_prefix').with_value('<SERVICE DEFAULT>')
 
         is_expected.to contain_swift_container_config('DEFAULT/allowed_sync_hosts').with_value('127.0.0.1')
+        is_expected.to contain_swift_container_config('container-replicator/rsync_module').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_swift_container_config('container-replicator/concurrency').with_value(1)
         is_expected.to contain_swift_container_config('container-replicator/interval').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_swift_container_config('container-updater/concurrency').with_value(1)
@@ -206,6 +239,37 @@ describe 'swift::storage::server' do
         it {
           is_expected.to contain_swift_container_config('pipeline:main/pipeline').with_value('healthcheck recon container-server')
         }
+      end
+
+      context 'with rsync_module_per_device' do
+        before do
+          params.merge!({
+            :rsync_module_per_device => true,
+            :device_names            => ['sda', 'sdb'],
+          })
+
+          it { is_expected.to contain_rsync__server__module('container_sda').with(
+            :path            => '/srv/node',
+            :lock_file       => '/var/lock/container_sda.lock',
+            :uid             => 'swift',
+            :gid             => 'swift',
+            :incoming_chmod  => 'Du=rwx,g=rx,o=rx,Fu=rw,g=r,o=r',
+            :outgoing_chmod  => 'Du=rwx,g=rx,o=rx,Fu=rw,g=r,o=r',
+            :max_connections => 25,
+            :read_only       => false,
+          )}
+          it { is_expected.to contain_rsync__server__module('container_sdb').with(
+            :path            => '/srv/node',
+            :lock_file       => '/var/lock/container_sdb.lock',
+            :uid             => 'swift',
+            :gid             => 'swift',
+            :incoming_chmod  => 'Du=rwx,g=rx,o=rx,Fu=rw,g=r,o=r',
+            :outgoing_chmod  => 'Du=rwx,g=rx,o=rx,Fu=rw,g=r,o=r',
+            :max_connections => 25,
+            :read_only       => false,
+          )}
+          it { is_expected.to contain_swift_container_config('container-replicator/rsync_module').with_value('{replication_ip}::container_{device}') }
+        end
       end
     end
 
@@ -275,6 +339,8 @@ describe 'swift::storage::server' do
         is_expected.to contain_swift_object_config('app:object-server/splice').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_swift_object_config('app:object-server/mb_per_sync').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_swift_object_config('object-auditor/disk_chunk_size').with_value('<SERVICE DEFAULT>')
+        is_expected.to contain_swift_object_config('object-replicator/rsync_module').with_value('<SERVICE DEFAULT>')
+        is_expected.to contain_swift_object_config('object-replicator/rsync_module').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_swift_object_config('object-replicator/concurrency').with_value(1)
         is_expected.to contain_swift_object_config('object-replicator/rsync_timeout').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_swift_object_config('object-replicator/rsync_bwlimit').with_value('<SERVICE DEFAULT>')
@@ -299,6 +365,37 @@ describe 'swift::storage::server' do
         it {
           is_expected.to contain_swift_object_config('pipeline:main/pipeline').with_value('healthcheck recon object-server')
         }
+      end
+
+      context 'with rsync_module_per_device' do
+        before do
+          params.merge!({
+            :rsync_module_per_device => true,
+            :device_names            => ['sda', 'sdb'],
+          })
+
+          it { is_expected.to contain_rsync__server__module('object_sda').with(
+            :path            => '/srv/node',
+            :lock_file       => '/var/lock/object_sda.lock',
+            :uid             => 'swift',
+            :gid             => 'swift',
+            :incoming_chmod  => 'Du=rwx,g=rx,o=rx,Fu=rw,g=r,o=r',
+            :outgoing_chmod  => 'Du=rwx,g=rx,o=rx,Fu=rw,g=r,o=r',
+            :max_connections => 25,
+            :read_only       => false,
+          )}
+          it { is_expected.to contain_rsync__server__module('object_sdb').with(
+            :path            => '/srv/node',
+            :lock_file       => '/var/lock/object_sdb.lock',
+            :uid             => 'swift',
+            :gid             => 'swift',
+            :incoming_chmod  => 'Du=rwx,g=rx,o=rx,Fu=rw,g=r,o=r',
+            :outgoing_chmod  => 'Du=rwx,g=rx,o=rx,Fu=rw,g=r,o=r',
+            :max_connections => 25,
+            :read_only       => false,
+          )}
+          it { is_expected.to contain_swift_object_config('object-replicator/rsync_module').with_value('{replication_ip}::object_{device}') }
+        end
       end
     end
   end
