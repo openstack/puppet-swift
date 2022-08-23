@@ -17,10 +17,6 @@
 #    (optional) The list of elements of the object expirer pipeline.
 #    Defaults to ['catch_errors', 'proxy-logging', 'cache', 'proxy-server']
 #
-#  [*auto_create_account_prefix*]
-#    (optional) Prefix to use when automatically creating accounts.
-#    Defaults to $::os_service_default.
-#
 #  [*concurrency*]
 #    (optional) Number of replication workers to spawn.
 #    Defaults to $::os_service_default.
@@ -105,12 +101,17 @@
 #    (optional) Log level
 #    Defaults to 'LOG_LOCAL2'.
 #
+# DEPRECATED PARAMETERS
+#
+#  [*auto_create_account_prefix*]
+#    (optional) Prefix to use when automatically creating accounts.
+#    Defaults to undef
+#
 class swift::objectexpirer(
   $manage_service                = true,
   $enabled                       = true,
   $package_ensure                = 'present',
   $pipeline                      = ['catch_errors', 'proxy-logging', 'cache', 'proxy-server'],
-  $auto_create_account_prefix    = $::os_service_default,
   $concurrency                   = $::os_service_default,
   $expiring_objects_account_name = $::os_service_default,
   $interval                      = $::os_service_default,
@@ -127,11 +128,17 @@ class swift::objectexpirer(
   $cache_tls_keyfile             = undef,
   $log_level                     = 'INFO',
   $log_facility                  = 'LOG_LOCAL2',
+  # DEPRECATED PARAMETERS
+  $auto_create_account_prefix    = undef,
 ) inherits swift::params {
 
   include swift::deps
   Swift_config<| |> ~> Service['swift-object-expirer']
   Swift_object_expirer_config<||> ~> Service['swift-object-expirer']
+
+  if $auto_create_account_prefix != undef {
+    warning('The auto_create_account_prefix parameter is deprecated. Use the swift::constraints class.')
+  }
 
   # On Red Hat platforms, it may be defined already,
   # because it is part of openstack-swift-proxy
@@ -174,7 +181,7 @@ class swift::objectexpirer(
 
   swift_object_expirer_config {
     'pipeline:main/pipeline':                       value => join($pipeline, ' ');
-    'object-expirer/auto_create_account_prefix':    value => $auto_create_account_prefix;
+    'object-expirer/auto_create_account_prefix':    value => pick($auto_create_account_prefix, $::os_service_default);
     'object-expirer/concurrency':                   value => $concurrency;
     'object-expirer/expiring_objects_account_name': value => $expiring_objects_account_name;
     'object-expirer/interval':                      value => $interval;

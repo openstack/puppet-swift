@@ -27,10 +27,12 @@
 #   (Optional) The ensure state for the swift package.
 #   Defaults to present.
 #
+# DEPRECATED PARAMETERS
+#
 # [*max_header_size*]
 #   (Optional) Max HTTP header size for incoming requests for all swift
 #   services.
-#   Defaults to $::os_service_default
+#   Defaults to undef
 #
 # == Dependencies
 #
@@ -48,7 +50,8 @@ class swift(
   $swift_hash_path_suffix = $::os_service_default,
   $swift_hash_path_prefix = $::os_service_default,
   $package_ensure         = 'present',
-  $max_header_size        = $::os_service_default,
+  # DEPRECATED PARAMETERS
+  $max_header_size        = undef
 ) {
 
   include swift::deps
@@ -68,6 +71,10 @@ class swift(
   swift_config {
     'swift-hash/swift_hash_path_suffix': value => $swift_hash_path_suffix;
     'swift-hash/swift_hash_path_prefix': value => $swift_hash_path_prefix;
-    'swift-constraints/max_header_size': value => $max_header_size;
+  }
+
+  if $max_header_size != undef {
+    warning('The swift::max_header_size parameter is deprecated. Use the swift::constraints class.')
+    include swift::constraints
   }
 }

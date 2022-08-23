@@ -1,0 +1,15 @@
+---
+features:
+  - |
+    The new ``swift::constraints`` class, which manages the
+    ``[swift-constraints]`` options, has been added.
+
+deprecations:
+  - |
+    The ``swift::max_header_size`` parameter has been deprecated in favor of
+    the new ``swift::constraints`` class.
+
+  - |
+    The ``swift::objectexpirer::auto_create_account_prefix`` parameter has been
+    deprecated. Use the ``swift::constraints::auto_create_account_prefix``
+    parameter instead.
