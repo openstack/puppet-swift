@@ -51,10 +51,10 @@ class swift::storage::cron::recon(
   $month      = '*',
   $weekday    = '*',
   $configfile = '/etc/swift/object-server.conf',
-  $user       = 'swift'
-) {
+  $user       = $::swift::params::user
+) inherits swift::params {
+
   include swift::deps
-  include swift::params
 
   cron { 'swift-recon-cron':
     command     => "swift-recon-cron ${configfile}",
