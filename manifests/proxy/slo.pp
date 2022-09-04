@@ -53,12 +53,6 @@
 #  of segments using query params like `?multipart-manifest=delete&async=on`.
 #  Defaults to $::os_service_default.
 #
-# DEPRECATED PARAMETERS
-#
-# [*min_segment_size*]
-#  (Optional) minimal segment size
-#  Defaults to undef.
-#
 # == Authors
 #
 #   Xingchao Yu  yuxcer@gmail.com
@@ -78,18 +72,9 @@ class swift::proxy::slo (
   $delete_concurrency          = $::os_service_default,
   $yield_frequency             = $::os_service_default,
   $allow_async_delete          = $::os_service_default,
-  # DEPRECATED PARAMETERS
-  $min_segment_size            = undef,
 ) {
 
   include swift::deps
-
-  if $min_segment_size != undef {
-    warning('The swift::proxy::slo::min_segment_size parameter is deprecated and has no effect.')
-  }
-  swift_proxy_config {
-    'filter:slo/min_segment_size': ensure => absent;
-  }
 
   swift_proxy_config {
     'filter:slo/use':                         value => 'egg:swift#slo';

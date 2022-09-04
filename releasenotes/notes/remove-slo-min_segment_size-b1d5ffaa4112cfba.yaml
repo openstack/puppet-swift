@@ -1,0 +1,4 @@
+---
+upgrade:
+  - |
+    The ``swift::proxy::slo::min_segment_size`` parameter has been removed.
