@@ -87,10 +87,6 @@
 #
 # DEPRECATED PARAMETERS
 #
-# [*signing_dir*]
-#    The cache directory for signing certificates.
-#    Defaults to undef
-#
 # [*auth_plugin*]
 #   (Optional) The plugin for authentication
 #   Defaults to undef
@@ -122,7 +118,6 @@ class swift::proxy::authtoken(
   $service_type                 = $::os_service_default,
   $interface                    = $::os_service_default,
   # DEPRECATED PARAMETERS
-  $signing_dir                  = undef,
   $auth_plugin                  = undef,
 ) inherits swift::params {
 
@@ -134,10 +129,6 @@ Please set password parameter')
     $password_real = 'password'
   } else {
     $password_real = $password
-  }
-
-  if $signing_dir != undef {
-    warning('The signing_dir parameter was deprecated and has no effect')
   }
 
   if $auth_plugin != undef {
