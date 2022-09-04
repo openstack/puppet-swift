@@ -1,0 +1,8 @@
+---
+features:
+  - |
+    The ``swift::proxy::ratelimit`` class now supports the following two new
+    parameters. These parameters accept hash of container size and limit.
+
+    - ``container_ratelimit``
+    - ``container_listing_ratelimit``

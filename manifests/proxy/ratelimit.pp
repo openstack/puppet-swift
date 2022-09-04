@@ -27,6 +27,14 @@
 #   (optional) if >0, limits PUT and DELETE requests to containers
 #   Defaults to $::os_service_default.
 #
+# [*container_ratelimit*]
+#   (optional) Hash of size(keys) and requests per seconds(values).
+#   Defaults to {}.
+#
+# [*container_listing_ratelimit*]
+#   (optional) Hash of size(keys) and requests per seconds(values).
+#   Defaults to {}.
+#
 # == Dependencies
 #
 # == Examples
@@ -40,14 +48,19 @@
 # Copyright 2012 eNovance licensing@enovance.com
 #
 class swift::proxy::ratelimit(
-  $clock_accuracy         = $::os_service_default,
-  $max_sleep_time_seconds = $::os_service_default,
-  $log_sleep_time_seconds = $::os_service_default,
-  $rate_buffer_seconds    = $::os_service_default,
-  $account_ratelimit      = $::os_service_default
+  $clock_accuracy              = $::os_service_default,
+  $max_sleep_time_seconds      = $::os_service_default,
+  $log_sleep_time_seconds      = $::os_service_default,
+  $rate_buffer_seconds         = $::os_service_default,
+  $account_ratelimit           = $::os_service_default,
+  $container_ratelimit         = {},
+  $container_listing_ratelimit = {},
 ) {
 
   include swift::deps
+
+  validate_legacy(Hash, 'validate_hash', $container_ratelimit)
+  validate_legacy(Hash, 'validate_hash', $container_listing_ratelimit)
 
   swift_proxy_config {
     'filter:ratelimit/use':                    value => 'egg:swift#ratelimit';
@@ -56,5 +69,17 @@ class swift::proxy::ratelimit(
     'filter:ratelimit/log_sleep_time_seconds': value => $log_sleep_time_seconds;
     'filter:ratelimit/rate_buffer_seconds':    value => $rate_buffer_seconds;
     'filter:ratelimit/account_ratelimit':      value => $account_ratelimit;
+  }
+
+  $container_ratelimit.each | $size, $limit | {
+    swift_proxy_config {
+      "filter:ratelimit/container_ratelimit_${size}": value => $limit;
+    }
+  }
+
+  $container_listing_ratelimit.each | $size, $limit | {
+    swift_proxy_config {
+      "filter:ratelimit/container_listing_ratelimit_${size}": value => $limit;
+    }
   }
 }

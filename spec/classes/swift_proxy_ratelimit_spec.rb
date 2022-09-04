@@ -28,6 +28,38 @@ describe 'swift::proxy::ratelimit' do
       it { is_expected.to contain_swift_proxy_config('filter:ratelimit/rate_buffer_seconds').with_value('5') }
       it { is_expected.to contain_swift_proxy_config('filter:ratelimit/account_ratelimit').with_value('0') }
     end
+
+    describe "with container ratelimit" do
+      let :params do
+        {
+          :container_ratelimit => {
+            0  => 100,
+            10 => 50,
+            50 => 20
+          }
+        }
+      end
+
+      it { is_expected.to contain_swift_proxy_config('filter:ratelimit/container_ratelimit_0').with_value(100) }
+      it { is_expected.to contain_swift_proxy_config('filter:ratelimit/container_ratelimit_10').with_value(50) }
+      it { is_expected.to contain_swift_proxy_config('filter:ratelimit/container_ratelimit_50').with_value(20) }
+    end
+
+    describe "with container listing ratelimit" do
+      let :params do
+        {
+          :container_listing_ratelimit => {
+            0  => 100,
+            10 => 50,
+            50 => 20
+          }
+        }
+      end
+
+      it { is_expected.to contain_swift_proxy_config('filter:ratelimit/container_listing_ratelimit_0').with_value(100) }
+      it { is_expected.to contain_swift_proxy_config('filter:ratelimit/container_listing_ratelimit_10').with_value(50) }
+      it { is_expected.to contain_swift_proxy_config('filter:ratelimit/container_listing_ratelimit_50').with_value(20) }
+    end
   end
 
   on_supported_os({
