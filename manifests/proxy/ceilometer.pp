@@ -153,10 +153,6 @@
 #
 # == DEPRECATED
 #
-# [*auth_uri*]
-#   (Optional) Complete public Identity API endpoint.
-#   Defaults to undef
-#
 # [*group*]
 #   Group name to add to 'swift' user.
 #   Defaults to undef
@@ -204,17 +200,12 @@ class swift::proxy::ceilometer(
   $kombu_failover_strategy            = $::os_service_default,
   $kombu_compression                  = $::os_service_default,
   # DEPRECATED PARAMETERS
-  $auth_uri                           = undef,
   $group                              = undef,
 ) inherits swift {
 
   include swift::deps
 
   Package['python-ceilometermiddleware'] ~> Service<| title == 'swift-proxy-server' |>
-
-  if $auth_uri {
-    warning('The swift::proxy::ceilometer::auth_uri parameter was deprecated, and has no effect')
-  }
 
   if $group != undef {
     warning('The group parameer has been deprecated and has no effect now.')
