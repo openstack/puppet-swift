@@ -72,12 +72,6 @@
 #   Override the default log routing for s3api middleware
 #   Defaults to $::os_service_default.
 #
-# DEPRECATED PARAMETERS
-#
-# [*ensure*]
-#   Enable or not s3api middleware
-#   Defaults to undef
-#
 class swift::proxy::s3api(
   $allow_no_owner                = $::os_service_default,
   $location                      = $::os_service_default,
@@ -95,15 +89,9 @@ class swift::proxy::s3api(
   $force_swift_request_proxy_log = $::os_service_default,
   $min_segment_size              = $::os_service_default,
   $log_name                      = $::os_service_default,
-  # DEPRECATED PARAMETERS
-  $ensure                        = undef,
 ) {
 
   include swift::deps
-
-  if $ensure != undef {
-    warning('The ensure parameter has been deprecated and has no effect')
-  }
 
   swift_proxy_config {
     'filter:s3api/use':                           value => 'egg:swift#s3api';
