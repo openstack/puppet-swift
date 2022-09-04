@@ -19,8 +19,8 @@ describe 'swift::storage::all' do
       :outgoing_chmod  => 'Du=rwx,g=rx,o=rx,Fu=rw,g=r,o=r',
       :log_requests    => true,
       :max_connections => 25,
-      :rsync_timeout   => 900,
-      :rsync_bwlimit   => 0
+      :rsync_timeout   => '<SERVICE DEFAULT>',
+      :rsync_bwlimit   => '<SERVICE DEFAULT>'
     }
   end
 
