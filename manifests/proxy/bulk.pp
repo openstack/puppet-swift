@@ -29,8 +29,22 @@
 #   has extraction failures.
 #   Defaults to $::os_service_default.
 #
+# [*max_failed_deletes*]
+#   (Optional) The maximum number of failed deletion allowed in a bulk delete
+#   of objects and their container.
+#   Defaults to $::os_service_default
+#
 # [*max_deletes_per_request*]
 #   (Optional) The maximum number of deletes allowed by each request.
+#   Defaults to $::os_service_default.
+#
+# [*delete_container_retry_count*]
+#   (Optional) Number of retries to delete container in a bulk delete of
+#   objects and their container.
+#   Defaults to $::os_service_default.
+#
+# [*delete_concurrency*]
+#   (Optional) The number of objects to delete at a time.
 #   Defaults to $::os_service_default.
 #
 # [*yield_frequency*]
@@ -41,7 +55,10 @@
 class swift::proxy::bulk(
   $max_containers_per_extraction = $::os_service_default,
   $max_failed_extractions        = $::os_service_default,
+  $max_failed_deletes            = $::os_service_default,
   $max_deletes_per_request       = $::os_service_default,
+  $delete_container_retry_count  = $::os_service_default,
+  $delete_concurrency            = $::os_service_default,
   $yield_frequency               = $::os_service_default,
 ) {
 
@@ -51,7 +68,10 @@ class swift::proxy::bulk(
     'filter:bulk/use':                           value => 'egg:swift#bulk';
     'filter:bulk/max_containers_per_extraction': value => $max_containers_per_extraction;
     'filter:bulk/max_failed_extractions':        value => $max_failed_extractions;
+    'filter:bulk/max_failed_deletes':            value => $max_failed_deletes;
     'filter:bulk/max_deletes_per_request':       value => $max_deletes_per_request;
+    'filter:bulk/delete_container_retry_count':  value => $delete_container_retry_count;
+    'filter:bulk/delete_concurrency':            value => $delete_concurrency;
     'filter:bulk/yield_frequency':               value => $yield_frequency;
   }
 }

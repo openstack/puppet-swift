@@ -1,0 +1,8 @@
+---
+features:
+  - |
+    The ``swift::proxy::bulk`` class now supports the following new parameters.
+
+    - ``max_failed_deletes``
+    - ``delete_container_retry_count``
+    - ``delete_concurrency``

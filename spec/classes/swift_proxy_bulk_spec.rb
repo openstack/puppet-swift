@@ -26,7 +26,10 @@ describe 'swift::proxy::bulk' do
       it { is_expected.to contain_swift_proxy_config('filter:bulk/use').with_value('egg:swift#bulk') }
       it { is_expected.to contain_swift_proxy_config('filter:bulk/max_containers_per_extraction').with_value('<SERVICE DEFAULT>') }
       it { is_expected.to contain_swift_proxy_config('filter:bulk/max_failed_extractions').with_value('<SERVICE DEFAULT>') }
+      it { is_expected.to contain_swift_proxy_config('filter:bulk/max_failed_deletes').with_value('<SERVICE DEFAULT>') }
       it { is_expected.to contain_swift_proxy_config('filter:bulk/max_deletes_per_request').with_value('<SERVICE DEFAULT>') }
+      it { is_expected.to contain_swift_proxy_config('filter:bulk/delete_container_retry_count').with_value('<SERVICE DEFAULT>') }
+      it { is_expected.to contain_swift_proxy_config('filter:bulk/delete_concurrency').with_value('<SERVICE DEFAULT>') }
       it { is_expected.to contain_swift_proxy_config('filter:bulk/yield_frequency').with_value('<SERVICE DEFAULT>') }
     end
 
@@ -35,7 +38,10 @@ describe 'swift::proxy::bulk' do
         {
           :max_containers_per_extraction => 10000,
           :max_failed_extractions        => 1000,
+          :max_failed_deletes            => 1001,
           :max_deletes_per_request       => 10001,
+          :delete_container_retry_count  => 0,
+          :delete_concurrency            => 2,
           :yield_frequency               => 10,
         }
       end
@@ -43,7 +49,10 @@ describe 'swift::proxy::bulk' do
       it { is_expected.to contain_swift_proxy_config('filter:bulk/use').with_value('egg:swift#bulk') }
       it { is_expected.to contain_swift_proxy_config('filter:bulk/max_containers_per_extraction').with_value(10000) }
       it { is_expected.to contain_swift_proxy_config('filter:bulk/max_failed_extractions').with_value(1000) }
+      it { is_expected.to contain_swift_proxy_config('filter:bulk/max_failed_deletes').with_value(1001) }
       it { is_expected.to contain_swift_proxy_config('filter:bulk/max_deletes_per_request').with_value(10001) }
+      it { is_expected.to contain_swift_proxy_config('filter:bulk/delete_container_retry_count').with_value(0) }
+      it { is_expected.to contain_swift_proxy_config('filter:bulk/delete_concurrency').with_value(2) }
       it { is_expected.to contain_swift_proxy_config('filter:bulk/yield_frequency').with_value(10) }
     end
   end
