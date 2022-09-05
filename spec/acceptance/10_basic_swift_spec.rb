@@ -126,6 +126,19 @@ describe 'basic swift' do
           'swift::proxy::symlink'
         ]:
       }
+      class { 'swift::internal_client':
+        pipeline => [ 'catch_errors', 'proxy-logging', 'cache', 'symlink', 'proxy-server' ],
+      }
+      class { 'swift::internal_client::cache':
+        memcache_servers => $::openstack_integration::config::swift_memcached_servers
+      }
+      class {
+        [
+          'swift::internal_client::catch_errors',
+          'swift::internal_client::proxy_logging',
+          'swift::internal_client::symlink'
+        ]:
+      }
       EOS
 
       # Need to be run 2 times because we have an exported when creating the ring.
@@ -274,6 +287,19 @@ describe 'basic swift' do
           'swift::proxy::proxy_logging',
           'swift::proxy::keystone',
           'swift::proxy::symlink'
+        ]:
+      }
+      class { 'swift::internal_client':
+        pipeline => [ 'catch_errors', 'proxy-logging', 'cache', 'symlink', 'proxy-server' ],
+      }
+      class { 'swift::internal_client::cache':
+        memcache_servers => $::openstack_integration::config::swift_memcached_servers
+      }
+      class {
+        [
+          'swift::internal_client::catch_errors',
+          'swift::internal_client::proxy_logging',
+          'swift::internal_client::symlink'
         ]:
       }
       EOS
