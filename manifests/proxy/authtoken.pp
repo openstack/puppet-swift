@@ -171,7 +171,7 @@ Please set password parameter')
     'filter:authtoken/delay_auth_decision':          value => $delay_auth_decision;
     'filter:authtoken/cache':                        value => $cache;
     'filter:authtoken/include_service_catalog':      value => $include_service_catalog;
-    'filter:authtoken/service_token_roles':          value => $service_token_roles;
+    'filter:authtoken/service_token_roles':          value => join(any2array($service_token_roles), ',');
     'filter:authtoken/service_token_roles_required': value => $service_token_roles_required;
     'filter:authtoken/service_type':                 value => $service_type;
     'filter:authtoken/interface':                    value => $interface,
