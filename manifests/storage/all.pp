@@ -74,21 +74,21 @@
 #
 # [*log_statsd_port*]
 #   (optional) statsd port to send data to.
-#   Defaults to 8125
+#   Default to $::os_service_default.
 #
 # [*log_statsd_default_sample_rate*]
 #   (optional) Default sample rate for data. This should be a number between 0
 #   and 1. According to the documentation this should be set to 1 and the
 #   sample rate factor should be adjusted.
-#   Defaults to '1.0'
+#   Default to $::os_service_default.
 #
 # [*log_statsd_sample_rate_factor*]
 #   (optional) sample rate factor for data.
-#   Defaults to '1.0'
+#   Default to $::os_service_default.
 #
 # [*log_statsd_metric_prefix*]
 #   (optional) Prefix for data being sent to statsd.
-#   Defaults to ''
+#   Default to $::os_service_default.
 #
 # [*account_server_workers*]
 #   (optional) Number of account server workers.
@@ -108,16 +108,16 @@
 #
 # [*rsync_timeout*]
 #   (optional) Max duration of a partition rsync.
-#   Default to 900.
+#   Default to $::os_service_default.
 #
 # [*rsync_bwlimit*]
 #   (optional) Bandwidth limit for rsync in kB/s. 0 means unlimited.
-#   Default to 0.
+#   Default to $::os_service_default.
 #
 # [*splice*]
 #   (optional) Use splice for zero-copy object GETs. This requires Linux Kernel
 #   version 3.0 or greater.
-#   Defaults to false.
+#   Default to $::os_service_default.
 #
 # [*max_connections*]
 #   (optional) maximum number of simultaneous connections allowed for rsync.
@@ -146,16 +146,16 @@ class swift::storage::all(
   $outgoing_chmod                 = 'Du=rwx,g=rx,o=rx,Fu=rw,g=r,o=r',
   $statsd_enabled                 = false,
   $log_statsd_host                = 'localhost',
-  $log_statsd_port                = 8125,
-  $log_statsd_default_sample_rate = '1.0',
-  $log_statsd_sample_rate_factor  = '1.0',
-  $log_statsd_metric_prefix       = '',
+  $log_statsd_port                = $::os_service_default,
+  $log_statsd_default_sample_rate = $::os_service_default,
+  $log_statsd_sample_rate_factor  = $::os_service_default,
+  $log_statsd_metric_prefix       = $::os_service_default,
   $account_server_workers         = $::os_workers,
   $container_server_workers       = $::os_workers,
   $object_server_workers          = $::os_workers,
-  $object_server_mb_per_sync      = 512,
-  $rsync_timeout                  = 900,
-  $rsync_bwlimit                  = 0,
+  $object_server_mb_per_sync      = $::os_service_default,
+  $rsync_timeout                  = $::os_service_default,
+  $rsync_bwlimit                  = $::os_service_default,
   $splice                         = false,
   $max_connections                = 25,
   $rsync_use_xinetd               = $::swift::params::xinetd_available,
