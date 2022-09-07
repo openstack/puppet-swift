@@ -1,0 +1,4 @@
+---
+upgrade:
+  - |
+    The ``swift::proxy::ceilometer::auth_uri`` parameter has been removed.
