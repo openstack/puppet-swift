@@ -29,11 +29,14 @@ describe 'basic swift' do
         package_ensure    => latest,
       }
       class { 'swift::keystone::auth':
-        password => 'a_big_secret',
+        public_url   => "http://${::openstack_integration::config::ip_for_url}:8080/v1/AUTH_%(tenant_id)s",
+        admin_url    => "http://${::openstack_integration::config::ip_for_url}:8080",
+        internal_url => "http://${::openstack_integration::config::ip_for_url}:8080/v1/AUTH_%(tenant_id)s",
+        password     => 'a_big_secret',
       }
       # === Configure Storage
       class { 'swift::storage':
-        storage_local_net_ip => '127.0.0.1',
+        storage_local_net_ip => $::openstack_integration::config::host,
       }
       # create xfs partitions on a loopback device and mounts them
       swift::storage::loopback { ['2','3','4']:
@@ -60,40 +63,40 @@ describe 'basic swift' do
         mnt_base_dir         => '/srv/node',
         weight               => 1,
         zone                 => '2',
-        storage_local_net_ip => '127.0.0.1',
+        storage_local_net_ip => $::openstack_integration::config::host,
         policy_index         => 0,
         require              => Swift::Storage::Loopback['2','3','4'] ,
       }
       # ring_object_devices for a storage policy start with the policy id.
       # Create 3 ring_object_device starting with "1:" to be
       # added to an object-1 ring for storage policy 1.
-      ring_object_device { "1:127.0.0.1:6000/2":
-        zone         => 2,
-        weight       => 1,
-        require      => Swift::Storage::Loopback['2'],
+      ring_object_device { "1:${::openstack_integration::config::ip_for_url}:6000/2":
+        zone    => 2,
+        weight  => 1,
+        require => Swift::Storage::Loopback['2'],
       }
-      ring_object_device { "1:127.0.0.1:6000/3":
-        zone         => 2,
-        weight       => 1,
-        require      => Swift::Storage::Loopback['3'] ,
+      ring_object_device { "1:${::openstack_integration::config::ip_for_url}:6000/3":
+        zone    => 2,
+        weight  => 1,
+        require => Swift::Storage::Loopback['3'] ,
       }
-      ring_object_device { "1:127.0.0.1:6000/4":
-        zone         => 2,
-        weight       => 1,
-        require      => Swift::Storage::Loopback['4'] ,
+      ring_object_device { "1:${::openstack_integration::config::ip_for_url}:6000/4":
+        zone    => 2,
+        weight  => 1,
+        require => Swift::Storage::Loopback['4'] ,
       }
       class { 'swift::ringbuilder':
-        part_power     => '18',
-        replicas       => '1',
+        part_power     => 18,
+        replicas       => 1,
         min_part_hours => 1,
       }
       swift::ringbuilder::policy_ring { '1':
-        part_power     => '18',
-        replicas       => '3',
+        part_power     => 18,
+        replicas       => 3,
         min_part_hours => 1,
       }
       class { 'swift::proxy':
-        proxy_local_net_ip => '127.0.0.1',
+        proxy_local_net_ip => $::openstack_integration::config::host,
         pipeline           => [
           'catch_errors', 'gatekeeper', 'healthcheck', 'proxy-logging',
           'cache', 'authtoken', 'keystone', 'symlink', 'proxy-logging',
@@ -102,11 +105,16 @@ describe 'basic swift' do
         account_autocreate => true,
       }
       class { 'swift::proxy::authtoken':
-        password => 'a_big_secret',
+        www_authenticate_uri => "${::openstack_integration::config::keystone_auth_uri}/v3",
+        auth_url             => "${::openstack_integration::config::keystone_admin_uri}/",
+        password             => 'a_big_secret',
       }
       class { 'swift::keystone::dispersion': } -> class { 'swift::dispersion': }
       class { 'swift::objectexpirer':
         interval => 600,
+      }
+      class { 'swift::proxy::cache':
+        memcache_servers => $::openstack_integration::config::swift_memcached_servers
       }
       class {
         [
@@ -114,7 +122,6 @@ describe 'basic swift' do
           'swift::proxy::gatekeeper',
           'swift::proxy::healthcheck',
           'swift::proxy::proxy_logging',
-          'swift::proxy::cache',
           'swift::proxy::keystone',
           'swift::proxy::symlink'
         ]:
@@ -161,11 +168,14 @@ describe 'basic swift' do
         package_ensure    => latest,
       }
       class { 'swift::keystone::auth':
-        password => 'a_big_secret',
+        public_url   => "http://${::openstack_integration::config::ip_for_url}:8080/v1/AUTH_%(tenant_id)s",
+        admin_url    => "http://${::openstack_integration::config::ip_for_url}:8080",
+        internal_url => "http://${::openstack_integration::config::ip_for_url}:8080/v1/AUTH_%(tenant_id)s",
+        password     => 'a_big_secret',
       }
       # === Configure Storage
       class { 'swift::storage':
-        storage_local_net_ip => '127.0.0.1',
+        storage_local_net_ip => $::openstack_integration::config::host,
       }
       # create xfs partitions on a loopback device and mounts them
       swift::storage::loopback { ['2','3','4']:
@@ -192,27 +202,27 @@ describe 'basic swift' do
         mnt_base_dir         => '/srv/node',
         weight               => 1,
         zone                 => '2',
-        storage_local_net_ip => '127.0.0.1',
+        storage_local_net_ip => $::openstack_integration::config::host,
         policy_index         => 0,
         require              => Swift::Storage::Loopback['2','3','4'] ,
       }
       # ring_object_devices for a storage policy start with the policy id.
       # Create 3 ring_object_device starting with "1:" to be
       # added to an object-1 ring for storage policy 1.
-      ring_object_device { "1:127.0.0.1:6000/2":
-        zone         => 2,
-        weight       => 1,
-        require      => Swift::Storage::Loopback['2'],
+      ring_object_device { "1:${::openstack_integration::config::ip_for_url}:6000/2":
+        zone    => 2,
+        weight  => 1,
+        require => Swift::Storage::Loopback['2'],
       }
-      ring_object_device { "1:127.0.0.1:6000/3":
-        zone         => 2,
-        weight       => 1,
-        require      => Swift::Storage::Loopback['3'] ,
+      ring_object_device { "1:${::openstack_integration::config::ip_for_url}:6000/3":
+        zone    => 2,
+        weight  => 1,
+        require => Swift::Storage::Loopback['3'] ,
       }
-      ring_object_device { "1:127.0.0.1:6000/4":
-        zone         => 2,
-        weight       => 1,
-        require      => Swift::Storage::Loopback['4'] ,
+      ring_object_device { "1:${::openstack_integration::config::ip_for_url}:6000/4":
+        zone    => 2,
+        weight  => 1,
+        require => Swift::Storage::Loopback['4'] ,
       }
       class { 'swift::storage::account':
         service_provider => 'swiftinit',
@@ -224,17 +234,17 @@ describe 'basic swift' do
         service_provider => 'swiftinit',
       }
       class { 'swift::ringbuilder':
-        part_power     => '18',
-        replicas       => '1',
+        part_power     => 18,
+        replicas       => 1,
         min_part_hours => 1,
       }
       swift::ringbuilder::policy_ring { '1':
-        part_power     => '18',
-        replicas       => '3',
+        part_power     => 18,
+        replicas       => 3,
         min_part_hours => 1,
       }
       class { 'swift::proxy':
-        proxy_local_net_ip => '127.0.0.1',
+        proxy_local_net_ip => $::openstack_integration::config::host,
         pipeline           => [
           'catch_errors', 'gatekeeper', 'healthcheck', 'proxy-logging',
           'cache', 'authtoken', 'keystone', 'symlink', 'proxy-logging',
@@ -244,12 +254,17 @@ describe 'basic swift' do
         service_provider   => 'swiftinit',
       }
       class { 'swift::proxy::authtoken':
-        password => 'a_big_secret',
+        www_authenticate_uri => "${::openstack_integration::config::keystone_auth_uri}/v3",
+        auth_url             => "${::openstack_integration::config::keystone_admin_uri}/",
+        password             => 'a_big_secret',
       }
       class { 'swift::keystone::dispersion': } -> class { 'swift::dispersion': }
       class { 'swift::objectexpirer':
         interval         => 600,
         service_provider => 'swiftinit',
+      }
+      class { 'swift::proxy::cache':
+        memcache_servers => $::openstack_integration::config::swift_memcached_servers
       }
       class {
         [
@@ -257,7 +272,6 @@ describe 'basic swift' do
           'swift::proxy::gatekeeper',
           'swift::proxy::healthcheck',
           'swift::proxy::proxy_logging',
-          'swift::proxy::cache',
           'swift::proxy::keystone',
           'swift::proxy::symlink'
         ]:
