@@ -24,27 +24,27 @@ describe 'swift::proxy::bulk' do
   shared_examples 'swift::proxy::bulk' do
     describe "when using default parameters" do
       it { is_expected.to contain_swift_proxy_config('filter:bulk/use').with_value('egg:swift#bulk') }
-      it { is_expected.to contain_swift_proxy_config('filter:bulk/max_containers_per_extraction').with_value('10000') }
-      it { is_expected.to contain_swift_proxy_config('filter:bulk/max_failed_extractions').with_value('1000') }
-      it { is_expected.to contain_swift_proxy_config('filter:bulk/max_deletes_per_request').with_value('10000') }
-      it { is_expected.to contain_swift_proxy_config('filter:bulk/yield_frequency').with_value('10') }
+      it { is_expected.to contain_swift_proxy_config('filter:bulk/max_containers_per_extraction').with_value('<SERVICE DEFAULT>') }
+      it { is_expected.to contain_swift_proxy_config('filter:bulk/max_failed_extractions').with_value('<SERVICE DEFAULT>') }
+      it { is_expected.to contain_swift_proxy_config('filter:bulk/max_deletes_per_request').with_value('<SERVICE DEFAULT>') }
+      it { is_expected.to contain_swift_proxy_config('filter:bulk/yield_frequency').with_value('<SERVICE DEFAULT>') }
     end
 
     describe "when overriding default parameters" do
       let :params do
         {
-          :max_containers_per_extraction => 5000,
-          :max_failed_extractions        => 500,
-          :max_deletes_per_request       => 5000,
-          :yield_frequency               => 60,
+          :max_containers_per_extraction => 10000,
+          :max_failed_extractions        => 1000,
+          :max_deletes_per_request       => 10001,
+          :yield_frequency               => 10,
         }
       end
 
       it { is_expected.to contain_swift_proxy_config('filter:bulk/use').with_value('egg:swift#bulk') }
-      it { is_expected.to contain_swift_proxy_config('filter:bulk/max_containers_per_extraction').with_value('5000') }
-      it { is_expected.to contain_swift_proxy_config('filter:bulk/max_failed_extractions').with_value('500') }
-      it { is_expected.to contain_swift_proxy_config('filter:bulk/max_deletes_per_request').with_value('5000') }
-      it { is_expected.to contain_swift_proxy_config('filter:bulk/yield_frequency').with_value('60') }
+      it { is_expected.to contain_swift_proxy_config('filter:bulk/max_containers_per_extraction').with_value(10000) }
+      it { is_expected.to contain_swift_proxy_config('filter:bulk/max_failed_extractions').with_value(1000) }
+      it { is_expected.to contain_swift_proxy_config('filter:bulk/max_deletes_per_request').with_value(10001) }
+      it { is_expected.to contain_swift_proxy_config('filter:bulk/yield_frequency').with_value(10) }
     end
   end
 

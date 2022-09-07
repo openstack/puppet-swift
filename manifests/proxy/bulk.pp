@@ -20,28 +20,29 @@
 # === Parameters
 #
 # [*max_containers_per_extraction*]
-# The maximum number of containers that can be extracted from an archive.
-# Default to 10000.
+#   (Optional) The maximum number of containers that can be extracted from
+#   an archive.
+#   Defaults to $::os_service_default.
 #
 # [*max_failed_extractions*]
-# The maximum number of failed extractions allowed when an archive has
-# extraction failures.
-# Default to 1000.
+#   (Optional) The maximum number of failed extractions allowed when an archive
+#   has extraction failures.
+#   Defaults to $::os_service_default.
 #
 # [*max_deletes_per_request*]
-# The maximum number of deletes allowed by each request.
-# Default to 10000.
+#   (Optional) The maximum number of deletes allowed by each request.
+#   Defaults to $::os_service_default.
 #
 # [*yield_frequency*]
-# The frequency the server will spit out an ' ' to keep the connection alive
-# while its processing the request.
-# Default to 10.
+#   (Optional) The frequency the server will spit out an ' ' to keep
+#   the connection alive while its processing the request.
+#   Defaults to $::os_service_default.
 #
 class swift::proxy::bulk(
-  $max_containers_per_extraction = '10000',
-  $max_failed_extractions        = '1000',
-  $max_deletes_per_request       = '10000',
-  $yield_frequency               = '10',
+  $max_containers_per_extraction = $::os_service_default,
+  $max_failed_extractions        = $::os_service_default,
+  $max_deletes_per_request       = $::os_service_default,
+  $yield_frequency               = $::os_service_default,
 ) {
 
   include swift::deps
