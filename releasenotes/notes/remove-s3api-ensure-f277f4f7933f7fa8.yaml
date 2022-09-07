@@ -1,0 +1,4 @@
+---
+upgrade:
+  - |
+    The ``swift::proxy::s3api::ensure`` parameter has been removed.
