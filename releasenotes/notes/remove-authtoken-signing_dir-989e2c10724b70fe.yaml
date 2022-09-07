@@ -1,0 +1,4 @@
+---
+upgrade:
+  - |
+    The ``swift::proxy::authtoken::signing_dir`` parameter has been removed.
