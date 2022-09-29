@@ -1,0 +1,5 @@
+---
+upgrade:
+  - |
+    The ``swift::proxy::authtoken::auth_plugin`` parameter has been removed.
+    Use the ``auth_type`` parameter instead.

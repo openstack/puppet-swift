@@ -22,7 +22,6 @@ describe 'swift::proxy::authtoken' do
       it { is_expected.to contain_swift_proxy_config('filter:authtoken/service_token_roles_required').with_value('<SERVICE DEFAULT>') }
       it { is_expected.to contain_swift_proxy_config('filter:authtoken/service_type').with_value('<SERVICE DEFAULT>') }
       it { is_expected.to contain_swift_proxy_config('filter:authtoken/interface').with_value('<SERVICE DEFAULT>') }
-      it { is_expected.to contain_swift_proxy_config('filter:authtoken/auth_plugin').with_ensure('absent') }
     end
 
     describe "when overriding parameters" do
@@ -60,7 +59,6 @@ describe 'swift::proxy::authtoken' do
       it { is_expected.to contain_swift_proxy_config('filter:authtoken/service_token_roles_required').with_value(true) }
       it { is_expected.to contain_swift_proxy_config('filter:authtoken/service_type').with_value('identity') }
       it { is_expected.to contain_swift_proxy_config('filter:authtoken/interface').with_value('internal') }
-      it { is_expected.to contain_swift_proxy_config('filter:authtoken/auth_plugin').with_ensure('absent') }
     end
 
     describe 'when overriding www_authenticate_uri' do

@@ -85,12 +85,6 @@
 #  "public", "internal" or "admin".
 #  Defaults to $::os_service_default.
 #
-# DEPRECATED PARAMETERS
-#
-# [*auth_plugin*]
-#   (Optional) The plugin for authentication
-#   Defaults to undef
-#
 # == Authors
 #
 #   Dan Bode dan@puppetlabs.com
@@ -117,8 +111,6 @@ class swift::proxy::authtoken(
   $service_token_roles_required = $::os_service_default,
   $service_type                 = $::os_service_default,
   $interface                    = $::os_service_default,
-  # DEPRECATED PARAMETERS
-  $auth_plugin                  = undef,
 ) inherits swift::params {
 
   include swift::deps
@@ -129,13 +121,6 @@ Please set password parameter')
     $password_real = 'password'
   } else {
     $password_real = $password
-  }
-
-  if $auth_plugin != undef {
-    warning('auth_plugin is deprecated. please use auth_type instead')
-    $auth_type_real = $auth_plugin
-  } else {
-    $auth_type_real = $auth_type
   }
 
   if is_service_default($system_scope) {
@@ -151,7 +136,7 @@ Please set password parameter')
     'filter:authtoken/paste.filter_factory':         value => 'keystonemiddleware.auth_token:filter_factory';
     'filter:authtoken/www_authenticate_uri':         value => $www_authenticate_uri;
     'filter:authtoken/auth_url':                     value => $auth_url;
-    'filter:authtoken/auth_type':                    value => $auth_type_real;
+    'filter:authtoken/auth_type':                    value => $auth_type;
     'filter:authtoken/username':                     value => $username;
     'filter:authtoken/user_domain_id':               value => $user_domain_id;
     'filter:authtoken/password':                     value => $password_real, secret => true;
@@ -166,10 +151,5 @@ Please set password parameter')
     'filter:authtoken/service_token_roles_required': value => $service_token_roles_required;
     'filter:authtoken/service_type':                 value => $service_type;
     'filter:authtoken/interface':                    value => $interface,
-  }
-
-  # cleanup the deprecated parameter
-  swift_proxy_config {
-    'filter:authtoken/auth_plugin': ensure => 'absent';
   }
 }
