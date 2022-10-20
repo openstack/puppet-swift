@@ -43,14 +43,20 @@ define swift::storage::mount(
     $fsoptions = 'user_xattr'
   }
 
-  # the directory that represents the mount point
-  # needs to exist
+  # The directory that represents the mount point needs to exist.
   file { "${mnt_base_dir}/${name}":
     ensure  => directory,
-    owner   => $::swift::params::user,
-    group   => $::swift::params::group,
     require => Anchor['swift::config::begin'],
     before  => Anchor['swift::config::end'],
+  }
+
+  # Make root own the mount point to prevent swift processes from writing files
+  # when the disk device is not mounted
+  exec { "fix_mountpoint_permissions_${name}":
+    command => "chown -R root:root ${mnt_base_dir}/${name}",
+    path    => ['/usr/sbin', '/bin'],
+    before  => Anchor['swift::config::end'],
+    unless  => "grep ${mnt_base_dir}/${name} /etc/mtab",
   }
 
   mount { "${mnt_base_dir}/${name}":
@@ -70,8 +76,11 @@ define swift::storage::mount(
     before    => Anchor['swift::config::end'],
   }
 
+  $user = $::swift::params::user
+  $group = $::swift::params::group
+
   exec { "fix_mount_permissions_${name}":
-    command     => "chown -R swift:swift ${mnt_base_dir}/${name}",
+    command     => "chown -R ${user}:${group} ${mnt_base_dir}/${name}",
     path        => ['/usr/sbin', '/bin'],
     refreshonly => true,
     before      => Anchor['swift::config::end'],
@@ -91,6 +100,10 @@ define swift::storage::mount(
       before      => Anchor['swift::config::end'],
       refreshonly => true,
     }
+
+  File<| title == "${mnt_base_dir}/${name}" |>
+  ~> Exec<| title == "fix_mountpoint_permissions_${name}" |>
+  -> Exec<| title == "mount_${name}" |>
 
   File<| title == "${mnt_base_dir}/${name}" |>
   ~> Mount<| title == "${mnt_base_dir}/${name}" |>
