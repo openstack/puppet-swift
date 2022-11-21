@@ -11,7 +11,7 @@ class Puppet::Provider::SwiftRingBuilder < Puppet::Provider
   def address_string(address)
     ip = IPAddr.new(address)
     if ip.ipv6?
-     '[' + ip.to_s + ']'
+      '[' + ip.to_s + ']'
     else
       ip.to_s
     end
