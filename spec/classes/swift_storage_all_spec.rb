@@ -175,13 +175,9 @@ describe 'swift::storage::all' do
       let (:platform_params) do
         case facts[:osfamily]
         when 'Debian'
-            { :xinetd_available => true }
+          { :xinetd_available => true }
         when 'RedHat'
-          if facts[:operatingsystemmajrelease] > '8'
-            { :xinetd_available => false }
-          else
-            { :xinetd_available => true }
-          end
+          { :xinetd_available => false }
         end
       end
 

@@ -62,11 +62,7 @@ describe 'swift::storage' do
         when 'Debian'
           { :xinetd_available => true }
         when 'RedHat'
-          if facts[:operatingsystemmajrelease] > '8'
-            { :xinetd_available => false }
-          else
-            { :xinetd_available => true }
-          end
+          { :xinetd_available => false }
         end
       end
 
