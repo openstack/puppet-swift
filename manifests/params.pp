@@ -66,11 +66,7 @@ class swift::params {
       $account_reaper_service_name       = 'openstack-swift-account-reaper'
       $account_replicator_service_name   = 'openstack-swift-account-replicator'
       $ceilometermiddleware_package_name = 'python3-ceilometermiddleware'
-      if (Integer.new($::os['release']['major']) > 8) {
-        $xinetd_available                = false
-      } else {
-        $xinetd_available                = true
-      }
+      $xinetd_available                  = false
     }
     default: {
       fail("Unsupported osfamily: ${::osfamily} operatingsystem: ${::operatingsystem}, \
