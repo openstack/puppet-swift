@@ -72,10 +72,12 @@ define swift::storage::node(
     config_file_path => 'object-server.conf',
   }
 
+  $ring_host = normalize_ip_for_uri($storage_local_net_ip)
+
   if !$policy_index {
-    $ring_device = "${storage_local_net_ip}:60${name}0/${name}"
+    $ring_device = "${ring_host}:60${name}0/${name}"
   } else {
-    $ring_device = "${policy_index}:${storage_local_net_ip}:60${name}0/${name}"
+    $ring_device = "${policy_index}:${ring_host}:60${name}0/${name}"
   }
 
   ring_object_device { $ring_device:
@@ -87,7 +89,7 @@ define swift::storage::node(
     type             => 'container',
     config_file_path => 'container-server.conf',
   }
-  ring_container_device { "${storage_local_net_ip}:60${name}1/${name}":
+  ring_container_device { "${ring_host}:60${name}1/${name}":
     zone   => $zone,
     weight => $weight,
   }
@@ -96,7 +98,7 @@ define swift::storage::node(
     type             => 'account',
     config_file_path => 'account-server.conf',
   }
-  ring_account_device { "${storage_local_net_ip}:60${name}2/${name}":
+  ring_account_device { "${ring_host}:60${name}2/${name}":
     zone   => $zone,
     weight => $weight,
   }
