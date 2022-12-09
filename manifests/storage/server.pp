@@ -102,7 +102,8 @@
 #   Defaults to 'INFO'.
 #
 # [*log_address*]
-#   Deprecated, this parameter does nothing.
+#   (optional) Location where syslog sends the logs to.
+#   Defaults to '/dev/log'.
 #
 # [*log_name*]
 #   (optional) Label used when logging.
