@@ -470,7 +470,7 @@ define swift::storage::server(
         'app:object-server/splice'        => {'value'  => $splice},
         'app:object-server/mb_per_sync'   => {'value'  => $object_server_mb_per_sync},
         # object-auditor
-        'object-auditor/disk_chunk_size'  => {'value'  => pick($auditor_disk_chunk_size, $::os_service_default)},
+        'object-auditor/disk_chunk_size'  => {'value'  => $auditor_disk_chunk_size},
         # object-replicator
         'object-replicator/concurrency'   => {'value'  => $replicator_concurrency},
         'object-replicator/rsync_timeout' => {'value'  => $rsync_timeout},
