@@ -1,0 +1,6 @@
+---
+features:
+  - |
+    The new ``swift::storage::filter::backend_ratelimit`` defined resource type
+    has been added. This defined type configures the backend ratelimit
+    middleware.
