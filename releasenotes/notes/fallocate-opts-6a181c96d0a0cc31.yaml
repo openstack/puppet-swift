@@ -1,0 +1,9 @@
+---
+features:
+  - |
+    The following new parameters have been added to
+    the ``swift::storage::server`` defined resource type.
+
+    - ``disable_fallocate``
+    - ``fallocate_reserve``
+    - ``server_fallocate_reserve``

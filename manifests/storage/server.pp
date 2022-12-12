@@ -56,6 +56,20 @@
 #   writing to the root device.
 #   Defaults to true.
 #
+# [*disable_fallocate*]
+#   (optional) Disable pre-allocating the required disk space.
+#   Defaults to $::os_service_default.
+#
+# [*fallocate_reserve*]
+#   (optional) The number of bytes or percentage of disk space kept free at
+#   all times.
+#   Defaults to $::os_service_default.
+#
+# [*server_fallocate_reserve*]
+#   (optional) The number of bytes or percentage of disk space kept free at
+#   all times. This option affects only <type>-server processes.
+#   Defaults to $::os_service_default.
+#
 # [*servers_per_port*]
 #   (optional) Spawn multiple servers per device on different ports.
 #   Make object-server run this many worker processes per unique port of
@@ -214,6 +228,9 @@ define swift::storage::server(
   $max_connections                = 25,
   $pipeline                       = ["${type}-server"],
   $mount_check                    = true,
+  $disable_fallocate              = $::os_service_default,
+  $fallocate_reserve              = $::os_service_default,
+  $server_fallocate_reserve       = $::os_service_default,
   $servers_per_port               = $::os_service_default,
   $user                           = undef,
   $workers                        = $::os_workers,
@@ -337,28 +354,31 @@ define swift::storage::server(
 
   # common settings
   $common_opts = {
-    'DEFAULT/devices'                     => {'value'  => $devices},
-    'DEFAULT/bind_ip'                     => {'value'  => $storage_local_net_ip},
-    'DEFAULT/bind_port'                   => {'value'  => $bind_port},
-    'DEFAULT/mount_check'                 => {'value'  => $mount_check},
-    'DEFAULT/user'                        => {'value'  => $user_real},
-    'DEFAULT/workers'                     => {'value'  => $workers},
-    'DEFAULT/log_name'                    => {'value'  => $log_name},
-    'DEFAULT/log_facility'                => {'value'  => $log_facility},
-    'DEFAULT/log_level'                   => {'value'  => $log_level},
-    'DEFAULT/log_address'                 => {'value'  => $log_address},
+    'DEFAULT/devices'                      => {'value'  => $devices},
+    'DEFAULT/bind_ip'                      => {'value'  => $storage_local_net_ip},
+    'DEFAULT/bind_port'                    => {'value'  => $bind_port},
+    'DEFAULT/mount_check'                  => {'value'  => $mount_check},
+    'DEFAULT/disable_fallocate'            => {'value'  => $disable_fallocate},
+    'DEFAULT/fallocate_reserve'            => {'value'  => $fallocate_reserve},
+    'DEFAULT/user'                         => {'value'  => $user_real},
+    'DEFAULT/workers'                      => {'value'  => $workers},
+    'DEFAULT/log_name'                     => {'value'  => $log_name},
+    'DEFAULT/log_facility'                 => {'value'  => $log_facility},
+    'DEFAULT/log_level'                    => {'value'  => $log_level},
+    'DEFAULT/log_address'                  => {'value'  => $log_address},
     # pipeline
-    'pipeline:main/pipeline'              => {'value'  => join($pipeline, ' ')},
+    'pipeline:main/pipeline'               => {'value'  => join($pipeline, ' ')},
     # server
-    "app:${type}-server/use"              => {'value'  => "egg:swift#${type}"},
-    "app:${type}-server/set log_name"     => {'value'  => $log_name},
-    "app:${type}-server/set log_facility" => {'value'  => $log_facility},
-    "app:${type}-server/set log_level"    => {'value'  => $log_level},
-    "app:${type}-server/set log_requests" => {'value'  => $log_requests},
-    "app:${type}-server/set log_address"  => {'value'  => $log_address},
+    "app:${type}-server/use"               => {'value'  => "egg:swift#${type}"},
+    "app:${type}-server/set log_name"      => {'value'  => $log_name},
+    "app:${type}-server/set log_facility"  => {'value'  => $log_facility},
+    "app:${type}-server/set log_level"     => {'value'  => $log_level},
+    "app:${type}-server/set log_requests"  => {'value'  => $log_requests},
+    "app:${type}-server/set log_address"   => {'value'  => $log_address},
+    "app:${type}-server/fallocate_reserve" => {'value'  => $server_fallocate_reserve},
     # auditor
     # replicator
-    "${type}-replicator/rsync_module"     => {'value'  => $rsync_module},
+    "${type}-replicator/rsync_module"      => {'value'  => $rsync_module},
   }
 
   file_line { "${type}-auditor":
