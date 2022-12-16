@@ -8,28 +8,17 @@
     check:
       jobs:
         - puppet-swift-tripleo-standalone
-        - puppet-swift-tripleo-centos-9-standalone
-    gate:
-      jobs:
-        - puppet-swift-tripleo-standalone
 
 - job:
     name: puppet-swift-tripleo-standalone
-    parent: tripleo-puppet-ci-centos-8-standalone
+    parent: tripleo-puppet-ci-centos-9-standalone
     description: |
       TripleO standalone Job running Object Storage specific Tempest tests.
-    vars: &standalone_vars
+    voting: false
+    vars:
       build_container_images: true
       featureset_override:
         run_tempest: false
         tempest_test_whitelist:
           - 'tempest.api.object_storage.test_object_services.ObjectTest'
         use_os_tempest: true
-
-- job:
-    name: puppet-swift-tripleo-centos-9-standalone
-    parent: tripleo-puppet-ci-centos-9-standalone
-    description: |
-      TripleO standalone Job running Object Storage specific Tempest tests.
-    voting: false
-    vars: *standalone_vars
