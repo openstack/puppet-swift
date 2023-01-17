@@ -151,12 +151,6 @@
 #   (string value)
 #   Defaults to $::os_service_default
 #
-# == DEPRECATED
-#
-# [*group*]
-#   Group name to add to 'swift' user.
-#   Defaults to undef
-#
 # == Examples
 #
 # == Authors
@@ -199,17 +193,11 @@ class swift::proxy::ceilometer(
   $kombu_reconnect_delay              = $::os_service_default,
   $kombu_failover_strategy            = $::os_service_default,
   $kombu_compression                  = $::os_service_default,
-  # DEPRECATED PARAMETERS
-  $group                              = undef,
 ) inherits swift {
 
   include swift::deps
 
   Package['python-ceilometermiddleware'] ~> Service<| title == 'swift-proxy-server' |>
-
-  if $group != undef {
-    warning('The group parameer has been deprecated and has no effect now.')
-  }
 
   if $password == undef {
     warning('Usage of the default password is deprecated and will be removed in a future release. \

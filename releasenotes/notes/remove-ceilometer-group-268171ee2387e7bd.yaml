@@ -1,0 +1,5 @@
+---
+upgrade:
+  - |
+    The deprecated ``swift::proxy::ceilometer::group`` parameter has been
+    removed.
