@@ -17,20 +17,20 @@ describe provider_class do
     @provider = provider_class.new
 
     # A catch all; no parameters set
-    @resource.stubs(:[]).returns(nil)
+    allow(@resource).to receive(:[]).and_return(nil)
 
     # But set name, source and path
-    @resource.stubs(:[]).with(:name).returns "swift-object-server"
-    @resource.stubs(:[]).with(:ensure).returns :enable
-    @resource.stubs(:[]).with(:pattern).returns "swift-object"
-    @resource.stubs(:[]).with(:manifest).returns "object-server"
-    @resource.stubs(:ref).returns "Service[myservice]"
+    allow(@resource).to receive(:[]).with(:name).and_return "swift-object-server"
+    allow(@resource).to receive(:[]).with(:ensure).and_return :enable
+    allow(@resource).to receive(:[]).with(:pattern).and_return "swift-object"
+    allow(@resource).to receive(:[]).with(:manifest).and_return "object-server"
+    allow(@resource).to receive(:ref).and_return "Service[myservice]"
 
     @provider.resource = @resource
 
-    @provider.stubs(:command).with(:systemctl_run).returns "systemctl_run"
+    allow(@provider).to receive(:command).with(:systemctl_run).and_return "systemctl_run"
 
-    @provider.stubs(:systemctl_run)
+    allow(@provider).to receive(:systemctl_run)
 
   end
 

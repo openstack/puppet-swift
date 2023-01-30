@@ -1,10 +1,6 @@
 require 'puppet'
-require 'mocha'
 require File.join(File.dirname(__FILE__), '..', '..', '..', '..', '..', 'spec', 'fixtures', 'modules', 'inifile', 'lib', 'puppet', 'util', 'ini_file')
 require File.join(File.dirname(__FILE__), '..', '..', '..', '..', '..', 'lib', 'puppet', 'provider', 'swift_storage_policy', 'ruby')
-RSpec.configure do |config|
-  config.mock_with :mocha
-end
 provider_class = Puppet::Type.type(:swift_storage_policy).provider(:ruby)
 describe provider_class do
 
@@ -110,7 +106,7 @@ default = false
         fh.write(swift_conf_no_policy)
       end
       @swiftconffile = swift_conf.path
-      provider0.class.stubs(:get_swift_conf_file).returns @swiftconffile
+      allow(provider0.class).to receive(:get_swift_conf_file).and_return @swiftconffile
     end
 
     it 'the swift_storage_policy 0 resource should contain the correct policy_title and name' do
@@ -142,7 +138,7 @@ default = false
           :provider    => :ruby
         )
       )
-      provider1.class.stubs(:get_swift_conf_file).returns @swiftconffile
+      allow(provider1.class).to receive(:get_swift_conf_file).and_return @swiftconffile
       # storage-policy:1 should not yet exist in swift.conf
       expect(provider1.exists?).to be_falsey
       # Create policy 1,flush calls provider "write_policy"
@@ -165,7 +161,7 @@ default = false
           :provider    => :ruby
         )
       )
-      provider2.class.stubs(:get_swift_conf_file).returns @swiftconffile
+      allow(provider2.class).to receive(:get_swift_conf_file).and_return @swiftconffile
       # storage-policy:2 should raise an error for duplicate name/alias conflict with storage-policy:0
       provider2.create
       expect { provider2.flush }.to raise_error(Puppet::Error, /trying to set a duplicate name/)
@@ -184,7 +180,7 @@ default = false
           :provider    => :ruby
         )
       )
-      provider2.class.stubs(:get_swift_conf_file).returns @swiftconffile
+      allow(provider2.class).to receive(:get_swift_conf_file).and_return @swiftconffile
       provider2.create
       expect { provider2.flush }.not_to raise_error
       # storage-policy:0,1,2 should exist in swift.conf
@@ -201,7 +197,7 @@ default = false
           :provider    => :ruby
         )
       )
-      provider1.class.stubs(:get_swift_conf_file).returns @swiftconffile
+      allow(provider1.class).to receive(:get_swift_conf_file).and_return @swiftconffile
       provider1.create
       expect { provider1.flush }.to raise_error(Puppet::Error, /default=true already set in a policy storage-policy:0/)
     end

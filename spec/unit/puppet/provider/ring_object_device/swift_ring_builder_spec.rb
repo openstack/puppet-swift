@@ -1,9 +1,5 @@
 require 'puppet'
-require 'mocha'
 require File.join(File.dirname(__FILE__), '..', '..', '..', '..', '..', 'lib', 'puppet', 'provider', 'ring_object_device', 'swift_ring_builder')
-RSpec.configure do |config|
-  config.mock_with :mocha
-end
 provider_class = Puppet::Type.type(:ring_object_device).provider(:swift_ring_builder)
 describe provider_class do
 
@@ -61,15 +57,15 @@ Devices:    id  region  zone    ip address:port       replic_ip:replic_port     
     end
 
     it 'ring_object_device should exist when found in builder file' do
-      provider.expects(:swift_ring_builder).returns object_builder_output
-      File.expects(:exists?).with(builder_file_path).returns(true)
+      expect(provider).to receive(:swift_ring_builder).and_return object_builder_output
+      expect(File).to receive(:exists?).with(builder_file_path).and_return(true)
       expect(provider.exists?).to eq({:id=>"1", :region=>"1", :zone=>"1", :weight=>"1.00", :partitions=>"262144", :balance=>"0.00", :meta=>"", :policy_index=>''})
     end
 
     it 'should be able to lookup the local ring' do
-      File.expects(:exists?).with(builder_file_path).returns(true)
-      provider.expects(:builder_file_path).twice.returns(builder_file_path)
-      provider.expects(:swift_ring_builder).returns object_builder_output
+      expect(File).to receive(:exists?).with(builder_file_path).and_return(true)
+      expect(provider).to receive(:builder_file_path).twice.and_return(builder_file_path)
+      expect(provider).to receive(:swift_ring_builder).and_return object_builder_output
       resources = provider.lookup_ring
       expect(resources['192.168.101.13:6002/1']).to_not be_nil
       expect(resources['192.168.101.14:6002/1']).to_not be_nil
@@ -138,15 +134,15 @@ Devices:    id  region  zone    ip address:port       replic_ip:replic_port     
     end
 
     it 'ring_object_device should exist when found in builder file with policy_index=1' do
-      provider_policy1.expects(:swift_ring_builder).returns object_builder_policy1_output
-      File.expects(:exists?).with(builder_file_path_policy1).returns(true)
+      expect(provider_policy1).to receive(:swift_ring_builder).and_return object_builder_policy1_output
+      expect(File).to receive(:exists?).with(builder_file_path_policy1).and_return(true)
       expect(provider_policy1.exists?).to eq({:id=>"1", :region=>"1", :zone=>"1", :weight=>"1.00", :partitions=>"262144", :balance=>"0.00", :meta=>"", :policy_index=>"1"})
     end
 
     it 'lookup local ring and object resource names should start with policy_index if a policy is set' do
-      File.expects(:exists?).with(builder_file_path_policy1).returns(true)
-      provider_policy1.expects(:builder_file_path).twice.returns(builder_file_path_policy1)
-      provider_policy1.expects(:swift_ring_builder).returns object_builder_output
+      expect(File).to receive(:exists?).with(builder_file_path_policy1).and_return(true)
+      expect(provider_policy1).to receive(:builder_file_path).twice.and_return(builder_file_path_policy1)
+      expect(provider_policy1).to receive(:swift_ring_builder).and_return object_builder_output
       resources = provider_policy1.lookup_ring
       expect(resources['1:192.168.101.13:6002/1']).to_not be_nil
       expect(resources['1:192.168.101.14:6002/1']).to_not be_nil

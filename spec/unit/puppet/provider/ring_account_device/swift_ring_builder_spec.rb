@@ -1,9 +1,5 @@
 require 'puppet'
-require 'mocha'
 require File.join(File.dirname(__FILE__), '..', '..', '..', '..', '..', 'lib', 'puppet', 'provider', 'ring_account_device', 'swift_ring_builder')
-RSpec.configure do |config|
-  config.mock_with :mocha
-end
 provider_class = Puppet::Type.type(:ring_account_device).provider(:swift_ring_builder)
 describe provider_class do
 
@@ -52,15 +48,15 @@ Devices:    id  region  zone    ip address:port       replic_ip:replic_port     
     end
 
     it 'ring_account_device should exist when found in builder file' do
-      provider.class.stubs(:swift_ring_builder).returns account_builder_output
-      File.expects(:exists?).with(builder_file_path).returns(true)
+      allow(provider.class).to receive(:swift_ring_builder).and_return account_builder_output
+      expect(File).to receive(:exists?).with(builder_file_path).and_return(true)
       expect(provider.exists?).to eq({:id=>"1", :region=>"1", :zone=>"1", :weight=>"1.00", :partitions=>"262144", :balance=>"0.00", :meta=>"", :policy_index=>''})
     end
 
     it 'should be able to lookup the local ring' do
-      File.expects(:exists?).with(builder_file_path).returns(true)
-      provider.expects(:builder_file_path).twice.returns(builder_file_path)
-      provider.expects(:swift_ring_builder).returns account_builder_output
+      expect(File).to receive(:exists?).with(builder_file_path).and_return(true)
+      expect(provider).to receive(:builder_file_path).twice.and_return(builder_file_path)
+      expect(provider).to receive(:swift_ring_builder).and_return account_builder_output
       resources = provider.lookup_ring
       expect(resources['192.168.101.13:6002/1']).to_not be_nil
       expect(resources['192.168.101.14:6002/1']).to_not be_nil
