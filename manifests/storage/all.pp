@@ -192,8 +192,10 @@ from 6002 to 6202 and will be changed in a later release")
     storage_local_net_ip           => $storage_local_net_ip,
     mount_check                    => $mount_check,
     log_level                      => $log_level,
+    log_facility                   => $log_facility,
     log_udp_host                   => $log_udp_host,
     log_udp_port                   => $log_udp_port,
+    log_requests                   => $log_requests,
     statsd_enabled                 => $statsd_enabled,
     log_statsd_host                => $log_statsd_host,
     log_statsd_port                => $log_statsd_port,
@@ -201,16 +203,14 @@ from 6002 to 6202 and will be changed in a later release")
     log_statsd_sample_rate_factor  => $log_statsd_sample_rate_factor,
     log_statsd_metric_prefix       => $log_statsd_metric_prefix,
     max_connections                => $max_connections,
+    incoming_chmod                 => $incoming_chmod,
+    outgoing_chmod                 => $outgoing_chmod,
   }
 
   swift::storage::server { "${account_port}":
     type             => 'account',
     config_file_path => 'account-server.conf',
     pipeline         => $account_pipeline,
-    log_facility     => $log_facility,
-    log_requests     => $log_requests,
-    incoming_chmod   => $incoming_chmod,
-    outgoing_chmod   => $outgoing_chmod,
     workers          => $account_server_workers,
   }
 
@@ -218,10 +218,6 @@ from 6002 to 6202 and will be changed in a later release")
     type             => 'container',
     config_file_path => 'container-server.conf',
     pipeline         => $container_pipeline,
-    log_facility     => $log_facility,
-    log_requests     => $log_requests,
-    incoming_chmod   => $incoming_chmod,
-    outgoing_chmod   => $outgoing_chmod,
     workers          => $container_server_workers,
   }
 
@@ -229,10 +225,6 @@ from 6002 to 6202 and will be changed in a later release")
     type                      => 'object',
     config_file_path          => 'object-server.conf',
     pipeline                  => $object_pipeline,
-    log_facility              => $log_facility,
-    log_requests              => $log_requests,
-    incoming_chmod            => $incoming_chmod,
-    outgoing_chmod            => $outgoing_chmod,
     workers                   => $object_server_workers,
     splice                    => $splice,
     object_server_mb_per_sync => $object_server_mb_per_sync,
