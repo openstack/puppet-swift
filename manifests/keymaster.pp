@@ -58,7 +58,7 @@
 #
 # [*meta_version_to_write*]
 #   (Optional) Int. The version of crypto metadata to write.
-#   Defaults to $::os_service_default
+#   Defaults to $facts['os_service_default']
 #
 # == Dependencies
 #
@@ -80,7 +80,7 @@ class swift::keymaster(
   $user_domain_name      = undef,
   $project_domain_id     = 'default',
   $user_domain_id        = 'default',
-  $meta_version_to_write = $::os_service_default,
+  $meta_version_to_write = $facts['os_service_default'],
 ) {
 
   include swift::deps

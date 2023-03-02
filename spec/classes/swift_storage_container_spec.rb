@@ -83,7 +83,7 @@ describe 'swift::storage::container' do
       end
 
       let(:platform_params) do
-        case facts[:osfamily]
+        case facts[:os]['family']
         when 'Debian'
           { :service_names => {
               'swift-container-server'     => 'swift-container',

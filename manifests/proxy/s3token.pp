@@ -21,7 +21,7 @@
 # [*http_timeout*]
 #   Connection timeout to be used during communicating
 #   with Keystone
-#   Default to $::os_service_default
+#   Default to $facts['os_service_default']
 #
 # [*secret_cache_duration*]
 #   The number of seconds that secrets can be cached.
@@ -67,7 +67,7 @@
 #
 # [*system_scope*]
 #   (Optional) Scope for system operations
-#   Defaults to $::os_service_default
+#   Defaults to $facts['os_service_default']
 #
 # == Dependencies
 #
@@ -85,7 +85,7 @@ class swift::proxy::s3token(
   $auth_uri              = 'http://127.0.0.1:5000',
   $reseller_prefix       = 'AUTH_',
   $delay_auth_decision   = false,
-  $http_timeout          = $::os_service_default,
+  $http_timeout          = $facts['os_service_default'],
   $secret_cache_duration = 0,
   $auth_url              = 'http://127.0.0.1:5000',
   $auth_type             = 'password',
@@ -94,7 +94,7 @@ class swift::proxy::s3token(
   $password              = undef,
   $project_name          = 'services',
   $project_domain_id     = 'default',
-  $system_scope          = $::os_service_default,
+  $system_scope          = $facts['os_service_default'],
 ) {
 
   include swift::deps
@@ -111,8 +111,8 @@ Please set password parameter')
     $project_name_real = $project_name
     $project_domain_id_real = $project_domain_id
   } else {
-    $project_name_real = $::os_service_default
-    $project_domain_id_real = $::os_service_default
+    $project_name_real = $facts['os_service_default']
+    $project_domain_id_real = $facts['os_service_default']
   }
 
   swift_proxy_config {

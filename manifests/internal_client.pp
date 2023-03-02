@@ -14,11 +14,11 @@
 #
 #  [*object_chunk_size*]
 #    (optional) Chunk size to read from object servers.
-#    Defaults to $::os_service_default.
+#    Defaults to $facts['os_service_default'].
 #
 #  [*client_chunk_size*]
 #    (optional) Chunk size to read from clients.
-#    Defaults to $::os_service_default.
+#    Defaults to $facts['os_service_default'].
 #
 #  [*read_affinity*]
 #    (optional) Configures the read affinity of internal client.
@@ -26,36 +26,36 @@
 #
 #  [*write_affinity*]
 #    (optional) Configures the write affinity of internal client.
-#    Defaults to $::os_service_default.
+#    Defaults to $facts['os_service_default'].
 #
 #  [*write_affinity_node_count*]
 #    (optional) Configures write_affinity_node_count for internal client.
 #    Optional but requires write_affinity to be set.
-#    Defaults to $::os_service_default.
+#    Defaults to $facts['os_service_default'].
 #
 #  [*client_timeout*]
 #    (optional) Configures client_timeout for internal client.
-#    Defaults to $::os_service_default.
+#    Defaults to $facts['os_service_default'].
 #
 #  [*node_timeout*]
 #    (optional) Configures node_timeout for internal client.
-#    Defaults to $::os_service_default.
+#    Defaults to $facts['os_service_default'].
 #
 #  [*recoverable_node_timeout*]
 #    (optional) Configures recoverable_node_timeout for internal client.
-#    Defaults to $::os_service_default.
+#    Defaults to $facts['os_service_default'].
 #
 class swift::internal_client (
   $user                      = $::swift::params::user,
   $pipeline                  = ['catch_errors', 'proxy-logging', 'cache', 'proxy-server'],
-  $object_chunk_size         = $::os_service_default,
-  $client_chunk_size         = $::os_service_default,
+  $object_chunk_size         = $facts['os_service_default'],
+  $client_chunk_size         = $facts['os_service_default'],
   $read_affinity             = undef,
-  $write_affinity            = $::os_service_default,
-  $write_affinity_node_count = $::os_service_default,
-  $client_timeout            = $::os_service_default,
-  $node_timeout              = $::os_service_default,
-  $recoverable_node_timeout  = $::os_service_default,
+  $write_affinity            = $facts['os_service_default'],
+  $write_affinity_node_count = $facts['os_service_default'],
+  $client_timeout            = $facts['os_service_default'],
+  $node_timeout              = $facts['os_service_default'],
+  $recoverable_node_timeout  = $facts['os_service_default'],
 ) inherits swift::params {
 
   include swift::deps
@@ -87,8 +87,8 @@ class swift::internal_client (
     }
   } else {
     swift_internal_client_config {
-      'app:proxy-server/sorting_method': value => $::os_service_default;
-      'app:proxy-server/read_affinity':  value => $::os_service_default;
+      'app:proxy-server/sorting_method': value => $facts['os_service_default'];
+      'app:proxy-server/read_affinity':  value => $facts['os_service_default'];
     }
   }
 

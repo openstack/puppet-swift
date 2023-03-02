@@ -93,7 +93,7 @@ describe 'swift::containerreconciler' do
       end
 
       let(:platform_params) do
-        case facts[:osfamily]
+        case facts[:os]['family']
         when 'Debian'
           { :service_name     => 'swift-container-reconciler',
             :service_provider => nil }

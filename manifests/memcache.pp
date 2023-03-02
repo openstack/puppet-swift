@@ -32,27 +32,27 @@
 # upgrade with 0, then set to 1 and reload, then after some time (24 hours)
 # set to 2 and reload.
 # In the future, the ability to use pickle serialization will be removed.
-# Default to $::os_service_default
+# Default to $facts['os_service_default']
 #
 # [*memcache_max_connections*]
 # Sets the maximum number of connections to each memcached server per worker
-# Default to $::os_service_default
+# Default to $facts['os_service_default']
 #
 # [*connect_timeout*]
 # Timeout for connection
-# Default to $::os_service_default
+# Default to $facts['os_service_default']
 #
 # [*pool_timeout*]
 # Timeout for pooled connection
-# Default to $::os_service_default
+# Default to $facts['os_service_default']
 #
 # [*tries*]
 # number of servers to retry on failures getting a pooled connection
-# Default to $::os_service_default
+# Default to $facts['os_service_default']
 #
 # [*io_timeout*]
 # Timeout for read and writes
-# Default to $::os_service_default
+# Default to $facts['os_service_default']
 #
 #
 # === Authors
@@ -61,12 +61,12 @@
 #
 class swift::memcache (
   $memcache_servers               = ['127.0.0.1:11211'],
-  $memcache_serialization_support = $::os_service_default,
-  $memcache_max_connections       = $::os_service_default,
-  $connect_timeout                = $::os_service_default,
-  $pool_timeout                   = $::os_service_default,
-  $tries                          = $::os_service_default,
-  $io_timeout                     = $::os_service_default,
+  $memcache_serialization_support = $facts['os_service_default'],
+  $memcache_max_connections       = $facts['os_service_default'],
+  $connect_timeout                = $facts['os_service_default'],
+  $pool_timeout                   = $facts['os_service_default'],
+  $tries                          = $facts['os_service_default'],
+  $io_timeout                     = $facts['os_service_default'],
 ) {
 
   include swift::deps

@@ -5,7 +5,7 @@
 #
 #  [*enabled_by_default*]
 #    Enable quoting ETag header cluster-wide by default.
-#    Defaults to $::os_service_default.
+#    Defaults to $facts['os_service_default'].
 #
 # == Examples
 #
@@ -22,7 +22,7 @@
 # Copyright (C) 2020 Red Hat
 #
 class swift::proxy::etag_quoter (
-  $enabled_by_default      = $::os_service_default
+  $enabled_by_default      = $facts['os_service_default']
 ) {
 
   include swift::deps

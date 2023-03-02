@@ -9,13 +9,13 @@
 #
 # [*shunt_inbound_x_timestamp*]
 #  (Optional) Disallow clients to set arbitrary X-Timestamps on uploaded objects.
-#  Defaults to $::os_service_default.
+#  Defaults to $facts['os_service_default'].
 #
 # [*allow_reserved_names_header*]
 #  (Optional) Allow clients to access and manipulate the null namespace by
 #  including a header like
 #     X-Allow-Reserved-Names: true
-#  Defaults to $::os_service_default.
+#  Defaults to $facts['os_service_default'].
 #
 # [*log_name*]
 #  (Optional) The log name of gatekeeper.
@@ -46,8 +46,8 @@
 # Copyright 2014 UnitedStack licensing@unitedstack.com
 #
 class swift::proxy::gatekeeper(
-  $shunt_inbound_x_timestamp   = $::os_service_default,
-  $allow_reserved_names_header = $::os_service_default,
+  $shunt_inbound_x_timestamp   = $facts['os_service_default'],
+  $allow_reserved_names_header = $facts['os_service_default'],
   $log_name                    = 'gatekeeper',
   $log_facility                = 'LOG_LOCAL2',
   $log_level                   = 'INFO',

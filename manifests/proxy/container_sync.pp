@@ -6,20 +6,20 @@
 # [*allow_full_urls*]
 #  (Optional) Allow full URL values to be set for new X-Container-Sync-To
 #  headers.
-#  Defaults to $::os_service_default
+#  Defaults to $facts['os_service_default']
 #
 # [*current*]
 #  (Optional) Set this to specify this clusters //realm/cluster as "current" in
 #  /info.
-#  Defaults to $::os_service_default
+#  Defaults to $facts['os_service_default']
 #
 # == Authors
 #
 #   Denis Egorenko <degorenko@mirantis.com>
 #
 class swift::proxy::container_sync(
-  $allow_full_urls = $::os_service_default,
-  $current         = $::os_service_default,
+  $allow_full_urls = $facts['os_service_default'],
+  $current         = $facts['os_service_default'],
 ) {
 
   include swift::deps

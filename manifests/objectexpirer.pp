@@ -19,38 +19,38 @@
 #
 #  [*concurrency*]
 #    (optional) Number of replication workers to spawn.
-#    Defaults to $::os_service_default.
+#    Defaults to $facts['os_service_default'].
 #
 #  [*expiring_objects_account_name*]
 #    (optional) Account name used for expiring objects.
-#    Defaults to $::os_service_default.
+#    Defaults to $facts['os_service_default'].
 #
 #  [*interval*]
 #    (optional) Minimum time for a pass to take, in seconds.
-#    Defaults to $::os_service_default.
+#    Defaults to $facts['os_service_default'].
 #
 #  [*process*]
 #    (optional) Which part of the work defined by $processes
 #    will this instance take.
-#    Defaults to $::os_service_default.
+#    Defaults to $facts['os_service_default'].
 #
 #  [*processes*]
 #    (optional) How many parts to divide the work into, one part per
 #    process. 0 means a single process will do all work.
-#    Defaults to $::os_service_default.
+#    Defaults to $facts['os_service_default'].
 #
 #  [*reclaim_age*]
 #    (optional) Time elapsed in seconds before an object can be
 #    reclaimed.
-#    Defaults to $::os_service_default.
+#    Defaults to $facts['os_service_default'].
 #
 #  [*recon_cache_path*]
 #    (optional) Directory where stats for a few items will be stored.
-#    Defaults to $::os_service_default.
+#    Defaults to $facts['os_service_default'].
 #
 #  [*report_interval*]
 #    (optional) Report interval, in seconds.
-#    Defaults to $::os_service_default.
+#    Defaults to $facts['os_service_default'].
 #
 #  [*service_provider*]
 #    (optional)
@@ -112,14 +112,14 @@ class swift::objectexpirer(
   $enabled                       = true,
   $package_ensure                = 'present',
   $pipeline                      = ['catch_errors', 'proxy-logging', 'cache', 'proxy-server'],
-  $concurrency                   = $::os_service_default,
-  $expiring_objects_account_name = $::os_service_default,
-  $interval                      = $::os_service_default,
-  $process                       = $::os_service_default,
-  $processes                     = $::os_service_default,
-  $reclaim_age                   = $::os_service_default,
-  $recon_cache_path              = $::os_service_default,
-  $report_interval               = $::os_service_default,
+  $concurrency                   = $facts['os_service_default'],
+  $expiring_objects_account_name = $facts['os_service_default'],
+  $interval                      = $facts['os_service_default'],
+  $process                       = $facts['os_service_default'],
+  $processes                     = $facts['os_service_default'],
+  $reclaim_age                   = $facts['os_service_default'],
+  $recon_cache_path              = $facts['os_service_default'],
+  $report_interval               = $facts['os_service_default'],
   $service_provider              = $::swift::params::service_provider,
   $memcache_servers              = ['127.0.0.1:11211'],
   $cache_tls_enabled             = false,
@@ -181,7 +181,7 @@ class swift::objectexpirer(
 
   swift_object_expirer_config {
     'pipeline:main/pipeline':                       value => join($pipeline, ' ');
-    'object-expirer/auto_create_account_prefix':    value => pick($auto_create_account_prefix, $::os_service_default);
+    'object-expirer/auto_create_account_prefix':    value => pick($auto_create_account_prefix, $facts['os_service_default']);
     'object-expirer/concurrency':                   value => $concurrency;
     'object-expirer/expiring_objects_account_name': value => $expiring_objects_account_name;
     'object-expirer/interval':                      value => $interval;

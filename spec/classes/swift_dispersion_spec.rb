@@ -93,7 +93,7 @@ describe 'swift::dispersion' do
   }).each do |os,facts|
     context "on #{os}" do
       let (:facts) do
-        facts.merge(OSDefaults.get_facts({ :puppetversion => '4.8.0' }))
+        facts.merge(OSDefaults.get_facts())
       end
 
       it_configures 'swift::dispersion'

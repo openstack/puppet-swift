@@ -27,7 +27,7 @@
 #
 #  [*workers*]
 #    (optional) Number of threads to process requests.
-#    Defaults to $::os_workers.
+#    Defaults to $facts['os_workers'].
 #
 #  [*allow_account_management*]
 #    (optional) Rather or not requests through this proxy can create and
@@ -65,15 +65,15 @@
 #
 #  [*log_handoffs*]
 #    (optional) If True, the proxy will log whenever it has to failover to a handoff node
-#    Defaults to $::os_service_default.
+#    Defaults to $facts['os_service_default'].
 #
 #  [*object_chunk_size*]
 #    (optional) Chunk size to read from object servers.
-#    Defaults to $::os_service_default.
+#    Defaults to $facts['os_service_default'].
 #
 #  [*client_chunk_size*]
 #    (optional) Chunk size to read from clients.
-#    Defaults to $::os_service_default.
+#    Defaults to $facts['os_service_default'].
 #
 #  [*max_containers_per_account*]
 #     (optional) If set to a positive value, will limit container number per account.
@@ -81,7 +81,7 @@
 #
 #  [*max_containers_whitelist*]
 #     (optional) This is a comma separated list of account hashes that ignore the max_containers_per_account cap.
-#     Default to $::os_service_default.
+#     Default to $facts['os_service_default'].
 #
 #  [*read_affinity*]
 #    (optional) Configures the read affinity of proxy-server.
@@ -94,19 +94,19 @@
 #  [*write_affinity_node_count*]
 #    (optional) Configures write_affinity_node_count for proxy-server.
 #    Optional but requires write_affinity to be set.
-#    Defaults to $::os_service_default.
+#    Defaults to $facts['os_service_default'].
 #
 #  [*client_timeout*]
 #    (optional) Configures client_timeout for swift proxy-server.
-#    Defaults to $::os_service_default.
+#    Defaults to $facts['os_service_default'].
 #
 #  [*node_timeout*]
 #    (optional) Configures node_timeout for swift proxy-server
-#    Defaults to $::os_service_default.
+#    Defaults to $facts['os_service_default'].
 #
 #  [*recoverable_node_timeout*]
 #    (optional) Configures recoverable_node_timeout for swift proxy-server
-#    Defaults to $::os_service_default.
+#    Defaults to $facts['os_service_default'].
 #
 #  [*enabled*]
 #    (optional) Should the service be enabled.
@@ -161,7 +161,7 @@ class swift::proxy(
   $pipeline                   = [
     'catch_errors', 'gatekeeper', 'healthcheck', 'proxy-logging', 'cache',
     'listing_formats', 'tempauth', 'copy', 'proxy-logging', 'proxy-server'],
-  $workers                    = $::os_workers,
+  $workers                    = $facts['os_workers'],
   $allow_account_management   = true,
   $account_autocreate         = true,
   $log_headers                = 'False',
@@ -170,20 +170,20 @@ class swift::proxy(
   $log_address                = '/dev/log',
   $log_level                  = 'INFO',
   $log_facility               = 'LOG_LOCAL2',
-  $log_handoffs               = $::os_service_default,
+  $log_handoffs               = $facts['os_service_default'],
   $log_name                   = 'proxy-server',
   $cors_allow_origin          = undef,
   $strict_cors_mode           = true,
-  $object_chunk_size          = $::os_service_default,
-  $client_chunk_size          = $::os_service_default,
-  $max_containers_per_account = $::os_service_default,
-  $max_containers_whitelist   = $::os_service_default,
+  $object_chunk_size          = $facts['os_service_default'],
+  $client_chunk_size          = $facts['os_service_default'],
+  $max_containers_per_account = $facts['os_service_default'],
+  $max_containers_whitelist   = $facts['os_service_default'],
   $read_affinity              = undef,
   $write_affinity             = undef,
-  $write_affinity_node_count  = $::os_service_default,
-  $client_timeout             = $::os_service_default,
-  $node_timeout               = $::os_service_default,
-  $recoverable_node_timeout   = $::os_service_default,
+  $write_affinity_node_count  = $facts['os_service_default'],
+  $client_timeout             = $facts['os_service_default'],
+  $node_timeout               = $facts['os_service_default'],
+  $recoverable_node_timeout   = $facts['os_service_default'],
   $manage_service             = true,
   $enabled                    = true,
   $package_ensure             = 'present',
@@ -271,8 +271,8 @@ class swift::proxy(
     }
   } else {
     swift_proxy_config {
-      'DEFAULT/cors_allow_origin': value => $::os_service_default;
-      'DEFAULT/strict_cors_mode':  value => $::os_service_default;
+      'DEFAULT/cors_allow_origin': value => $facts['os_service_default'];
+      'DEFAULT/strict_cors_mode':  value => $facts['os_service_default'];
     }
   }
 
@@ -283,8 +283,8 @@ class swift::proxy(
     }
   } else {
     swift_proxy_config {
-      'app:proxy-server/write_affinity':            value => $::os_service_default;
-      'app:proxy-server/write_affinity_node_count': value => $::os_service_default;
+      'app:proxy-server/write_affinity':            value => $facts['os_service_default'];
+      'app:proxy-server/write_affinity_node_count': value => $facts['os_service_default'];
     }
   }
 
@@ -295,8 +295,8 @@ class swift::proxy(
     }
   } else {
     swift_proxy_config {
-      'app:proxy-server/sorting_method': value => $::os_service_default;
-      'app:proxy-server/read_affinity':  value => $::os_service_default;
+      'app:proxy-server/sorting_method': value => $facts['os_service_default'];
+      'app:proxy-server/read_affinity':  value => $facts['os_service_default'];
     }
   }
 

@@ -173,7 +173,7 @@ describe 'swift::storage::all' do
       end
 
       let (:platform_params) do
-        case facts[:osfamily]
+        case facts[:os]['family']
         when 'Debian'
           { :xinetd_available => true }
         when 'RedHat'
@@ -183,7 +183,7 @@ describe 'swift::storage::all' do
 
       it_configures 'swift::storage::all'
 
-      if facts[:osfamily] == 'Debian'
+      if facts[:os]['family'] == 'Debian'
         it_configures 'swift::storage::all debian'
       end
     end

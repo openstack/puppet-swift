@@ -122,7 +122,7 @@ describe 'swift::storage::generic' do
       end
 
       let(:platform_params) do
-        case facts[:osfamily]
+        case facts[:os]['family']
         when 'Debian'
           {
             'swift-account-server'       => 'swift-account',

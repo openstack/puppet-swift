@@ -11,20 +11,20 @@
 #
 # [*processes*]
 #   (Optional) Number of processes.
-#   Defaults to $::os_workers.
+#   Defaults to $facts['os_workers'].
 #
 # [*listen_queue_size*]
 #   (Optional) Socket listen queue size.
 #   Defaults to 100
 #
 class swift::wsgi::uwsgi_proxy (
-  $processes         = $::os_workers,
+  $processes         = $facts['os_workers'],
   $listen_queue_size = 100,
 ){
 
   include swift::deps
 
-  if $::operatingsystem != 'Debian'{
+  if $facts['os']['name'] != 'Debian'{
     warning('This class is only valid for Debian, as other operating systems are not using uwsgi by default.')
   }
 

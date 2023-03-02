@@ -24,13 +24,13 @@
 #    Project reader roles are similar to account owners, but are not
 #    allowed to write any data.
 #    (Optional)
-#    Default to $::os_service_default
+#    Default to $facts['os_service_default']
 #
 #  [*system_reader_roles*]
 #    System reader roles are similar to reseller_admin_roles, but are not
 #    allowed to write any data.
 #    (Optional)
-#    Default to $::os_service_default
+#    Default to $facts['os_service_default']
 #
 # == Authors
 #
@@ -41,8 +41,8 @@ class swift::proxy::keystone(
   $operator_roles       = ['admin', 'SwiftOperator'],
   $reseller_prefix      = 'AUTH_',
   $reseller_admin_role  = undef,
-  $project_reader_roles = $::os_service_default,
-  $system_reader_roles  = $::os_service_default,
+  $project_reader_roles = $facts['os_service_default'],
+  $system_reader_roles  = $facts['os_service_default'],
 ) {
 
   include swift::deps

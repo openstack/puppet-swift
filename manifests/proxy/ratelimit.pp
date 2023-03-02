@@ -9,23 +9,23 @@
 # [*clock_accuracy*]
 #   (optional) The accuracy of swift proxy servers' clocks.
 #   1000 is 1ms max difference. No rate should be higher than this.
-#   Defaults to $::os_service_default.
+#   Defaults to $facts['os_service_default'].
 #
 # [*max_sleep_time_seconds*]
 #   (optional) Time before the app returns a 498 response.
-#   Defaults to $::os_service_default.
+#   Defaults to $facts['os_service_default'].
 #
 # [*log_sleep_time_seconds*]
 #   (optional) if >0, enables logging of sleeps longer than the value.
-#   Defaults to $::os_service_default.
+#   Defaults to $facts['os_service_default'].
 #
 # [*rate_buffer_seconds*]
 #   (optional) Time in second the rate counter can skip.
-#   Defaults to $::os_service_default.
+#   Defaults to $facts['os_service_default'].
 #
 # [*account_ratelimit*]
 #   (optional) if >0, limits PUT and DELETE requests to containers
-#   Defaults to $::os_service_default.
+#   Defaults to $facts['os_service_default'].
 #
 # [*container_ratelimit*]
 #   (optional) Hash of size(keys) and requests per seconds(values).
@@ -48,11 +48,11 @@
 # Copyright 2012 eNovance licensing@enovance.com
 #
 class swift::proxy::ratelimit(
-  $clock_accuracy              = $::os_service_default,
-  $max_sleep_time_seconds      = $::os_service_default,
-  $log_sleep_time_seconds      = $::os_service_default,
-  $rate_buffer_seconds         = $::os_service_default,
-  $account_ratelimit           = $::os_service_default,
+  $clock_accuracy              = $facts['os_service_default'],
+  $max_sleep_time_seconds      = $facts['os_service_default'],
+  $log_sleep_time_seconds      = $facts['os_service_default'],
+  $rate_buffer_seconds         = $facts['os_service_default'],
+  $account_ratelimit           = $facts['os_service_default'],
   $container_ratelimit         = {},
   $container_listing_ratelimit = {},
 ) {

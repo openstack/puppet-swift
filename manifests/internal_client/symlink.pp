@@ -23,14 +23,14 @@
 # chain does not exceed the symloop_max value. If the number of chained
 # symlinks exceeds the limit symloop_max a 409 (HTTPConflict) error
 # response will be produced.
-# Default to $::os_service_default
+# Default to $facts['os_service_default']
 #
 # == Authors
 #
 # shi.yan@ardc.edu.au
 #
 class swift::internal_client::symlink(
-  $symloop_max = $::os_service_default,
+  $symloop_max = $facts['os_service_default'],
 ) {
 
   include swift::deps

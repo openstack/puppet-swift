@@ -52,7 +52,7 @@ describe 'swift::proxy::cname_lookup' do
       end
 
       let(:platform_params) do
-        case facts[:osfamily]
+        case facts[:os]['family']
         when 'Debian'
           { :dnspython_package_name => 'python3-dnspython' }
         when 'RedHat'

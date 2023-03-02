@@ -58,17 +58,17 @@
 #
 # [*disable_fallocate*]
 #   (optional) Disable pre-allocating the required disk space.
-#   Defaults to $::os_service_default.
+#   Defaults to $facts['os_service_default'].
 #
 # [*fallocate_reserve*]
 #   (optional) The number of bytes or percentage of disk space kept free at
 #   all times.
-#   Defaults to $::os_service_default.
+#   Defaults to $facts['os_service_default'].
 #
 # [*server_fallocate_reserve*]
 #   (optional) The number of bytes or percentage of disk space kept free at
 #   all times. This option affects only <type>-server processes.
-#   Defaults to $::os_service_default.
+#   Defaults to $facts['os_service_default'].
 #
 # [*servers_per_port*]
 #   (optional) Spawn multiple servers per device on different ports.
@@ -76,7 +76,7 @@
 #   "local" ring devices across all storage policies.  This can help provide
 #   the isolation of threads_per_disk without the severe overhead.  The default
 #   value of 0 disables this feature.
-#   Default to $::os_service_default.
+#   Default to $facts['os_service_default'].
 #
 # [*user*]
 #   (optional) User to run as
@@ -89,7 +89,7 @@
 #   one. Increasing the number of workers may reduce the possibility of slow file
 #   system operations in one request from negatively impacting other requests.
 #   See https://docs.openstack.org/swift/latest/deployment_guide.html#general-service-tuning
-#   Defaults to $::os_workers.
+#   Defaults to $facts['os_workers'].
 #
 # [*replicator_concurrency*]
 #   (optional) Number of replicator workers to spawn.
@@ -97,7 +97,7 @@
 #
 # [*replicator_interval*]
 #   (optional) Minimum time for a pass to take, in seconds.
-#   Default to $::os_service_default.
+#   Default to $facts['os_service_default'].
 #
 # [*updater_concurrency*]
 #   (optional) Number of updater workers to spawn.
@@ -151,69 +151,69 @@
 #
 # [*log_statsd_port*]
 #   (optional) statsd port to send data to.
-#   Defaults to $::os_service_default.
+#   Defaults to $facts['os_service_default'].
 #
 # [*log_statsd_default_sample_rate*]
 #   (optional) Default sample rate for data. This should be a number between 0
 #   and 1. According to the documentation this should be set to 1 and the
 #   sample rate factor should be adjusted.
-#   Defaults to $::os_service_default.
+#   Defaults to $facts['os_service_default'].
 #
 # [*log_statsd_sample_rate_factor*]
 #   (optional) sample rate factor for data.
-#   Defaults to $::os_service_default.
+#   Defaults to $facts['os_service_default'].
 #
 # [*log_statsd_metric_prefix*]
 #   (optional) Prefix for data being sent to statsd.
-#   Defaults to $::os_service_default
+#   Defaults to $facts['os_service_default']
 #
 # [*network_chunk_size*]
 #   (optional) Size of chunks to read/write over the network.
-#   Default to $::os_service_default.
+#   Default to $facts['os_service_default'].
 #
 # [*disk_chunk_size*]
 #   (optional) Size of chunks to read/write to disk.
-#   Default to $::os_service_default.
+#   Default to $facts['os_service_default'].
 #
 # [*auditor_disk_chunk_size*]
 #   (optional) Object-auditor size of chunks to read/write to disk.
-#   Default to $::os_service_default.
+#   Default to $facts['os_service_default'].
 #
 # [*client_timeout*]
 #   (optional) Object-server timeout in seconds to read one chunk from a client
 #   external services.
-#   Default to $::os_service_default.
+#   Default to $facts['os_service_default'].
 #
 # [*rsync_timeout*]
 #   (optional) Max duration of a partition rsync.
-#   Default to $::os_service_default.
+#   Default to $facts['os_service_default'].
 #
 # [*rsync_bwlimit*]
 #   (optional) Bandwidth limit for rsync in kB/s. 0 means unlimited.
-#   Default to $::os_service_default.
+#   Default to $facts['os_service_default'].
 #
 # [*splice*]
 #   (optional) Use splice for zero-copy object GETs. This requires Linux Kernel
 #   version 3.0 or greater.
-#   Default to $::os_service_default.
+#   Default to $facts['os_service_default'].
 #
 # [*object_server_mb_per_sync*]
 #   (optional) Number of MB allocated for the cache.
-#   Default to $::os_service_default.
+#   Default to $facts['os_service_default'].
 #
 # [*container_sharder_auto_shard*]
 #   (optional) If the auto_shard option is true then the sharder will
 #   automatically select containers to shard, scan for shard ranges,
 #   and select shards to shrink.
-#   Default to $::os_service_default.
+#   Default to $facts['os_service_default'].
 #
 # [*container_sharder_concurrency*]
 #   (optional) Number of replication workers to spawn.
-#   Default to $::os_service_default.
+#   Default to $facts['os_service_default'].
 #
 # [*container_sharder_interval*]
 #   (optional) Time in seconds to wait between sharder cycles.
-#   Default to $::os_service_default.
+#   Default to $facts['os_service_default'].
 #
 define swift::storage::server(
   $type,
@@ -228,14 +228,14 @@ define swift::storage::server(
   $max_connections                = 25,
   $pipeline                       = ["${type}-server"],
   $mount_check                    = true,
-  $disable_fallocate              = $::os_service_default,
-  $fallocate_reserve              = $::os_service_default,
-  $server_fallocate_reserve       = $::os_service_default,
-  $servers_per_port               = $::os_service_default,
+  $disable_fallocate              = $facts['os_service_default'],
+  $fallocate_reserve              = $facts['os_service_default'],
+  $server_fallocate_reserve       = $facts['os_service_default'],
+  $servers_per_port               = $facts['os_service_default'],
   $user                           = undef,
-  $workers                        = $::os_workers,
+  $workers                        = $facts['os_workers'],
   $replicator_concurrency         = 1,
-  $replicator_interval            = $::os_service_default,
+  $replicator_interval            = $facts['os_service_default'],
   $updater_concurrency            = 1,
   $reaper_concurrency             = 1,
   $log_facility                   = 'LOG_LOCAL2',
@@ -249,23 +249,23 @@ define swift::storage::server(
   $config_file_path               = "${type}-server.conf",
   $statsd_enabled                 = false,
   $log_statsd_host                = 'localhost',
-  $log_statsd_port                = $::os_service_default,
-  $log_statsd_default_sample_rate = $::os_service_default,
-  $log_statsd_sample_rate_factor  = $::os_service_default,
-  $log_statsd_metric_prefix       = $::os_service_default,
-  $network_chunk_size             = $::os_service_default,
-  $disk_chunk_size                = $::os_service_default,
-  $client_timeout                 = $::os_service_default,
-  $auditor_disk_chunk_size        = $::os_service_default,
-  $rsync_timeout                  = $::os_service_default,
-  $rsync_bwlimit                  = $::os_service_default,
-  $splice                         = $::os_service_default,
-  $object_server_mb_per_sync      = $::os_service_default,
+  $log_statsd_port                = $facts['os_service_default'],
+  $log_statsd_default_sample_rate = $facts['os_service_default'],
+  $log_statsd_sample_rate_factor  = $facts['os_service_default'],
+  $log_statsd_metric_prefix       = $facts['os_service_default'],
+  $network_chunk_size             = $facts['os_service_default'],
+  $disk_chunk_size                = $facts['os_service_default'],
+  $client_timeout                 = $facts['os_service_default'],
+  $auditor_disk_chunk_size        = $facts['os_service_default'],
+  $rsync_timeout                  = $facts['os_service_default'],
+  $rsync_bwlimit                  = $facts['os_service_default'],
+  $splice                         = $facts['os_service_default'],
+  $object_server_mb_per_sync      = $facts['os_service_default'],
   # These parameters only apply to container-server.conf,
   # and define options for the container-sharder service.
-  $container_sharder_auto_shard   = $::os_service_default,
-  $container_sharder_concurrency  = $::os_service_default,
-  $container_sharder_interval     = $::os_service_default,
+  $container_sharder_auto_shard   = $facts['os_service_default'],
+  $container_sharder_concurrency  = $facts['os_service_default'],
+  $container_sharder_interval     = $facts['os_service_default'],
 ){
 
   include swift::deps
@@ -329,7 +329,7 @@ define swift::storage::server(
       max_connections => $max_connections,
       read_only       => false,
     }
-    $rsync_module = $::os_service_default
+    $rsync_module = $facts['os_service_default']
   }
 
   $config_file_full_path = "/etc/swift/${config_file_path}"
@@ -402,12 +402,12 @@ define swift::storage::server(
   if $log_udp_host {
     $log_udp_opts = {
       'DEFAULT/log_udp_host' => {'value' => $log_udp_host},
-      'DEFAULT/log_udp_port' => {'value' => pick($log_udp_port, $::os_service_default)},
+      'DEFAULT/log_udp_port' => {'value' => pick($log_udp_port, $facts['os_service_default'])},
     }
   } else {
     $log_udp_opts = {
-      'DEFAULT/log_udp_host' => {'value' => $::os_service_default},
-      'DEFAULT/log_udp_port' => {'value' => $::os_service_default},
+      'DEFAULT/log_udp_host' => {'value' => $facts['os_service_default']},
+      'DEFAULT/log_udp_port' => {'value' => $facts['os_service_default']},
     }
   }
 
@@ -422,11 +422,11 @@ define swift::storage::server(
     }
   } else {
     $log_statsd_opts = {
-      'DEFAULT/log_statsd_host'                => {'value' => $::os_service_default},
-      'DEFAULT/log_statsd_port'                => {'value' => $::os_service_default},
-      'DEFAULT/log_statsd_default_sample_rate' => {'value' => $::os_service_default},
-      'DEFAULT/log_statsd_sample_rate_factor'  => {'value' => $::os_service_default},
-      'DEFAULT/log_statsd_metric_prefix'       => {'value' => $::os_service_default},
+      'DEFAULT/log_statsd_host'                => {'value' => $facts['os_service_default']},
+      'DEFAULT/log_statsd_port'                => {'value' => $facts['os_service_default']},
+      'DEFAULT/log_statsd_default_sample_rate' => {'value' => $facts['os_service_default']},
+      'DEFAULT/log_statsd_sample_rate_factor'  => {'value' => $facts['os_service_default']},
+      'DEFAULT/log_statsd_metric_prefix'       => {'value' => $facts['os_service_default']},
     }
   }
 

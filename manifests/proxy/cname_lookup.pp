@@ -6,51 +6,51 @@
 #
 # [*log_name*]
 # The log name of cname_lookup.
-# Default to $::os_service_default
+# Default to $facts['os_service_default']
 #
 # [*log_facility*]
 # The log facility of cname_lookup.
-# Default to $::os_service_default
+# Default to $facts['os_service_default']
 #
 # [*log_level*]
 # The log level of cname_lookup.
-# Default to $::os_service_default
+# Default to $facts['os_service_default']
 #
 # [*log_headers*]
 # The log headers of cname_lookup.
-# Default to $::os_service_default
+# Default to $facts['os_service_default']
 #
 # [*log_address*]
 # The log address of cname_lookup.
-# Default to $::os_service_default
+# Default to $facts['os_service_default']
 #
 # [*storage_domain*]
 # Specify the storage_domain that match your cloud, multiple domains
 # can be specified separated by a comma.
-# Default to $::os_service_default
+# Default to $facts['os_service_default']
 #
 # [*lookup_depth*]
 # Because CNAMES can be recursive, specifies the number of levels
 # through which to search.
-# Default to $::os_service_default
+# Default to $facts['os_service_default']
 #
 # [*nameservers*]
 # Specify the nameservers to use to do the CNAME resolution. If unset, the
 # system configuration is used. Multiple nameservers can be specified
 # separated by a comma. Default port 53 can be overridden. IPv6 is accepted.
 # Example: 127.0.0.1, 127.0.0.2, 127.0.0.3:5353, [::1], [::1]:5353
-# Default to $::os_service_default
+# Default to $facts['os_service_default']
 #
 #
 class swift::proxy::cname_lookup(
-  $log_name       = $::os_service_default,
-  $log_facility   = $::os_service_default,
-  $log_level      = $::os_service_default,
-  $log_headers    = $::os_service_default,
-  $log_address    = $::os_service_default,
-  $storage_domain = $::os_service_default,
-  $lookup_depth   = $::os_service_default,
-  $nameservers    = $::os_service_default,
+  $log_name       = $facts['os_service_default'],
+  $log_facility   = $facts['os_service_default'],
+  $log_level      = $facts['os_service_default'],
+  $log_headers    = $facts['os_service_default'],
+  $log_address    = $facts['os_service_default'],
+  $storage_domain = $facts['os_service_default'],
+  $lookup_depth   = $facts['os_service_default'],
+  $nameservers    = $facts['os_service_default'],
 ) {
 
   include swift::deps

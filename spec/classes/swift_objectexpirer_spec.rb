@@ -117,7 +117,7 @@ describe 'swift::objectexpirer' do
       end
 
       let(:platform_params) do
-        case facts[:osfamily]
+        case facts[:os]['family']
         when 'Debian'
           { :service_name     => 'swift-object-expirer',
             :service_provider => nil }

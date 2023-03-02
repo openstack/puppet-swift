@@ -20,47 +20,47 @@
 #
 # [*log_name*]
 # The log name of domain_remap.
-# Default to $::os_service_default
+# Default to $facts['os_service_default']
 #
 # [*log_facility*]
 # The log facility of domain_remap.
-# Default to $::os_service_default
+# Default to $facts['os_service_default']
 #
 # [*log_level*]
 # The log level of domain_remap.
-# Default to $::os_service_default
+# Default to $facts['os_service_default']
 #
 # [*log_headers*]
 # The log headers of domain_remap.
-# Default to $::os_service_default
+# Default to $facts['os_service_default']
 #
 # [*log_address*]
 # The log address of domain_remap.
-# Default to $::os_service_default
+# Default to $facts['os_service_default']
 #
 # [*storage_domain*]
 # Specify the storage_domain that match your cloud, multiple domains
 # can be specified separated by a comma.
-# Default to $::os_service_default
+# Default to $facts['os_service_default']
 #
 # [*path_root*]
 # Specify a root path part that will be added to the start of paths if not
 # already present.
-# Default to $::os_service_default
+# Default to $facts['os_service_default']
 #
 # [*reseller_prefixes*]
 # A list of reseller_prefixes to lookup a reseller_prefix
 # from the given account name.
-# Default to $::os_service_default
+# Default to $facts['os_service_default']
 #
 # [*default_reseller_prefix*]
 # The default reseller_prefix.
 # It will be used if none of reseller_prefixes match
-# Default to $::os_service_default
+# Default to $facts['os_service_default']
 #
 # [*mangle_client_paths*]
 # Enable legacy remapping behavior for versioned path requests.
-# Default to $::os_service_default
+# Default to $facts['os_service_default']
 #
 # == Authors
 #
@@ -68,16 +68,16 @@
 #
 #
 class swift::proxy::domain_remap(
-  $log_name                = $::os_service_default,
-  $log_facility            = $::os_service_default,
-  $log_level               = $::os_service_default,
-  $log_headers             = $::os_service_default,
-  $log_address             = $::os_service_default,
-  $storage_domain          = $::os_service_default,
-  $path_root               = $::os_service_default,
-  $reseller_prefixes       = $::os_service_default,
-  $default_reseller_prefix = $::os_service_default,
-  $mangle_client_paths     = $::os_service_default,
+  $log_name                = $facts['os_service_default'],
+  $log_facility            = $facts['os_service_default'],
+  $log_level               = $facts['os_service_default'],
+  $log_headers             = $facts['os_service_default'],
+  $log_address             = $facts['os_service_default'],
+  $storage_domain          = $facts['os_service_default'],
+  $path_root               = $facts['os_service_default'],
+  $reseller_prefixes       = $facts['os_service_default'],
+  $default_reseller_prefix = $facts['os_service_default'],
+  $mangle_client_paths     = $facts['os_service_default'],
 ) {
 
   include swift::deps

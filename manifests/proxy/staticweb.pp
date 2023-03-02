@@ -12,7 +12,7 @@
 #
 # [*url_base*]
 #   (optional) The URL scheme and/or the host name used to generate redirects.
-#   Defaults to $::os_service_default.
+#   Defaults to $facts['os_service_default'].
 #
 # == Authors
 #
@@ -23,7 +23,7 @@
 # Copyright 2012 eNovance licensing@enovance.com
 #
 class swift::proxy::staticweb(
-  $url_base = $::os_service_default
+  $url_base = $facts['os_service_default']
 ) {
 
   include swift::deps

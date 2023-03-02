@@ -55,41 +55,41 @@
 #
 # [*device_dir*]
 #   (Optional) Directory devices are mounted under
-#   Defaults to $::os_service_default.
+#   Defaults to $facts['os_service_default'].
 #
 # [*minutes*]
 #   (Optional) Number of minutes to look back in the log file.
-#   Defaults to $::os_service_default.
+#   Defaults to $facts['os_service_default'].
 #
 # [*error_limit*]
 #   (Optional) Number of errors to find before a device is unmounted
-#   Defaults to $::os_service_default.
+#   Defaults to $facts['os_service_default'].
 #
 # [*recon_cache_path*]
 #   (Optional) The path for recon cache
-#   Defaults to $::os_service_default.
+#   Defaults to $facts['os_service_default'].
 #
 # [*log_file_pattern*]
 #   (Optional) Location of the log file with globbing pattern to check against
 #   device errors.
-#   Defaults to $::os_service_default.
+#   Defaults to $facts['os_service_default'].
 #
 # [*log_file_encoding*]
 #   (Optional) The encoding used to interpret the log files.
-#   Defaults to $::os_service_default.
+#   Defaults to $facts['os_service_default'].
 #
 # [*log_to_console*]
 #   (Optional) Make drive-audit log to console in addition to syslog
-#   Defaults to $::os_service_default.
+#   Defaults to $facts['os_service_default'].
 #
 # [*unmount_failed_device*]
 #   (Optional) Unmount the device with errors detected.
-#   Defaults to $::os_service_default.
+#   Defaults to $facts['os_service_default'].
 #
 # [*regex_pattern*]
 #   (Optional) Regular expression patterns to be used to locate device blocks
 #   with errors in the log file.
-#   Defaults to $::os_service_default.
+#   Defaults to $facts['os_service_default'].
 #
 #  [*purge_config*]
 #   (Optional) Whether to set only the specified config options in the drive
@@ -113,13 +113,13 @@ class swift::storage::drive_audit(
   $log_udp_host          = undef,
   $log_udp_port          = undef,
   $device_dir            = '/srv/node',
-  $minutes               = $::os_service_default,
-  $error_limit           = $::os_service_default,
-  $recon_cache_path      = $::os_service_default,
-  $log_file_pattern      = $::os_service_default,
-  $log_file_encoding     = $::os_service_default,
-  $log_to_console        = $::os_service_default,
-  $unmount_failed_device = $::os_service_default,
+  $minutes               = $facts['os_service_default'],
+  $error_limit           = $facts['os_service_default'],
+  $recon_cache_path      = $facts['os_service_default'],
+  $log_file_pattern      = $facts['os_service_default'],
+  $log_file_encoding     = $facts['os_service_default'],
+  $log_to_console        = $facts['os_service_default'],
+  $unmount_failed_device = $facts['os_service_default'],
   $regex_pattern         = {},
   $purge_config          = false,
 ) inherits swift::params {
@@ -142,12 +142,12 @@ class swift::storage::drive_audit(
   if $log_udp_host {
     swift_drive_audit_config {
       'drive-audit/log_udp_host': value => $log_udp_host;
-      'drive-audit/log_udp_port': value => pick($log_udp_port, $::os_service_default);
+      'drive-audit/log_udp_port': value => pick($log_udp_port, $facts['os_service_default']);
     }
   } else {
     swift_drive_audit_config {
-      'drive-audit/log_udp_host': value => $::os_service_default;
-      'drive-audit/log_udp_port': value => $::os_service_default;
+      'drive-audit/log_udp_host': value => $facts['os_service_default'];
+      'drive-audit/log_udp_port': value => $facts['os_service_default'];
     }
   }
 

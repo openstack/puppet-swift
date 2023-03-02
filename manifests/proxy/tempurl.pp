@@ -6,27 +6,27 @@
 #  [*methods*]
 #    Methods allowed with Temp URLs.
 #    Example: ['GET','HEAD','PUT','POST','DELETE'] or 'GET HEAD PUT POST DELETE'
-#    Optional. Defaults to $::os_service_default.
+#    Optional. Defaults to $facts['os_service_default'].
 #
 #  [*incoming_remove_headers*]
 #    The headers to remove from incoming requests.
 #    Example: ['x-timestamp'] or 'x-timestamp'
-#    Optional. Defaults to $::os_service_default.
+#    Optional. Defaults to $facts['os_service_default'].
 #
 #  [*incoming_allow_headers*]
 #    The headers allowed as exceptions to incoming_remove_headers
 #    Example: ['*'] or '*'
-#    Optional. Defaults to $::os_service_default.
+#    Optional. Defaults to $facts['os_service_default'].
 #
 #  [*outgoing_remove_headers*]
 #    The headers to remove from outgoing responses
 #    Example: ['x-object-meta-*'] or 'x-object-meta-*'
-#    Optional. Defaults to $::os_service_default.
+#    Optional. Defaults to $facts['os_service_default'].
 #
 #  [*outgoing_allow_headers*]
 #    The headers allowed as exceptions to outgoing_remove_headers
 #    Example: ['x-object-meta-public-*'] or 'x-object-meta-public-*'
-#    Optional. Defaults to $::os_service_default.
+#    Optional. Defaults to $facts['os_service_default'].
 #
 # == Examples
 #
@@ -45,11 +45,11 @@
 # Copyright 2012 eNovance licensing@enovance.com
 #
 class swift::proxy::tempurl (
-  $methods                 = $::os_service_default,
-  $incoming_remove_headers = $::os_service_default,
-  $incoming_allow_headers  = $::os_service_default,
-  $outgoing_remove_headers = $::os_service_default,
-  $outgoing_allow_headers  = $::os_service_default,
+  $methods                 = $facts['os_service_default'],
+  $incoming_remove_headers = $facts['os_service_default'],
+  $incoming_allow_headers  = $facts['os_service_default'],
+  $outgoing_remove_headers = $facts['os_service_default'],
+  $outgoing_allow_headers  = $facts['os_service_default'],
 ) {
 
   include swift::deps

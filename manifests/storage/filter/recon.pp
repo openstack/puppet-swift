@@ -4,7 +4,7 @@
 # == Parameters
 #  [*cache_path*]
 #    (Optional) The path for recon cache
-#    Defaults to $::os_service_default
+#    Defaults to $facts['os_service_default']
 #
 # == Dependencies
 #
@@ -20,7 +20,7 @@
 # Copyright 2011 Puppetlabs Inc, unless otherwise noted.
 #
 define swift::storage::filter::recon(
-  $cache_path = $::os_service_default,
+  $cache_path = $facts['os_service_default'],
 ) {
 
   include swift::deps

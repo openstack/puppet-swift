@@ -74,33 +74,33 @@
 #
 # [*log_statsd_port*]
 #   (optional) statsd port to send data to.
-#   Default to $::os_service_default.
+#   Default to $facts['os_service_default'].
 #
 # [*log_statsd_default_sample_rate*]
 #   (optional) Default sample rate for data. This should be a number between 0
 #   and 1. According to the documentation this should be set to 1 and the
 #   sample rate factor should be adjusted.
-#   Default to $::os_service_default.
+#   Default to $facts['os_service_default'].
 #
 # [*log_statsd_sample_rate_factor*]
 #   (optional) sample rate factor for data.
-#   Default to $::os_service_default.
+#   Default to $facts['os_service_default'].
 #
 # [*log_statsd_metric_prefix*]
 #   (optional) Prefix for data being sent to statsd.
-#   Default to $::os_service_default.
+#   Default to $facts['os_service_default'].
 #
 # [*account_server_workers*]
 #   (optional) Number of account server workers.
-#   Defaults to $::os_workers.
+#   Defaults to $facts['os_workers'].
 #
 # [*container_server_workers*]
 #   (optional) Number of container server workers.
-#   Defaults to $::os_workers.
+#   Defaults to $facts['os_workers'].
 #
 # [*object_server_workers*]
 #   (optional) Number of account server workers.
-#   Defaults to $::os_workers.
+#   Defaults to $facts['os_workers'].
 #
 # [*object_server_mb_per_sync*]
 #   (optional) Number of MB allocated for the cache.
@@ -108,16 +108,16 @@
 #
 # [*rsync_timeout*]
 #   (optional) Max duration of a partition rsync.
-#   Default to $::os_service_default.
+#   Default to $facts['os_service_default'].
 #
 # [*rsync_bwlimit*]
 #   (optional) Bandwidth limit for rsync in kB/s. 0 means unlimited.
-#   Default to $::os_service_default.
+#   Default to $facts['os_service_default'].
 #
 # [*splice*]
 #   (optional) Use splice for zero-copy object GETs. This requires Linux Kernel
 #   version 3.0 or greater.
-#   Default to $::os_service_default.
+#   Default to $facts['os_service_default'].
 #
 # [*max_connections*]
 #   (optional) maximum number of simultaneous connections allowed for rsync.
@@ -146,16 +146,16 @@ class swift::storage::all(
   $outgoing_chmod                 = 'Du=rwx,g=rx,o=rx,Fu=rw,g=r,o=r',
   $statsd_enabled                 = false,
   $log_statsd_host                = 'localhost',
-  $log_statsd_port                = $::os_service_default,
-  $log_statsd_default_sample_rate = $::os_service_default,
-  $log_statsd_sample_rate_factor  = $::os_service_default,
-  $log_statsd_metric_prefix       = $::os_service_default,
-  $account_server_workers         = $::os_workers,
-  $container_server_workers       = $::os_workers,
-  $object_server_workers          = $::os_workers,
-  $object_server_mb_per_sync      = $::os_service_default,
-  $rsync_timeout                  = $::os_service_default,
-  $rsync_bwlimit                  = $::os_service_default,
+  $log_statsd_port                = $facts['os_service_default'],
+  $log_statsd_default_sample_rate = $facts['os_service_default'],
+  $log_statsd_sample_rate_factor  = $facts['os_service_default'],
+  $log_statsd_metric_prefix       = $facts['os_service_default'],
+  $account_server_workers         = $facts['os_workers'],
+  $container_server_workers       = $facts['os_workers'],
+  $object_server_workers          = $facts['os_workers'],
+  $object_server_mb_per_sync      = $facts['os_service_default'],
+  $rsync_timeout                  = $facts['os_service_default'],
+  $rsync_bwlimit                  = $facts['os_service_default'],
   $splice                         = false,
   $max_connections                = 25,
   $rsync_use_xinetd               = $::swift::params::xinetd_available,

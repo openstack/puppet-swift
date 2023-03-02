@@ -21,82 +21,82 @@
 #
 # [*max_file_size*]
 #   (Optional) The largest "normal" object that can be saved in the cluster.
-#   Defaults to $::os_service_default
+#   Defaults to $facts['os_service_default']
 #
 # [*max_meta_name_length*]
 #   (Optional) Max number of bytes in the utf8 encoding of the name portion of
 #   a metadata header.
-#   Defaults to $::os_service_default
+#   Defaults to $facts['os_service_default']
 #
 # [*max_meta_value_length*]
 #   (Optional) Max number of bytes in the utf8 encoding of a metadata value.
-#   Defaults to $::os_service_default
+#   Defaults to $facts['os_service_default']
 #
 # [*max_meta_count*]
 #   (Optional) Max number of metadata keys that can be store on a single
 #   account, container or object.
-#   Defaults to $::os_service_default
+#   Defaults to $facts['os_service_default']
 #
 # [*max_meta_overall_size*]
 #   (Optional) The max number of bytes in the utf8 encoding of the metadata.
-#   Defaults to $::os_service_default
+#   Defaults to $facts['os_service_default']
 #
 # [*max_header_size*]
 #   (Optional) Max HTTP header size for incoming requests for all swift
 #   services.
-#   Defaults to $::os_service_default
+#   Defaults to $facts['os_service_default']
 #
 # [*extra_header_count*]
 #   (Optional) Allow additional headers in addition to max allowed metadata
 #   plus a default value of 36 for swift internally generated headers and
 #   regular http headers.
-#   Defaults to $::os_service_default
+#   Defaults to $facts['os_service_default']
 #
 # [*max_object_name_length*]
 #   (Optional) Max number of bytes in the utf8 encoding of an object name.
-#   Defaults to $::os_service_default
+#   Defaults to $facts['os_service_default']
 #
 # [*container_listing_limit*]
 #   (Optional) Default (and max) number of items returned for a container
 #   listing request.
-#   Defaults to $::os_service_default
+#   Defaults to $facts['os_service_default']
 #
 # [*account_listing_limit*]
 #   (Optional) Default (and max) number of items returned for an account
 #   listing request.
-#   Defaults to $::os_service_default
+#   Defaults to $facts['os_service_default']
 #
 # [*max_account_name_length*]
 #   (Optional) Max number of bytes in the utf8 encoding of an account name.
-#   Defaults to $::os_service_default
+#   Defaults to $facts['os_service_default']
 #
 # [*max_container_name_length*]
 #   (Optional) Max number of bytes in the utf8 encoding of a container name.
-#   Defaults to $::os_service_default
+#   Defaults to $facts['os_service_default']
 #
 # [*valid_api_versions*]
 #   (Optional) Allowed version strings for all REST API calls.
-#   Defaults to $::os_service_default
+#   Defaults to $facts['os_service_default']
 #
 # [*auto_create_account_prefix*]
 #   (Optional) Prefix used for hiddne auto-created accounts.
-#   Defaults to $::os_service_default
+#   Defaults to $facts['os_service_default']
 #
 class swift::constraints(
-  $max_file_size              = $::os_service_default,
-  $max_meta_name_length       = $::os_service_default,
-  $max_meta_value_length      = $::os_service_default,
-  $max_meta_count             = $::os_service_default,
-  $max_meta_overall_size      = $::os_service_default,
-  $max_header_size            = $::os_service_default,
-  $extra_header_count         = $::os_service_default,
-  $max_object_name_length     = $::os_service_default,
-  $container_listing_limit    = $::os_service_default,
-  $account_listing_limit      = $::os_service_default,
-  $max_account_name_length    = $::os_service_default,
-  $max_container_name_length  = $::os_service_default,
-  $valid_api_versions         = $::os_service_default,
-  $auto_create_account_prefix = $::os_service_default,
+  $max_file_size              = $facts['os_service_default'],
+  $max_meta_name_length       = $facts['os_service_default'],
+  $max_meta_value_length      = $facts['os_service_default'],
+  $max_meta_count             = $facts['os_service_default'],
+  $max_meta_overall_size      = $facts['os_service_default'],
+  $max_header_size            = $facts['os_service_default'],
+  $extra_header_count         = $facts['os_service_default'],
+  $max_object_name_length     = $facts['os_service_default'],
+  $container_listing_limit    = $facts['os_service_default'],
+  $account_listing_limit      = $facts['os_service_default'],
+  $max_account_name_length    = $facts['os_service_default'],
+  $max_container_name_length  = $facts['os_service_default'],
+  $valid_api_versions         = $facts['os_service_default'],
+  $auto_create_account_prefix = $facts['os_service_default'],
 ) {
 
   include swift::deps

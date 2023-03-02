@@ -11,7 +11,7 @@ class swift::params {
   $user                   = 'swift'
   $group                  = 'swift'
 
-  case $::osfamily {
+  case $facts['os']['family'] {
     'Debian': {
       $package_name                      = 'swift'
       $proxy_package_name                = 'swift-proxy'
@@ -69,8 +69,7 @@ class swift::params {
       $xinetd_available                  = false
     }
     default: {
-      fail("Unsupported osfamily: ${::osfamily} operatingsystem: ${::operatingsystem}, \
-module ${module_name} only support osfamily RedHat and Debian")
+      fail("Unsupported osfamily: ${facts['os']['family']}")
     }
   }
   $swift_init_service_names = [

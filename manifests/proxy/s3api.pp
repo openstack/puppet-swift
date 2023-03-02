@@ -7,41 +7,41 @@
 #
 # [*allow_no_owner*]
 #   Whether objects without owner information should be visible or not
-#   Defaults to $::os_service_default.
+#   Defaults to $facts['os_service_default'].
 #
 # [*location*]
 #   A region name of the swift cluster.
-#   Defaults to $::os_service_default.
+#   Defaults to $facts['os_service_default'].
 #
 # [*dns_compliant_bucket_names*]
 #   Enforce DNS-compliant bucket names
-#   Defaults to $::os_service_default.
+#   Defaults to $facts['os_service_default'].
 #
 # [*max_bucket_listing*]
 #   The default maximum number of objects returned in the GET Bucket response.
-#   Defaults to $::os_service_default.
+#   Defaults to $facts['os_service_default'].
 #
 # [*max_parts_listing*]
 #   The maximum number of parts returned in the List Parts operation.
-#   Defaults to $::os_service_default.
+#   Defaults to $facts['os_service_default'].
 #
 # [*max_multi_delete_objects*]
 #   The maximum number of objects deleted with the Multi-Object Delete
 #   operation.
-#   Defaults to $::os_service_default.
+#   Defaults to $facts['os_service_default'].
 #
 # [*multi_delete_concurrency*]
 #   The number of objects to delete at a time with the Multi-Object Delete
 #   operation.
-#   Defaults to $::os_service_default.
+#   Defaults to $facts['os_service_default'].
 #
 # [*s3_acl*]
 #   Use own metadata for ACLs.
-#   Defaults to $::os_service_default.
+#   Defaults to $facts['os_service_default'].
 #
 # [*storage_domain*]
 #   A host name of the Swift cluster
-#   Defaults to $::os_service_default.
+#   Defaults to $facts['os_service_default'].
 #
 # [*auth_pipeline_check*]
 #   Enable pipeline order check
@@ -49,46 +49,46 @@
 #
 # [*allow_multipart_uploads*]
 #   Enable multi-part uploads.
-#   Defaults to $::os_service_default.
+#   Defaults to $facts['os_service_default'].
 #
 # [*max_upload_part_num*]
 #   Max upload per num
-#   Default to $::os_service_default.
+#   Default to $facts['os_service_default'].
 #
 # [*check_bucket_owner*]
 #   Enable returning only buckets which owner are the user who requested
 #   GET Service operation.
-#   Defaults to $::os_service_default.
+#   Defaults to $facts['os_service_default'].
 #
 # [*force_swift_request_proxy_log*]
 #   Output Swift style log in addition to S3 style log.
-#   Defaults to $::os_service_default.
+#   Defaults to $facts['os_service_default'].
 #
 # [*min_segment_size*]
 #   Minimum size of each part in a multipart upload
-#   Defaults to $::os_service_default.
+#   Defaults to $facts['os_service_default'].
 #
 # [*log_name*]
 #   Override the default log routing for s3api middleware
-#   Defaults to $::os_service_default.
+#   Defaults to $facts['os_service_default'].
 #
 class swift::proxy::s3api(
-  $allow_no_owner                = $::os_service_default,
-  $location                      = $::os_service_default,
-  $dns_compliant_bucket_names    = $::os_service_default,
-  $max_bucket_listing            = $::os_service_default,
-  $max_parts_listing             = $::os_service_default,
-  $max_multi_delete_objects      = $::os_service_default,
-  $multi_delete_concurrency      = $::os_service_default,
-  $s3_acl                        = $::os_service_default,
-  $storage_domain                = $::os_service_default,
+  $allow_no_owner                = $facts['os_service_default'],
+  $location                      = $facts['os_service_default'],
+  $dns_compliant_bucket_names    = $facts['os_service_default'],
+  $max_bucket_listing            = $facts['os_service_default'],
+  $max_parts_listing             = $facts['os_service_default'],
+  $max_multi_delete_objects      = $facts['os_service_default'],
+  $multi_delete_concurrency      = $facts['os_service_default'],
+  $s3_acl                        = $facts['os_service_default'],
+  $storage_domain                = $facts['os_service_default'],
   $auth_pipeline_check           = false,
-  $allow_multipart_uploads       = $::os_service_default,
-  $max_upload_part_num           = $::os_service_default,
-  $check_bucket_owner            = $::os_service_default,
-  $force_swift_request_proxy_log = $::os_service_default,
-  $min_segment_size              = $::os_service_default,
-  $log_name                      = $::os_service_default,
+  $allow_multipart_uploads       = $facts['os_service_default'],
+  $max_upload_part_num           = $facts['os_service_default'],
+  $check_bucket_owner            = $facts['os_service_default'],
+  $force_swift_request_proxy_log = $facts['os_service_default'],
+  $min_segment_size              = $facts['os_service_default'],
+  $log_name                      = $facts['os_service_default'],
 ) {
 
   include swift::deps

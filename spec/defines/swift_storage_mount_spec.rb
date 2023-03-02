@@ -43,9 +43,7 @@ describe 'swift::storage::mount' do
       end
 
       before do
-        facts.merge!({
-          :selinux => 'true',
-        })
+        facts[:os]['selinux']['enabled'] = 'true'
       end
 
       it { is_expected.to contain_exec("restorecon_mount_dans_mount_point").with(

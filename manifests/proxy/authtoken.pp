@@ -47,11 +47,11 @@
 #
 # [*system_scope*]
 #   (Optional) Scope for system operations
-#   Defaults to $::os_service_default
+#   Defaults to $facts['os_service_default']
 #
 # [*region_name*]
 #   (Optional) The region in which the identity server can be found.
-#   Defaults to $::os_service_default.
+#   Defaults to $facts['os_service_default'].
 #
 # [*include_service_catalog*]
 #   (Optional) Indicate whether to set the X-Service-Catalog header. If False,
@@ -67,23 +67,23 @@
 #  here are applied as an ANY check so any role in this list
 #  must be present. For backwards compatibility reasons this
 #  currently only affects the allow_expired check. (list value)
-#  Defaults to $::os_service_default.
+#  Defaults to $facts['os_service_default'].
 #
 # [*service_token_roles_required*]
 #  (optional) backwards compatibility to ensure that the service tokens are
 #  compared against a list of possible roles for validity
 #  true/false
-#  Defaults to $::os_service_default.
+#  Defaults to $facts['os_service_default'].
 #
 # [*service_type*]
 #  (Optional) The name or type of the service as it appears in the service
 #  catalog. This is used to validate tokens that have restricted access rules.
-#  Defaults to $::os_service_default.
+#  Defaults to $facts['os_service_default'].
 #
 # [*interface*]
 #  (Optional) Interface to use for the Identity API endpoint. Valid values are
 #  "public", "internal" or "admin".
-#  Defaults to $::os_service_default.
+#  Defaults to $facts['os_service_default'].
 #
 # == Authors
 #
@@ -104,13 +104,13 @@ class swift::proxy::authtoken(
   $password                     = undef,
   $project_name                 = 'services',
   $project_domain_id            = 'default',
-  $system_scope                 = $::os_service_default,
-  $region_name                  = $::os_service_default,
+  $system_scope                 = $facts['os_service_default'],
+  $region_name                  = $facts['os_service_default'],
   $include_service_catalog      = false,
-  $service_token_roles          = $::os_service_default,
-  $service_token_roles_required = $::os_service_default,
-  $service_type                 = $::os_service_default,
-  $interface                    = $::os_service_default,
+  $service_token_roles          = $facts['os_service_default'],
+  $service_token_roles_required = $facts['os_service_default'],
+  $service_type                 = $facts['os_service_default'],
+  $interface                    = $facts['os_service_default'],
 ) inherits swift::params {
 
   include swift::deps
@@ -127,8 +127,8 @@ Please set password parameter')
     $project_name_real = $project_name
     $project_domain_id_real = $project_domain_id
   } else {
-    $project_name_real = $::os_service_default
-    $project_domain_id_real = $::os_service_default
+    $project_name_real = $facts['os_service_default']
+    $project_domain_id_real = $facts['os_service_default']
   }
 
   swift_proxy_config {

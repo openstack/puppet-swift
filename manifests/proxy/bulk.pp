@@ -22,44 +22,44 @@
 # [*max_containers_per_extraction*]
 #   (Optional) The maximum number of containers that can be extracted from
 #   an archive.
-#   Defaults to $::os_service_default.
+#   Defaults to $facts['os_service_default'].
 #
 # [*max_failed_extractions*]
 #   (Optional) The maximum number of failed extractions allowed when an archive
 #   has extraction failures.
-#   Defaults to $::os_service_default.
+#   Defaults to $facts['os_service_default'].
 #
 # [*max_failed_deletes*]
 #   (Optional) The maximum number of failed deletion allowed in a bulk delete
 #   of objects and their container.
-#   Defaults to $::os_service_default
+#   Defaults to $facts['os_service_default']
 #
 # [*max_deletes_per_request*]
 #   (Optional) The maximum number of deletes allowed by each request.
-#   Defaults to $::os_service_default.
+#   Defaults to $facts['os_service_default'].
 #
 # [*delete_container_retry_count*]
 #   (Optional) Number of retries to delete container in a bulk delete of
 #   objects and their container.
-#   Defaults to $::os_service_default.
+#   Defaults to $facts['os_service_default'].
 #
 # [*delete_concurrency*]
 #   (Optional) The number of objects to delete at a time.
-#   Defaults to $::os_service_default.
+#   Defaults to $facts['os_service_default'].
 #
 # [*yield_frequency*]
 #   (Optional) The frequency the server will spit out an ' ' to keep
 #   the connection alive while its processing the request.
-#   Defaults to $::os_service_default.
+#   Defaults to $facts['os_service_default'].
 #
 class swift::proxy::bulk(
-  $max_containers_per_extraction = $::os_service_default,
-  $max_failed_extractions        = $::os_service_default,
-  $max_failed_deletes            = $::os_service_default,
-  $max_deletes_per_request       = $::os_service_default,
-  $delete_container_retry_count  = $::os_service_default,
-  $delete_concurrency            = $::os_service_default,
-  $yield_frequency               = $::os_service_default,
+  $max_containers_per_extraction = $facts['os_service_default'],
+  $max_failed_extractions        = $facts['os_service_default'],
+  $max_failed_deletes            = $facts['os_service_default'],
+  $max_deletes_per_request       = $facts['os_service_default'],
+  $delete_container_retry_count  = $facts['os_service_default'],
+  $delete_concurrency            = $facts['os_service_default'],
+  $yield_frequency               = $facts['os_service_default'],
 ) {
 
   include swift::deps
