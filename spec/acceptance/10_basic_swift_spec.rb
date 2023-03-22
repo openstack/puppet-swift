@@ -59,7 +59,7 @@ describe 'basic swift' do
       }
       # sets up storage nodes which is composed of a single
       # device that contains an endpoint for an object, account, and container
-      swift::storage::node { '2':
+      swift::storage::node { '0':
         mnt_base_dir         => '/srv/node',
         weight               => 1,
         zone                 => '2',
@@ -151,7 +151,15 @@ describe 'basic swift' do
     describe port(8080) do
       it { is_expected.to be_listening.with('tcp') }
     end
-
+    describe port(6000) do
+      it { is_expected.to be_listening.with('tcp') }
+    end
+    describe port(6001) do
+      it { is_expected.to be_listening.with('tcp') }
+    end
+    describe port(6002) do
+      it { is_expected.to be_listening.with('tcp') }
+    end
   end
 
   context 'Using swiftinit service provider' do
@@ -211,7 +219,7 @@ describe 'basic swift' do
       }
       # sets up storage nodes which is composed of a single
       # device that contains an endpoint for an object, account, and container
-      swift::storage::node { '2':
+      swift::storage::node { '0':
         mnt_base_dir         => '/srv/node',
         weight               => 1,
         zone                 => '2',
@@ -316,6 +324,15 @@ describe 'basic swift' do
     end
 
     describe port(8080) do
+      it { is_expected.to be_listening.with('tcp') }
+    end
+    describe port(6000) do
+      it { is_expected.to be_listening.with('tcp') }
+    end
+    describe port(6001) do
+      it { is_expected.to be_listening.with('tcp') }
+    end
+    describe port(6002) do
       it { is_expected.to be_listening.with('tcp') }
     end
   end
