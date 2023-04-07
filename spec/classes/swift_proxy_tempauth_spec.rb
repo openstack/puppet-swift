@@ -7,7 +7,7 @@ describe 'swift::proxy::tempauth' do
         {
           'user'    => 'admin',
           'account' => 'admin',
-          'key'     => 'admin',
+          'key'     => 'adminpass',
           'groups'  => [ 'admin', 'reseller_admin' ],
         },
       ]
@@ -17,7 +17,7 @@ describe 'swift::proxy::tempauth' do
     let :params do default_params end
 
     it { is_expected.to contain_swift_proxy_config('filter:tempauth/use').with_value('egg:swift#tempauth') }
-    it { is_expected.to contain_swift_proxy_config('filter:tempauth/user_admin_admin').with_value('admin .admin .reseller_admin') }
+    it { is_expected.to contain_swift_proxy_config('filter:tempauth/user_admin_admin').with_value('adminpass .admin .reseller_admin').with_secret(true) }
 
     it { is_expected.to_not contain_swift_proxy_config('filter:tempauth/reseller_prefix').with_value('') }
     it { is_expected.to_not contain_swift_proxy_config('filter:tempauth/token_life').with_value('') }
@@ -30,7 +30,7 @@ describe 'swift::proxy::tempauth' do
           {
             'user'    => 'admin',
             'account' => 'admin',
-            'key'     => 'admin',
+            'key'     => 'adminpass',
             'groups'  => [ 'admin', 'reseller_admin' ],
           },
           {
@@ -42,8 +42,8 @@ describe 'swift::proxy::tempauth' do
         ]
       } end
 
-      it { is_expected.to contain_swift_proxy_config('filter:tempauth/user_admin_admin').with_value('admin .admin .reseller_admin') }
-      it { is_expected.to contain_swift_proxy_config('filter:tempauth/user_bar_foo').with_value('pass .reseller_admin') }
+      it { is_expected.to contain_swift_proxy_config('filter:tempauth/user_admin_admin').with_value('adminpass .admin .reseller_admin').with_secret(true) }
+      it { is_expected.to contain_swift_proxy_config('filter:tempauth/user_bar_foo').with_value('pass .reseller_admin').with_secret(true) }
     end
 
     context 'when group is empty' do
