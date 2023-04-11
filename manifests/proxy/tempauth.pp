@@ -120,14 +120,18 @@ class swift::proxy::tempauth (
   # ex: user_admin_admin=admin .admin .reseller_admin
   # account_data is an array with each element containing a single account string:
   # ex [user_<account>_<user>, <key> .<group1> .<groupx>]
-  if $account_user_list {
-    $account_data = split(inline_template(
-      "<% @account_user_list.each do |user| %>\
-      user_<%= user['account'] %>_<%= user['user'] %>,\
-      <%= user['key'] %> <%= user['groups'].map { |g| '.' + g }.join(' ') %> ; <% end %>"),';')
+  $account_user_list.each |$account_user| {
+    validate_legacy(Array, 'validate_array', $account_user['groups'])
+
+    $account_base = "user_${account_user['account']}_${account_user['user']}, ${account_user['key']}"
+    $groups = empty($account_user) ? {
+      true    => undef,
+      default => join([''] + $account_user['groups'], ' .')
+    }
+
+    $account_data = join(delete_undef_values([$account_base, $groups]), '')
 
     # write each temauth account line to file
-    # TODO replace/simplify with iterators once all supported puppet versions support them.
     swift::proxy::tempauth_account { $account_data: }
   }
 }
