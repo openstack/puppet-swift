@@ -1,0 +1,9 @@
+---
+features:
+  - |
+    The ``hosts_new`` parameter and the ``hosts_deny`` parameter have been
+    added to the following resources. These allows limiting access to the rsync
+    server.
+
+    - ``swift::storage::all`` class
+    - ``swift::storage::server`` defined resource type

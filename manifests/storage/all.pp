@@ -56,6 +56,18 @@
 #   good for seeing errors if true
 #   Defaults to true.
 #
+# [*max_connections*]
+#   (optional) maximum number of simultaneous connections allowed for rsync.
+#   Defaults to 25.
+#
+# [*hosts_allow*]
+#   (optional) List of patterns allowed to connect to this module
+#   Defaults to undef.
+#
+# [*hosts_deny*]
+#   (optional) List of patterns not allowed to connect to this module
+#   Defaults to undef.
+#
 # [*incoming_chmod*] Incoming chmod to set in the rsync server.
 #   Optional. Defaults to 'Du=rwx,g=rx,o=rx,Fu=rw,g=r,o=r'
 #   This mask translates to 0755 for directories and 0644 for files.
@@ -119,10 +131,6 @@
 #   version 3.0 or greater.
 #   Default to $facts['os_service_default'].
 #
-# [*max_connections*]
-#   (optional) maximum number of simultaneous connections allowed for rsync.
-#   Defaults to 25.
-#
 # [*rsync_use_xinetd*]
 #   (optional) Override whether to use xinetd to manage rsync service
 #   Defaults to swift::params::xinetd_available
@@ -142,6 +150,9 @@ class swift::storage::all(
   $log_udp_host                   = undef,
   $log_udp_port                   = undef,
   $log_requests                   = true,
+  $max_connections                = 25,
+  $hosts_allow                    = undef,
+  $hosts_deny                     = undef,
   $incoming_chmod                 = 'Du=rwx,g=rx,o=rx,Fu=rw,g=r,o=r',
   $outgoing_chmod                 = 'Du=rwx,g=rx,o=rx,Fu=rw,g=r,o=r',
   $statsd_enabled                 = false,
@@ -157,7 +168,6 @@ class swift::storage::all(
   $rsync_timeout                  = $facts['os_service_default'],
   $rsync_bwlimit                  = $facts['os_service_default'],
   $splice                         = false,
-  $max_connections                = 25,
   $rsync_use_xinetd               = $::swift::params::xinetd_available,
 ) inherits swift::params {
 
@@ -203,6 +213,8 @@ from 6002 to 6202 and will be changed in a later release")
     log_statsd_sample_rate_factor  => $log_statsd_sample_rate_factor,
     log_statsd_metric_prefix       => $log_statsd_metric_prefix,
     max_connections                => $max_connections,
+    hosts_allow                    => $hosts_allow,
+    hosts_deny                     => $hosts_deny,
     incoming_chmod                 => $incoming_chmod,
     outgoing_chmod                 => $outgoing_chmod,
   }

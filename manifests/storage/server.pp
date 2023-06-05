@@ -39,6 +39,14 @@
 #   (optional) maximum number of simultaneous connections allowed.
 #   Defaults to 25.
 #
+# [*hosts_allow*]
+#   (optional) List of patterns allowed to connect to this module
+#   Defaults to undef.
+#
+# [*hosts_deny*]
+#   (optional) List of patterns not allowed to connect to this module
+#   Defaults to undef.
+#
 # [*incoming_chmod*] Incoming chmod to set in the rsync server.
 #   Optional. Defaults to 'Du=rwx,g=rx,o=rx,Fu=rw,g=r,o=r'
 #   This mask translates to 0755 for directories and 0644 for files.
@@ -223,9 +231,11 @@ define swift::storage::server(
   $device_names                   = [],
   $owner                          = undef,
   $group                          = undef,
+  $max_connections                = 25,
+  $hosts_allow                    = undef,
+  $hosts_deny                     = undef,
   $incoming_chmod                 = 'Du=rwx,g=rx,o=rx,Fu=rw,g=r,o=r',
   $outgoing_chmod                 = 'Du=rwx,g=rx,o=rx,Fu=rw,g=r,o=r',
-  $max_connections                = 25,
   $pipeline                       = ["${type}-server"],
   $mount_check                    = true,
   $disable_fallocate              = $facts['os_service_default'],
@@ -311,6 +321,8 @@ define swift::storage::server(
         lock_file       => "/var/lock/${type}_${device_name}.lock",
         uid             => pick($owner, $::swift::params::user),
         gid             => pick($group, $::swift::params::group),
+        hosts_allow     => $hosts_allow,
+        hosts_deny      => $hosts_deny,
         incoming_chmod  => $incoming_chmod,
         outgoing_chmod  => $outgoing_chmod,
         max_connections => $max_connections,
@@ -324,6 +336,8 @@ define swift::storage::server(
       lock_file       => "/var/lock/${type}.lock",
       uid             => pick($owner, $::swift::params::user),
       gid             => pick($group, $::swift::params::group),
+      hosts_allow     => $hosts_allow,
+      hosts_deny      => $hosts_deny,
       incoming_chmod  => $incoming_chmod,
       outgoing_chmod  => $outgoing_chmod,
       max_connections => $max_connections,

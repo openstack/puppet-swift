@@ -144,6 +144,31 @@ describe 'swift::storage::server' do
         )}
         it { is_expected.to contain_swift_account_config('account-replicator/rsync_module').with_value('{replication_ip}::account_{device}') }
       end
+
+      context 'with rsync parameters' do
+        before do
+          params.merge!({
+            :max_connections => 100,
+            :hosts_allow     => '192.0.2.0/25',
+            :hosts_deny      => '192.0.2.128/25',
+            :incoming_chmod  => '0644',
+            :outgoing_chmod  => '0644',
+          })
+        end
+
+        it { is_expected.to contain_rsync__server__module('account').with(
+          :path            => '/srv/node',
+          :lock_file       => '/var/lock/account.lock',
+          :uid             => 'swift',
+          :gid             => 'swift',
+          :hosts_allow     => '192.0.2.0/25',
+          :hosts_deny      => '192.0.2.128/25',
+          :incoming_chmod  => '0644',
+          :outgoing_chmod  => '0644',
+          :max_connections => 100,
+          :read_only       => false,
+        )}
+      end
     end
 
     describe 'for type container' do
@@ -271,6 +296,31 @@ describe 'swift::storage::server' do
           :read_only       => false,
         )}
         it { is_expected.to contain_swift_container_config('container-replicator/rsync_module').with_value('{replication_ip}::container_{device}') }
+      end
+
+      context 'with rsync parameters' do
+        before do
+          params.merge!({
+            :max_connections => 100,
+            :hosts_allow     => '192.0.2.0/25',
+            :hosts_deny      => '192.0.2.128/25',
+            :incoming_chmod  => '0644',
+            :outgoing_chmod  => '0644',
+          })
+        end
+
+        it { is_expected.to contain_rsync__server__module('container').with(
+          :path            => '/srv/node',
+          :lock_file       => '/var/lock/container.lock',
+          :uid             => 'swift',
+          :gid             => 'swift',
+          :hosts_allow     => '192.0.2.0/25',
+          :hosts_deny      => '192.0.2.128/25',
+          :incoming_chmod  => '0644',
+          :outgoing_chmod  => '0644',
+          :max_connections => 100,
+          :read_only       => false,
+        )}
       end
     end
 
@@ -404,6 +454,31 @@ describe 'swift::storage::server' do
           :read_only       => false,
         )}
         it { is_expected.to contain_swift_object_config('object-replicator/rsync_module').with_value('{replication_ip}::object_{device}') }
+      end
+
+      context 'with rsync parameters' do
+        before do
+          params.merge!({
+            :max_connections => 100,
+            :hosts_allow     => '192.0.2.0/25',
+            :hosts_deny      => '192.0.2.128/25',
+            :incoming_chmod  => '0644',
+            :outgoing_chmod  => '0644',
+          })
+        end
+
+        it { is_expected.to contain_rsync__server__module('object').with(
+          :path            => '/srv/node',
+          :lock_file       => '/var/lock/object.lock',
+          :uid             => 'swift',
+          :gid             => 'swift',
+          :hosts_allow     => '192.0.2.0/25',
+          :hosts_deny      => '192.0.2.128/25',
+          :incoming_chmod  => '0644',
+          :outgoing_chmod  => '0644',
+          :max_connections => 100,
+          :read_only       => false,
+        )}
       end
     end
   end
