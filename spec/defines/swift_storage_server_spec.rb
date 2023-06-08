@@ -7,18 +7,6 @@ describe 'swift::storage::server' do
     "
   end
 
-  let :default_params do
-    {
-      :devices         => '/srv/node',
-      :owner           => 'swift',
-      :group           => 'swift',
-      :incoming_chmod  => 'Du=rwx,g=rx,o=rx,Fu=rw,g=r,o=r',
-      :outgoing_chmod  => 'Du=rwx,g=rx,o=rx,Fu=rw,g=r,o=r',
-      :max_connections => '25',
-      :log_requests    => true
-    }
-  end
-
   shared_examples 'swift::storage::server' do
     describe 'with an invalid title' do
       let :params do
