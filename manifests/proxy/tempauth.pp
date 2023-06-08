@@ -88,6 +88,8 @@ class swift::proxy::tempauth (
   if ($reseller_prefix) {
     validate_legacy(String, 'validate_string', $reseller_prefix)
     $reseller_prefix_upcase = upcase($reseller_prefix)
+  } else {
+    $reseller_prefix_upcase = $reseller_prefix
   }
 
   if ($token_life) {
