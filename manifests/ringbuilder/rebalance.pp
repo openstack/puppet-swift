@@ -19,8 +19,8 @@ define swift::ringbuilder::rebalance(
     ['^(object(-(\d)+)?|container|account)$']
   )
 
-  if $seed {
-    validate_legacy(Integer, 'validate_re', $seed, ['^\d+$'])
+  if $seed and !($seed =~ Integer) {
+    validate_legacy(Pattern[/^\d+$/], 'validate_re', $seed, ['^\d+$'])
   }
 
   exec { "rebalance_${name}":
