@@ -43,17 +43,6 @@ describe 'swift' do
       end
     end
 
-    context 'with max_header_size' do
-      before do
-        params.merge!({:max_header_size => 8192})
-      end
-
-      it 'should configure swift.conf' do
-        is_expected.to contain_swift_config(
-          'swift-constraints/max_header_size').with_value(8192)
-      end
-    end
-
     context 'with only swift_hash_path_prefix' do
       let :params do
         { :swift_hash_path_prefix => 'string' }

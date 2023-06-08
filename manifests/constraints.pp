@@ -108,7 +108,7 @@ class swift::constraints(
     'swift-constraints/max_meta_value_length':      value => $max_meta_value_length;
     'swift-constraints/max_meta_count':             value => $max_meta_count;
     'swift-constraints/max_meta_overall_size':      value => $max_meta_overall_size;
-    'swift-constraints/max_header_size':            value => pick($::swift::max_header_size, $max_header_size);
+    'swift-constraints/max_header_size':            value => $max_header_size;
     'swift-constraints/extra_header_count':         value => $extra_header_count;
     'swift-constraints/max_object_name_length':     value => $max_object_name_length;
     'swift-constraints/container_listing_limit':    value => $container_listing_limit;

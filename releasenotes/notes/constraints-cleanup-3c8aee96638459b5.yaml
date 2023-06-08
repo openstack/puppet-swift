@@ -1,0 +1,4 @@
+---
+upgrade:
+  - |
+    The ``swift::max_header_size`` parameter has been removed.
