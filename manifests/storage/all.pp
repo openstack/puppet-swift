@@ -26,14 +26,14 @@
 #    (optional) Specify the container pipeline
 #    Defaults to undef
 #
+#  [*account_pipeline*]
+#    (optional) Specify the account pipeline
+#    Defaults to undef
+#
 #  [*mount_check*]
 #    (optional) Whether or not check if the devices are mounted
 #    to prevent accidentally writing to the root device
 #    Defaults to true.
-#
-#  [*account_pipeline*]
-#    (optional) Specify the account pipeline
-#    Defaults to undef
 #
 #  [*log_facility*]
 #    (optional) Syslog log facility
@@ -135,8 +135,8 @@ class swift::storage::all(
   $account_port                   = 6002,
   $object_pipeline                = undef,
   $container_pipeline             = undef,
-  $mount_check                    = true,
   $account_pipeline               = undef,
+  $mount_check                    = true,
   $log_facility                   = 'LOG_LOCAL2',
   $log_level                      = 'INFO',
   $log_udp_host                   = undef,
