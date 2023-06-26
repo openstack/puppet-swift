@@ -2,6 +2,9 @@
 # needed to deploy each type of storage server.
 #
 # == Parameters
+#  [*type*]
+#    (optional) The type of device, e.g. account, object, or container.
+#
 #  [*enabled*]
 #    (optional) Should the service be enabled to start
 #    at boot. Defaults to true
@@ -31,28 +34,26 @@
 #  Requires Class[swift::storage]
 #
 define swift::storage::generic(
-  $manage_service   = true,
-  $enabled          = true,
-  $package_ensure   = 'present',
-  $config_file_name = "${name}-server.conf",
-  $service_provider = $::swift::params::service_provider
+  Swift::StorageServerType $type = $name,
+  Boolean $manage_service        = true,
+  Boolean $enabled               = true,
+  $package_ensure                = 'present',
+  $config_file_name              = "${name}-server.conf",
+  $service_provider              = $::swift::params::service_provider
 ) {
 
   include swift::deps
   include swift::params
 
-  Class['swift::storage'] -> Swift::Storage::Generic[$name]
+  Class['swift::storage'] -> Swift::Storage::Generic[$type]
 
-  validate_legacy(Enum['object', 'container', 'account'], 'validate_re',
-    $name, ['^object|container|account$'])
-
-  package { "swift-${name}":
+  package { "swift-${type}":
     ensure => $package_ensure,
-    name   => getvar("::swift::params::${name}_package_name"),
+    name   => getvar("::swift::params::${type}_package_name"),
     tag    => ['openstack', 'swift-package'],
   }
 
-  file { "/etc/swift/${name}-server/":
+  file { "/etc/swift/${type}-server/":
     ensure  => directory,
     owner   => $::swift::params::user,
     group   => $::swift::params::group,
@@ -67,24 +68,24 @@ define swift::storage::generic(
       $service_ensure = 'stopped'
     }
 
-    swift::service { "swift-${name}-server":
-      os_family_service_name => getvar("::swift::params::${name}_server_service_name"),
+    swift::service { "swift-${type}-server":
+      os_family_service_name => getvar("::swift::params::${type}_server_service_name"),
       service_ensure         => $service_ensure,
       enabled                => $enabled,
       config_file_name       => $config_file_name,
       service_provider       => $service_provider,
     }
 
-    swift::service { "swift-${name}-replicator":
-      os_family_service_name => getvar("::swift::params::${name}_replicator_service_name"),
+    swift::service { "swift-${type}-replicator":
+      os_family_service_name => getvar("::swift::params::${type}_replicator_service_name"),
       service_ensure         => $service_ensure,
       enabled                => $enabled,
       config_file_name       => $config_file_name,
       service_provider       => $service_provider,
     }
 
-    swift::service { "swift-${name}-auditor":
-      os_family_service_name => getvar("::swift::params::${name}_auditor_service_name"),
+    swift::service { "swift-${type}-auditor":
+      os_family_service_name => getvar("::swift::params::${type}_auditor_service_name"),
       service_ensure         => $service_ensure,
       enabled                => $enabled,
       config_file_name       => $config_file_name,

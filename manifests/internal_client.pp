@@ -47,7 +47,7 @@
 #
 class swift::internal_client (
   $user                      = $::swift::params::user,
-  $pipeline                  = ['catch_errors', 'proxy-logging', 'cache', 'proxy-server'],
+  Swift::Pipeline $pipeline  = ['catch_errors', 'proxy-logging', 'cache', 'proxy-server'],
   $object_chunk_size         = $facts['os_service_default'],
   $client_chunk_size         = $facts['os_service_default'],
   $read_affinity             = undef,
@@ -60,9 +60,7 @@ class swift::internal_client (
 
   include swift::deps
 
-  validate_legacy(Array, 'validate_array', $pipeline)
-
-  if empty($pipeline) or $pipeline[-1] != 'proxy-server' {
+  if $pipeline[-1] != 'proxy-server' {
     fail('proxy-server must be the last element in pipeline')
   }
 

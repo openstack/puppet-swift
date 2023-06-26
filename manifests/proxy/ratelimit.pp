@@ -48,19 +48,16 @@
 # Copyright 2012 eNovance licensing@enovance.com
 #
 class swift::proxy::ratelimit(
-  $clock_accuracy              = $facts['os_service_default'],
-  $max_sleep_time_seconds      = $facts['os_service_default'],
-  $log_sleep_time_seconds      = $facts['os_service_default'],
-  $rate_buffer_seconds         = $facts['os_service_default'],
-  $account_ratelimit           = $facts['os_service_default'],
-  $container_ratelimit         = {},
-  $container_listing_ratelimit = {},
+  $clock_accuracy                   = $facts['os_service_default'],
+  $max_sleep_time_seconds           = $facts['os_service_default'],
+  $log_sleep_time_seconds           = $facts['os_service_default'],
+  $rate_buffer_seconds              = $facts['os_service_default'],
+  $account_ratelimit                = $facts['os_service_default'],
+  Hash $container_ratelimit         = {},
+  Hash $container_listing_ratelimit = {},
 ) {
 
   include swift::deps
-
-  validate_legacy(Hash, 'validate_hash', $container_ratelimit)
-  validate_legacy(Hash, 'validate_hash', $container_listing_ratelimit)
 
   swift_proxy_config {
     'filter:ratelimit/use':                    value => 'egg:swift#ratelimit';

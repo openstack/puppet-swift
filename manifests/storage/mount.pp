@@ -23,9 +23,9 @@
 #
 define swift::storage::mount(
   $device,
-  $mnt_base_dir = '/srv/node',
-  $loopback     = false,
-  $fstype       = 'xfs'
+  Stdlib::Absolutepath $mnt_base_dir = '/srv/node',
+  Boolean $loopback                  = false,
+  String[1] $fstype                  = 'xfs'
 ) {
 
   include swift::deps

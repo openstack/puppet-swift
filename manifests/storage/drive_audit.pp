@@ -89,7 +89,7 @@
 # [*regex_pattern*]
 #   (Optional) Regular expression patterns to be used to locate device blocks
 #   with errors in the log file.
-#   Defaults to $facts['os_service_default'].
+#   Defaults to {}
 #
 #  [*purge_config*]
 #   (Optional) Whether to set only the specified config options in the drive
@@ -98,35 +98,33 @@
 #
 class swift::storage::drive_audit(
   # cron options
-  $user                  = $::swift::params::user,
-  $minute                = 1,
-  $hour                  = 0,
-  $monthday              = '*',
-  $month                 = '*',
-  $weekday               = '*',
-  $maxdelay              = 0,
+  $user                                     = $::swift::params::user,
+  $minute                                   = 1,
+  $hour                                     = 0,
+  $monthday                                 = '*',
+  $month                                    = '*',
+  $weekday                                  = '*',
+  $maxdelay                                 = 0,
   # drive-audit.conf options
-  $log_facility          = 'LOG_LOCAL2',
-  $log_level             = 'INFO',
-  $log_address           = '/dev/log',
-  $log_name              = 'drive-audit',
-  $log_udp_host          = undef,
-  $log_udp_port          = undef,
-  $device_dir            = '/srv/node',
-  $minutes               = $facts['os_service_default'],
-  $error_limit           = $facts['os_service_default'],
-  $recon_cache_path      = $facts['os_service_default'],
-  $log_file_pattern      = $facts['os_service_default'],
-  $log_file_encoding     = $facts['os_service_default'],
-  $log_to_console        = $facts['os_service_default'],
-  $unmount_failed_device = $facts['os_service_default'],
-  $regex_pattern         = {},
-  $purge_config          = false,
+  $log_facility                             = 'LOG_LOCAL2',
+  $log_level                                = 'INFO',
+  $log_address                              = '/dev/log',
+  $log_name                                 = 'drive-audit',
+  $log_udp_host                             = undef,
+  $log_udp_port                             = undef,
+  $device_dir                               = '/srv/node',
+  $minutes                                  = $facts['os_service_default'],
+  $error_limit                              = $facts['os_service_default'],
+  $recon_cache_path                         = $facts['os_service_default'],
+  $log_file_pattern                         = $facts['os_service_default'],
+  $log_file_encoding                        = $facts['os_service_default'],
+  $log_to_console                           = $facts['os_service_default'],
+  $unmount_failed_device                    = $facts['os_service_default'],
+  Hash[String[1], String[1]] $regex_pattern = {},
+  $purge_config                             = false,
 ) inherits swift::params {
 
   include swift::deps
-
-  validate_legacy(Hash, 'validate_hash', $regex_pattern)
 
   resources { 'swift_drive_audit_config':
     purge => $purge_config,
