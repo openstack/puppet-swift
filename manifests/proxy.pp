@@ -1,9 +1,4 @@
 #
-# TODO - assumes that proxy server is always a memcached server
-#
-# TODO - the full list of all things that can be configured is here
-#  https://github.com/openstack/swift/tree/master/swift/common/middleware
-#
 # Installs and configures the swift proxy node.
 #
 # == Parameters
