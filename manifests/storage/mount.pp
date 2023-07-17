@@ -68,12 +68,10 @@ define swift::storage::mount(
 
   # double checks to make sure that things are mounted
   exec { "mount_${name}":
-    command   => "mount ${mnt_base_dir}/${name}",
-    path      => ['/bin'],
-    unless    => "grep ${mnt_base_dir}/${name} /etc/mtab",
-    # TODO - this needs to be removed when I am done testing
-    logoutput => true,
-    before    => Anchor['swift::config::end'],
+    command => "mount ${mnt_base_dir}/${name}",
+    path    => ['/bin'],
+    unless  => "grep ${mnt_base_dir}/${name} /etc/mtab",
+    before  => Anchor['swift::config::end'],
   }
 
   $user = $::swift::params::user
