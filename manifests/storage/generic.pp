@@ -73,6 +73,7 @@ define swift::storage::generic(
       enabled                => $enabled,
       config_file_name       => $config_file_name,
       service_provider       => $service_provider,
+      service_tag            => "swift-${name}-service",
     }
 
     swift::service { "swift-${name}-replicator":
@@ -81,6 +82,7 @@ define swift::storage::generic(
       enabled                => $enabled,
       config_file_name       => $config_file_name,
       service_provider       => $service_provider,
+      service_tag            => "swift-${name}-service",
     }
 
     swift::service { "swift-${name}-auditor":
@@ -89,6 +91,7 @@ define swift::storage::generic(
       enabled                => $enabled,
       config_file_name       => $config_file_name,
       service_provider       => $service_provider,
+      service_tag            => "swift-${name}-service",
     }
   }
 }

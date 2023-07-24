@@ -318,7 +318,8 @@ class swift::proxy(
       enabled                => $enabled,
       config_file_name       => 'proxy-server.conf',
       service_provider       => $service_provider,
-      service_require        => Class[$required_classes]
+      service_require        => Class[$required_classes],
+      service_tag            => 'swift-proxy-service',
     }
   } else {
     exec { 'vadate-proxy-pipeline':

@@ -57,6 +57,7 @@ class swift::storage::account(
       enabled                => $enabled,
       config_file_name       => $config_file_name,
       service_provider       => $service_provider,
+      service_tag            => 'swift-account-service',
     }
   }
 }

@@ -43,7 +43,7 @@ describe 'swift::proxy' do
           :provider  => nil,
           :enable    => true,
           :hasstatus => true,
-          :tag       => 'swift-service',
+          :tag       => ['swift-service', 'swift-proxy-service'],
         )}
 
         it { should contain_service('swift-proxy-server').that_subscribes_to('Anchor[swift::service::begin]') }
@@ -106,8 +106,6 @@ describe 'swift::proxy' do
               include swift::proxy::copy
             "
           end
-
-          it { should contain_swift_proxy_config('foo/bar').with_value('foo').that_notifies('Anchor[swift::config::end]') }
         end
 
         describe 'when more parameters are set' do
@@ -316,7 +314,7 @@ describe 'swift::proxy' do
             :ensure   => (param_hash[:manage_service] && param_hash[:enabled]) ? 'running' : 'stopped',
             :enable   => param_hash[:enabled],
             :provider => nil,
-            :tag      => 'swift-service',
+            :tag      => ['swift-service', 'swift-proxy-service'],
           )
         end
       end

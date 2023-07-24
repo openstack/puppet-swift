@@ -77,7 +77,7 @@ describe 'swift::storage::generic' do
                   :ensure   => (param_hash_manage[:manage_service] && param_hash_manage[:enabled]) ? 'running' : 'stopped',
                   :enable   => param_hash_manage[:enabled],
                   :provider => param_set[:service_provider],
-                  :tag      => 'swift-service'
+                  :tag      => ['swift-service', "swift-#{t}-service"],
                 )
               end
 
@@ -87,7 +87,7 @@ describe 'swift::storage::generic' do
                   :ensure   => (param_hash_manage[:manage_service] && param_hash_manage[:enabled]) ? 'running' : 'stopped',
                   :enable   => param_hash_manage[:enabled],
                   :provider => param_set[:service_provider],
-                  :tag      => 'swift-service'
+                  :tag      => ['swift-service', "swift-#{t}-service"],
                 )
               end
 
@@ -97,7 +97,7 @@ describe 'swift::storage::generic' do
                   :ensure   => (param_hash_manage[:manage_service] && param_hash_manage[:enabled]) ? 'running' : 'stopped',
                   :enable   => param_hash_manage[:enabled],
                   :provider => param_set[:service_provider],
-                  :tag      => 'swift-service'
+                  :tag      => ['swift-service', "swift-#{t}-service"],
                 )
               end
 

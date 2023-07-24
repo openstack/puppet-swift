@@ -1,0 +1,12 @@
+---
+features:
+  - |
+    The new ``service_tag`` parameter has been added to
+    the ``swift::service`` defined resource type. This parameter controls
+    the additional tag added to the service resource in addition to
+    the default ``swift-service`` tag.
+
+fixes:
+  - |
+    This module no longer restarts all services after updating config files,
+    but restrts only the relevant services.

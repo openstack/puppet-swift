@@ -21,48 +21,38 @@ class swift::deps {
   ~> anchor { 'swift::service::end': }
   ~> Swift_dispersion_config<||>
 
-  Anchor['swift::config::begin']
-  -> Swift_proxy_config<||>
-  ~> Anchor['swift::config::end']
+  Anchor['swift::config::begin'] -> Swift_proxy_config<||> -> Anchor['swift::config::end']
+  Swift_proxy_config<||> ~> Service<| tag == 'swift-proxy-service' |>
 
-  Anchor['swift::config::begin']
-  -> Swift_storage_policy<||>
-  ~> Anchor['swift::config::end']
+  Anchor['swift::config::begin'] -> Swift_storage_policy<||> -> Anchor['swift::config::end']
+  # storage policy is now used by proxy and object
+  Swift_storage_policy<||> ~> Service<| tag == 'swift-proxy-service' |>
+  Swift_storage_policy<||> ~> Service<| tag == 'swift-object-service' |>
 
-  Anchor['swift::config::begin']
-  -> Swift_object_config<||>
-  ~> Anchor['swift::config::end']
+  Anchor['swift::config::begin'] -> Swift_object_config<||> -> Anchor['swift::config::end']
+  Swift_object_config<||> ~> Service<| tag == 'swift-object-service' |>
 
-  Anchor['swift::config::begin']
-  -> Swift_container_config<||>
-  ~> Anchor['swift::config::end']
+  Anchor['swift::config::begin'] -> Swift_container_config<||> -> Anchor['swift::config::end']
+  Swift_container_config<||> ~> Service<| tag == 'swift-container-service' |>
 
-  Anchor['swift::config::begin']
-  -> Swift_account_config<||>
-  ~> Anchor['swift::config::end']
+  Anchor['swift::config::begin'] -> Swift_account_config<||> -> Anchor['swift::config::end']
+  Swift_account_config<||> ~> Service<| tag == 'swift-account-service' |>
 
-  Anchor['swift::config::begin']
-  -> Swift_internal_client_config<||>
-  ~> Anchor['swift::config::end']
+  Anchor['swift::config::begin'] -> Swift_internal_client_config<||> ~> Anchor['swift::config::end']
 
   # On any uwsgi config change, we must restart Swift.
-  Anchor['swift::config::begin']
-  -> Swift_proxy_uwsgi_config<||>
-  ~> Anchor['swift::config::end']
+  Anchor['swift::config::begin'] -> Swift_proxy_uwsgi_config<||> -> Anchor['swift::config::end']
+  Swift_proxy_uwsgi_config<||> ~> Service<| tag == 'swift-proxy-service' |>
 
-  Anchor['swift::config::begin']
-  -> Swift_account_uwsgi_config<||>
-  ~> Anchor['swift::config::end']
+  Anchor['swift::config::begin'] -> Swift_account_uwsgi_config<||> -> Anchor['swift::config::end']
+  Swift_account_uwsgi_config<||> ~> Service<| tag == 'swift-account-service' |>
 
-  Anchor['swift::config::begin']
-  -> Swift_container_uwsgi_config<||>
-  ~> Anchor['swift::config::end']
+  Anchor['swift::config::begin'] -> Swift_container_uwsgi_config<||> -> Anchor['swift::config::end']
+  Swift_container_uwsgi_config<||> ~> Service<| tag == 'swift-container-service' |>
 
   # drive-audit.conf is not used by swift services, so any change in the file
   # should not trigger restarting services.
-  Anchor['swift::config::begin']
-  -> Swift_drive_audit_config<||>
-  -> Anchor['swift::config::end']
+  Anchor['swift::config::begin'] -> Swift_drive_audit_config<||> -> Anchor['swift::config::end']
 
   # Support packages need to be installed in the install phase, but we don't
   # put them in the chain above because we don't want any false dependencies

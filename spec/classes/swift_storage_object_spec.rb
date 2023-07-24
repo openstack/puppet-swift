@@ -40,7 +40,7 @@ describe 'swift::storage::object' do
               :ensure   => (param_hash[:manage_service] && param_hash[:enabled]) ? 'running' : 'stopped',
               :enable   => param_hash[:enabled],
               :provider => nil,
-              :tag      => 'swift-service',
+              :tag      => ['swift-service', 'swift-object-service'],
             )
           end
         end

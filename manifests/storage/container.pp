@@ -63,6 +63,7 @@ class swift::storage::container(
       enabled                => $enabled,
       config_file_name       => $config_file_name,
       service_provider       => $service_provider,
+      service_tag            => 'swift-container-service',
     }
 
     swift::service { 'swift-container-sync':
@@ -71,6 +72,7 @@ class swift::storage::container(
       enabled                => $enabled,
       config_file_name       => $config_file_name,
       service_provider       => $service_provider,
+      service_tag            => 'swift-container-service',
     }
 
     swift::service { 'swift-container-sharder':
@@ -79,6 +81,7 @@ class swift::storage::container(
       enabled                => $enabled,
       config_file_name       => $config_file_name,
       service_provider       => $service_provider,
+      service_tag            => 'swift-container-service',
     }
   }
 }

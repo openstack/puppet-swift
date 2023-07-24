@@ -38,6 +38,9 @@
 # [*service_require*]
 # (optional) Parameter used to pass in resources that this service requires.
 #
+# [*service_tag*]
+# (optional) Additional tag to be added to the service resource
+#
 define swift::service(
   $os_family_service_name,
   $config_file_name,
@@ -46,6 +49,7 @@ define swift::service(
   $service_provider  = $::swift::params::service_provider,
   $service_subscribe = undef,
   $service_require   = undef,
+  $service_tag       = undef,
 ) {
 
   include swift::deps
@@ -55,6 +59,8 @@ define swift::service(
     fail("swift::service name: ${name} is not a valid swift_init_service_name")
   }
 
+  $tag = delete_undef_values(['swift-service', $service_tag])
+
   if $service_provider != 'swiftinit' {
     service { $name:
       ensure    => $service_ensure,
@@ -62,7 +68,7 @@ define swift::service(
       hasstatus => true,
       enable    => $enabled,
       provider  => $service_provider,
-      tag       => 'swift-service',
+      tag       => $tag,
       subscribe => $service_subscribe,
       require   => $service_require,
     }
@@ -75,7 +81,7 @@ define swift::service(
       provider   => 'swiftinit',
       pattern    => $os_family_service_name,
       manifest   => $config_file_name,
-      tag        => 'swift-service',
+      tag        => $tag,
       subscribe  => $service_subscribe,
       require    => $service_require,
     }

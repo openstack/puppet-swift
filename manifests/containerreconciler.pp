@@ -91,7 +91,6 @@ class swift::containerreconciler(
 ) inherits swift::params {
 
   include swift::deps
-  Swift_config<| |> ~> Service['swift-container-reconciler']
   Swift_container_reconciler_config<||> ~> Service['swift-container-reconciler']
 
   # only add memcache servers if 'cache' is included in the pipeline
