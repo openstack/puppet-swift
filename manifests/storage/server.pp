@@ -4,15 +4,16 @@
 #
 # === Parameters:
 #
-# [*title*] The port the server will be exposed to
-#   Mandatory. Usually 6000, 6001 and 6002 for respectively
-#   object, container and account.
-#
 # [*type*]
 #   (required) The type of device, e.g. account, object, or container.
 #
 # [*storage_local_net_ip*]
 #   (required) This is the ip that the storage service will bind to when it starts.
+#
+# [*bind_port*]
+#   (optional) The port the server will be exposed to Usually 6000, 6001 and
+#   6002 for respectively object, container and account.
+#   Defaults to $name
 #
 # [*devices*]
 #   (optional) The directory where the physical storage device will be mounted.
@@ -224,58 +225,59 @@
 #   Default to $facts['os_service_default'].
 #
 define swift::storage::server(
-  $type,
+  Swift::StorageServerType $type,
   $storage_local_net_ip,
-  $devices                        = '/srv/node',
-  $rsync_module_per_device        = false,
-  $device_names                   = [],
-  $owner                          = undef,
-  $group                          = undef,
-  $max_connections                = 25,
-  $hosts_allow                    = undef,
-  $hosts_deny                     = undef,
-  $incoming_chmod                 = 'Du=rwx,g=rx,o=rx,Fu=rw,g=r,o=r',
-  $outgoing_chmod                 = 'Du=rwx,g=rx,o=rx,Fu=rw,g=r,o=r',
-  $pipeline                       = ["${type}-server"],
-  $mount_check                    = true,
-  $disable_fallocate              = $facts['os_service_default'],
-  $fallocate_reserve              = $facts['os_service_default'],
-  $server_fallocate_reserve       = $facts['os_service_default'],
-  $servers_per_port               = $facts['os_service_default'],
-  $user                           = undef,
-  $workers                        = $facts['os_workers'],
-  $replicator_concurrency         = 1,
-  $replicator_interval            = $facts['os_service_default'],
-  $updater_concurrency            = 1,
-  $reaper_concurrency             = 1,
-  $log_facility                   = 'LOG_LOCAL2',
-  $log_level                      = 'INFO',
-  $log_address                    = '/dev/log',
-  $log_name                       = "${type}-server",
-  $log_udp_host                   = undef,
-  $log_udp_port                   = undef,
-  $log_requests                   = true,
+  Pattern[/^\d+$/] $bind_port                            = $name,
+  $devices                                               = '/srv/node',
+  Boolean $rsync_module_per_device                       = false,
+  Array[String[1]] $device_names                         = [],
+  $owner                                                 = undef,
+  $group                                                 = undef,
+  $max_connections                                       = 25,
+  $hosts_allow                                           = undef,
+  $hosts_deny                                            = undef,
+  $incoming_chmod                                        = 'Du=rwx,g=rx,o=rx,Fu=rw,g=r,o=r',
+  $outgoing_chmod                                        = 'Du=rwx,g=rx,o=rx,Fu=rw,g=r,o=r',
+  Swift::Pipeline $pipeline                              = ["${type}-server"],
+  $mount_check                                           = true,
+  $disable_fallocate                                     = $facts['os_service_default'],
+  $fallocate_reserve                                     = $facts['os_service_default'],
+  $server_fallocate_reserve                              = $facts['os_service_default'],
+  $servers_per_port                                      = $facts['os_service_default'],
+  $user                                                  = undef,
+  $workers                                               = $facts['os_workers'],
+  $replicator_concurrency                                = 1,
+  $replicator_interval                                   = $facts['os_service_default'],
+  $updater_concurrency                                   = 1,
+  $reaper_concurrency                                    = 1,
+  $log_facility                                          = 'LOG_LOCAL2',
+  $log_level                                             = 'INFO',
+  $log_address                                           = '/dev/log',
+  $log_name                                              = "${type}-server",
+  $log_udp_host                                          = undef,
+  $log_udp_port                                          = undef,
+  $log_requests                                          = true,
   # this parameters needs to be specified after type and name
-  $config_file_path               = "${type}-server.conf",
-  $statsd_enabled                 = false,
-  $log_statsd_host                = 'localhost',
-  $log_statsd_port                = $facts['os_service_default'],
-  $log_statsd_default_sample_rate = $facts['os_service_default'],
-  $log_statsd_sample_rate_factor  = $facts['os_service_default'],
-  $log_statsd_metric_prefix       = $facts['os_service_default'],
-  $network_chunk_size             = $facts['os_service_default'],
-  $disk_chunk_size                = $facts['os_service_default'],
-  $client_timeout                 = $facts['os_service_default'],
-  $auditor_disk_chunk_size        = $facts['os_service_default'],
-  $rsync_timeout                  = $facts['os_service_default'],
-  $rsync_bwlimit                  = $facts['os_service_default'],
-  $splice                         = $facts['os_service_default'],
-  $object_server_mb_per_sync      = $facts['os_service_default'],
+  $config_file_path                                      = "${type}-server.conf",
+  Boolean $statsd_enabled                                = false,
+  $log_statsd_host                                       = 'localhost',
+  $log_statsd_port                                       = $facts['os_service_default'],
+  $log_statsd_default_sample_rate                        = $facts['os_service_default'],
+  $log_statsd_sample_rate_factor                         = $facts['os_service_default'],
+  $log_statsd_metric_prefix                              = $facts['os_service_default'],
+  $network_chunk_size                                    = $facts['os_service_default'],
+  $disk_chunk_size                                       = $facts['os_service_default'],
+  $client_timeout                                        = $facts['os_service_default'],
+  $auditor_disk_chunk_size                               = $facts['os_service_default'],
+  $rsync_timeout                                         = $facts['os_service_default'],
+  $rsync_bwlimit                                         = $facts['os_service_default'],
+  Variant[Openstacklib::ServiceDefault, Boolean] $splice = $facts['os_service_default'],
+  $object_server_mb_per_sync                             = $facts['os_service_default'],
   # These parameters only apply to container-server.conf,
   # and define options for the container-sharder service.
-  $container_sharder_auto_shard   = $facts['os_service_default'],
-  $container_sharder_concurrency  = $facts['os_service_default'],
-  $container_sharder_interval     = $facts['os_service_default'],
+  $container_sharder_auto_shard                          = $facts['os_service_default'],
+  $container_sharder_concurrency                         = $facts['os_service_default'],
+  $container_sharder_interval                            = $facts['os_service_default'],
 ){
 
   include swift::deps
@@ -283,30 +285,16 @@ define swift::storage::server(
 
   $user_real = pick($user, $::swift::params::user)
 
-  # Warn if ${type-server} isn't included in the pipeline
-  $pipeline_array = any2array($pipeline)
-  if empty($pipeline_array) or $pipeline_array[-1] != "${type}-server" {
+  # Fail if ${type-server} isn't included in the pipeline
+  if $pipeline[-1] != "${type}-server" {
     fail("${type}-server must be the last element in pipeline")
   }
-
 
   if ($log_udp_port and !$log_udp_host) {
     fail ('log_udp_port requires log_udp_host to be set')
   }
 
   include "::swift::storage::${type}"
-
-  validate_legacy(Pattern[/^\d+$/], 'validate_re', $name, ['^\d+$'])
-  validate_legacy(Enum['object', 'container', 'account'], 'validate_re',
-    $type, ['^object|container|account$'])
-  validate_legacy(Array, 'validate_array', $pipeline)
-  validate_legacy(Array, 'validate_array', $device_names)
-
-  if ! is_service_default($splice) {
-    validate_legacy(Boolean, 'validate_bool', $splice)
-  }
-
-  $bind_port = $name
 
   # rsync::server should be included before rsync::server::module
   include swift::storage
@@ -347,7 +335,6 @@ define swift::storage::server(
   }
 
   $config_file_full_path = "/etc/swift/${config_file_path}"
-
 
   $required_middlewares = split(
     inline_template(

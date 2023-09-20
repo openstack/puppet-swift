@@ -42,12 +42,12 @@
 # it already has an XFS FS, and mounts de FS in /srv/node/sdX
 #
 define swift::storage::xfs(
-  $device            = '',
-  $byte_size         = '1024',
-  $mnt_base_dir      = '/srv/node',
-  $loopback          = false,
-  $mount_type        = 'path',
-  $manage_filesystem = true,
+  $device                            = '',
+  $byte_size                         = '1024',
+  Stdlib::Absolutepath $mnt_base_dir = '/srv/node',
+  Boolean $loopback                  = false,
+  $mount_type                        = 'path',
+  Boolean $manage_filesystem         = true,
 ) {
 
   include swift::deps
@@ -107,6 +107,4 @@ define swift::storage::xfs(
     mnt_base_dir => $mnt_base_dir,
     loopback     => $loopback,
   }
-
-
 }

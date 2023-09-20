@@ -1,18 +1,26 @@
 # Used to build an additional object ring for a storage policy.
 # The namevar/name of this class must be an integer.
 #
-#
 # Specifies the following relationship:
 #  Rings should be created before any devices are added to them
 #  Rings should be rebalanced if anything changes
-# == Parameters
-#  [*title*] required. Title must be a positive integer. Title of this class
-#  is used to denote the storage policy ID for the object ring.
 #
-#  [*part_power*] The total number of partitions that should exist in the ring.
+# == Parameters
+#  [*policy_id*]
+#    (required) The id must be a positive integer. This is used to denote
+#    the storage policy ID for the object ring.
+#    Defaults to $name
+#
+#  [*part_power*]
+#    (optional) The total number of partitions that should exist in the ring.
 #    This is expressed as a power of 2.
-#  [*replicas*] Number of replicas that should be maintained of each stored object.
-#  [*min_part_hours*] Minimum amount of time before partitions can be moved.
+#
+#  [*replicas*]
+#    (optional) Number of replicas that should be maintained of each stored
+#    object.
+#
+#  [*min_part_hours*]
+#    (optional) Minimum amount of time before partitions can be moved.
 #
 # == Dependencies
 #
@@ -30,20 +38,19 @@
 # Copyright 2011 Puppetlabs Inc, unless otherwise noted.
 #
 define swift::ringbuilder::policy_ring(
-  $part_power     = undef,
-  $replicas       = undef,
-  $min_part_hours = undef,
+  Pattern[/^\d+$/] $policy_id = $name,
+  $part_power                 = undef,
+  $replicas                   = undef,
+  $min_part_hours             = undef,
 ) {
 
-  validate_legacy(Pattern[/^\d+$/], 'validate_re', $title, ['^\d+$'])
-
   include swift::deps
-  Class['swift'] -> Swift::Ringbuilder::Policy_ring[$title]
+  Class['swift'] -> Swift::Ringbuilder::Policy_ring[$policy_id]
 
-  if $title == '0' {
+  if $policy_id == '0' {
     $ring_builder = 'object'
   } else {
-    $ring_builder = "object-${title}"
+    $ring_builder = "object-${policy_id}"
   }
 
   swift::ringbuilder::create{ $ring_builder :

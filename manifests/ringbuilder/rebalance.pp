@@ -1,30 +1,26 @@
-# Swift::Ring::Rebalance
+# == Class: swift::ringbuilder::rebalance
+#
 #   Reblances the specified ring. Assumes that the ring already exists
 #   and is stored at /etc/swift/${name}.builder
 #
 # == Parameters
 #
-# [*name*] Type of ring to rebalance. The ring file is assumed to be at the path
-#   /etc/swift/${name}.builder
+# [*ring_type*]
+#   Optional. Type of ring to rebalance. The ring file is assumed to be at
+#   the path /etc/swift/${ring_type}.builder
 #
-# [*seed*] Optional. Seed value used to seed pythons pseudo-random for ringbuilding.
+# [*seed*]
+#   Optional. Seed value used to seed pythons pseudo-random for ringbuilding.
+#
 define swift::ringbuilder::rebalance(
-  $seed = undef
+  Swift::RingType $ring_type                            = $name,
+  Optional[Variant[Integer[0], Pattern[/^\d+$/]]] $seed = undef
 ) {
 
   include swift::deps
 
-  validate_legacy(
-    Pattern[/^(object(-(\d)+)?|container|account)$/], 'validate_re', $name,
-    ['^(object(-(\d)+)?|container|account)$']
-  )
-
-  if $seed and !($seed =~ Integer) {
-    validate_legacy(Pattern[/^\d+$/], 'validate_re', $seed, ['^\d+$'])
-  }
-
-  exec { "rebalance_${name}":
-    command     => strip("swift-ring-builder /etc/swift/${name}.builder rebalance ${seed}"),
+  exec { "rebalance_${ring_type}":
+    command     => strip("swift-ring-builder /etc/swift/${ring_type}.builder rebalance ${seed}"),
     path        => ['/usr/bin'],
     refreshonly => true,
     before      => Anchor['swift::config::end'],

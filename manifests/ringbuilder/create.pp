@@ -1,10 +1,13 @@
+# == Class: swift::ringbuilder::create
+#
 # Creates a swift ring using ringbuilder.
 # It creates the associated ring file as /etc/swift/${name}.builder
 # It will not create a ring if the file already exists.
 #
 # == Parameters
 #
-#  [*name*] The type of ring to create. Accepts object|container|account
+#  [*ring_type*]
+#    Optional. The type of ring to create. Accepts object|container|account
 #  [*part_power*] Number of partitions in the ring. (specified as the power of 2)
 #    Optional. Defaults to 18 (2^18)
 #  [*replicas*] Number of replicas to store.
@@ -33,24 +36,20 @@
 # Copyright 2011 Puppetlabs Inc, unless otherwise noted.
 #
 define swift::ringbuilder::create(
-  $part_power     = 18,
-  $replicas       = 3,
-  $min_part_hours = 24,
-  $user           = 'root'
+  Swift::RingType $ring_type = $name,
+  $part_power                = 18,
+  $replicas                  = 3,
+  $min_part_hours            = 24,
+  $user                      = 'root'
 ) {
 
   include swift::deps
 
-  validate_legacy(
-    Pattern[/^(object(-(\d)+)?|container|account)$/], 'validate_re', $name,
-    ['^(object(-(\d)+)?|container|account)$']
-  )
-
-  exec { "create_${name}":
-    command => "swift-ring-builder /etc/swift/${name}.builder create ${part_power} ${replicas} ${min_part_hours}",
+  exec { "create_${ring_type}":
+    command => "swift-ring-builder /etc/swift/${ring_type}.builder create ${part_power} ${replicas} ${min_part_hours}",
     path    => ['/usr/bin'],
     user    => $user,
-    creates => "/etc/swift/${name}.builder",
+    creates => "/etc/swift/${ring_type}.builder",
     before  => Anchor['swift::config::end'],
   }
 

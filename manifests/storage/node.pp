@@ -43,7 +43,7 @@
 #    Defaults to undef
 define swift::storage::node(
   $mnt_base_dir,
-  $zone,
+  Variant[Integer, Pattern[/^\d+$/]] $zone,
   $weight               = 1,
   $owner                = undef,
   $group                = undef,
@@ -53,11 +53,6 @@ define swift::storage::node(
 ) {
 
   include swift::deps
-
-  if ! $zone =~ Integer {
-    validate_legacy(Pattern[/^\d+$/], 'validate_re', $zone,
-      ['^\d+$', 'The zone parameter must be an integer'])
-  }
 
   Swift::Storage::Server {
     storage_local_net_ip => $storage_local_net_ip,

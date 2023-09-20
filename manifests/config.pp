@@ -46,24 +46,16 @@
 #   The value is an hash of swift_internal_client_config resources.
 #
 class swift::config (
-  $swift_config                       = {},
-  $swift_container_sync_realms_config = {},
-  $swift_proxy_config                 = {},
-  $swift_account_config               = {},
-  $swift_container_config             = {},
-  $swift_object_config                = {},
-  $swift_internal_client_config       = {},
+  Hash $swift_config                       = {},
+  Hash $swift_container_sync_realms_config = {},
+  Hash $swift_proxy_config                 = {},
+  Hash $swift_account_config               = {},
+  Hash $swift_container_config             = {},
+  Hash $swift_object_config                = {},
+  Hash $swift_internal_client_config       = {},
 ) {
 
   include swift::deps
-
-  validate_legacy(Hash, 'validate_hash', $swift_config)
-  validate_legacy(Hash, 'validate_hash', $swift_container_sync_realms_config)
-  validate_legacy(Hash, 'validate_hash', $swift_proxy_config)
-  validate_legacy(Hash, 'validate_hash', $swift_account_config)
-  validate_legacy(Hash, 'validate_hash', $swift_container_config)
-  validate_legacy(Hash, 'validate_hash', $swift_object_config)
-  validate_legacy(Hash, 'validate_hash', $swift_internal_client_config)
 
   create_resources('swift_config', $swift_config)
   create_resources('swift_container_sync_realms_config', $swift_container_sync_realms_config)

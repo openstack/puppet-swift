@@ -75,19 +75,19 @@
 #   Defaults to $facts['os_service_default']
 #
 class swift::containerreconciler(
-  $manage_service     = true,
-  $enabled            = true,
-  $package_ensure     = 'present',
-  $pipeline           = ['catch_errors', 'proxy-logging', 'proxy-server'],
-  $interval           = $facts['os_service_default'],
-  $reclaim_age        = $facts['os_service_default'],
-  $request_tries      = $facts['os_service_default'],
-  $service_provider   = $::swift::params::service_provider,
-  $memcache_servers   = ['127.0.0.1:11211'],
-  $cache_tls_enabled  = false,
-  $cache_tls_cafile   = $facts['os_service_default'],
-  $cache_tls_certfile = $facts['os_service_default'],
-  $cache_tls_keyfile  = $facts['os_service_default'],
+  Boolean $manage_service     = true,
+  Boolean $enabled            = true,
+  $package_ensure             = 'present',
+  Swift::Pipeline $pipeline   = ['catch_errors', 'proxy-logging', 'proxy-server'],
+  $interval                   = $facts['os_service_default'],
+  $reclaim_age                = $facts['os_service_default'],
+  $request_tries              = $facts['os_service_default'],
+  $service_provider           = $::swift::params::service_provider,
+  $memcache_servers           = ['127.0.0.1:11211'],
+  $cache_tls_enabled          = false,
+  $cache_tls_cafile           = $facts['os_service_default'],
+  $cache_tls_certfile         = $facts['os_service_default'],
+  $cache_tls_keyfile          = $facts['os_service_default'],
 ) inherits swift::params {
 
   include swift::deps
