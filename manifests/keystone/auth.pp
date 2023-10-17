@@ -7,13 +7,13 @@
 #
 # === Parameters:
 #
+# [*password*]
+#  String. The user's password.
+#  Required.
+#
 # [*auth_name*]
 #  String. The name of the user.
 #  Optional. Defaults to 'swift'.
-#
-# [*password*]
-#  String. The user's password.
-#  Optional. Defaults to 'swift_password'.
 #
 # [*tenant*]
 #   (Optional) The tenant to use for the swift service user
@@ -108,8 +108,8 @@
 #   This url should *not* contain any trailing '/'.
 #
 class swift::keystone::auth(
+  String[1] $password,
   $auth_name              = 'swift',
-  $password               = undef,
   $tenant                 = 'services',
   $roles                  = ['admin'],
   $system_scope           = 'all',
@@ -137,14 +137,6 @@ class swift::keystone::auth(
 
   include swift::deps
 
-  if $password == undef {
-    warning('Usage of the default password is deprecated and will be removed in a future release. \
-Please set password parameter')
-    $password_real = 'swift_password'
-  } else {
-    $password_real = $password
-  }
-
   if $service_name == $service_name_s3 {
       fail('swift::keystone::auth parameters service_name and service_name_s3 must be different.')
   }
@@ -165,7 +157,7 @@ Please set password parameter')
     service_description => $service_description,
     region              => $region,
     auth_name           => $auth_name,
-    password            => $password_real,
+    password            => $password,
     email               => $email,
     tenant              => $tenant,
     roles               => $roles,

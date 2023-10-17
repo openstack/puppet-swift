@@ -4,6 +4,9 @@
 #
 # == Parameters
 #
+# [*password*]
+#   (Required) The password for the user
+#
 # [*delay_auth_decision*]
 #   (Optional) Do not handle authorization requests within the middleware, but
 #   delegate the authorization decision to downstream WSGI components. Boolean value
@@ -32,10 +35,6 @@
 # [*user_domain_id*]
 #   (Optional) id of domain for $username
 #   Defaults to 'default'
-#
-# [*password*]
-#   (Optional) The password for the user
-#   Defaults to 'password'
 #
 # [*project_name*]
 #   (Optional) Service project name
@@ -94,6 +93,7 @@
 # Copyright 2012 Puppetlabs Inc, unless otherwise noted.
 #
 class swift::proxy::authtoken(
+  String[1] $password,
   $delay_auth_decision          = 1,
   $cache                        = 'swift.cache',
   $www_authenticate_uri         = 'http://127.0.0.1:5000',
@@ -101,7 +101,6 @@ class swift::proxy::authtoken(
   $auth_type                    = 'password',
   $username                     = 'swift',
   $user_domain_id               = 'default',
-  $password                     = undef,
   $project_name                 = 'services',
   $project_domain_id            = 'default',
   $system_scope                 = $facts['os_service_default'],
@@ -114,14 +113,6 @@ class swift::proxy::authtoken(
 ) inherits swift::params {
 
   include swift::deps
-
-  if $password == undef {
-    warning('Usage of the default password is deprecated and will be removed in a future release. \
-Please set password parameter')
-    $password_real = 'password'
-  } else {
-    $password_real = $password
-  }
 
   if is_service_default($system_scope) {
     $project_name_real = $project_name
@@ -139,7 +130,7 @@ Please set password parameter')
     'filter:authtoken/auth_type':                    value => $auth_type;
     'filter:authtoken/username':                     value => $username;
     'filter:authtoken/user_domain_id':               value => $user_domain_id;
-    'filter:authtoken/password':                     value => $password_real, secret => true;
+    'filter:authtoken/password':                     value => $password, secret => true;
     'filter:authtoken/project_name':                 value => $project_name_real;
     'filter:authtoken/project_domain_id':            value => $project_domain_id_real;
     'filter:authtoken/system_scope':                 value => $system_scope;

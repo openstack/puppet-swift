@@ -4,6 +4,11 @@
 #
 # === Parameters
 #
+# [*password*]
+#   (Required) Keystone credentials used for secret caching
+#   The password for the user
+#   Defaults to password
+#
 # [*auth_uri*]
 #   (optional) The Keystone server uri
 #   Defaults to http://127.0.0.1:5000
@@ -50,11 +55,6 @@
 #   id of domain for $username
 #   Defaults to default
 #
-# [*password*]
-#   (Optional) Keystone credentials used for secret caching
-#   The password for the user
-#   Defaults to password
-#
 # [*project_name*]
 #   (Optional) Keystone credentials used for secret caching
 #   Service project name
@@ -82,6 +82,7 @@
 # Copyright 2012 eNovance licensing@enovance.com
 #
 class swift::proxy::s3token(
+  String[1] $password,
   $auth_uri              = 'http://127.0.0.1:5000',
   $reseller_prefix       = 'AUTH_',
   $delay_auth_decision   = false,
@@ -91,21 +92,12 @@ class swift::proxy::s3token(
   $auth_type             = 'password',
   $username              = 'swift',
   $user_domain_id        = 'default',
-  $password              = undef,
   $project_name          = 'services',
   $project_domain_id     = 'default',
   $system_scope          = $facts['os_service_default'],
 ) {
 
   include swift::deps
-
-  if $password == undef {
-    warning('Usage of the default password is deprecated and will be removed in a future release. \
-Please set password parameter')
-    $password_real = 'password'
-  } else {
-    $password_real = $password
-  }
 
   if is_service_default($system_scope) {
     $project_name_real = $project_name
@@ -126,7 +118,7 @@ Please set password parameter')
     'filter:s3token/auth_type':             value => $auth_type;
     'filter:s3token/username':              value => $username;
     'filter:s3token/user_domain_id':        value => $user_domain_id;
-    'filter:s3token/password':              value => $password_real, secret => true;
+    'filter:s3token/password':              value => $password, secret => true;
     'filter:s3token/project_name':          value => $project_name_real;
     'filter:s3token/project_domain_id':     value => $project_domain_id_real;
     'filter:s3token/system_scope':          value => $system_scope;
