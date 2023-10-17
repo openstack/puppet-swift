@@ -7,6 +7,9 @@
 #
 # == Parameters
 #
+# [*password*]
+#   (Required) The password for the user
+#
 # [*default_transport_url*]
 #   (optional) A URL representing the messaging driver to use and its full
 #   configuration. Transport URLs take the form:
@@ -64,10 +67,6 @@
 # [*user_domain_name*]
 #   (Optional) name of domain for $username
 #   Defaults to 'default'
-#
-# [*password*]
-#   (Optional) The password for the user
-#   Defaults to 'password'
 #
 # [*region_name*]
 #   (Optional) The region in which the identity server can be found.
@@ -162,6 +161,7 @@
 # Copyright 2013 eNovance licensing@enovance.com
 #
 class swift::proxy::ceilometer(
+  String[1] $password,
   $default_transport_url              = undef,
   $driver                             = $facts['os_service_default'],
   $topic                              = undef,
@@ -176,7 +176,6 @@ class swift::proxy::ceilometer(
   $system_scope                       = $facts['os_service_default'],
   $username                           = 'swift',
   $user_domain_name                   = 'Default',
-  $password                           = undef,
   $region_name                        = $facts['os_service_default'],
   $notification_ssl_ca_file           = $facts['os_service_default'],
   $notification_ssl_cert_file         = $facts['os_service_default'],
@@ -198,14 +197,6 @@ class swift::proxy::ceilometer(
   include swift::deps
 
   Package['python-ceilometermiddleware'] ~> Service<| title == 'swift-proxy-server' |>
-
-  if $password == undef {
-    warning('Usage of the default password is deprecated and will be removed in a future release. \
-Please set password parameter')
-    $password_real = 'password'
-  } else {
-    $password_real = $password
-  }
 
   if is_service_default($system_scope) {
     $project_name_real = $project_name
@@ -230,7 +221,7 @@ Please set password parameter')
     'filter:ceilometer/system_scope':         value => $system_scope;
     'filter:ceilometer/username':             value => $username;
     'filter:ceilometer/user_domain_name':     value => $user_domain_name;
-    'filter:ceilometer/password':             value => $password_real, secret => true;
+    'filter:ceilometer/password':             value => $password, secret => true;
     'filter:ceilometer/region_name':          value => $region_name;
   }
 

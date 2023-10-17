@@ -9,14 +9,21 @@ describe 'swift::proxy::ceilometer' do
   end
 
   shared_examples 'swift::proxy::ceilometer' do
+
+    let :params do
+      {
+        :password => 'swiftpassword'
+      }
+    end
+
     describe "when using default parameters" do
-      let :params do
-        {
+      before :each do
+        params.merge!({
           :default_transport_url => 'rabbit://user_1:user_1_passw@1.1.1.1:5673/rabbit',
-        }
+        })
       end
 
-      it { is_expected.to contain_swift_proxy_config('filter:ceilometer/password').with_value('password').with_secret(true) }
+      it { is_expected.to contain_swift_proxy_config('filter:ceilometer/password').with_value('swiftpassword').with_secret(true) }
       it { is_expected.to contain_swift_proxy_config('filter:ceilometer/paste.filter_factory').with_value('ceilometermiddleware.swift:filter_factory') }
       it { is_expected.to contain_swift_proxy_config('filter:ceilometer/url').with_value('rabbit://user_1:user_1_passw@1.1.1.1:5673/rabbit').with_secret(true) }
       it { is_expected.to contain_swift_proxy_config('filter:ceilometer/nonblocking_notify').with_value('false') }
@@ -29,8 +36,9 @@ describe 'swift::proxy::ceilometer' do
     end
 
     describe "when overriding default parameters with rabbit driver" do
-      let :params do
-        { :default_transport_url => 'rabbit://user_1:user_1_passw@1.1.1.1:5673/rabbit',
+      before :each do
+        params.merge!({
+          :default_transport_url => 'rabbit://user_1:user_1_passw@1.1.1.1:5673/rabbit',
           :driver                => 'messagingv2',
           :topic                 => 'notifications',
           :control_exchange      => 'swift',
@@ -42,9 +50,8 @@ describe 'swift::proxy::ceilometer' do
           :user_domain_name      => 'Default',
           :project_name          => 'services',
           :username              => 'swift',
-          :password              => 'mypassword',
           :region_name           => 'region2'
-        }
+        })
       end
 
       context 'with single rabbit host' do
@@ -62,7 +69,6 @@ describe 'swift::proxy::ceilometer' do
         it { is_expected.to contain_swift_proxy_config('filter:ceilometer/system_scope').with_value('<SERVICE DEFAULT>') }
         it { is_expected.to contain_swift_proxy_config('filter:ceilometer/username').with_value('swift') }
         it { is_expected.to contain_swift_proxy_config('filter:ceilometer/user_domain_name').with_value('Default') }
-        it { is_expected.to contain_swift_proxy_config('filter:ceilometer/password').with_value('mypassword').with_secret(true) }
         it { is_expected.to contain_swift_proxy_config('filter:ceilometer/region_name').with_value('region2') }
       end
 
@@ -116,11 +122,11 @@ describe 'swift::proxy::ceilometer' do
     end
 
     describe 'when system_scope is set' do
-      let :params do
-        {
+      before :each do
+        params.merge!({
           :default_transport_url => 'rabbit://user_1:user_1_passw@1.1.1.1:5673/rabbit',
           :system_scope          => 'all'
-        }
+        })
       end
 
       it { is_expected.to contain_swift_proxy_config('filter:ceilometer/project_name').with_value('<SERVICE DEFAULT>') }

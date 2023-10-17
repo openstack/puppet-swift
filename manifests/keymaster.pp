@@ -2,6 +2,9 @@
 #
 # == Parameters
 #
+# [*password*]
+#   (Required) String. The password to go with the Keystone username.
+#
 # [*api_class*]
 #   (Required) String. The api_class tells Castellan which key manager to 
 #   use to access the external key management system. The default value that
@@ -18,9 +21,6 @@
 #   (Required) String. The Keystone username of the user used to access the key
 #   from the KMS. The username shall be set to match an existing user.
 #   Defaults to swift.
-#
-# [*password*]
-#   (Required) String. The password to go with the Keystone username.
 #
 # [*project_name*]
 #   (Optional) String. The Keystone project name. For security reasons,
@@ -69,10 +69,10 @@
 #   Thiago da Silva thiago@redhat.com
 #
 class swift::keymaster(
+  String[1] $password,
   $api_class             = 'barbican',
   $key_id                = undef,
   $username              = 'swift',
-  $password              = undef,
   $project_name          = 'services',
   $project_id            = undef,
   $auth_endpoint         = undef,
@@ -84,10 +84,6 @@ class swift::keymaster(
 ) {
 
   include swift::deps
-
-  if $password == undef {
-    warning('password parameter is missing')
-  }
 
   swift_keymaster_config {
     'kms_keymaster/api_class':             value => $api_class;
