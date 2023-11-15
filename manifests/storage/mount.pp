@@ -84,6 +84,14 @@ define swift::storage::mount(
     before      => Anchor['swift::config::end'],
   }
 
+  File["${mnt_base_dir}/${name}"]
+  -> Exec["fix_mountpoint_permissions_${name}"]
+  -> Mount["${mnt_base_dir}/${name}"]
+  -> Exec["mount_${name}"]
+
+  Mount["${mnt_base_dir}/${name}"] ~> Exec["fix_mount_permissions_${name}"]
+  Exec["mount_${name}"] ~> Exec["fix_mount_permissions_${name}"]
+
   # mounting in linux and puppet is broken and non-atomic
   # we have to mount, check mount with executing command,
   # fix ownership and on selinux systems fix context.
@@ -99,15 +107,7 @@ define swift::storage::mount(
       refreshonly => true,
     }
 
-  File<| title == "${mnt_base_dir}/${name}" |>
-  ~> Exec<| title == "fix_mountpoint_permissions_${name}" |>
-  -> Exec<| title == "mount_${name}" |>
-
-  File<| title == "${mnt_base_dir}/${name}" |>
-  ~> Mount<| title == "${mnt_base_dir}/${name}" |>
-  ~> Exec<| title == "mount_${name}" |>
-  ~> Exec<| title == "fix_mount_permissions_${name}" |>
-  ~> Exec<| title == "restorecon_mount_${name}" |>
-
+    Mount["${mnt_base_dir}/${name}"] ~> Exec["restorecon_mount_${name}"]
+    Exec["mount_${name}"] ~> Exec["restorecon_mount_${name}"]
   }
 }
