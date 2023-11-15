@@ -54,7 +54,7 @@ define swift::storage::mount(
   # when the disk device is not mounted
   exec { "fix_mountpoint_permissions_${name}":
     command => "chown -R root:root ${mnt_base_dir}/${name}",
-    path    => ['/usr/sbin', '/bin'],
+    path    => ['/usr/bin', '/bin'],
     before  => Anchor['swift::config::end'],
     unless  => "grep ${mnt_base_dir}/${name} /etc/mtab",
   }
@@ -79,7 +79,7 @@ define swift::storage::mount(
 
   exec { "fix_mount_permissions_${name}":
     command     => "chown -R ${user}:${group} ${mnt_base_dir}/${name}",
-    path        => ['/usr/sbin', '/bin'],
+    path        => ['/usr/bin', '/bin'],
     refreshonly => true,
     before      => Anchor['swift::config::end'],
   }
