@@ -22,7 +22,7 @@ describe 'swift::client' do
       is_expected.to contain_package('swiftclient').with(
         :name   => platform_params[:client_package_name],
         :ensure => p[:ensure],
-        :tag    => ['openstack','swift-support-package'],
+        :tag    => 'openstack',
       )
     end
 
