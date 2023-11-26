@@ -42,14 +42,14 @@
 # (optional) Additional tag to be added to the service resource
 #
 define swift::service(
-  $os_family_service_name,
-  $config_file_name,
-  $service_ensure    = undef,
-  $enabled           = true,
-  $service_provider  = $::swift::params::service_provider,
-  $service_subscribe = undef,
-  $service_require   = undef,
-  $service_tag       = undef,
+  String[1] $os_family_service_name,
+  String[1] $config_file_name,
+  $service_ensure                          = undef,
+  Boolean $enabled                         = true,
+  Swift::ServiceProvider $service_provider = $::swift::params::service_provider,
+  $service_subscribe                       = undef,
+  $service_require                         = undef,
+  Optional[String[1]] $service_tag         = undef,
 ) {
 
   include swift::deps
@@ -72,7 +72,7 @@ define swift::service(
       subscribe => $service_subscribe,
       require   => $service_require,
     }
-  } elsif $service_provider == 'swiftinit' {
+  } else {
     service { $name:
       ensure     => $service_ensure,
       enable     => $enabled,

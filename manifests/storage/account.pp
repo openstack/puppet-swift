@@ -27,11 +27,11 @@
 #    Defaults to $::swift::params::service_provider.
 #
 class swift::storage::account(
-  $manage_service   = true,
-  $enabled          = true,
-  $package_ensure   = 'present',
-  $config_file_name = 'account-server.conf',
-  $service_provider = $::swift::params::service_provider
+  Boolean $manage_service                  = true,
+  Boolean $enabled                         = true,
+  $package_ensure                          = 'present',
+  String[1] $config_file_name              = 'account-server.conf',
+  Swift::ServiceProvider $service_provider = $::swift::params::service_provider
 ) inherits swift::params {
 
   include swift::deps

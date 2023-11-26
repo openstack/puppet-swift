@@ -121,7 +121,7 @@ class swift::storage::drive_audit(
   $log_to_console                           = $facts['os_service_default'],
   $unmount_failed_device                    = $facts['os_service_default'],
   Hash[String[1], String[1]] $regex_pattern = {},
-  $purge_config                             = false,
+  Boolean $purge_config                     = false,
 ) inherits swift::params {
 
   include swift::deps

@@ -34,12 +34,12 @@
 #  Requires Class[swift::storage]
 #
 define swift::storage::generic(
-  Swift::StorageServerType $type = $name,
-  Boolean $manage_service        = true,
-  Boolean $enabled               = true,
-  $package_ensure                = 'present',
-  $config_file_name              = "${name}-server.conf",
-  $service_provider              = $::swift::params::service_provider
+  Swift::StorageServerType $type           = $name,
+  Boolean $manage_service                  = true,
+  Boolean $enabled                         = true,
+  $package_ensure                          = 'present',
+  String[1] $config_file_name              = "${name}-server.conf",
+  Swift::ServiceProvider $service_provider = $::swift::params::service_provider
 ) {
 
   include swift::deps

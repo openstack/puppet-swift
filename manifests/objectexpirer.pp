@@ -102,10 +102,10 @@
 #    Defaults to 'LOG_LOCAL2'.
 #
 class swift::objectexpirer(
-  $manage_service                = true,
-  $enabled                       = true,
+  Boolean $manage_service        = true,
+  Boolean $enabled               = true,
   $package_ensure                = 'present',
-  $pipeline                      = ['catch_errors', 'proxy-logging', 'cache', 'proxy-server'],
+  Swift::Pipeline $pipeline      = ['catch_errors', 'proxy-logging', 'cache', 'proxy-server'],
   $concurrency                   = $facts['os_service_default'],
   $expiring_objects_account_name = $facts['os_service_default'],
   $interval                      = $facts['os_service_default'],
@@ -135,6 +135,10 @@ class swift::objectexpirer(
       name   => $::swift::params::object_expirer_package_name,
       tag    => ['openstack', 'swift-package'],
     }
+  }
+
+  if $pipeline[-1] != 'proxy-server' {
+    fail('proxy-server must be the last element in pipeline')
   }
 
   # only add memcache servers if 'cache' is included in the pipeline
