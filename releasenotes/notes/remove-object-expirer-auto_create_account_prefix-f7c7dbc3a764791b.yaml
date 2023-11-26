@@ -1,0 +1,5 @@
+---
+upgrade:
+  - |
+    The ``swift::objectexpirer::auto_create_account_prefix`` parameter has
+    been removed.

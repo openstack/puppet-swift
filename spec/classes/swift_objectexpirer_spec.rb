@@ -7,7 +7,6 @@ describe 'swift::objectexpirer' do
       :enabled                       => true,
       :package_ensure                => 'present',
       :pipeline                      => ['catch_errors', 'proxy-logging', 'cache', 'proxy-server'],
-      :auto_create_account_prefix    => '<SERVICE DEFAULT>',
       :concurrency                   => '<SERVICE DEFAULT>',
       :expiring_objects_account_name => '<SERVICE DEFAULT>',
       :interval                      => '<SERVICE DEFAULT>',
@@ -38,8 +37,6 @@ describe 'swift::objectexpirer' do
       it 'configures object-expirer.conf' do
         is_expected.to contain_swift_object_expirer_config(
           'pipeline:main/pipeline').with_value(p[:pipeline].join(' '))
-        is_expected.to contain_swift_object_expirer_config(
-          'object-expirer/auto_create_account_prefix').with_value(p[:auto_create_account_prefix])
         is_expected.to contain_swift_object_expirer_config(
           'object-expirer/concurrency').with_value(p[:concurrency])
         is_expected.to contain_swift_object_expirer_config(
