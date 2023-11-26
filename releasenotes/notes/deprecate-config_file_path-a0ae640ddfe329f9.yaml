@@ -1,0 +1,5 @@
+---
+deprecations:
+  - |
+    The ``swift::storage::server::config_file_path`` parameter has been
+    deprecated and has no effect.
