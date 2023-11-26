@@ -378,25 +378,14 @@ define swift::storage::server(
     "app:${type}-server/set log_address"   => {'value'  => $log_address},
     "app:${type}-server/fallocate_reserve" => {'value'  => $server_fallocate_reserve},
     # auditor
+    "${type}-auditor/"                     => {'ensure' => present},
     # replicator
+    "${type}-replicator/"                  => {'ensure' => present},
     "${type}-replicator/rsync_module"      => {'value'  => $rsync_module},
-  }
-
-  file_line { "${type}-auditor":
-    path => $config_file_full_path,
-    line => "[${type}-auditor]",
-    tag  => 'swift-config-file',
-  }
-
-  file_line { "${type}-replicator":
-    path => $config_file_full_path,
-    line => "[${type}-replicator]",
-    tag  => 'swift-config-file',
   }
 
   Anchor['swift::config::begin']
     -> File[$config_file_full_path]
-    -> File_line<| path == $config_file_full_path |>
     ~> Anchor['swift::config::end']
 
   # udp log transfer
@@ -436,9 +425,7 @@ define swift::storage::server(
       $type_opts = {
         # account-server
         # account-auditor
-        'account-auditor/'               => {'ensure' => present},
         # account-replicator
-        'account-replicator/'            => {'ensure' => present},
         'account-replicator/concurrency' => {'value'  => $replicator_concurrency},
         'account-replicator/interval'    => {'value'  => $replicator_interval},
         # account-reaper
@@ -451,9 +438,7 @@ define swift::storage::server(
         'DEFAULT/allowed_sync_hosts'       => {'value'  => join($::swift::storage::container::allowed_sync_hosts, ',')},
         # container-server
         # container-auditor
-        'container-auditor/'               => {'ensure' => present},
         # container-replicator
-        'container-replicator/'            => {'ensure' => present},
         'container-replicator/concurrency' => {'value'  => $replicator_concurrency},
         'container-replicator/interval'    => {'value'  => $replicator_interval},
         # container-updater
@@ -478,10 +463,8 @@ define swift::storage::server(
         'app:object-server/splice'        => {'value'  => $splice},
         'app:object-server/mb_per_sync'   => {'value'  => $object_server_mb_per_sync},
         # object-auditor
-        'object-auditor/'                 => {'ensure' => present},
         'object-auditor/disk_chunk_size'  => {'value'  => $auditor_disk_chunk_size},
         # object-replicator
-        'object-replicator/'              => {'ensure' => present},
         'object-replicator/concurrency'   => {'value'  => $replicator_concurrency},
         'object-replicator/rsync_timeout' => {'value'  => $rsync_timeout},
         'object-replicator/rsync_bwlimit' => {'value'  => $rsync_bwlimit},
