@@ -145,11 +145,6 @@
 #   good for seeing errors if true
 #   Defaults to true.
 #
-# [*config_file_path*]
-#   (optional) The configuration file name.
-#   Starting at the path "/etc/swift/"
-#   Defaults to "${type}-server.conf"
-#
 # [*statsd_enabled*]
 #   (optional) Should statsd configuration items be writen out to config files
 #   Defaults to false.
@@ -224,6 +219,13 @@
 #   (optional) Time in seconds to wait between sharder cycles.
 #   Default to $facts['os_service_default'].
 #
+# DEPRECATED PARAMETERS
+#
+# [*config_file_path*]
+#   (optional) The configuration file name.
+#   Starting at the path "/etc/swift/"
+#   Defaults to undef
+#
 define swift::storage::server(
   Swift::StorageServerType $type,
   $storage_local_net_ip,
@@ -258,7 +260,6 @@ define swift::storage::server(
   $log_udp_port                                          = undef,
   $log_requests                                          = true,
   # this parameters needs to be specified after type and name
-  $config_file_path                                      = "${type}-server.conf",
   Boolean $statsd_enabled                                = false,
   $log_statsd_host                                       = 'localhost',
   $log_statsd_port                                       = $facts['os_service_default'],
@@ -278,10 +279,16 @@ define swift::storage::server(
   $container_sharder_auto_shard                          = $facts['os_service_default'],
   $container_sharder_concurrency                         = $facts['os_service_default'],
   $container_sharder_interval                            = $facts['os_service_default'],
+  # DEPRECATED PARAMETERS
+  $config_file_path                                      = undef,
 ){
 
   include swift::deps
   include swift::params
+
+  if $config_file_path != undef {
+    warning('The config_file_path parameter is deprecated and has no effect')
+  }
 
   $user_real = pick($user, $::swift::params::user)
 
@@ -334,7 +341,7 @@ define swift::storage::server(
     $rsync_module = $facts['os_service_default']
   }
 
-  $config_file_full_path = "/etc/swift/${config_file_path}"
+  $config_file_full_path = "/etc/swift/${type}-server.conf"
 
   $required_middlewares = split(
     inline_template(
@@ -486,7 +493,6 @@ define swift::storage::server(
     $log_statsd_opts,
     $type_opts,
   ), {
-    #'path'    => $config_file_full_path,
     'require' => File[$config_file_full_path]
   })
 }
