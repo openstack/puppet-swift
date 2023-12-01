@@ -40,11 +40,11 @@
 #
 #  [*log_udp_host*]
 #    (optional) If not set, the UDP receiver for syslog is disabled.
-#    Defaults to an empty string
+#    Defaults to $facts['os_service_default'].
 #
 #  [*log_udp_port*]
 #    (optional) Port value for UDP receiver, if enabled.
-#    Defaults to an empty string
+#    Defaults to $facts['os_service_default'].
 #
 #  [*log_address*]
 #    (optional) Location where syslog sends the logs to.
@@ -160,8 +160,8 @@ class swift::proxy(
   Boolean $allow_account_management = true,
   Boolean $account_autocreate       = true,
   $log_headers                      = 'False',
-  $log_udp_host                     = undef,
-  $log_udp_port                     = undef,
+  $log_udp_host                     = $facts['os_service_default'],
+  $log_udp_port                     = $facts['os_service_default'],
   $log_address                      = '/dev/log',
   $log_level                        = 'INFO',
   $log_facility                     = 'LOG_LOCAL2',
@@ -208,10 +208,6 @@ class swift::proxy(
 
   if($auth_type == 'tempauth' and ! $account_autocreate ){
     fail('account_autocreate must be set to true when auth_type is tempauth')
-  }
-
-  if ($log_udp_port and !$log_udp_host) {
-    fail ('log_udp_port requires log_udp_host to be set')
   }
 
   package { 'swift-proxy':

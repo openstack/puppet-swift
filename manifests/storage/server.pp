@@ -256,8 +256,8 @@ define swift::storage::server(
   $log_level                                             = 'INFO',
   $log_address                                           = '/dev/log',
   $log_name                                              = "${type}-server",
-  $log_udp_host                                          = undef,
-  $log_udp_port                                          = undef,
+  $log_udp_host                                          = $facts['os_service_default'],
+  $log_udp_port                                          = $facts['os_service_default'],
   $log_requests                                          = true,
   # this parameters needs to be specified after type and name
   Boolean $statsd_enabled                                = false,
@@ -295,10 +295,6 @@ define swift::storage::server(
   # Fail if ${type-server} isn't included in the pipeline
   if $pipeline[-1] != "${type}-server" {
     fail("${type}-server must be the last element in pipeline")
-  }
-
-  if ($log_udp_port and !$log_udp_host) {
-    fail ('log_udp_port requires log_udp_host to be set')
   }
 
   include "::swift::storage::${type}"
@@ -374,6 +370,8 @@ define swift::storage::server(
     'DEFAULT/log_facility'                 => {'value'  => $log_facility},
     'DEFAULT/log_level'                    => {'value'  => $log_level},
     'DEFAULT/log_address'                  => {'value'  => $log_address},
+    'DEFAULT/log_udp_host'                 => {'value'  => $log_udp_host},
+    'DEFAULT/log_udp_port'                 => {'value'  => $log_udp_port},
     # pipeline
     'pipeline:main/pipeline'               => {'value'  => join($pipeline, ' ')},
     # server
@@ -394,19 +392,6 @@ define swift::storage::server(
   Anchor['swift::config::begin']
     -> File[$config_file_full_path]
     ~> Anchor['swift::config::end']
-
-  # udp log transfer
-  if $log_udp_host {
-    $log_udp_opts = {
-      'DEFAULT/log_udp_host' => {'value' => $log_udp_host},
-      'DEFAULT/log_udp_port' => {'value' => pick($log_udp_port, $facts['os_service_default'])},
-    }
-  } else {
-    $log_udp_opts = {
-      'DEFAULT/log_udp_host' => {'value' => $facts['os_service_default']},
-      'DEFAULT/log_udp_port' => {'value' => $facts['os_service_default']},
-    }
-  }
 
   # statsd
   if $statsd_enabled {
@@ -489,7 +474,6 @@ define swift::storage::server(
 
   create_resources("swift_${type}_config", merge(
     $common_opts,
-    $log_udp_opts,
     $log_statsd_opts,
     $type_opts,
   ), {

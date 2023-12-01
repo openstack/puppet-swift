@@ -57,6 +57,8 @@ describe 'swift::proxy' do
         it { should contain_swift_proxy_config('DEFAULT/log_level').with_value('INFO') }
         it { should contain_swift_proxy_config('DEFAULT/log_headers').with_value('False') }
         it { should contain_swift_proxy_config('DEFAULT/log_address').with_value('/dev/log') }
+        it { should contain_swift_proxy_config('DEFAULT/log_udp_host').with_value('<SERVICE DEFAULT>') }
+        it { should contain_swift_proxy_config('DEFAULT/log_udp_port').with_value('<SERVICE DEFAULT>') }
         it { should contain_swift_proxy_config('DEFAULT/client_timeout').with_value('<SERVICE DEFAULT>') }
         it { should contain_swift_proxy_config('pipeline:main/pipeline').with_value(
           ['catch_errors', 'gatekeeper', 'healthcheck', 'proxy-logging', 'cache',
@@ -173,30 +175,6 @@ describe 'swift::proxy' do
         end
 
         describe "when log udp port is set" do
-          context 'and log_udp_host is not set' do
-            let :params do
-              {
-                :proxy_local_net_ip        => '10.0.0.2',
-                :port                      => '80',
-                :workers                   => 3,
-                :pipeline                  => ['swauth', 'proxy-server'],
-                :allow_account_management  => false,
-                :account_autocreate        => false,
-                :log_level                 => 'DEBUG',
-                :log_name                  => 'swift-proxy-server',
-                :log_udp_port              => '514',
-                :read_affinity             => 'r1z1=100, r1=200',
-                :write_affinity            => 'r1',
-                :write_affinity_node_count => '2 * replicas',
-                :node_timeout              => '20',
-                :recoverable_node_timeout  => '15',
-                :cors_allow_origin         => 'http://foo.bar:1234,https://foo.bar',
-              }
-            end
-
-            it_raises 'a Puppet::Error', /log_udp_port requires log_udp_host to be set/
-          end
-
           context 'and log_udp_host is set' do
             let :params do
               {
