@@ -31,7 +31,7 @@
 #
 # [*log_headers*]
 #  (Optional) The log headers of gatekeeper.
-#  Defaults to false.
+#  Defaults to $facts['os_service_default'].
 #
 # [*log_address*]
 #  (Optional) The log address of gatekeeper.
@@ -51,7 +51,7 @@ class swift::proxy::gatekeeper(
   $log_name                    = 'gatekeeper',
   $log_facility                = 'LOG_LOCAL2',
   $log_level                   = 'INFO',
-  $log_headers                 = false,
+  $log_headers                 = $facts['os_service_default'],
   $log_address                 = '/dev/log'
 ) {
 

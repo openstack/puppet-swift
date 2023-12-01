@@ -36,7 +36,7 @@
 #
 #  [*log_headers*]
 #    (optional) If True, log headers in each request
-#    Defaults to False.
+#    Defaults to $facts['os_service_default'].
 #
 #  [*log_udp_host*]
 #    (optional) If not set, the UDP receiver for syslog is disabled.
@@ -159,7 +159,7 @@ class swift::proxy(
   $workers                          = $facts['os_workers'],
   Boolean $allow_account_management = true,
   Boolean $account_autocreate       = true,
-  $log_headers                      = 'False',
+  $log_headers                      = $facts['os_service_default'],
   $log_udp_host                     = $facts['os_service_default'],
   $log_udp_port                     = $facts['os_service_default'],
   $log_address                      = '/dev/log',

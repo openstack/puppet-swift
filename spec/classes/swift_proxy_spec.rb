@@ -55,7 +55,7 @@ describe 'swift::proxy' do
         it { should contain_swift_proxy_config('DEFAULT/log_name').with_value('proxy-server') }
         it { should contain_swift_proxy_config('DEFAULT/log_facility').with_value('LOG_LOCAL2') }
         it { should contain_swift_proxy_config('DEFAULT/log_level').with_value('INFO') }
-        it { should contain_swift_proxy_config('DEFAULT/log_headers').with_value('False') }
+        it { should contain_swift_proxy_config('DEFAULT/log_headers').with_value('<SERVICE DEFAULT>') }
         it { should contain_swift_proxy_config('DEFAULT/log_address').with_value('/dev/log') }
         it { should contain_swift_proxy_config('DEFAULT/log_udp_host').with_value('<SERVICE DEFAULT>') }
         it { should contain_swift_proxy_config('DEFAULT/log_udp_port').with_value('<SERVICE DEFAULT>') }
@@ -126,6 +126,7 @@ describe 'swift::proxy' do
               :allow_account_management   => false,
               :account_autocreate         => false,
               :log_level                  => 'DEBUG',
+              :log_headers                => false,
               :log_name                   => 'swift-proxy-server',
               :object_chunk_size          => '8192',
               :client_chunk_size          => '8192',
@@ -148,7 +149,7 @@ describe 'swift::proxy' do
           it { should contain_swift_proxy_config('DEFAULT/log_name').with_value('swift-proxy-server') }
           it { should contain_swift_proxy_config('DEFAULT/log_facility').with_value('LOG_LOCAL2') }
           it { should contain_swift_proxy_config('DEFAULT/log_level').with_value('DEBUG') }
-          it { should contain_swift_proxy_config('DEFAULT/log_headers').with_value('False') }
+          it { should contain_swift_proxy_config('DEFAULT/log_headers').with_value(false) }
           it { should contain_swift_proxy_config('DEFAULT/log_address').with_value('/dev/log') }
           it { should contain_swift_proxy_config('DEFAULT/cors_allow_origin').with_value('http://foo.bar:1234,https://foo.bar') }
           it { should contain_swift_proxy_config('DEFAULT/strict_cors_mode').with_value('true') }
@@ -211,7 +212,7 @@ describe 'swift::proxy' do
             it { should contain_swift_proxy_config('DEFAULT/log_name').with_value('swift-proxy-server') }
             it { should contain_swift_proxy_config('DEFAULT/log_facility').with_value('LOG_LOCAL2') }
             it { should contain_swift_proxy_config('DEFAULT/log_level').with_value('DEBUG') }
-            it { should contain_swift_proxy_config('DEFAULT/log_headers').with_value('False') }
+            it { should contain_swift_proxy_config('DEFAULT/log_headers').with_value('<SERVICE DEFAULT>') }
             it { should contain_swift_proxy_config('DEFAULT/log_address').with_value('/dev/log') }
             it { should contain_swift_proxy_config('DEFAULT/log_udp_host').with_value('127.0.0.1') }
             it { should contain_swift_proxy_config('DEFAULT/log_udp_port').with_value('514') }
