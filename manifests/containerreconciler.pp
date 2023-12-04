@@ -78,7 +78,7 @@ class swift::containerreconciler(
   Boolean $manage_service     = true,
   Boolean $enabled            = true,
   $package_ensure             = 'present',
-  Swift::Pipeline $pipeline   = ['catch_errors', 'proxy-logging', 'proxy-server'],
+  Swift::Pipeline $pipeline   = ['catch_errors', 'proxy-logging', 'cache', 'proxy-server'],
   $interval                   = $facts['os_service_default'],
   $reclaim_age                = $facts['os_service_default'],
   $request_tries              = $facts['os_service_default'],

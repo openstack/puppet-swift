@@ -14,7 +14,7 @@ describe 'swift::containerreconciler' do
     context 'with defaults' do
       it 'configures container-reconciler.conf' do
         is_expected.to contain_swift_container_reconciler_config(
-          'pipeline:main/pipeline').with_value('catch_errors proxy-logging proxy-server')
+          'pipeline:main/pipeline').with_value('catch_errors proxy-logging cache proxy-server')
         is_expected.to contain_swift_container_reconciler_config(
           'container-reconciler/interval').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_swift_container_reconciler_config(
@@ -22,15 +22,15 @@ describe 'swift::containerreconciler' do
         is_expected.to contain_swift_container_reconciler_config(
           'container-reconciler/request_tries').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_swift_container_reconciler_config(
-          'filter:cache/memcache_servers').with_ensure('absent')
+          'filter:cache/memcache_servers').with_value('127.0.0.1:11211')
         is_expected.to contain_swift_container_reconciler_config(
-          'filter:cache/tls_enabled').with_ensure('absent')
+          'filter:cache/tls_enabled').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_swift_container_reconciler_config(
-          'filter:cache/tls_cafile').with_ensure('absent')
+          'filter:cache/tls_cafile').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_swift_container_reconciler_config(
-          'filter:cache/tls_certfile').with_ensure('absent')
+          'filter:cache/tls_certfile').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_swift_container_reconciler_config(
-          'filter:cache/tls_keyfile').with_ensure('absent')
+          'filter:cache/tls_keyfile').with_value('<SERVICE DEFAULT>')
       end
 
       it 'configures container-reconciler service' do
@@ -62,27 +62,26 @@ describe 'swift::containerreconciler' do
       end
     end
 
-    context 'when including cache in pipeline' do
+    context 'when chache is not included in pipeline' do
       before do
         params.merge!(
-          :pipeline         => ['catch_errors', 'proxy-logging', 'cache', 'proxy-server'],
-          :memcache_servers => ['127.0.0.1:11211'],
+          :pipeline => ['catch_errors', 'proxy-logging', 'proxy-server'],
         )
       end
 
-      it 'configures memcache servers' do
+      it 'should not configure memcache servers' do
         is_expected.to contain_swift_container_reconciler_config(
-          'pipeline:main/pipeline').with_value('catch_errors proxy-logging cache proxy-server')
+          'pipeline:main/pipeline').with_value('catch_errors proxy-logging proxy-server')
         is_expected.to contain_swift_container_reconciler_config(
-          'filter:cache/memcache_servers').with_value('127.0.0.1:11211')
+          'filter:cache/memcache_servers').with_ensure('absent')
         is_expected.to contain_swift_container_reconciler_config(
-          'filter:cache/tls_enabled').with_value('<SERVICE DEFAULT>')
+          'filter:cache/tls_enabled').with_ensure('absent')
         is_expected.to contain_swift_container_reconciler_config(
-          'filter:cache/tls_cafile').with_value('<SERVICE DEFAULT>')
+          'filter:cache/tls_cafile').with_ensure('absent')
         is_expected.to contain_swift_container_reconciler_config(
-          'filter:cache/tls_certfile').with_value('<SERVICE DEFAULT>')
+          'filter:cache/tls_certfile').with_ensure('absent')
         is_expected.to contain_swift_container_reconciler_config(
-          'filter:cache/tls_keyfile').with_value('<SERVICE DEFAULT>')
+          'filter:cache/tls_keyfile').with_ensure('absent')
       end
     end
   end

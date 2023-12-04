@@ -84,6 +84,8 @@ describe 'swift::objectexpirer' do
 
       it 'should not configure memcache servers' do
         is_expected.to contain_swift_object_expirer_config(
+          'pipeline:main/pipeline').with_value('catch_errors proxy-logging proxy-server')
+        is_expected.to contain_swift_object_expirer_config(
           'filter:cache/memcache_servers').with_ensure('absent')
         is_expected.to contain_swift_object_expirer_config(
           'filter:cache/tls_enabled').with_ensure('absent')
