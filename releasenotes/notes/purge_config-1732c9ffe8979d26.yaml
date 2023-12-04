@@ -1,0 +1,12 @@
+---
+features:
+  - |
+    The ``purge_config`` parameter has been added to the following classes and
+    defined resource types
+
+    - ``swift``
+    - ``swift::containerreconciler``
+    - ``swift::internal_client``
+    - ``swift::memcache``
+    - ``swift::objectexpirer``
+    - ``swift::storage::server``

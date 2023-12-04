@@ -27,6 +27,11 @@
 #   (Optional) The ensure state for the swift package.
 #   Defaults to present.
 #
+# [*purge_config*]
+#   (Optional) Whether to set only the specified config options in the swift
+#   config.
+#   Defaults to false.
+#
 # == Dependencies
 #
 # None
@@ -43,6 +48,7 @@ class swift(
   $swift_hash_path_suffix = $facts['os_service_default'],
   $swift_hash_path_prefix = $facts['os_service_default'],
   $package_ensure         = 'present',
+  Boolean $purge_config   = false,
 ) {
 
   include swift::deps
@@ -57,6 +63,10 @@ class swift(
     ensure => $package_ensure,
     name   => $::swift::params::package_name,
     tag    => ['openstack', 'swift-package'],
+  }
+
+  resources { 'swift_config':
+    purge => $purge_config,
   }
 
   swift_config {

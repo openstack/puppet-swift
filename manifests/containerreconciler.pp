@@ -47,46 +47,50 @@
 #    Defaults to $facts['os_service_default']
 #
 #  [*service_provider*]
-#    (optional)
-#    To use the swiftinit service provider to manage swift services, set
-#    service_provider to "swiftinit".  When enable is true the provider
+#    (optional) To use the swiftinit service provider to manage swift services,
+#    set service_provider to "swiftinit".  When enable is true the provider
 #    will populate boot files that start swift using swift-init at boot.
 #    See README for more details.
 #    Defaults to $::swift::params::service_provider.
 #
 #  [*memcache_servers*]
-#    (optional)
-#    A list of the memcache servers to be used. Entries should be in the
-#    form host:port. This value is only used if 'cache' is added to the
+#    (optional) A list of the memcache servers to be used. Entries should be in
+#    the form host:port. This value is only used if 'cache' is added to the
 #    pipeline,
 #    e.g. ['catch_errors', 'proxy-logging', 'cache', 'proxy-server']
 #    Defaults to ['127.0.0.1:11211']
 #
-# [*cache_tls_enabled*]
-#   (Optional) Global toggle for TLS usage when communicating with
-#   the caching servers.
-#   Defaults to $facts['os_service_default']
+#  [*cache_tls_enabled*]
+#    (optional) Global toggle for TLS usage when communicating with
+#    the caching servers.
+#    Defaults to $facts['os_service_default']
+#    Default to false
 #
-# [*cache_tls_cafile*]
-#   (Optional) Path to a file of concatenated CA certificates in PEM
-#   format necessary to establish the caching server's authenticity.
-#   If tls_enabled is False, this option is ignored.
-#   Defaults to $facts['os_service_default']
+#  [*cache_tls_cafile*]
+#    (optional) Path to a file of concatenated CA certificates in PEM
+#    format necessary to establish the caching server's authenticity.
+#    If tls_enabled is False, this option is ignored.
+#    Defaults to $facts['os_service_default']
 #
-# [*cache_tls_certfile*]
-#   (Optional) Path to a single file in PEM format containing the
-#   client's certificate as well as any number of CA certificates
-#   needed to establish the certificate's authenticity. This file
-#   is only required when client side authentication is necessary.
-#   If tls_enabled is False, this option is ignored.
-#   Defaults to $facts['os_service_default']
+#  [*cache_tls_certfile*]
+#    (optional) Path to a single file in PEM format containing the
+#    client's certificate as well as any number of CA certificates
+#    needed to establish the certificate's authenticity. This file
+#    is only required when client side authentication is necessary.
+#    If tls_enabled is False, this option is ignored.
+#    Defaults to $facts['os_service_default']
 #
-# [*cache_tls_keyfile*]
-#   (Optional) Path to a single file containing the client's private
-#   key in. Otherwise the private key will be taken from the file
-#   specified in tls_certfile. If tls_enabled is False, this option
-#   is ignored.
-#   Defaults to $facts['os_service_default']
+#  [*cache_tls_keyfile*]
+#    (optional) Path to a single file containing the client's private
+#    key in. Otherwise the private key will be taken from the file
+#    specified in tls_certfile. If tls_enabled is False, this option
+#    is ignored.
+#    Defaults to $facts['os_service_default']
+#
+#  [*purge_config*]
+#    (optional) Whether to set only the specified config options
+#    in the proxy config.
+#    Defaults to false.
 #
 class swift::containerreconciler(
   Boolean $manage_service                  = true,
@@ -105,6 +109,7 @@ class swift::containerreconciler(
   $cache_tls_cafile                        = $facts['os_service_default'],
   $cache_tls_certfile                      = $facts['os_service_default'],
   $cache_tls_keyfile                       = $facts['os_service_default'],
+  Boolean $purge_config                    = false,
 ) inherits swift::params {
 
   include swift::deps
@@ -112,6 +117,10 @@ class swift::containerreconciler(
 
   if $pipeline[-1] != 'proxy-server' {
     fail('proxy-server must be the last element in pipeline')
+  }
+
+  resources { 'swift_container_reconciler_config':
+    purge => $purge_config,
   }
 
   # only add memcache servers if 'cache' is included in the pipeline

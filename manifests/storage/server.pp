@@ -49,11 +49,11 @@
 #   Defaults to undef.
 #
 # [*incoming_chmod*] Incoming chmod to set in the rsync server.
-#   Optional. Defaults to 'Du=rwx,g=rx,o=rx,Fu=rw,g=r,o=r'
+#   (optional) Defaults to 'Du=rwx,g=rx,o=rx,Fu=rw,g=r,o=r'
 #   This mask translates to 0755 for directories and 0644 for files.
 #
 # [*outgoing_chmod*] Outgoing chmod to set in the rsync server.
-#   Optional. Defaults to 'Du=rwx,g=rx,o=rx,Fu=rw,g=r,o=r'
+#   (optional) Defaults to 'Du=rwx,g=rx,o=rx,Fu=rw,g=r,o=r'
 #   This mask translates to 0755 for directories and 0644 for files.
 #
 # [*pipeline*]
@@ -219,6 +219,11 @@
 #   (optional) Time in seconds to wait between sharder cycles.
 #   Default to $facts['os_service_default'].
 #
+# [*purge_config*]
+#   (optional) Whether to set only the specified config options
+#   in the config file.
+#   Defaults to false.
+#
 # DEPRECATED PARAMETERS
 #
 # [*config_file_path*]
@@ -279,6 +284,7 @@ define swift::storage::server(
   $container_sharder_auto_shard                          = $facts['os_service_default'],
   $container_sharder_concurrency                         = $facts['os_service_default'],
   $container_sharder_interval                            = $facts['os_service_default'],
+  Boolean $purge_config                                  = false,
   # DEPRECATED PARAMETERS
   $config_file_path                                      = undef,
 ){
@@ -354,6 +360,10 @@ define swift::storage::server(
     replace => false,
     tag     => 'swift-config-file',
     before  => $required_middlewares,
+  }
+
+  resources { "swift_${type}_config":
+    purge => $purge_config,
   }
 
   # common settings

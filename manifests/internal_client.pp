@@ -45,6 +45,11 @@
 #    (optional) Configures recoverable_node_timeout for internal client.
 #    Defaults to $facts['os_service_default'].
 #
+#  [*purge_config*]
+#    (optional) Whether to set only the specified config options in
+#    the internal client config.
+#    Defaults to false.
+#
 class swift::internal_client (
   $user                      = $::swift::params::user,
   Swift::Pipeline $pipeline  = ['catch_errors', 'proxy-logging', 'cache', 'proxy-server'],
@@ -56,12 +61,17 @@ class swift::internal_client (
   $client_timeout            = $facts['os_service_default'],
   $node_timeout              = $facts['os_service_default'],
   $recoverable_node_timeout  = $facts['os_service_default'],
+  Boolean $purge_config      = false,
 ) inherits swift::params {
 
   include swift::deps
 
   if $pipeline[-1] != 'proxy-server' {
     fail('proxy-server must be the last element in pipeline')
+  }
+
+  resources { 'swift_internal_client_config':
+    purge => $purge_config,
   }
 
   swift_internal_client_config {

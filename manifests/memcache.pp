@@ -18,42 +18,49 @@
 # === Parameters
 #
 # [*memcache_servers*]
-# You can use this single conf file instead of having memcache_servers set in
-# several other conf files under [filter:cache] for example. You can specify
-# multiple servers separated with commas, as in: 10.1.2.3:11211,10.1.2.4:11211
-# Default to ['127.0.0.1:11211']
+#  (optional) You can use this single conf file instead of having
+#  memcache_servers set in several other conf files under [filter:cache] for
+#  example. You can specify multiple servers separated with commas, as in:
+#  10.1.2.3:11211,10.1.2.4:11211
+#  Default to ['127.0.0.1:11211']
 #
 # [*memcache_serialization_support*]
-# Sets how memcache values are serialized and deserialized:
-# 0 = older, insecure pickle serialization
-# 1 = json serialization but pickles can still be read (still insecure)
-# 2 = json serialization only (secure and the default)
-# To avoid an instant full cache flush, existing installations should
-# upgrade with 0, then set to 1 and reload, then after some time (24 hours)
-# set to 2 and reload.
-# In the future, the ability to use pickle serialization will be removed.
-# Default to $facts['os_service_default']
+#  (optional) Sets how memcache values are serialized and deserialized:
+#  0 = older, insecure pickle serialization
+#  1 = json serialization but pickles can still be read (still insecure)
+#  2 = json serialization only (secure and the default)
+#  To avoid an instant full cache flush, existing installations should
+#  upgrade with 0, then set to 1 and reload, then after some time (24 hours)
+#  set to 2 and reload.
+#  In the future, the ability to use pickle serialization will be removed.
+#  Default to $facts['os_service_default']
 #
 # [*memcache_max_connections*]
-# Sets the maximum number of connections to each memcached server per worker
-# Default to $facts['os_service_default']
+#  (optional) Sets the maximum number of connections to each memcached server
+#  per worker
+#  Default to $facts['os_service_default']
 #
 # [*connect_timeout*]
-# Timeout for connection
-# Default to $facts['os_service_default']
+#  (optional) Timeout for connection
+#  Default to $facts['os_service_default']
 #
 # [*pool_timeout*]
-# Timeout for pooled connection
-# Default to $facts['os_service_default']
+#  (optional) Timeout for pooled connection
+#  Default to $facts['os_service_default']
 #
 # [*tries*]
-# number of servers to retry on failures getting a pooled connection
-# Default to $facts['os_service_default']
+#  (optional) number of servers to retry on failures getting a pooled
+#  connection
+#  Default to $facts['os_service_default']
 #
 # [*io_timeout*]
-# Timeout for read and writes
-# Default to $facts['os_service_default']
+#  (optional) Timeout for read and writes
+#  Default to $facts['os_service_default']
 #
+# [*purge_config*]
+#  (optional) Whether to set only the specified config options in the memcache
+#  config.
+#  Defaults to false.
 #
 # === Authors
 #
@@ -67,11 +74,15 @@ class swift::memcache (
   $pool_timeout                   = $facts['os_service_default'],
   $tries                          = $facts['os_service_default'],
   $io_timeout                     = $facts['os_service_default'],
+  Boolean $purge_config           = false,
 ) {
 
   include swift::deps
   include swift::params
 
+  resources { 'swift_memcache_config':
+    purge => $purge_config,
+  }
 
   file { '/etc/swift/memcache.conf':
     ensure => file,

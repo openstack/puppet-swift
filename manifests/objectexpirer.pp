@@ -101,6 +101,11 @@
 #    (optional) Log level
 #    Defaults to 'LOG_LOCAL2'.
 #
+#  [*purge_config*]
+#    (optional) Whether to set only the specified config options
+#    in the object expirer config.
+#    Defaults to false.
+#
 class swift::objectexpirer(
   Boolean $manage_service        = true,
   Boolean $enabled               = true,
@@ -122,6 +127,7 @@ class swift::objectexpirer(
   $cache_tls_keyfile             = $facts['os_service_default'],
   $log_level                     = 'INFO',
   $log_facility                  = 'LOG_LOCAL2',
+  Boolean $purge_config          = false,
 ) inherits swift::params {
 
   include swift::deps
@@ -135,6 +141,10 @@ class swift::objectexpirer(
       name   => $::swift::params::object_expirer_package_name,
       tag    => ['openstack', 'swift-package'],
     }
+  }
+
+  resources { 'swift_object_expirer_config':
+    purge => $purge_config,
   }
 
   if $pipeline[-1] != 'proxy-server' {
