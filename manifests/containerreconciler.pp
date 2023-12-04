@@ -22,6 +22,20 @@
 #    (optional) Minimum time for a pass to take, in seconds.
 #    Defaults to $facts['os_service_default']
 #
+#  [*concurrency*]
+#    (optional) Number of reconciler workers to spawn.
+#    Defaults to $facts['os_service_default'].
+#
+#  [*process*]
+#    (optional) Which part of the work defined by $processes
+#    will this instance take.
+#    Defaults to $facts['os_service_default'].
+#
+#  [*processes*]
+#    (optional) How many parts to divide the work into, one part per
+#    process. 0 means a single process will do all work.
+#    Defaults to $facts['os_service_default'].
+#
 #  [*reclaim_age*]
 #    (optional) The reconciler will re-attempt reconciliation if the source
 #    object is not available up to reclaim_age seconds before it gives up and
@@ -75,19 +89,22 @@
 #   Defaults to $facts['os_service_default']
 #
 class swift::containerreconciler(
-  Boolean $manage_service     = true,
-  Boolean $enabled            = true,
-  $package_ensure             = 'present',
-  Swift::Pipeline $pipeline   = ['catch_errors', 'proxy-logging', 'cache', 'proxy-server'],
-  $interval                   = $facts['os_service_default'],
-  $reclaim_age                = $facts['os_service_default'],
-  $request_tries              = $facts['os_service_default'],
-  $service_provider           = $::swift::params::service_provider,
-  $memcache_servers           = ['127.0.0.1:11211'],
-  $cache_tls_enabled          = $facts['os_service_default'],
-  $cache_tls_cafile           = $facts['os_service_default'],
-  $cache_tls_certfile         = $facts['os_service_default'],
-  $cache_tls_keyfile          = $facts['os_service_default'],
+  Boolean $manage_service   = true,
+  Boolean $enabled          = true,
+  $package_ensure           = 'present',
+  Swift::Pipeline $pipeline = ['catch_errors', 'proxy-logging', 'cache', 'proxy-server'],
+  $interval                 = $facts['os_service_default'],
+  $concurrency              = $facts['os_service_default'],
+  $process                  = $facts['os_service_default'],
+  $processes                = $facts['os_service_default'],
+  $reclaim_age              = $facts['os_service_default'],
+  $request_tries            = $facts['os_service_default'],
+  $service_provider         = $::swift::params::service_provider,
+  $memcache_servers         = ['127.0.0.1:11211'],
+  $cache_tls_enabled        = $facts['os_service_default'],
+  $cache_tls_cafile         = $facts['os_service_default'],
+  $cache_tls_certfile       = $facts['os_service_default'],
+  $cache_tls_keyfile        = $facts['os_service_default'],
 ) inherits swift::params {
 
   include swift::deps
@@ -121,6 +138,9 @@ class swift::containerreconciler(
   swift_container_reconciler_config {
     'pipeline:main/pipeline':             value => join($pipeline, ' ');
     'container-reconciler/interval':      value => $interval;
+    'container-reconciler/concurrency':   value => $concurrency;
+    'container-reconciler/process':       value => $process;
+    'container-reconciler/processes':     value => $processes;
     'container-reconciler/reclaim_age':   value => $reclaim_age;
     'container-reconciler/request_tries': value => $request_tries;
   }

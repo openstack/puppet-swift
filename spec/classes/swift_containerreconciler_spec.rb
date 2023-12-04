@@ -18,6 +18,12 @@ describe 'swift::containerreconciler' do
         is_expected.to contain_swift_container_reconciler_config(
           'container-reconciler/interval').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_swift_container_reconciler_config(
+          'container-reconciler/concurrency').with_value('<SERVICE DEFAULT>')
+        is_expected.to contain_swift_container_reconciler_config(
+          'container-reconciler/process').with_value('<SERVICE DEFAULT>')
+        is_expected.to contain_swift_container_reconciler_config(
+          'container-reconciler/processes').with_value('<SERVICE DEFAULT>')
+        is_expected.to contain_swift_container_reconciler_config(
           'container-reconciler/reclaim_age').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_swift_container_reconciler_config(
           'container-reconciler/request_tries').with_value('<SERVICE DEFAULT>')
