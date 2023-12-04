@@ -38,7 +38,13 @@ describe 'swift::objectexpirer' do
         is_expected.to contain_swift_object_expirer_config(
           'filter:cache/memcache_servers').with_value('127.0.0.1:11211')
         is_expected.to contain_swift_object_expirer_config(
-          'filter:cache/tls_enabled').with_value(false)
+          'filter:cache/tls_enabled').with_value('<SERVICE DEFAULT>')
+        is_expected.to contain_swift_object_expirer_config(
+          'filter:cache/tls_cafile').with_value('<SERVICE DEFAULT>')
+        is_expected.to contain_swift_object_expirer_config(
+          'filter:cache/tls_certfile').with_value('<SERVICE DEFAULT>')
+        is_expected.to contain_swift_object_expirer_config(
+          'filter:cache/tls_keyfile').with_value('<SERVICE DEFAULT>')
       end
 
       it 'configures object-expirer service' do

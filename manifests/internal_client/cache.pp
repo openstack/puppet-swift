@@ -7,13 +7,13 @@
 # [*tls_enabled*]
 #   (Optional) Global toggle for TLS usage when communicating with
 #   the caching servers.
-#   Default to false
+#   Defaults to $facts['os_service_default'].
 #
 # [*tls_cafile*]
 #   (Optional) Path to a file of concatenated CA certificates in PEM
 #   format necessary to establish the caching server's authenticity.
 #   If tls_enabled is False, this option is ignored.
-#   Defaults to undef
+#   Defaults to $facts['os_service_default'].
 #
 # [*tls_certfile*]
 #   (Optional) Path to a single file in PEM format containing the
@@ -21,14 +21,14 @@
 #   needed to establish the certificate's authenticity. This file
 #   is only required when client side authentication is necessary.
 #   If tls_enabled is False, this option is ignored.
-#   Defaults to undef
+#   Defaults to $facts['os_service_default'].
 #
 # [*tls_keyfile*]
 #   (Optional) Path to a single file containing the client's private
 #   key in. Otherwise the private key will be taken from the file
 #   specified in tls_certfile. If tls_enabled is False, this option
 #   is ignored.
-#   Defaults to undef
+#   Defaults to $facts['os_service_default'].
 #
 # [*memcache_max_connections*] Sets the maximum number of connections to
 #  each memcached server per worker
@@ -49,10 +49,10 @@
 #
 class swift::internal_client::cache(
   $memcache_servers         = ['127.0.0.1:11211'],
-  $tls_enabled              = false,
-  $tls_cafile               = undef,
-  $tls_certfile             = undef,
-  $tls_keyfile              = undef,
+  $tls_enabled              = $facts['os_service_default'],
+  $tls_cafile               = $facts['os_service_default'],
+  $tls_certfile             = $facts['os_service_default'],
+  $tls_keyfile              = $facts['os_service_default'],
   $memcache_max_connections = '2'
 ) {
 

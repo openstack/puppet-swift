@@ -76,7 +76,7 @@ describe 'swift::containerreconciler' do
         is_expected.to contain_swift_container_reconciler_config(
           'filter:cache/memcache_servers').with_value('127.0.0.1:11211')
         is_expected.to contain_swift_container_reconciler_config(
-          'filter:cache/tls_enabled').with_value(false)
+          'filter:cache/tls_enabled').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_swift_container_reconciler_config(
           'filter:cache/tls_cafile').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_swift_container_reconciler_config(

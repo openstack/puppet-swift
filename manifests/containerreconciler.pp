@@ -51,7 +51,7 @@
 # [*cache_tls_enabled*]
 #   (Optional) Global toggle for TLS usage when communicating with
 #   the caching servers.
-#   Default to false
+#   Defaults to $facts['os_service_default']
 #
 # [*cache_tls_cafile*]
 #   (Optional) Path to a file of concatenated CA certificates in PEM
@@ -84,7 +84,7 @@ class swift::containerreconciler(
   $request_tries              = $facts['os_service_default'],
   $service_provider           = $::swift::params::service_provider,
   $memcache_servers           = ['127.0.0.1:11211'],
-  $cache_tls_enabled          = false,
+  $cache_tls_enabled          = $facts['os_service_default'],
   $cache_tls_cafile           = $facts['os_service_default'],
   $cache_tls_certfile         = $facts['os_service_default'],
   $cache_tls_keyfile          = $facts['os_service_default'],
