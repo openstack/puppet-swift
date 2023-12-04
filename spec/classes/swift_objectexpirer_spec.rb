@@ -2,26 +2,6 @@ require 'spec_helper'
 
 describe 'swift::objectexpirer' do
 
-  let :default_params do
-    { :manage_service                => true,
-      :enabled                       => true,
-      :package_ensure                => 'present',
-      :pipeline                      => ['catch_errors', 'proxy-logging', 'cache', 'proxy-server'],
-      :concurrency                   => '<SERVICE DEFAULT>',
-      :expiring_objects_account_name => '<SERVICE DEFAULT>',
-      :interval                      => '<SERVICE DEFAULT>',
-      :process                       => '<SERVICE DEFAULT>',
-      :processes                     => '<SERVICE DEFAULT>',
-      :reclaim_age                   => '<SERVICE DEFAULT>',
-      :recon_cache_path              => '<SERVICE DEFAULT>',
-      :report_interval               => '<SERVICE DEFAULT>',
-      :log_facility                  => 'LOG_LOCAL2',
-      :log_level                     => 'INFO',
-      :memcache_servers              => ['127.0.0.1:11211'],
-      :cache_tls_enabled             => false,
-    }
-  end
-
   let :params do
     {}
   end
@@ -30,43 +10,43 @@ describe 'swift::objectexpirer' do
     'class { "memcached": max_memory => 1 }'
   end
 
-  shared_examples 'swift::object::expirer' do
-    let (:p) { default_params.merge!(params) }
-
+  shared_examples 'swift::objectexpirer' do
     context 'with defaults' do
       it 'configures object-expirer.conf' do
         is_expected.to contain_swift_object_expirer_config(
-          'pipeline:main/pipeline').with_value(p[:pipeline].join(' '))
+          'pipeline:main/pipeline').with_value('catch_errors proxy-logging cache proxy-server')
         is_expected.to contain_swift_object_expirer_config(
-          'object-expirer/concurrency').with_value(p[:concurrency])
+          'object-expirer/concurrency').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_swift_object_expirer_config(
-          'object-expirer/expiring_objects_account_name').with_value(p[:expiring_objects_account_name])
+          'object-expirer/expiring_objects_account_name').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_swift_object_expirer_config(
-          'object-expirer/interval').with_value(p[:interval])
+          'object-expirer/interval').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_swift_object_expirer_config(
-          'object-expirer/process').with_value(p[:process])
+          'object-expirer/process').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_swift_object_expirer_config(
-          'object-expirer/processes').with_value(p[:processes])
+          'object-expirer/processes').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_swift_object_expirer_config(
-          'object-expirer/reclaim_age').with_value(p[:reclaim_age])
+          'object-expirer/reclaim_age').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_swift_object_expirer_config(
-          'object-expirer/recon_cache_path').with_value(p[:recon_cache_path])
+          'object-expirer/recon_cache_path').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_swift_object_expirer_config(
-          'object-expirer/report_interval').with_value(p[:report_interval])
+          'object-expirer/report_interval').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_swift_object_expirer_config(
-          'object-expirer/log_level').with_value(p[:log_level])
+          'object-expirer/log_level').with_value('INFO')
         is_expected.to contain_swift_object_expirer_config(
-          'object-expirer/log_facility').with_value(p[:log_facility])
+          'object-expirer/log_facility').with_value('LOG_LOCAL2')
         is_expected.to contain_swift_object_expirer_config(
-          'filter:cache/memcache_servers').with_value(p[:memcache_servers])
+          'filter:cache/memcache_servers').with_value('127.0.0.1:11211')
+        is_expected.to contain_swift_object_expirer_config(
+          'filter:cache/tls_enabled').with_value(false)
       end
 
       it 'configures object-expirer service' do
         is_expected.to contain_service('swift-object-expirer').with(
-          :ensure    => (p[:manage_service] && p[:enabled]) ? 'running' : 'stopped',
+          :ensure    => 'running',
           :name      => platform_params[:service_name],
           :provider  => platform_params[:service_provider],
-          :enable    => p[:enabled]
+          :enable    => true,
         )
       end
     end
@@ -78,6 +58,14 @@ describe 'swift::objectexpirer' do
           :reclaim_age => '10000',
           :concurrency => '3',
         )
+      end
+      it 'configures object-expirer.conf' do
+        is_expected.to contain_swift_object_expirer_config(
+          'object-expirer/concurrency').with_value('3')
+        is_expected.to contain_swift_object_expirer_config(
+          'object-expirer/interval').with_value('600')
+        is_expected.to contain_swift_object_expirer_config(
+          'object-expirer/reclaim_age').with_value('10000')
       end
     end
 
@@ -91,16 +79,14 @@ describe 'swift::objectexpirer' do
       it 'should not configure memcache servers' do
         is_expected.to contain_swift_object_expirer_config(
           'filter:cache/memcache_servers').with_ensure('absent')
-      end
-    end
-
-    context 'when using swiftinit service provider' do
-      before do
-        params.merge!({ :service_provider => 'swiftinit' })
-      end
-
-      before do
-        platform_params.merge!({ :service_provider => 'swiftinit' })
+        is_expected.to contain_swift_object_expirer_config(
+          'filter:cache/tls_enabled').with_ensure('absent')
+        is_expected.to contain_swift_object_expirer_config(
+          'filter:cache/tls_cafile').with_ensure('absent')
+        is_expected.to contain_swift_object_expirer_config(
+          'filter:cache/tls_certfile').with_ensure('absent')
+        is_expected.to contain_swift_object_expirer_config(
+          'filter:cache/tls_keyfile').with_ensure('absent')
       end
     end
   end
@@ -116,15 +102,13 @@ describe 'swift::objectexpirer' do
       let(:platform_params) do
         case facts[:os]['family']
         when 'Debian'
-          { :service_name     => 'swift-object-expirer',
-            :service_provider => nil }
+          { :service_name => 'swift-object-expirer' }
         when 'RedHat'
-          { :service_name     => 'openstack-swift-object-expirer',
-            :service_provider => nil }
+          { :service_name => 'openstack-swift-object-expirer' }
         end
       end
 
-      it_configures 'swift::object::expirer'
+      it_configures 'swift::objectexpirer'
     end
 
   end
