@@ -9,29 +9,17 @@ provider_class = Puppet::Type.type(:service).provider(:swiftinit)
 
 describe provider_class do
 
-
   before(:each) do
-    # Create a mock resource
-    @resource = stub 'resource'
-
     @provider = provider_class.new
 
-    # A catch all; no parameters set
-    allow(@resource).to receive(:[]).and_return(nil)
+    allow(@provider.resource).to receive(:[]).with(:name).and_return('swift-object-server')
+    allow(@provider.resource).to receive(:[]).with(:ensure).and_return(:enable)
+    allow(@provider.resource).to receive(:[]).with(:pattern).and_return('swift-object')
+    allow(@provider.resource).to receive(:[]).with(:manifest).and_return('object-server')
+    allow(@provider.resource).to receive(:ref).and_return('Service[myservice]')
 
-    # But set name, source and path
-    allow(@resource).to receive(:[]).with(:name).and_return "swift-object-server"
-    allow(@resource).to receive(:[]).with(:ensure).and_return :enable
-    allow(@resource).to receive(:[]).with(:pattern).and_return "swift-object"
-    allow(@resource).to receive(:[]).with(:manifest).and_return "object-server"
-    allow(@resource).to receive(:ref).and_return "Service[myservice]"
-
-    @provider.resource = @resource
-
-    allow(@provider).to receive(:command).with(:systemctl_run).and_return "systemctl_run"
-
+    allow(@provider).to receive(:command).with(:systemctl_run).and_return('systemctl_run')
     allow(@provider).to receive(:systemctl_run)
-
   end
 
   it "should have a status method" do
