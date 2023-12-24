@@ -29,7 +29,7 @@ describe 'swift::proxy::ceilometer' do
       it { is_expected.to contain_swift_proxy_config('filter:ceilometer/driver').with_value('<SERVICE DEFAULT>') }
       it { is_expected.to contain_swift_proxy_config('filter:ceilometer/topic').with_value('<SERVICE DEFAULT>') }
       it { is_expected.to contain_swift_proxy_config('filter:ceilometer/control_exchange').with_value('<SERVICE DEFAULT>') }
-      it { is_expected.to contain_swift_proxy_config('filter:ceilometer/nonblocking_notify').with_value('false') }
+      it { is_expected.to contain_swift_proxy_config('filter:ceilometer/nonblocking_notify').with_value('<SERVICE DEFAULT>') }
 
       it { is_expected.to contain_package('python-ceilometermiddleware').with(
         :ensure => 'present',
