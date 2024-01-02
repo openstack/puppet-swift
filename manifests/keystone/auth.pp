@@ -138,15 +138,11 @@ class swift::keystone::auth(
   include swift::deps
 
   if $service_name == $service_name_s3 {
-      fail('swift::keystone::auth parameters service_name and service_name_s3 must be different.')
+    fail('swift::keystone::auth parameters service_name and service_name_s3 must be different.')
   }
 
-  if $configure_endpoint {
-    Keystone_endpoint["${region}/${service_name}::${service_type}"] -> Anchor['swift::service::end']
-  }
-  if $configure_s3_endpoint {
-    Keystone_endpoint["${region}/${service_name_s3}::${service_type_s3}"] -> Anchor['swift::service::end']
-  }
+  Keystone::Resource::Service_identity['swift'] -> Anchor['swift::service::end']
+  Keystone::Resource::Service_identity['swift_s3'] -> Anchor['swift::service::end']
 
   keystone::resource::service_identity { 'swift':
     configure_endpoint  => $configure_endpoint,
