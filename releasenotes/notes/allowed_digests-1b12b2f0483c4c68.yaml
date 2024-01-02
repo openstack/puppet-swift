@@ -1,0 +1,7 @@
+---
+features:
+  - |
+    The following classes now support the new ``allowed_digests`` parameter.
+
+    - ``swift::proxy::formpost``
+    - ``swift::proxy::tempurl``

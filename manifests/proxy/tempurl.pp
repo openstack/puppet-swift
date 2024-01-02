@@ -28,6 +28,10 @@
 #    Example: ['x-object-meta-public-*'] or 'x-object-meta-public-*'
 #    Optional. Defaults to $facts['os_service_default'].
 #
+#  [*allowed_digests*]
+#    The digest algorithm(s) supported for generating signatures.
+#    Optional. Defaults to $facts['os_service_default'].
+#
 # == Examples
 #
 #  class {'swift::proxy::tempurl':
@@ -50,22 +54,18 @@ class swift::proxy::tempurl (
   $incoming_allow_headers  = $facts['os_service_default'],
   $outgoing_remove_headers = $facts['os_service_default'],
   $outgoing_allow_headers  = $facts['os_service_default'],
+  $allowed_digests         = $facts['os_service_default'],
 ) {
 
   include swift::deps
 
-  $methods_real                 = join(any2array($methods), ' ')
-  $incoming_remove_headers_real = join(any2array($incoming_remove_headers), ' ')
-  $incoming_allow_headers_real  = join(any2array($incoming_allow_headers), ' ')
-  $outgoing_remove_headers_real = join(any2array($outgoing_remove_headers), ' ')
-  $outgoing_allow_headers_real  = join(any2array($outgoing_allow_headers), ' ')
-
   swift_proxy_config {
     'filter:tempurl/use':                     value => 'egg:swift#tempurl';
-    'filter:tempurl/methods':                 value => $methods_real;
-    'filter:tempurl/incoming_remove_headers': value => $incoming_remove_headers_real;
-    'filter:tempurl/incoming_allow_headers':  value => $incoming_allow_headers_real;
-    'filter:tempurl/outgoing_remove_headers': value => $outgoing_remove_headers_real;
-    'filter:tempurl/outgoing_allow_headers':  value => $outgoing_allow_headers_real;
+    'filter:tempurl/methods':                 value => join(any2array($methods), ' ');
+    'filter:tempurl/incoming_remove_headers': value => join(any2array($incoming_remove_headers), ' ');
+    'filter:tempurl/incoming_allow_headers':  value => join(any2array($incoming_allow_headers), ' ');
+    'filter:tempurl/outgoing_remove_headers': value => join(any2array($outgoing_remove_headers), ' ');
+    'filter:tempurl/outgoing_allow_headers':  value => join(any2array($outgoing_allow_headers), ' ');
+    'filter:tempurl/allowed_digests':         value => join(any2array($allowed_digests), ' ');
   }
 }
