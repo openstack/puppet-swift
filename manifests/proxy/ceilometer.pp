@@ -34,7 +34,7 @@
 #
 # [*nonblocking_notify*]
 #   Whether to send events to messaging driver in a background thread
-#   Defaults to false
+#   Defaults to $facts['os_service_default'].
 #
 # [*ignore_projects*]
 #   What projects to ignore to send events to ceilometer
@@ -167,7 +167,7 @@ class swift::proxy::ceilometer(
   $topic                              = $facts['os_service_default'],
   $control_exchange                   = $facts['os_service_default'],
   $ensure                             = 'present',
-  $nonblocking_notify                 = false,
+  $nonblocking_notify                 = $facts['os_service_default'],
   $ignore_projects                    = ['services'],
   $auth_url                           = 'http://127.0.0.1:5000',
   $auth_type                          = 'password',
