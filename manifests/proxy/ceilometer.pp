@@ -26,7 +26,7 @@
 #
 # [*control_exchange*]
 #   (Optional) The default exchange under which topics are scoped.
-#   Defaults to undef.
+#   Defaults to $facts['os_service_default'].
 #
 # [*ensure*]
 #   Enable or not ceilometer fragment
@@ -164,8 +164,8 @@ class swift::proxy::ceilometer(
   String[1] $password,
   $default_transport_url              = undef,
   $driver                             = $facts['os_service_default'],
-  $topic                              = undef,
-  $control_exchange                   = undef,
+  $topic                              = $facts['os_service_default'],
+  $control_exchange                   = $facts['os_service_default'],
   $ensure                             = 'present',
   $nonblocking_notify                 = false,
   $ignore_projects                    = ['services'],
