@@ -35,11 +35,9 @@ class swift::storage(
     fail('xinetd is not available in this distro')
   }
 
-  if !defined(Class['rsync::server']){
-    class{ 'rsync::server':
-      use_xinetd => $rsync_use_xinetd,
-      address    => $storage_local_net_ip,
-      use_chroot => 'no',
-    }
-  }
+  ensure_resource('class', 'rsync::server', {
+    'use_xinetd' => $rsync_use_xinetd,
+    'address'    => $storage_local_net_ip,
+    'use_chroot' => 'no',
+  })
 }

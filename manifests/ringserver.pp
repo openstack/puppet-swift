@@ -42,13 +42,11 @@ class swift::ringserver(
     fail('xinetd is not available in this distro')
   }
 
-  if !defined(Class['rsync::server']) {
-    class { 'rsync::server':
-      use_xinetd => $rsync_use_xinetd,
-      address    => $local_net_ip,
-      use_chroot => 'no',
-    }
-  }
+  ensure_resource('class', 'rsync::server', {
+    'use_xinetd' => $rsync_use_xinetd,
+    'address'    => $local_net_ip,
+    'use_chroot' => 'no',
+  })
 
   rsync::server::module { 'swift_server':
     path            => '/etc/swift',
