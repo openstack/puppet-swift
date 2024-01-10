@@ -79,6 +79,8 @@ describe 'swift::proxy' do
         it { should contain_swift_proxy_config('app:proxy-server/write_affinity_node_count').with_value('<SERVICE DEFAULT>') }
         it { should contain_swift_proxy_config('app:proxy-server/node_timeout').with_value('<SERVICE DEFAULT>') }
         it { should contain_swift_proxy_config('app:proxy-server/recoverable_node_timeout').with_value('<SERVICE DEFAULT>') }
+        it { should contain_swift_proxy_config('DEFAULT/cors_allow_origin').with_value('<SERVICE DEFAULT>') }
+        it { should contain_swift_proxy_config('DEFAULT/strict_cors_mode').with_value('<SERVICE DEFAULT>') }
 
         it { should contain_service('swift-proxy-server').with_require([
           'Class[Swift::Proxy::Catch_errors]',
@@ -138,7 +140,8 @@ describe 'swift::proxy' do
               :client_timeout             => '120',
               :node_timeout               => '20',
               :recoverable_node_timeout   => '15',
-              :cors_allow_origin          => 'http://foo.bar:1234,https://foo.bar',
+              :cors_allow_origin          => ['http://foo.bar:1234', 'https://foo.bar'],
+              :strict_cors_mode           => true
             }
           end
 
@@ -151,8 +154,6 @@ describe 'swift::proxy' do
           it { should contain_swift_proxy_config('DEFAULT/log_level').with_value('DEBUG') }
           it { should contain_swift_proxy_config('DEFAULT/log_headers').with_value(false) }
           it { should contain_swift_proxy_config('DEFAULT/log_address').with_value('/dev/log') }
-          it { should contain_swift_proxy_config('DEFAULT/cors_allow_origin').with_value('http://foo.bar:1234,https://foo.bar') }
-          it { should contain_swift_proxy_config('DEFAULT/strict_cors_mode').with_value('true') }
           it { should contain_swift_proxy_config('DEFAULT/client_timeout').with_value('120') }
           it { should contain_swift_proxy_config('pipeline:main/pipeline').with_value('swauth proxy-server') }
           it { should contain_swift_proxy_config('app:proxy-server/use').with_value('egg:swift#proxy') }
@@ -173,29 +174,21 @@ describe 'swift::proxy' do
           it { should contain_swift_proxy_config('app:proxy-server/write_affinity_node_count').with_value('2 * replicas') }
           it { should contain_swift_proxy_config('app:proxy-server/node_timeout').with_value('20') }
           it { should contain_swift_proxy_config('app:proxy-server/recoverable_node_timeout').with_value('15') }
+          it { should contain_swift_proxy_config('DEFAULT/cors_allow_origin').with_value('http://foo.bar:1234,https://foo.bar') }
+          it { should contain_swift_proxy_config('DEFAULT/strict_cors_mode').with_value('true') }
         end
 
         describe "when log udp port is set" do
           context 'and log_udp_host is set' do
             let :params do
               {
-                :proxy_local_net_ip        => '10.0.0.2',
-                :port                      => '80',
-                :workers                   => 3,
-                :pipeline                  => ['swauth', 'proxy-server'],
-                :allow_account_management  => false,
-                :account_autocreate        => false,
-                :log_level                 => 'DEBUG',
-                :log_name                  => 'swift-proxy-server',
-                :log_udp_host              => '127.0.0.1',
-                :log_udp_port              => '514',
-                :log_handoffs              => true,
-                :read_affinity             => 'r1z1=100, r1=200',
-                :write_affinity            => 'r1',
-                :write_affinity_node_count => '2 * replicas',
-                :node_timeout              => '20',
-                :recoverable_node_timeout  => '15',
-                :cors_allow_origin         => 'http://foo.bar:1234,https://foo.bar',
+                :proxy_local_net_ip => '10.0.0.2',
+                :pipeline           => ['swauth', 'proxy-server'],
+                :log_level          => 'DEBUG',
+                :log_name           => 'swift-proxy-server',
+                :log_udp_host       => '127.0.0.1',
+                :log_udp_port       => '514',
+                :log_handoffs       => true,
               }
             end
 
@@ -205,10 +198,7 @@ describe 'swift::proxy' do
                include swift::proxy::swauth"
             end
 
-            it { should contain_swift_proxy_config('DEFAULT/bind_port').with_value('80') }
             it { should contain_swift_proxy_config('DEFAULT/bind_ip').with_value('10.0.0.2') }
-            it { should contain_swift_proxy_config('DEFAULT/workers').with_value('3') }
-            it { should contain_swift_proxy_config('DEFAULT/user').with_value('swift') }
             it { should contain_swift_proxy_config('DEFAULT/log_name').with_value('swift-proxy-server') }
             it { should contain_swift_proxy_config('DEFAULT/log_facility').with_value('LOG_LOCAL2') }
             it { should contain_swift_proxy_config('DEFAULT/log_level').with_value('DEBUG') }
@@ -216,23 +206,12 @@ describe 'swift::proxy' do
             it { should contain_swift_proxy_config('DEFAULT/log_address').with_value('/dev/log') }
             it { should contain_swift_proxy_config('DEFAULT/log_udp_host').with_value('127.0.0.1') }
             it { should contain_swift_proxy_config('DEFAULT/log_udp_port').with_value('514') }
-            it { should contain_swift_proxy_config('DEFAULT/cors_allow_origin').with_value('http://foo.bar:1234,https://foo.bar') }
-            it { should contain_swift_proxy_config('DEFAULT/strict_cors_mode').with_value('true') }
             it { should contain_swift_proxy_config('pipeline:main/pipeline').with_value('swauth proxy-server') }
             it { should contain_swift_proxy_config('app:proxy-server/use').with_value('egg:swift#proxy') }
             it { should contain_swift_proxy_config('app:proxy-server/set log_name').with_value('swift-proxy-server') }
             it { should contain_swift_proxy_config('app:proxy-server/set log_facility').with_value('LOG_LOCAL2') }
             it { should contain_swift_proxy_config('app:proxy-server/set log_level').with_value('DEBUG') }
             it { should contain_swift_proxy_config('app:proxy-server/set log_address').with_value('/dev/log') }
-            it { should contain_swift_proxy_config('app:proxy-server/log_handoffs').with_value('true') }
-            it { should contain_swift_proxy_config('app:proxy-server/allow_account_management').with_value('false') }
-            it { should contain_swift_proxy_config('app:proxy-server/account_autocreate').with_value('false') }
-            it { should contain_swift_proxy_config('app:proxy-server/sorting_method').with_value('affinity') }
-            it { should contain_swift_proxy_config('app:proxy-server/read_affinity').with_value('r1z1=100, r1=200') }
-            it { should contain_swift_proxy_config('app:proxy-server/write_affinity').with_value('r1') }
-            it { should contain_swift_proxy_config('app:proxy-server/write_affinity_node_count').with_value('2 * replicas') }
-            it { should contain_swift_proxy_config('app:proxy-server/node_timeout').with_value('20') }
-            it { should contain_swift_proxy_config('app:proxy-server/recoverable_node_timeout').with_value('15') }
           end
         end
 
