@@ -56,9 +56,7 @@ class swift::proxy::cname_lookup(
   include swift::deps
   include swift::params
 
-  if defined(Service['swift-proxy-server']) {
-    Package['python3-dnspython'] -> Service['swift-proxy-server']
-  }
+  Package['python3-dnspython'] ~> Service<| tag == 'swift-proxy-service' |>
 
   swift_proxy_config {
     'filter:cname_lookup/use':              value => 'egg:swift#cname_lookup';
