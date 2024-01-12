@@ -307,12 +307,12 @@ class swift::proxy(
       service_tag            => 'swift-proxy-service',
     }
   } else {
-    exec { 'vadate-proxy-pipeline':
+    exec { 'validate-proxy-pipeline':
       command     => '/usr/bin/true',
       refreshonly => true,
       require     => Class[$required_classes],
       before      => Anchor['swift::config::end'],
     }
-    Swift_Proxy_config<||> ~> Exec['vadate-proxy-pipeline']
+    Swift_Proxy_config<||> ~> Exec['validate-proxy-pipeline']
   }
 }
