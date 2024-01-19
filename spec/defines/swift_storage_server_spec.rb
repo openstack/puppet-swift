@@ -94,6 +94,7 @@ describe 'swift::storage::server' do
         is_expected.to contain_swift_account_config('account-replicator/interval').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_swift_account_config('account-reaper/').with_ensure('present')
         is_expected.to contain_swift_account_config('account-reaper/concurrency').with_value(1)
+        is_expected.to contain_swift_account_config('account-reaper/interval').with_value('<SERVICE DEFAULT>')
       }
 
       context 'with customized pipeline' do
@@ -245,6 +246,7 @@ describe 'swift::storage::server' do
         is_expected.to contain_swift_container_config('container-replicator/interval').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_swift_container_config('container-updater/').with_ensure('present')
         is_expected.to contain_swift_container_config('container-updater/concurrency').with_value(1)
+        is_expected.to contain_swift_container_config('container-updater/interval').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_swift_container_config('container-sharder/').with_ensure('present')
         is_expected.to contain_swift_container_config('container-sharder/auto_shard').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_swift_container_config('container-sharder/concurrency').with_value('<SERVICE DEFAULT>')
@@ -408,6 +410,7 @@ describe 'swift::storage::server' do
         is_expected.to contain_swift_object_config('object-replicator/rsync_bwlimit').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_swift_object_config('object-updater/').with_ensure('present')
         is_expected.to contain_swift_object_config('object-updater/concurrency').with_value(1)
+        is_expected.to contain_swift_object_config('object-updater/interval').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_swift_object_config('object-reconstructor/').with_ensure('present')
       }
 

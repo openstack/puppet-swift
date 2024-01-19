@@ -1,0 +1,8 @@
+---
+features:
+  - |
+    The ``swift::storage::servce`` defined resource type now supports
+    the following parameters.
+
+    - ``updater_interval`` used by container-updater and object-updater
+    - ``reaper_interval`` used by account-reaper
