@@ -1,0 +1,15 @@
+---
+features:
+  - |
+    The ``swift::storage::server`` defined resource type now supports
+    the following parameters.
+
+    - ``conn_timeout`` and ``node_timeout`` for global values
+    - ``updater_conn_timeout`` and ``updater_node_timeout`` for
+      container-updater and account-updater
+    - ``replicator_conn_timeout`` and ``replicator_node_timeout`` for
+      object-replicator, container-replicator and account-replicator
+    - ``reaper_node_timeout`` and ``reaper_node_timeout`` for
+      account-reaper
+    - ``container_sharder_container_timeout`` and
+      ``container_sharder_node_timeout`` for container-sharder

@@ -100,12 +100,28 @@
 #   See https://docs.openstack.org/swift/latest/deployment_guide.html#general-service-tuning
 #   Defaults to $facts['os_workers'].
 #
+# [*conn_timeout*]
+#   (optional) Connection timeout to external services.
+#   Default to $facts['os_service_default'].
+#
+# [*node_timeout*]
+#   (optional) Request timeout to external seivices.
+#   Default to $facts['os_service_default'].
+#
 # [*replicator_concurrency*]
 #   (optional) Number of replicator workers to spawn.
 #   Defaults to 1.
 #
 # [*replicator_interval*]
 #   (optional) Minimum time for a pass to take, in seconds.
+#   Default to $facts['os_service_default'].
+#
+# [*replicator_conn_timeout*]
+#   (optional) Connection timeout to external services.
+#   Default to $facts['os_service_default'].
+#
+# [*replicator_node_timeout*]
+#   (optional) Request timeout to external seivices.
 #   Default to $facts['os_service_default'].
 #
 # [*updater_concurrency*]
@@ -116,12 +132,28 @@
 #   (optional) Minimum time for a pass to take, in seconds.
 #   Default to $facts['os_service_default'].
 #
+# [*updater_conn_timeout*]
+#   (optional) Connection timeout to external services.
+#   Default to $facts['os_service_default'].
+#
+# [*updater_node_timeout*]
+#   (optional) Request timeout to external seivices.
+#   Default to $facts['os_service_default'].
+#
 # [*reaper_concurrency*]
 #   (optional) Number of reaper workers to spawn.
 #   Defaults to 1.
 #
 # [*reaper_interval*]
 #   (optional) Minimum time for a pass to take, in seconds.
+#   Default to $facts['os_service_default'].
+#
+# [*reaper_conn_timeout*]
+#   (optional) Connection timeout to external services.
+#   Default to $facts['os_service_default'].
+#
+# [*reaper_node_timeout*]
+#   (optional) Request timeout to external seivices.
 #   Default to $facts['os_service_default'].
 #
 # [*log_facility*]
@@ -227,6 +259,14 @@
 #   (optional) Time in seconds to wait between sharder cycles.
 #   Default to $facts['os_service_default'].
 #
+# [*container_sharder_conn_timeout*]
+#   (optional) Connection timeout to external services.
+#   Default to $facts['os_service_default'].
+#
+# [*container_sharder_node_timeout*]
+#   (optional) Request timeout to external seivices.
+#   Default to $facts['os_service_default'].
+#
 # [*purge_config*]
 #   (optional) Whether to set only the specified config options
 #   in the config file.
@@ -261,12 +301,20 @@ define swift::storage::server(
   $servers_per_port                                      = $facts['os_service_default'],
   $user                                                  = undef,
   $workers                                               = $facts['os_workers'],
+  $conn_timeout                                          = $facts['os_service_default'],
+  $node_timeout                                          = $facts['os_service_default'],
   $replicator_concurrency                                = 1,
   $replicator_interval                                   = $facts['os_service_default'],
+  $replicator_conn_timeout                               = $facts['os_service_default'],
+  $replicator_node_timeout                               = $facts['os_service_default'],
   $updater_concurrency                                   = 1,
   $updater_interval                                      = $facts['os_service_default'],
+  $updater_conn_timeout                                  = $facts['os_service_default'],
+  $updater_node_timeout                                  = $facts['os_service_default'],
   $reaper_concurrency                                    = 1,
   $reaper_interval                                       = $facts['os_service_default'],
+  $reaper_conn_timeout                                   = $facts['os_service_default'],
+  $reaper_node_timeout                                   = $facts['os_service_default'],
   $log_facility                                          = 'LOG_LOCAL2',
   $log_level                                             = 'INFO',
   $log_address                                           = '/dev/log',
@@ -294,6 +342,8 @@ define swift::storage::server(
   $container_sharder_auto_shard                          = $facts['os_service_default'],
   $container_sharder_concurrency                         = $facts['os_service_default'],
   $container_sharder_interval                            = $facts['os_service_default'],
+  $container_sharder_conn_timeout                        = $facts['os_service_default'],
+  $container_sharder_node_timeout                        = $facts['os_service_default'],
   Boolean $purge_config                                  = false,
   # DEPRECATED PARAMETERS
   $config_file_path                                      = undef,
@@ -386,6 +436,8 @@ define swift::storage::server(
     'DEFAULT/fallocate_reserve'            => {'value'  => $fallocate_reserve},
     'DEFAULT/user'                         => {'value'  => $user_real},
     'DEFAULT/workers'                      => {'value'  => $workers},
+    'DEFAULT/conn_timeout'                 => {'value'  => $conn_timeout},
+    'DEFAULT/node_timeout'                 => {'value'  => $node_timeout},
     'DEFAULT/log_name'                     => {'value'  => $log_name},
     'DEFAULT/log_facility'                 => {'value'  => $log_facility},
     'DEFAULT/log_level'                    => {'value'  => $log_level},
@@ -438,33 +490,43 @@ define swift::storage::server(
         # account-server
         # account-auditor
         # account-replicator
-        'account-replicator/concurrency' => {'value'  => $replicator_concurrency},
-        'account-replicator/interval'    => {'value'  => $replicator_interval},
+        'account-replicator/concurrency'  => {'value'  => $replicator_concurrency},
+        'account-replicator/interval'     => {'value'  => $replicator_interval},
+        'account-replicator/conn_timeout' => {'value'  => $replicator_conn_timeout},
+        'account-replicator/node_timeout' => {'value'  => $replicator_node_timeout},
         # account-reaper
-        'account-reaper/'                => {'ensure' => present},
-        'account-reaper/concurrency'     => {'value'  => $reaper_concurrency},
-        'account-reaper/interval'        => {'value'  => $reaper_interval},
+        'account-reaper/'                 => {'ensure' => present},
+        'account-reaper/concurrency'      => {'value'  => $reaper_concurrency},
+        'account-reaper/interval'         => {'value'  => $reaper_interval},
+        'account-reaper/conn_timeout'     => {'value'  => $reaper_conn_timeout},
+        'account-reaper/node_timeout'     => {'value'  => $reaper_node_timeout},
       }
     }
     'container': {
       $type_opts = {
-        'DEFAULT/allowed_sync_hosts'       => {'value'  => join($::swift::storage::container::allowed_sync_hosts, ',')},
+        'DEFAULT/allowed_sync_hosts'        => {'value'  => join($::swift::storage::container::allowed_sync_hosts, ',')},
         # container-server
         # container-auditor
         # container-replicator
-        'container-replicator/concurrency' => {'value'  => $replicator_concurrency},
-        'container-replicator/interval'    => {'value'  => $replicator_interval},
+        'container-replicator/concurrency'  => {'value'  => $replicator_concurrency},
+        'container-replicator/interval'     => {'value'  => $replicator_interval},
+        'container-replicator/conn_timeout' => {'value'  => $replicator_conn_timeout},
+        'container-replicator/node_timeout' => {'value'  => $replicator_node_timeout},
         # container-updater
-        'container-updater/'               => {'ensure' => present},
-        'container-updater/concurrency'    => {'value'  => $updater_concurrency},
-        'container-updater/interval'       => {'value'  => $updater_interval},
+        'container-updater/'                => {'ensure' => present},
+        'container-updater/concurrency'     => {'value'  => $updater_concurrency},
+        'container-updater/interval'        => {'value'  => $updater_interval},
+        'container-updater/conn_timeout'    => {'value'  => $updater_conn_timeout},
+        'container-updater/node_timeout'    => {'value'  => $updater_node_timeout},
         # container-sync
-        'container-sync/'                  => {'ensure' => present},
+        'container-sync/'                   => {'ensure' => present},
         # container-sharder
-        'container-sharder/'               => {'ensure' => present},
-        'container-sharder/auto_shard'     => {'value'  => $container_sharder_auto_shard},
-        'container-sharder/concurrency'    => {'value'  => $container_sharder_concurrency},
-        'container-sharder/interval'       => {'value'  => $container_sharder_interval},
+        'container-sharder/'                => {'ensure' => present},
+        'container-sharder/auto_shard'      => {'value'  => $container_sharder_auto_shard},
+        'container-sharder/concurrency'     => {'value'  => $container_sharder_concurrency},
+        'container-sharder/interval'        => {'value'  => $container_sharder_interval},
+        'container-sharder/conn_timeout'    => {'value'  => $container_sharder_conn_timeout},
+        'container-sharder/node_timeout'    => {'value'  => $container_sharder_node_timeout},
       }
     }
     'object': {
@@ -480,12 +542,16 @@ define swift::storage::server(
         'object-auditor/disk_chunk_size'  => {'value'  => $auditor_disk_chunk_size},
         # object-replicator
         'object-replicator/concurrency'   => {'value'  => $replicator_concurrency},
+        'object-replicator/conn_timeout'  => {'value'  => $replicator_conn_timeout},
+        'object-replicator/node_timeout'  => {'value'  => $replicator_node_timeout},
         'object-replicator/rsync_timeout' => {'value'  => $rsync_timeout},
         'object-replicator/rsync_bwlimit' => {'value'  => $rsync_bwlimit},
         # object-updater
         'object-updater/'                 => {'ensure' => present},
         'object-updater/concurrency'      => {'value'  => $updater_concurrency},
         'object-updater/interval'         => {'value'  => $updater_interval},
+        'object-updater/conn_timeout'     => {'value'  => $updater_conn_timeout},
+        'object-updater/node_timeout'     => {'value'  => $updater_node_timeout},
         # object-reconstructor
         'object-reconstructor/'           => {'ensure' => present},
       }
