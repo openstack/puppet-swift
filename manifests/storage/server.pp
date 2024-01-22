@@ -112,9 +112,17 @@
 #   (optional) Number of updater workers to spawn.
 #   Defaults to 1.
 #
+# [*updater_interval*]
+#   (optional) Minimum time for a pass to take, in seconds.
+#   Default to $facts['os_service_default'].
+#
 # [*reaper_concurrency*]
 #   (optional) Number of reaper workers to spawn.
 #   Defaults to 1.
+#
+# [*reaper_interval*]
+#   (optional) Minimum time for a pass to take, in seconds.
+#   Default to $facts['os_service_default'].
 #
 # [*log_facility*]
 #   (optional) Syslog log facility.
@@ -256,7 +264,9 @@ define swift::storage::server(
   $replicator_concurrency                                = 1,
   $replicator_interval                                   = $facts['os_service_default'],
   $updater_concurrency                                   = 1,
+  $updater_interval                                      = $facts['os_service_default'],
   $reaper_concurrency                                    = 1,
+  $reaper_interval                                       = $facts['os_service_default'],
   $log_facility                                          = 'LOG_LOCAL2',
   $log_level                                             = 'INFO',
   $log_address                                           = '/dev/log',
@@ -433,6 +443,7 @@ define swift::storage::server(
         # account-reaper
         'account-reaper/'                => {'ensure' => present},
         'account-reaper/concurrency'     => {'value'  => $reaper_concurrency},
+        'account-reaper/interval'        => {'value'  => $reaper_interval},
       }
     }
     'container': {
@@ -446,6 +457,7 @@ define swift::storage::server(
         # container-updater
         'container-updater/'               => {'ensure' => present},
         'container-updater/concurrency'    => {'value'  => $updater_concurrency},
+        'container-updater/interval'       => {'value'  => $updater_interval},
         # container-sync
         'container-sync/'                  => {'ensure' => present},
         # container-sharder
@@ -473,6 +485,7 @@ define swift::storage::server(
         # object-updater
         'object-updater/'                 => {'ensure' => present},
         'object-updater/concurrency'      => {'value'  => $updater_concurrency},
+        'object-updater/interval'         => {'value'  => $updater_interval},
         # object-reconstructor
         'object-reconstructor/'           => {'ensure' => present},
       }
