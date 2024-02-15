@@ -1,0 +1,9 @@
+---
+features:
+  - |
+    The new ``swift::storage::server::log_name_per_daemon`` parameter has been
+    added. If this parameter is set to ``true``, it configures the log_name
+    option differently for each daemon, which may help splitting log
+    destinations per daemon. For example, the object-replicator log_name will
+    be object-replicator, the object-updater log_name will be object-updater
+    and so on.

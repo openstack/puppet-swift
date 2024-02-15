@@ -172,6 +172,11 @@
 #   (optional) Label used when logging.
 #   Defaults to "${type}-server".
 #
+# [*log_name_per_daemon*]
+#   (optional) Set log_name according differently for each daemon
+#   For example: container-replicator, contaier-sharder, etc.
+#   Defaults to false.
+#
 # [*log_udp_host*]
 #   (optional) If not set, the UDP receiver for syslog is disabled.
 #   Defaults to undef.
@@ -319,6 +324,7 @@ define swift::storage::server(
   $log_level                                             = 'INFO',
   $log_address                                           = '/dev/log',
   $log_name                                              = "${type}-server",
+  Boolean $log_name_per_daemon                           = false,
   $log_udp_host                                          = $facts['os_service_default'],
   $log_udp_port                                          = $facts['os_service_default'],
   $log_requests                                          = true,
@@ -501,6 +507,20 @@ define swift::storage::server(
         'account-reaper/conn_timeout'     => {'value'  => $reaper_conn_timeout},
         'account-reaper/node_timeout'     => {'value'  => $reaper_node_timeout},
       }
+
+      if $log_name_per_daemon {
+        $log_name_opts = {
+          'account-auditor/log_name'    => {'value' => 'account-auditor'},
+          'account-replicator/log_name' => {'value' => 'account-replicator'},
+          'account-reaper/log_name'     => {'value' => 'account-reaper'},
+        }
+      } else {
+        $log_name_opts = {
+          'account-auditor/log_name'    => {'ensure' => absent},
+          'account-replicator/log_name' => {'ensure' => absent},
+          'account-reaper/log_name'     => {'ensure' => absent},
+        }
+      }
     }
     'container': {
       $type_opts = {
@@ -527,6 +547,24 @@ define swift::storage::server(
         'container-sharder/interval'        => {'value'  => $container_sharder_interval},
         'container-sharder/conn_timeout'    => {'value'  => $container_sharder_conn_timeout},
         'container-sharder/node_timeout'    => {'value'  => $container_sharder_node_timeout},
+      }
+
+      if $log_name_per_daemon {
+        $log_name_opts = {
+          'container-auditor/log_name'    => {'value' => 'container-auditor'},
+          'container-replicator/log_name' => {'value' => 'container-replicator'},
+          'container-updater/log_name'    => {'value' => 'container-updater'},
+          'container-sync/log_name'       => {'value' => 'container-sync'},
+          'container-sharder/log_name'    => {'value' => 'container-sharder'},
+        }
+      } else {
+        $log_name_opts = {
+          'container-auditor/log_name'    => {'ensure' => absent},
+          'container-replicator/log_name' => {'ensure' => absent},
+          'container-updater/log_name'    => {'ensure' => absent},
+          'container-sync/log_name'       => {'ensure' => absent},
+          'container-sharder/log_name'    => {'ensure' => absent},
+        }
       }
     }
     'object': {
@@ -555,6 +593,22 @@ define swift::storage::server(
         # object-reconstructor
         'object-reconstructor/'           => {'ensure' => present},
       }
+
+      if $log_name_per_daemon {
+        $log_name_opts = {
+          'object-auditor/log_name'       => {'value' => 'object-auditor'},
+          'object-replicator/log_name'    => {'value' => 'object-replicator'},
+          'object-updater/log_name'       => {'value' => 'object-updater'},
+          'object-reconstructor/log_name' => {'value' => 'object-reconstructor'},
+        }
+      } else {
+        $log_name_opts = {
+          'object-auditor/log_name'       => {'ensure' => absent},
+          'object-replicator/log_name'    => {'ensure' => absent},
+          'object-updater/log_name'       => {'ensure' => absent},
+          'object-reconstructor/log_name' => {'ensure' => absent},
+        }
+      }
     }
     default: {
       # nothing to do
@@ -565,6 +619,7 @@ define swift::storage::server(
     $common_opts,
     $log_statsd_opts,
     $type_opts,
+    $log_name_opts,
   ), {
     'require' => File[$config_file_full_path]
   })

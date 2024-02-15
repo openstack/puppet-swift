@@ -91,13 +91,16 @@ describe 'swift::storage::server' do
         is_expected.to contain_swift_account_config('DEFAULT/log_statsd_metric_prefix').with_value('<SERVICE DEFAULT>')
 
         is_expected.to contain_swift_account_config('account-auditor/').with_ensure('present')
+        is_expected.to contain_swift_account_config('account-auditor/log_name').with_ensure('absent')
         is_expected.to contain_swift_account_config('account-replicator/').with_ensure('present')
+        is_expected.to contain_swift_account_config('account-replicator/log_name').with_ensure('absent')
         is_expected.to contain_swift_account_config('account-replicator/rsync_module').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_swift_account_config('account-replicator/concurrency').with_value(1)
         is_expected.to contain_swift_account_config('account-replicator/interval').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_swift_account_config('account-replicator/conn_timeout').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_swift_account_config('account-replicator/node_timeout').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_swift_account_config('account-reaper/').with_ensure('present')
+        is_expected.to contain_swift_account_config('account-reaper/log_name').with_ensure('absent')
         is_expected.to contain_swift_account_config('account-reaper/concurrency').with_value(1)
         is_expected.to contain_swift_account_config('account-reaper/interval').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_swift_account_config('account-reaper/conn_timeout').with_value('<SERVICE DEFAULT>')
@@ -179,6 +182,20 @@ describe 'swift::storage::server' do
           :read_only       => false,
         )}
       end
+
+      context 'with log_name_per_daemon' do
+        before do
+          params.merge!({
+            :log_name_per_daemon => true
+          })
+        end
+
+        it 'configures log_name per daemon' do
+          is_expected.to contain_swift_account_config('account-auditor/log_name').with_value('account-auditor')
+          is_expected.to contain_swift_account_config('account-replicator/log_name').with_value('account-replicator')
+          is_expected.to contain_swift_account_config('account-reaper/log_name').with_value('account-reaper')
+        end
+      end
     end
 
     describe 'for type container' do
@@ -249,18 +266,24 @@ describe 'swift::storage::server' do
 
         is_expected.to contain_swift_container_config('DEFAULT/allowed_sync_hosts').with_value('127.0.0.1')
         is_expected.to contain_swift_container_config('container-auditor/').with_ensure('present')
+        is_expected.to contain_swift_container_config('container-auditor/log_name').with_ensure('absent')
         is_expected.to contain_swift_container_config('container-replicator/').with_ensure('present')
+        is_expected.to contain_swift_container_config('container-replicator/log_name').with_ensure('absent')
         is_expected.to contain_swift_container_config('container-replicator/rsync_module').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_swift_container_config('container-replicator/concurrency').with_value(1)
         is_expected.to contain_swift_container_config('container-replicator/interval').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_swift_container_config('container-replicator/conn_timeout').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_swift_container_config('container-replicator/node_timeout').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_swift_container_config('container-updater/').with_ensure('present')
+        is_expected.to contain_swift_container_config('container-updater/log_name').with_ensure('absent')
         is_expected.to contain_swift_container_config('container-updater/concurrency').with_value(1)
         is_expected.to contain_swift_container_config('container-updater/interval').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_swift_container_config('container-updater/conn_timeout').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_swift_container_config('container-updater/node_timeout').with_value('<SERVICE DEFAULT>')
+        is_expected.to contain_swift_container_config('container-sync/').with_ensure('present')
+        is_expected.to contain_swift_container_config('container-sync/log_name').with_ensure('absent')
         is_expected.to contain_swift_container_config('container-sharder/').with_ensure('present')
+        is_expected.to contain_swift_container_config('container-sharder/log_name').with_ensure('absent')
         is_expected.to contain_swift_container_config('container-sharder/auto_shard').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_swift_container_config('container-sharder/concurrency').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_swift_container_config('container-sharder/interval').with_value('<SERVICE DEFAULT>')
@@ -343,6 +366,22 @@ describe 'swift::storage::server' do
           :read_only       => false,
         )}
       end
+
+      context 'with log_name_per_daemon' do
+        before do
+          params.merge!({
+            :log_name_per_daemon => true
+          })
+        end
+
+        it 'configures log_name per daemon' do
+          is_expected.to contain_swift_container_config('container-auditor/log_name').with_value('container-auditor')
+          is_expected.to contain_swift_container_config('container-replicator/log_name').with_value('container-replicator')
+          is_expected.to contain_swift_container_config('container-updater/log_name').with_value('container-updater')
+          is_expected.to contain_swift_container_config('container-sync/log_name').with_value('container-sync')
+          is_expected.to contain_swift_container_config('container-sharder/log_name').with_value('container-sharder')
+        end
+      end
     end
 
     describe 'for type object' do
@@ -418,8 +457,10 @@ describe 'swift::storage::server' do
         is_expected.to contain_swift_object_config('app:object-server/splice').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_swift_object_config('app:object-server/mb_per_sync').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_swift_object_config('object-auditor/').with_ensure('present')
+        is_expected.to contain_swift_object_config('object-auditor/log_name').with_ensure('absent')
         is_expected.to contain_swift_object_config('object-auditor/disk_chunk_size').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_swift_object_config('object-replicator/').with_ensure('present')
+        is_expected.to contain_swift_object_config('object-replicator/log_name').with_ensure('absent')
         is_expected.to contain_swift_object_config('object-replicator/rsync_module').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_swift_object_config('object-replicator/rsync_module').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_swift_object_config('object-replicator/concurrency').with_value(1)
@@ -428,11 +469,13 @@ describe 'swift::storage::server' do
         is_expected.to contain_swift_object_config('object-replicator/rsync_timeout').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_swift_object_config('object-replicator/rsync_bwlimit').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_swift_object_config('object-updater/').with_ensure('present')
+        is_expected.to contain_swift_object_config('object-updater/log_name').with_ensure('absent')
         is_expected.to contain_swift_object_config('object-updater/concurrency').with_value(1)
         is_expected.to contain_swift_object_config('object-updater/interval').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_swift_object_config('object-updater/conn_timeout').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_swift_object_config('object-updater/node_timeout').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_swift_object_config('object-reconstructor/').with_ensure('present')
+        is_expected.to contain_swift_object_config('object-reconstructor/log_name').with_ensure('absent')
       }
 
       context 'with customized pipeline' do
@@ -509,6 +552,21 @@ describe 'swift::storage::server' do
           :max_connections => 100,
           :read_only       => false,
         )}
+      end
+
+      context 'with log_name_per_daemon' do
+        before do
+          params.merge!({
+            :log_name_per_daemon => true
+          })
+        end
+
+        it 'configures log_name per daemon' do
+          is_expected.to contain_swift_object_config('object-auditor/log_name').with_value('object-auditor')
+          is_expected.to contain_swift_object_config('object-replicator/log_name').with_value('object-replicator')
+          is_expected.to contain_swift_object_config('object-updater/log_name').with_value('object-updater')
+          is_expected.to contain_swift_object_config('object-reconstructor/log_name').with_value('object-reconstructor')
+        end
       end
     end
   end
