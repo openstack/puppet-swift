@@ -592,6 +592,8 @@ define swift::storage::server(
         'object-updater/node_timeout'     => {'value'  => $updater_node_timeout},
         # object-reconstructor
         'object-reconstructor/'           => {'ensure' => present},
+        # object-relinker
+        'object-relinker/'                => {'ensure' => present},
       }
 
       if $log_name_per_daemon {
@@ -600,6 +602,7 @@ define swift::storage::server(
           'object-replicator/log_name'    => {'value' => 'object-replicator'},
           'object-updater/log_name'       => {'value' => 'object-updater'},
           'object-reconstructor/log_name' => {'value' => 'object-reconstructor'},
+          'object-relinker/log_name'      => {'value' => 'object-relinker'},
         }
       } else {
         $log_name_opts = {
@@ -607,6 +610,7 @@ define swift::storage::server(
           'object-replicator/log_name'    => {'ensure' => absent},
           'object-updater/log_name'       => {'ensure' => absent},
           'object-reconstructor/log_name' => {'ensure' => absent},
+          'object-relinker/log_name'      => {'ensure' => absent},
         }
       }
     }

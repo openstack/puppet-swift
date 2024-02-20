@@ -1,0 +1,5 @@
+---
+features:
+  - |
+    Now ``object-server.conf`` file contains the ``[object-relinker]`` section,
+    which is used by the swift-object-relinker CLI tool.
