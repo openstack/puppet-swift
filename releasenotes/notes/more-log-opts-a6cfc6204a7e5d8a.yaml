@@ -1,0 +1,17 @@
+---
+features:
+  - |
+    The new ``swift::objectexpirer::log_name`` option has been added.
+
+  - |
+    The following options have been added to the ``swift::containerreconciler``
+    class.
+
+    - ``log_name``
+    - ``log_level``
+    - ``log_facility``
+
+fixes:
+  - |
+    container-reconciler is now configured to use the local2 facility by
+    default.

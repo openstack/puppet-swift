@@ -93,6 +93,10 @@
 #   is ignored.
 #   Defaults to $facts['os_service_default'].
 #
+#  [*log_name*]
+#    (optional) Log name.
+#    Defaults to $facts['os_service_default'].
+#
 #  [*log_level*]
 #    (optional) Log level.
 #    Defaults to 'INFO'.
@@ -125,6 +129,7 @@ class swift::objectexpirer(
   $cache_tls_cafile              = $facts['os_service_default'],
   $cache_tls_certfile            = $facts['os_service_default'],
   $cache_tls_keyfile             = $facts['os_service_default'],
+  $log_name                      = $facts['os_service_default'],
   $log_level                     = 'INFO',
   $log_facility                  = 'LOG_LOCAL2',
   Boolean $purge_config          = false,
@@ -190,6 +195,7 @@ class swift::objectexpirer(
     'object-expirer/reclaim_age':                   value => $reclaim_age;
     'object-expirer/recon_cache_path':              value => $recon_cache_path;
     'object-expirer/report_interval':               value => $report_interval;
+    'object-expirer/log_name':                      value => $log_name;
     'object-expirer/log_facility':                  value => $log_facility;
     'object-expirer/log_level':                     value => $log_level;
   }
