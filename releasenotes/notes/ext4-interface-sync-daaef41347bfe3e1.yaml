@@ -1,0 +1,9 @@
+---
+features:
+  - |
+    The following parameters have been added to the ``swift::storage::ext4``
+    defined resource type.
+
+    - ``mount_type``
+    - ``manage_filesystem``
+    - ``label``
