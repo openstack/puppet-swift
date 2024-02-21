@@ -1,0 +1,12 @@
+---
+features:
+  - |
+    The following parameters are now optional and default to ``/dev/${name}``.
+
+    - ``swift::storage::ext4::device``
+    - ``swift::storage::mount::device``
+
+upgrade:
+  - |
+    The ``swift::storage::xfs::device`` parameter no longer accepts an empty
+    string. Use the default value or give an actual device path.

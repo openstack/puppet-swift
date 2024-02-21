@@ -19,9 +19,9 @@ describe 'swift::storage::xfs' do
 
       [{},
        {
-         :device       => 'some_device',
+         :device       => '/dev/foo',
          :byte_size    => 1,
-         :mnt_base_dir => '/mnt/foo',
+         :mnt_base_dir => '/mnt/bar',
          :loopback     => true
        }
       ].each do |param_set|
