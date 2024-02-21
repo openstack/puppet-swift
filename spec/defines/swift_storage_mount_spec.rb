@@ -47,7 +47,7 @@ describe 'swift::storage::mount' do
       end
 
       it { is_expected.to contain_exec("restorecon_mount_dans_mount_point").with(
-        :command     => "restorecon /srv/node/dans_mount_point",
+        :command     => ['restorecon', '/srv/node/dans_mount_point'],
         :path        => ['/usr/sbin', '/sbin'],
         :refreshonly => true
       )}

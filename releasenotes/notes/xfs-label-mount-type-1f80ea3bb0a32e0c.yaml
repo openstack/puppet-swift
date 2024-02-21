@@ -1,0 +1,8 @@
+---
+features:
+  - |
+    The ``swift::storage::xfs`` defined resource type now supports
+    ``type => 'label'``, which uses filesystem label for mount.
+    When this is used, the defined type adds the label, according to the new
+    ``label`` parameter, which defaults to the title, when creating a XFS file
+    system.

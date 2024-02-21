@@ -19,7 +19,7 @@
 #   Defaults to 'xfs'.
 #
 define swift::storage::mount(
-  Stdlib::Absolutepath $device       = "/dev/${name}",
+  Swift::MountDevice $device         = "/dev/${name}",
   Stdlib::Absolutepath $mnt_base_dir = '/srv/node',
   Boolean $loopback                  = false,
   String[1] $fstype                  = 'xfs'
@@ -50,7 +50,7 @@ define swift::storage::mount(
   # Make root own the mount point to prevent swift processes from writing files
   # when the disk device is not mounted
   exec { "fix_mountpoint_permissions_${name}":
-    command => "chown -R root:root ${mnt_base_dir}/${name}",
+    command => ['chown', '-R', 'root:root', "${mnt_base_dir}/${name}"],
     path    => ['/usr/bin', '/bin'],
     before  => Anchor['swift::config::end'],
     unless  => "grep ${mnt_base_dir}/${name} /etc/mtab",
@@ -75,7 +75,7 @@ define swift::storage::mount(
   $group = $::swift::params::group
 
   exec { "fix_mount_permissions_${name}":
-    command     => "chown -R ${user}:${group} ${mnt_base_dir}/${name}",
+    command     => ['chown', '-R', "${user}:${group}", "${mnt_base_dir}/${name}"],
     path        => ['/usr/bin', '/bin'],
     refreshonly => true,
     before      => Anchor['swift::config::end'],
@@ -98,7 +98,7 @@ define swift::storage::mount(
   # systems :(
   if (str2bool($facts['os']['selinux']['enabled']) == true) {
     exec { "restorecon_mount_${name}":
-      command     => "restorecon ${mnt_base_dir}/${name}",
+      command     => ['restorecon', "${mnt_base_dir}/${name}"],
       path        => ['/usr/sbin', '/sbin'],
       before      => Anchor['swift::config::end'],
       refreshonly => true,
