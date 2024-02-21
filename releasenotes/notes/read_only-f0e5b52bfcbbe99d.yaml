@@ -1,0 +1,4 @@
+---
+features:
+  - |
+    The new ``swift::proxy::read_only`` class has been added.
