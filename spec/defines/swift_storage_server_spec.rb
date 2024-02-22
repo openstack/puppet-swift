@@ -476,6 +476,8 @@ describe 'swift::storage::server' do
         is_expected.to contain_swift_object_config('object-updater/node_timeout').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_swift_object_config('object-reconstructor/').with_ensure('present')
         is_expected.to contain_swift_object_config('object-reconstructor/log_name').with_ensure('absent')
+        is_expected.to contain_swift_object_config('object-relinker/').with_ensure('present')
+        is_expected.to contain_swift_object_config('object-relinker/log_name').with_ensure('absent')
       }
 
       context 'with customized pipeline' do
@@ -566,6 +568,7 @@ describe 'swift::storage::server' do
           is_expected.to contain_swift_object_config('object-replicator/log_name').with_value('object-replicator')
           is_expected.to contain_swift_object_config('object-updater/log_name').with_value('object-updater')
           is_expected.to contain_swift_object_config('object-reconstructor/log_name').with_value('object-reconstructor')
+          is_expected.to contain_swift_object_config('object-relinker/log_name').with_value('object-relinker')
         end
       end
     end
