@@ -87,6 +87,18 @@
 #    is ignored.
 #    Defaults to $facts['os_service_default']
 #
+#  [*log_name*]
+#    (optional) Log name.
+#    Defaults to $facts['os_service_default'].
+#
+#  [*log_level*]
+#    (optional) Log level.
+#    Defaults to $facts['os_service_default'].
+#
+#  [*log_facility*]
+#    (optional) Log level
+#    Defaults to 'LOG_LOCAL2'.
+#
 #  [*purge_config*]
 #    (optional) Whether to set only the specified config options
 #    in the proxy config.
@@ -109,6 +121,9 @@ class swift::containerreconciler(
   $cache_tls_cafile                        = $facts['os_service_default'],
   $cache_tls_certfile                      = $facts['os_service_default'],
   $cache_tls_keyfile                       = $facts['os_service_default'],
+  $log_name                                = $facts['os_service_default'],
+  $log_level                               = 'INFO',
+  $log_facility                            = 'LOG_LOCAL2',
   Boolean $purge_config                    = false,
 ) inherits swift::params {
 
@@ -156,6 +171,9 @@ class swift::containerreconciler(
     'container-reconciler/processes':     value => $processes;
     'container-reconciler/reclaim_age':   value => $reclaim_age;
     'container-reconciler/request_tries': value => $request_tries;
+    'container-reconciler/log_name':      value => $log_name;
+    'container-reconciler/log_facility':  value => $log_facility;
+    'container-reconciler/log_level':     value => $log_level;
   }
 
   if $manage_service {
