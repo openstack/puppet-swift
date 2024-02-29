@@ -6,7 +6,8 @@
 # === Parameters:
 #
 # [*device*]
-#   (mandatory) An array of devices (prefixed or not by /dev)
+#   (optional) Path to the device.
+#   Defaults to "/dev/${name}"
 #
 # [*mnt_base_dir*]
 #   (optional) The directory where the flat files that store the file system
@@ -23,10 +24,10 @@
 #   Defaults to false.
 #
 define swift::storage::ext4(
-  $device,
-  $byte_size    = '1024',
-  $mnt_base_dir = '/srv/node',
-  $loopback     = false
+  Stdlib::Absolutepath $device       = "/dev/${name}",
+  $byte_size                         = '1024',
+  Stdlib::Absolutepath $mnt_base_dir = '/srv/node',
+  Boolean $loopback                  = false
 ) {
 
   include swift::deps

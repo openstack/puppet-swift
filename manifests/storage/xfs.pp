@@ -2,7 +2,8 @@
 # === Parameters:
 #
 # [*device*]
-#   (mandatory) An array of devices (prefixed or not by /dev)
+#   (optional) Path to the device.
+#   Defaults to "/dev/${name}"
 #
 # [*mnt_base_dir*]
 #   (optional) The directory where the flat files that store the file system
@@ -42,11 +43,11 @@
 # it already has an XFS FS, and mounts de FS in /srv/node/sdX
 #
 define swift::storage::xfs(
-  $device                            = '',
+  Stdlib::Absolutepath $device       = "/dev/${name}",
   $byte_size                         = '1024',
   Stdlib::Absolutepath $mnt_base_dir = '/srv/node',
   Boolean $loopback                  = false,
-  $mount_type                        = 'path',
+  Enum['path', 'uuid'] $mount_type   = 'path',
   Boolean $manage_filesystem         = true,
 ) {
 
@@ -54,23 +55,21 @@ define swift::storage::xfs(
   include swift::params
   include swift::xfs
 
-  if $device == '' {
-    $target_device = "/dev/${name}"
-  } else {
-    $target_device = $device
-  }
-
   # Currently, facter doesn't support to fetch the device's uuid, only the partition's.
   # If you want to mount device by uuid, you should set $ext_args to 'mkpart primary 0% 100%'
   # in swift::storage::disk to make a partition. Also, the device name should change accordingly.
   # For example: from 'sda' to 'sda1'.
   # The code does NOT work in existing Swift cluster.
   case $mount_type {
-    'path': { $mount_device = $target_device }
-    'uuid': { $mount_device = dig44($facts, ['partitions', $target_device, 'uuid'])
-              unless $mount_device { fail("Unable to fetch uuid of ${target_device}") }
-            }
-    default: { fail("Unsupported mount_type parameter value: '${mount_type}'. Should be 'path' or 'uuid'.") }
+    'uuid': {
+      $mount_device = dig44($facts, ['partitions', $device, 'uuid'])
+      if !$mount_device {
+        fail("Unable to fetch uuid of ${device}")
+      }
+    }
+    default: { # path
+      $mount_device = $device
+    }
   }
 
   if(!defined(File[$mnt_base_dir])) {
@@ -89,9 +88,9 @@ define swift::storage::xfs(
   # So we do NOT touch it.
   if $manage_filesystem {
     exec { "mkfs-${name}":
-      command => "mkfs.xfs -f -i size=${byte_size} ${target_device}",
+      command => "mkfs.xfs -f -i size=${byte_size} ${device}",
       path    => ['/sbin/', '/usr/sbin/'],
-      unless  => "xfs_admin -l ${target_device}",
+      unless  => "xfs_admin -l ${device}",
       before  => Anchor['swift::config::end'],
     }
     Package<| title == 'xfsprogs' |>

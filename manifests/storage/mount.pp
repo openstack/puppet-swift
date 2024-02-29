@@ -1,12 +1,9 @@
 #
-# Usage
-#   swift::storage::mount
-#
-#
 # === Parameters:
 #
 # [*device*]
-#   (mandatory) An array of devices (prefixed or not by /dev)
+#   (optional) Path to the device.
+#   Defaults to "/dev/${name}"
 #
 # [*mnt_base_dir*]
 #   (optional) The directory where the flat files that store the file system
@@ -22,7 +19,7 @@
 #   Defaults to 'xfs'.
 #
 define swift::storage::mount(
-  $device,
+  Stdlib::Absolutepath $device       = "/dev/${name}",
   Stdlib::Absolutepath $mnt_base_dir = '/srv/node',
   Boolean $loopback                  = false,
   String[1] $fstype                  = 'xfs'

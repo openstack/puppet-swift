@@ -61,12 +61,12 @@
 # TODO(yuxcer): maybe we can remove param $base_dir
 #
 define swift::storage::disk(
-  $base_dir          = '/dev',
-  $mnt_base_dir      = '/srv/node',
-  $byte_size         = '1024',
-  $ext_args          = '',
-  $manage_partition  = true,
-  $manage_filesystem = true,
+  Stdlib::Absolutepath $base_dir     = '/dev',
+  Stdlib::Absolutepath $mnt_base_dir = '/srv/node',
+  $byte_size                         = '1024',
+  $ext_args                          = '',
+  Boolean $manage_partition          = true,
+  Boolean $manage_filesystem         = true,
 ) {
 
   include swift::deps
