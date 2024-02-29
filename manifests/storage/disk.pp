@@ -39,12 +39,25 @@
 #   server is fully setup or if the partition was created outside of puppet.
 #   Defaults to true.
 #
+# [*filesystem_type*]
+#   (optional) The filesystem deployed on the device. Currently only ext4 and
+#   xfs are supported.
+#   Defaults to 'xfs'.
+#
+# [*mount_type*]
+#   (optional) Define if the device is mounted by the device partition path,
+#   UUID, or filesystem label.
+#   Defaults to 'path'.
+#
 # [*manage_filesystem*]
-#   (optional) If set to false, skip calling xfs_admin -l to check if a
-#   partition needs to be formatted with mkfs.xfs, which can, in some cases,
-#   increase the load on the server. This is to set to false only after the
-#   server is fully setup, or if the filesystem was created outside of puppet.
+#   (optional) If set to false, skip creating filesystem. This is to set to
+#   false only after the server is fully setup, or if the filesystem was
+#   created outside of puppet.
 #   Defaults to true.
+#
+# [*label*]
+#   (optional) Filesystem label.
+#   Defaults to $name.
 #
 # =Example=
 #
@@ -61,12 +74,15 @@
 # TODO(yuxcer): maybe we can remove param $base_dir
 #
 define swift::storage::disk(
-  Stdlib::Absolutepath $base_dir     = '/dev',
-  Stdlib::Absolutepath $mnt_base_dir = '/srv/node',
-  $byte_size                         = '1024',
-  $ext_args                          = '',
-  Boolean $manage_partition          = true,
-  Boolean $manage_filesystem         = true,
+  Stdlib::Absolutepath $base_dir            = '/dev',
+  Stdlib::Absolutepath $mnt_base_dir        = '/srv/node',
+  $byte_size                                = '1024',
+  $ext_args                                 = '',
+  Boolean $manage_partition                 = true,
+  Enum['ext4', 'xfs'] $filesystem_type      = 'xfs',
+  Enum['path', 'uuid', 'label'] $mount_type = 'path',
+  Boolean $manage_filesystem                = true,
+  String[1] $label                          = $name,
 ) {
 
   include swift::deps
@@ -89,15 +105,22 @@ define swift::storage::disk(
       onlyif  => ["test -b ${base_dir}/${name}","parted ${base_dir}/${name} print|tail -1|grep 'Error'"],
       before  => Anchor['swift::config::end'],
     }
-    Exec["create_partition_label-${name}"] ~> Swift::Storage::Xfs<| title == $name |>
+
+    if $filesystem_type == 'xfs' {
+      Exec["create_partition_label-${name}"] ~> Swift::Storage::Xfs[$name]
+    } else {
+      Exec["create_partition_label-${name}"] ~> Swift::Storage::Ext4[$name]
+    }
   }
 
-  swift::storage::xfs { $name:
-    device            => "${base_dir}/${name}",
-    mnt_base_dir      => $mnt_base_dir,
-    byte_size         => $byte_size,
-    loopback          => false,
-    manage_filesystem => $manage_filesystem,
-  }
+  create_resources("swift::storage::${filesystem_type}", { $name => {
+    'device'            => "${base_dir}/${name}",
+    'mnt_base_dir'      => $mnt_base_dir,
+    'byte_size'         => $byte_size,
+    'loopback'          => false,
+    'mount_type'        => $mount_type,
+    'manage_filesystem' => $manage_filesystem,
+    'label'             => $label,
+  }})
 
 }

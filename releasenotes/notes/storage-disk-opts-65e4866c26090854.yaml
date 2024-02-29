@@ -1,0 +1,9 @@
+---
+features:
+  - |
+    The ``swift::storage::disk`` defined resource type now supports
+    the following parameters.
+
+    - ``filesystem_type``
+    - ``mount_type``
+    - ``label``
