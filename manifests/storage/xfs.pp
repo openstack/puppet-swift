@@ -109,7 +109,7 @@ define swift::storage::xfs(
       before  => Anchor['swift::config::end'],
     }
     Package<| title == 'xfsprogs' |>
-    ~> Exec<| title == "mkfs-${name}" |>
+    ~> Exec["mkfs-${name}"]
     ~> Swift::Storage::Mount<| title == $name |>
   } else {
     Package<| title == 'xfsprogs' |>
