@@ -36,8 +36,9 @@ describe 'swift::storage::xfs' do
           end
 
           it { is_expected.to contain_exec("mkfs-foo").with(
-            :command     => "mkfs.xfs -f -i size=#{param_hash[:byte_size]} #{param_hash[:device]}",
-            :path        => ['/sbin/', '/usr/sbin/'],
+            :command => ['mkfs.xfs', '-f', '-i', "size=#{param_hash[:byte_size]}", param_hash[:device]],
+            :path    => ['/sbin/', '/usr/sbin/'],
+            :unless  => "xfs_admin -l #{param_hash[:device]}",
           )}
 
           it { is_expected.to contain_swift__storage__mount(title).with(
@@ -46,6 +47,30 @@ describe 'swift::storage::xfs' do
              :loopback     => param_hash[:loopback],
           )}
         end
+      end
+
+      context 'with mount type label' do
+        let :params do
+          {
+            :mount_type => :label
+          }
+        end
+
+        let :param_hash do
+          default_params.merge(params)
+        end
+
+        it { is_expected.to contain_exec("mkfs-foo").with(
+          :command => ['mkfs.xfs', '-f', '-i', "size=#{param_hash[:byte_size]}", '-L', title, param_hash[:device]],
+          :path    => ['/sbin/', '/usr/sbin/'],
+          :unless  => "xfs_admin -l #{param_hash[:device]}",
+        )}
+
+        it { is_expected.to contain_swift__storage__mount(title).with(
+           :device       => "LABEL=#{title}",
+           :mnt_base_dir => param_hash[:mnt_base_dir],
+           :loopback     => param_hash[:loopback],
+        )}
       end
     end
   end

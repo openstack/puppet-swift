@@ -12,15 +12,16 @@
 #
 # [*byte_size*]
 #   (optional) Byte size to use for every inode in the created filesystem.
-#   Defaults to '1024'. It is recommended to use 1024 to ensure that the metadata can fit
-#   in a single inode.
+#   Defaults to '1024'. It is recommended to use 1024 to ensure that
+#   the metadata can fit in a single inode.
 #
 # [*loopback*]
 #   (optional) Define if the device must be mounted as a loopback or not
 #   Defaults to false.
 #
 # [*mount_type*]
-#   (optional) Define if the device is mounted by the device partition path or UUID.
+#   (optional) Define if the device is mounted by the device partition path,
+#   UUID, or filesystem label.
 #   Defaults to 'path'.
 #
 # [*manage_filesystem*]
@@ -29,6 +30,10 @@
 #   increase the load on the server. This is to set to false only after the
 #   server is fully setup, or if the filesystem was created outside of puppet.
 #   Defaults to true.
+#
+# [*label*]
+#   (optional) Filesystem label.
+#   Defaults to $name.
 #
 # Sample usage:
 #
@@ -43,12 +48,13 @@
 # it already has an XFS FS, and mounts de FS in /srv/node/sdX
 #
 define swift::storage::xfs(
-  Stdlib::Absolutepath $device       = "/dev/${name}",
-  $byte_size                         = '1024',
-  Stdlib::Absolutepath $mnt_base_dir = '/srv/node',
-  Boolean $loopback                  = false,
-  Enum['path', 'uuid'] $mount_type   = 'path',
-  Boolean $manage_filesystem         = true,
+  Stdlib::Absolutepath $device              = "/dev/${name}",
+  $byte_size                                = '1024',
+  Stdlib::Absolutepath $mnt_base_dir        = '/srv/node',
+  Boolean $loopback                         = false,
+  Enum['path', 'uuid', 'label'] $mount_type = 'path',
+  Boolean $manage_filesystem                = true,
+  String[1] $label                          = $name,
 ) {
 
   include swift::deps
@@ -66,6 +72,9 @@ define swift::storage::xfs(
       if !$mount_device {
         fail("Unable to fetch uuid of ${device}")
       }
+    }
+    'label': {
+      $mount_device = "LABEL=${label}"
     }
     default: { # path
       $mount_device = $device
@@ -87,8 +96,14 @@ define swift::storage::xfs(
   # so we format it. If device has a valid XFS FS, command returns 0
   # So we do NOT touch it.
   if $manage_filesystem {
+    $mkfs_command = ['mkfs.xfs', '-f', '-i', "size=${byte_size}"]
+    $mkfs_label_opt = $mount_type ? {
+      'label' => ['-L', $label],
+      default => []
+    }
+
     exec { "mkfs-${name}":
-      command => "mkfs.xfs -f -i size=${byte_size} ${device}",
+      command => $mkfs_command + $mkfs_label_opt + [$device],
       path    => ['/sbin/', '/usr/sbin/'],
       unless  => "xfs_admin -l ${device}",
       before  => Anchor['swift::config::end'],
