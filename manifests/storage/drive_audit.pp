@@ -104,7 +104,7 @@ class swift::storage::drive_audit(
   $monthday                                 = '*',
   $month                                    = '*',
   $weekday                                  = '*',
-  $maxdelay                                 = 0,
+  Integer[0] $maxdelay                      = 0,
   # drive-audit.conf options
   $log_facility                             = 'LOG_LOCAL2',
   $log_level                                = 'INFO',
