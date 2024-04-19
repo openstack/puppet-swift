@@ -95,6 +95,10 @@
 #    (optional) Configures client_timeout for swift proxy-server.
 #    Defaults to $facts['os_service_default'].
 #
+#  [*keepalive_timeout*]
+#    (optional) Configures keep_timeout for swift proxy-server.
+#    Defaults to $facts['os_service_default'].
+#
 #  [*node_timeout*]
 #    (optional) Configures node_timeout for swift proxy-server
 #    Defaults to $facts['os_service_default'].
@@ -177,6 +181,7 @@ class swift::proxy(
   $write_affinity                          = undef,
   $write_affinity_node_count               = $facts['os_service_default'],
   $client_timeout                          = $facts['os_service_default'],
+  $keepalive_timeout                       = $facts['os_service_default'],
   $node_timeout                            = $facts['os_service_default'],
   $recoverable_node_timeout                = $facts['os_service_default'],
   Boolean $manage_service                  = true,
@@ -233,6 +238,7 @@ class swift::proxy(
     'DEFAULT/log_udp_host':                        value => $log_udp_host;
     'DEFAULT/log_udp_port':                        value => $log_udp_port;
     'DEFAULT/client_timeout':                      value => $client_timeout;
+    'DEFAULT/keepalive_timeout':                   value => $keepalive_timeout;
     'pipeline:main/pipeline':                      value => join($pipeline, ' ');
     'app:proxy-server/use':                        value => 'egg:swift#proxy';
     'app:proxy-server/set log_name':               value => $log_name;

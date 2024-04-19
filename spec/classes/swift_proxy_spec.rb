@@ -60,6 +60,7 @@ describe 'swift::proxy' do
         it { should contain_swift_proxy_config('DEFAULT/log_udp_host').with_value('<SERVICE DEFAULT>') }
         it { should contain_swift_proxy_config('DEFAULT/log_udp_port').with_value('<SERVICE DEFAULT>') }
         it { should contain_swift_proxy_config('DEFAULT/client_timeout').with_value('<SERVICE DEFAULT>') }
+        it { should contain_swift_proxy_config('DEFAULT/keepalive_timeout').with_value('<SERVICE DEFAULT>') }
         it { should contain_swift_proxy_config('pipeline:main/pipeline').with_value(
           ['catch_errors', 'gatekeeper', 'healthcheck', 'proxy-logging', 'cache',
            'listing_formats', 'tempauth', 'copy', 'proxy-logging', 'proxy-server'].join(' ')) }
@@ -138,6 +139,7 @@ describe 'swift::proxy' do
               :write_affinity             => 'r1',
               :write_affinity_node_count  => '2 * replicas',
               :client_timeout             => '120',
+              :keepalive_timeout          => '121',
               :node_timeout               => '20',
               :recoverable_node_timeout   => '15',
               :cors_allow_origin          => ['http://foo.bar:1234', 'https://foo.bar'],
@@ -155,6 +157,7 @@ describe 'swift::proxy' do
           it { should contain_swift_proxy_config('DEFAULT/log_headers').with_value(false) }
           it { should contain_swift_proxy_config('DEFAULT/log_address').with_value('/dev/log') }
           it { should contain_swift_proxy_config('DEFAULT/client_timeout').with_value('120') }
+          it { should contain_swift_proxy_config('DEFAULT/keepalive_timeout').with_value('121') }
           it { should contain_swift_proxy_config('pipeline:main/pipeline').with_value('swauth proxy-server') }
           it { should contain_swift_proxy_config('app:proxy-server/use').with_value('egg:swift#proxy') }
           it { should contain_swift_proxy_config('app:proxy-server/set log_name').with_value('swift-proxy-server') }

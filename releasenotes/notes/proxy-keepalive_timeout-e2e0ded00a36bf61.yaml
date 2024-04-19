@@ -1,0 +1,4 @@
+---
+features:
+  - |
+    The ``swift::proxy::keepalive_timeout`` parameter has been added.
