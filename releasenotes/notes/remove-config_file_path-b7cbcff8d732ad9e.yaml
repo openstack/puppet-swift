@@ -1,0 +1,5 @@
+---
+upgrade:
+  - |
+    The ``swift::storage::server::config_file_path`` parameter has been
+    removed.

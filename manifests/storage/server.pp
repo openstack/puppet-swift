@@ -277,13 +277,6 @@
 #   in the config file.
 #   Defaults to false.
 #
-# DEPRECATED PARAMETERS
-#
-# [*config_file_path*]
-#   (optional) The configuration file name.
-#   Starting at the path "/etc/swift/"
-#   Defaults to undef
-#
 define swift::storage::server(
   Swift::StorageServerType $type,
   $storage_local_net_ip,
@@ -351,16 +344,10 @@ define swift::storage::server(
   $container_sharder_conn_timeout                        = $facts['os_service_default'],
   $container_sharder_node_timeout                        = $facts['os_service_default'],
   Boolean $purge_config                                  = false,
-  # DEPRECATED PARAMETERS
-  $config_file_path                                      = undef,
 ){
 
   include swift::deps
   include swift::params
-
-  if $config_file_path != undef {
-    warning('The config_file_path parameter is deprecated and has no effect')
-  }
 
   $user_real = pick($user, $::swift::params::user)
 
