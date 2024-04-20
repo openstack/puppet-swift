@@ -220,22 +220,19 @@ from 6002 to 6202 and will be changed in a later release")
   }
 
   swift::storage::server { "${account_port}":
-    type             => 'account',
-    config_file_path => 'account-server.conf',
-    pipeline         => $account_pipeline,
-    workers          => $account_server_workers,
+    type     => 'account',
+    pipeline => $account_pipeline,
+    workers  => $account_server_workers,
   }
 
   swift::storage::server { "${container_port}":
-    type             => 'container',
-    config_file_path => 'container-server.conf',
-    pipeline         => $container_pipeline,
-    workers          => $container_server_workers,
+    type     => 'container',
+    pipeline => $container_pipeline,
+    workers  => $container_server_workers,
   }
 
   swift::storage::server { "${object_port}":
     type                      => 'object',
-    config_file_path          => 'object-server.conf',
     pipeline                  => $object_pipeline,
     workers                   => $object_server_workers,
     splice                    => $splice,

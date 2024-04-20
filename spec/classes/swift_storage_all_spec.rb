@@ -81,28 +81,25 @@ describe 'swift::storage::all' do
         end
 
         it { is_expected.to contain_swift__storage__server(param_hash[:account_port]).with(
-          :type             => 'account',
-          :config_file_path => 'account-server.conf',
-          :incoming_chmod   => param_hash[:incoming_chmod],
-          :outgoing_chmod   => param_hash[:outgoing_chmod],
-          :pipeline         => param_hash[:account_pipeline] || ['account-server']
+          :type           => 'account',
+          :incoming_chmod => param_hash[:incoming_chmod],
+          :outgoing_chmod => param_hash[:outgoing_chmod],
+          :pipeline       => param_hash[:account_pipeline] || ['account-server']
         )}
         it { is_expected.to contain_swift__storage__server(param_hash[:object_port]).with(
-          :type             => 'object',
-          :config_file_path => 'object-server.conf',
-          :incoming_chmod   => param_hash[:incoming_chmod],
-          :outgoing_chmod   => param_hash[:outgoing_chmod],
-          :pipeline         => param_hash[:object_pipeline] || ['object-server'],
-          :splice           => param_hash[:splice],
-          :rsync_timeout    => param_hash[:rsync_timeout],
-          :rsync_bwlimit    => param_hash[:rsync_bwlimit],
+          :type           => 'object',
+          :incoming_chmod => param_hash[:incoming_chmod],
+          :outgoing_chmod => param_hash[:outgoing_chmod],
+          :pipeline       => param_hash[:object_pipeline] || ['object-server'],
+          :splice         => param_hash[:splice],
+          :rsync_timeout  => param_hash[:rsync_timeout],
+          :rsync_bwlimit  => param_hash[:rsync_bwlimit],
         )}
         it { is_expected.to contain_swift__storage__server(param_hash[:container_port]).with(
-          :type             => 'container',
-          :config_file_path => 'container-server.conf',
-          :incoming_chmod   => param_hash[:incoming_chmod],
-          :outgoing_chmod   => param_hash[:outgoing_chmod],
-          :pipeline         => param_hash[:container_pipeline] || ['container-server']
+          :type           => 'container',
+          :incoming_chmod => param_hash[:incoming_chmod],
+          :outgoing_chmod => param_hash[:outgoing_chmod],
+          :pipeline       => param_hash[:container_pipeline] || ['container-server']
         )}
 
         it { is_expected.to contain_class('rsync::server').with(
