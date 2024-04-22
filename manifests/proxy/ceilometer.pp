@@ -195,6 +195,7 @@ class swift::proxy::ceilometer(
 ) inherits swift {
 
   include swift::deps
+  include swift::params
 
   Package['python-ceilometermiddleware'] ~> Service<| title == 'swift-proxy-server' |>
 
@@ -205,6 +206,17 @@ class swift::proxy::ceilometer(
     $project_name_real = $facts['os_service_default']
     $project_domain_name_real = $facts['os_service_default']
   }
+
+  file { '/etc/swift/ceilometer.conf':
+    ensure  => present,
+    owner   => $::swift::params::user,
+    group   => $::swift::params::group,
+    mode    => '0640',
+    require => Anchor['swift::config::begin'],
+    before  => Anchor['swift::config::end'],
+  }
+
+  File['/etc/swift/ceilometer.conf'] -> Swift_ceilometer_config<||>
 
   swift_proxy_config {
     'filter:ceilometer/topic':                value => $topic;
@@ -223,10 +235,11 @@ class swift::proxy::ceilometer(
     'filter:ceilometer/user_domain_name':     value => $user_domain_name;
     'filter:ceilometer/password':             value => $password, secret => true;
     'filter:ceilometer/region_name':          value => $region_name;
+    'filter:ceilometer/extra_config_files':   value => '/etc/swift/ceilometer.conf';
   }
 
   if $default_transport_url =~ /^rabbit.*/ {
-    oslo::messaging::rabbit { 'swift_proxy_config':
+    oslo::messaging::rabbit { 'swift_ceilometer_config':
       rabbit_ha_queues            => $rabbit_ha_queues,
       heartbeat_timeout_threshold => $rabbit_heartbeat_timeout_threshold,
       heartbeat_rate              => $rabbit_heartbeat_rate,
@@ -242,16 +255,19 @@ class swift::proxy::ceilometer(
       kombu_failover_strategy     => $kombu_failover_strategy,
       kombu_compression           => $kombu_compression,
     }
-    oslo::messaging::amqp { 'swift_proxy_config': }
+    oslo::messaging::amqp { 'swift_ceilometer_config': }
 
   } elsif $default_transport_url =~ /^amqp.*/ {
-    oslo::messaging::rabbit { 'swift_proxy_config': }
-    oslo::messaging::amqp { 'swift_proxy_config':
+    oslo::messaging::rabbit { 'swift_ceilometer_config': }
+    oslo::messaging::amqp { 'swift_ceilometer_config':
       ssl_ca_file      => $notification_ssl_ca_file,
       ssl_cert_file    => $notification_ssl_cert_file,
       ssl_key_file     => $notification_ssl_key_file,
       ssl_key_password => $amqp_ssl_key_password,
     }
+  } else {
+    oslo::messaging::rabbit { 'swift_ceilometer_config': }
+    oslo::messaging::amqp { 'swift_ceilometer_config': }
   }
 
   package { 'python-ceilometermiddleware':

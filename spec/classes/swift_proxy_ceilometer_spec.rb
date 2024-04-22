@@ -30,11 +30,19 @@ describe 'swift::proxy::ceilometer' do
       it { is_expected.to contain_swift_proxy_config('filter:ceilometer/topic').with_value('<SERVICE DEFAULT>') }
       it { is_expected.to contain_swift_proxy_config('filter:ceilometer/control_exchange').with_value('<SERVICE DEFAULT>') }
       it { is_expected.to contain_swift_proxy_config('filter:ceilometer/nonblocking_notify').with_value('<SERVICE DEFAULT>') }
+      it { is_expected.to contain_swift_proxy_config('filter:ceilometer/extra_config_files').with_value('/etc/swift/ceilometer.conf') }
 
       it { is_expected.to contain_package('python-ceilometermiddleware').with(
         :ensure => 'present',
         :name   => platform_params[:ceilometermiddleware_package_name],
         :tag    => ['openstack', 'swift-support-package'],
+      )}
+
+      it { is_expected.to contain_file('/etc/swift/ceilometer.conf').with(
+        :ensure => 'present',
+        :owner  => 'swift',
+        :group  => 'swift',
+        :mode   => '0640',
       )}
     end
 
@@ -83,7 +91,7 @@ describe 'swift::proxy::ceilometer' do
         it { is_expected.to contain_swift_proxy_config('filter:ceilometer/url').with_value('rabbit://user:pass@host:1234/virt').with_secret(true) }
       end
 
-      it { is_expected.to contain_oslo__messaging__rabbit('swift_proxy_config').with(
+      it { is_expected.to contain_oslo__messaging__rabbit('swift_ceilometer_config').with(
         :rabbit_ha_queues            => '<SERVICE DEFAULT>',
         :heartbeat_timeout_threshold => '<SERVICE DEFAULT>',
         :heartbeat_rate              => '<SERVICE DEFAULT>',
@@ -99,7 +107,7 @@ describe 'swift::proxy::ceilometer' do
         :kombu_failover_strategy     => '<SERVICE DEFAULT>',
         :kombu_compression           => '<SERVICE DEFAULT>',
       )}
-      it { is_expected.to contain_oslo__messaging__amqp('swift_proxy_config') }
+      it { is_expected.to contain_oslo__messaging__amqp('swift_ceilometer_config') }
 
       context 'with overridden rabbit ssl params' do
         before do
@@ -113,7 +121,7 @@ describe 'swift::proxy::ceilometer' do
             })
         end
 
-        it { is_expected.to contain_oslo__messaging__rabbit('swift_proxy_config').with(
+        it { is_expected.to contain_oslo__messaging__rabbit('swift_ceilometer_config').with(
           :rabbit_use_ssl     => true,
           :kombu_ssl_ca_certs => '/etc/ca.cert',
           :kombu_ssl_certfile => '/etc/certfile',
