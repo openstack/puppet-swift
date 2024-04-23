@@ -11,10 +11,9 @@
 #   (Required) The password for the user
 #
 # [*default_transport_url*]
-#   (optional) A URL representing the messaging driver to use and its full
+#   (Required) A URL representing the messaging driver to use and its full
 #   configuration. Transport URLs take the form:
 #     transport://user:pass@host1:port[,hostN:portN]/virtual_host
-#   Defaults to $facts['os_service_default']
 #
 # [*driver*]
 #   (Optional) The Drivers(s) to handle sending notifications.
@@ -162,7 +161,7 @@
 #
 class swift::proxy::ceilometer(
   String[1] $password,
-  $default_transport_url              = undef,
+  String[1] $default_transport_url,
   $driver                             = $facts['os_service_default'],
   $topic                              = $facts['os_service_default'],
   $control_exchange                   = $facts['os_service_default'],

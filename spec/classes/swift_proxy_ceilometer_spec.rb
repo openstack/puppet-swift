@@ -12,17 +12,12 @@ describe 'swift::proxy::ceilometer' do
 
     let :params do
       {
-        :password => 'swiftpassword'
+        :password              => 'swiftpassword',
+        :default_transport_url => 'rabbit://user_1:user_1_passw@1.1.1.1:5673/rabbit',
       }
     end
 
     describe "when using default parameters" do
-      before :each do
-        params.merge!({
-          :default_transport_url => 'rabbit://user_1:user_1_passw@1.1.1.1:5673/rabbit',
-        })
-      end
-
       it { is_expected.to contain_swift_proxy_config('filter:ceilometer/password').with_value('swiftpassword').with_secret(true) }
       it { is_expected.to contain_swift_proxy_config('filter:ceilometer/paste.filter_factory').with_value('ceilometermiddleware.swift:filter_factory') }
       it { is_expected.to contain_swift_proxy_config('filter:ceilometer/url').with_value('rabbit://user_1:user_1_passw@1.1.1.1:5673/rabbit').with_secret(true) }
@@ -49,19 +44,18 @@ describe 'swift::proxy::ceilometer' do
     describe "when overriding default parameters with rabbit driver" do
       before :each do
         params.merge!({
-          :default_transport_url => 'rabbit://user_1:user_1_passw@1.1.1.1:5673/rabbit',
-          :driver                => 'messagingv2',
-          :topic                 => 'notifications',
-          :control_exchange      => 'swift',
-          :nonblocking_notify    => true,
-          :ignore_projects       => ['services', 'admin'],
-          :auth_url              => 'http://127.0.0.1:5000',
-          :auth_type             => 'password',
-          :project_domain_name   => 'Default',
-          :user_domain_name      => 'Default',
-          :project_name          => 'services',
-          :username              => 'swift',
-          :region_name           => 'region2'
+          :driver              => 'messagingv2',
+          :topic               => 'notifications',
+          :control_exchange    => 'swift',
+          :nonblocking_notify  => true,
+          :ignore_projects     => ['services', 'admin'],
+          :auth_url            => 'http://127.0.0.1:5000',
+          :auth_type           => 'password',
+          :project_domain_name => 'Default',
+          :user_domain_name    => 'Default',
+          :project_name        => 'services',
+          :username            => 'swift',
+          :region_name         => 'region2'
         })
       end
 
@@ -81,14 +75,6 @@ describe 'swift::proxy::ceilometer' do
         it { is_expected.to contain_swift_proxy_config('filter:ceilometer/username').with_value('swift') }
         it { is_expected.to contain_swift_proxy_config('filter:ceilometer/user_domain_name').with_value('Default') }
         it { is_expected.to contain_swift_proxy_config('filter:ceilometer/region_name').with_value('region2') }
-      end
-
-      context 'with default transport url' do
-        before do
-          params.merge!({ :default_transport_url => 'rabbit://user:pass@host:1234/virt' })
-        end
-
-        it { is_expected.to contain_swift_proxy_config('filter:ceilometer/url').with_value('rabbit://user:pass@host:1234/virt').with_secret(true) }
       end
 
       it { is_expected.to contain_oslo__messaging__rabbit('swift_ceilometer_config').with(
@@ -135,8 +121,7 @@ describe 'swift::proxy::ceilometer' do
     describe 'when system_scope is set' do
       before :each do
         params.merge!({
-          :default_transport_url => 'rabbit://user_1:user_1_passw@1.1.1.1:5673/rabbit',
-          :system_scope          => 'all'
+          :system_scope => 'all'
         })
       end
 
