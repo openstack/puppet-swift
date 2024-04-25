@@ -24,6 +24,9 @@ class swift::deps {
   Anchor['swift::config::begin'] -> Swift_proxy_config<||> -> Anchor['swift::config::end']
   Swift_proxy_config<||> ~> Service<| tag == 'swift-proxy-service' |>
 
+  Anchor['swift::config::begin'] -> Swift_ceilometer_config<||> -> Anchor['swift::config::end']
+  Swift_ceilometer_config<||> ~> Service<| tag == 'swift-proxy-service' |>
+
   Anchor['swift::config::begin'] -> Swift_storage_policy<||> -> Anchor['swift::config::end']
   # storage policy is now used by proxy and object
   Swift_storage_policy<||> ~> Service<| tag == 'swift-proxy-service' |>
