@@ -54,7 +54,7 @@ describe 'swift::proxy::ceilometer' do
           :topic                 => 'notifications',
           :control_exchange      => 'swift',
           :nonblocking_notify    => true,
-          :ignore_projects       => ['services'],
+          :ignore_projects       => ['services', 'admin'],
           :auth_url              => 'http://127.0.0.1:5000',
           :auth_type             => 'password',
           :project_domain_name   => 'Default',
@@ -72,7 +72,7 @@ describe 'swift::proxy::ceilometer' do
         it { is_expected.to contain_swift_proxy_config('filter:ceilometer/topic').with_value('notifications') }
         it { is_expected.to contain_swift_proxy_config('filter:ceilometer/control_exchange').with_value('swift') }
         it { is_expected.to contain_swift_proxy_config('filter:ceilometer/nonblocking_notify').with_value('true') }
-        it { is_expected.to contain_swift_proxy_config('filter:ceilometer/ignore_projects').with_value(['services']) }
+        it { is_expected.to contain_swift_proxy_config('filter:ceilometer/ignore_projects').with_value('services,admin') }
         it { is_expected.to contain_swift_proxy_config('filter:ceilometer/auth_url').with_value('http://127.0.0.1:5000') }
         it { is_expected.to contain_swift_proxy_config('filter:ceilometer/auth_type').with_value('password') }
         it { is_expected.to contain_swift_proxy_config('filter:ceilometer/project_name').with_value('services') }

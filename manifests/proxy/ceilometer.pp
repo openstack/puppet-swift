@@ -225,7 +225,7 @@ class swift::proxy::ceilometer(
     'filter:ceilometer/control_exchange':     value => $control_exchange;
     'filter:ceilometer/paste.filter_factory': value => 'ceilometermiddleware.swift:filter_factory';
     'filter:ceilometer/nonblocking_notify':   value => $nonblocking_notify;
-    'filter:ceilometer/ignore_projects':      value => $ignore_projects;
+    'filter:ceilometer/ignore_projects':      value => join(any2array($ignore_projects), ',');
     'filter:ceilometer/auth_url':             value => $auth_url;
     'filter:ceilometer/auth_type':            value => $auth_type;
     'filter:ceilometer/project_name':         value => $project_name_real;
