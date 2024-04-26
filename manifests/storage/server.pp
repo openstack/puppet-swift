@@ -407,12 +407,12 @@ define swift::storage::server(
       %>"), ',')
 
   file { $config_file_full_path:
-    ensure  => present,
-    owner   => pick($owner, $::swift::params::user),
-    group   => pick($group, $::swift::params::group),
-    replace => false,
-    tag     => 'swift-config-file',
-    before  => $required_middlewares,
+    ensure => present,
+    owner  => pick($owner, $::swift::params::user),
+    group  => pick($group, $::swift::params::group),
+    mode   => '0640',
+    tag    => 'swift-config-file',
+    before => $required_middlewares,
   }
 
   resources { "swift_${type}_config":

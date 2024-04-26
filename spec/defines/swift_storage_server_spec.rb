@@ -57,6 +57,14 @@ describe 'swift::storage::server' do
         :read_only       => false,
       )}
 
+      it { is_expected.to contain_file('/etc/swift/account-server.conf').with(
+        :ensure => 'present',
+        :owner  => 'swift',
+        :group  => 'swift',
+        :mode   => '0640',
+        :tag    => 'swift-config-file'
+      )}
+
       it {
         is_expected.to contain_swift_account_config('DEFAULT/devices').with_value('/srv/node')
         is_expected.to contain_swift_account_config('DEFAULT/bind_ip').with_value('10.0.0.1')
@@ -230,6 +238,14 @@ describe 'swift::storage::server' do
         :outgoing_chmod  => 'Du=rwx,g=rx,o=rx,Fu=rw,g=r,o=r',
         :max_connections => 25,
         :read_only       => false,
+      )}
+
+      it { is_expected.to contain_file('/etc/swift/container-server.conf').with(
+        :ensure => 'present',
+        :owner  => 'swift',
+        :group  => 'swift',
+        :mode   => '0640',
+        :tag    => 'swift-config-file'
       )}
 
       it {
@@ -416,6 +432,14 @@ describe 'swift::storage::server' do
         :outgoing_chmod  => 'Du=rwx,g=rx,o=rx,Fu=rw,g=r,o=r',
         :max_connections => 25,
         :read_only       => false,
+      )}
+
+      it { is_expected.to contain_file('/etc/swift/object-server.conf').with(
+        :ensure => 'present',
+        :owner  => 'swift',
+        :group  => 'swift',
+        :mode   => '0640',
+        :tag    => 'swift-config-file'
       )}
 
       it {
