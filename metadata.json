@@ -73,5 +73,5 @@
     ],
     "source": "https://opendev.org/openstack/puppet-swift.git",
     "summary": "Puppet module for OpenStack Swift",
-    "version": "21.0.0"
+    "version": "21.0.1"
 }
