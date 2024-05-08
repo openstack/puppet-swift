@@ -84,10 +84,6 @@
 #   (optional) SSL key file. (string value)
 #   Defaults to $facts['os_service_default']
 #
-# [*amqp_ssl_key_password*]
-#   (Optional) Password for decrypting ssl_key_file (if encrypted)
-#   Defaults to $facts['os_service_default'].
-#
 # [*rabbit_use_ssl*]
 #   (Optional) Connect over SSL for RabbitMQ. (boolean value)
 #   Defaults to $facts['os_service_default']
@@ -149,6 +145,12 @@
 #   (string value)
 #   Defaults to $facts['os_service_default']
 #
+# DEPRECATED PARAMETERS
+#
+# [*amqp_ssl_key_password*]
+#   (Optional) Password for decrypting ssl_key_file (if encrypted)
+#   Defaults to undef
+#
 # == Examples
 #
 # == Authors
@@ -179,7 +181,6 @@ class swift::proxy::ceilometer(
   $notification_ssl_ca_file           = $facts['os_service_default'],
   $notification_ssl_cert_file         = $facts['os_service_default'],
   $notification_ssl_key_file          = $facts['os_service_default'],
-  $amqp_ssl_key_password              = $facts['os_service_default'],
   $rabbit_use_ssl                     = $facts['os_service_default'],
   $kombu_ssl_version                  = $facts['os_service_default'],
   $rabbit_ha_queues                   = $facts['os_service_default'],
@@ -191,10 +192,17 @@ class swift::proxy::ceilometer(
   $kombu_reconnect_delay              = $facts['os_service_default'],
   $kombu_failover_strategy            = $facts['os_service_default'],
   $kombu_compression                  = $facts['os_service_default'],
+  # DEPRECATED PARAMETERS
+  $amqp_ssl_key_password              = undef
 ) inherits swift {
 
   include swift::deps
   include swift::params
+
+  # TODO(tkajinam): Remove this after 2025.1 release
+  if $amqp_ssl_key_password != undef {
+    warning('The amqp_ssl_key_password parameter has been deprecated and has no effect.')
+  }
 
   Package['python-ceilometermiddleware'] ~> Service<| title == 'swift-proxy-server' |>
 
@@ -254,19 +262,11 @@ class swift::proxy::ceilometer(
       kombu_failover_strategy     => $kombu_failover_strategy,
       kombu_compression           => $kombu_compression,
     }
-    oslo::messaging::amqp { 'swift_ceilometer_config': }
-
   } elsif $default_transport_url =~ /^amqp.*/ {
-    oslo::messaging::rabbit { 'swift_ceilometer_config': }
-    oslo::messaging::amqp { 'swift_ceilometer_config':
-      ssl_ca_file      => $notification_ssl_ca_file,
-      ssl_cert_file    => $notification_ssl_cert_file,
-      ssl_key_file     => $notification_ssl_key_file,
-      ssl_key_password => $amqp_ssl_key_password,
-    }
+    # TODO(tkajinam): Remove this check after 2025.1 release
+    fail('apqm1 driver support has been removed.')
   } else {
     oslo::messaging::rabbit { 'swift_ceilometer_config': }
-    oslo::messaging::amqp { 'swift_ceilometer_config': }
   }
 
   package { 'python-ceilometermiddleware':

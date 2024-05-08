@@ -93,7 +93,6 @@ describe 'swift::proxy::ceilometer' do
         :kombu_failover_strategy     => '<SERVICE DEFAULT>',
         :kombu_compression           => '<SERVICE DEFAULT>',
       )}
-      it { is_expected.to contain_oslo__messaging__amqp('swift_ceilometer_config') }
 
       context 'with overridden rabbit ssl params' do
         before do
