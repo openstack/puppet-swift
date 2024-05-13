@@ -182,7 +182,10 @@ class swift::objectexpirer(
   }
 
   swift_object_expirer_config {
-    'filter:proxy-logging/use': value => 'egg:swift#proxy_logging'
+    'app:proxy-server/use':     value => 'egg:swift#proxy';
+    'filter:proxy-logging/use': value => 'egg:swift#proxy_logging';
+    'filter:catch_errors/use':  value => 'egg:swift#catch_errors';
+    'filter:cache/use':         value => 'egg:swift#memcache';
   }
 
   swift_object_expirer_config {
