@@ -1,0 +1,5 @@
+---
+features:
+  - |
+    The new ``log_name_per_daemon`` parameter has been added to
+    the ``swift::storage::all`` class.

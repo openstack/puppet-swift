@@ -43,6 +43,11 @@
 #    (optional) Log level.
 #    Defaults to 'INFO'.
 #
+#  [*log_name_per_daemon*]
+#    (optional) Set log_name according differently for each daemon
+#    For example: container-replicator, contaier-sharder, etc.
+#    Defaults to false.
+#
 #  [*log_udp_host*]
 #    (optional) If not set, the UDP receiver for syslog is disabled.
 #    Defaults to undef.
@@ -51,10 +56,10 @@
 #    (optional) Port value for UDP receiver, if enabled.
 #    Defaults to undef.
 #
-# [*log_requests*]
-#   (optional) Whether or not log every request. reduces logging output if false,
-#   good for seeing errors if true
-#   Defaults to true.
+#  [*log_requests*]
+#    (optional) Whether or not log every request. reduces logging output if false,
+#    good for seeing errors if true
+#    Defaults to true.
 #
 # [*max_connections*]
 #   (optional) maximum number of simultaneous connections allowed for rsync.
@@ -147,6 +152,7 @@ class swift::storage::all(
   $mount_check                    = true,
   $log_facility                   = 'LOG_LOCAL2',
   $log_level                      = 'INFO',
+  Boolean $log_name_per_daemon    = false,
   $log_udp_host                   = undef,
   $log_udp_port                   = undef,
   $log_requests                   = true,
@@ -202,6 +208,7 @@ from 6002 to 6202 and will be changed in a later release")
     storage_local_net_ip           => $storage_local_net_ip,
     mount_check                    => $mount_check,
     log_level                      => $log_level,
+    log_name_per_daemon            => $log_name_per_daemon,
     log_facility                   => $log_facility,
     log_udp_host                   => $log_udp_host,
     log_udp_port                   => $log_udp_port,
