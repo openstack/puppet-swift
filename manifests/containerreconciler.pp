@@ -164,6 +164,13 @@ class swift::containerreconciler(
   }
 
   swift_container_reconciler_config {
+    'app:proxy-server/use':     value => 'egg:swift#proxy';
+    'filter:proxy-logging/use': value => 'egg:swift#proxy_logging';
+    'filter:catch_errors/use':  value => 'egg:swift#catch_errors';
+    'filter:cache/use':         value => 'egg:swift#memcache';
+  }
+
+  swift_container_reconciler_config {
     'pipeline:main/pipeline':             value => join($pipeline, ' ');
     'container-reconciler/interval':      value => $interval;
     'container-reconciler/concurrency':   value => $concurrency;
