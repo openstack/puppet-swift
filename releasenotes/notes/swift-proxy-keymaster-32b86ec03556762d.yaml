@@ -1,0 +1,5 @@
+---
+features:
+  - |
+    A new class ``swift::proxy::keymaster`` has been added. This supports the
+    configuration of swift-proxy keymaster middleware.
