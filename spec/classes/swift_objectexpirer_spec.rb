@@ -12,6 +12,13 @@ describe 'swift::objectexpirer' do
 
   shared_examples 'swift::objectexpirer' do
     context 'with defaults' do
+      it { is_expected.to contain_file('/etc/swift/object-expirer.conf').with(
+        :ensure => 'file',
+        :owner  => 'root',
+        :group  => 'swift',
+        :mode   => '0640',
+      )}
+
       it 'configures object-expirer.conf' do
         is_expected.to contain_swift_object_expirer_config(
           'pipeline:main/pipeline').with_value('catch_errors proxy-logging cache proxy-server')

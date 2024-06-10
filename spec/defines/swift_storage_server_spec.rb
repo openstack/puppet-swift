@@ -58,8 +58,8 @@ describe 'swift::storage::server' do
       )}
 
       it { is_expected.to contain_file('/etc/swift/account-server.conf').with(
-        :ensure => 'present',
-        :owner  => 'swift',
+        :ensure => 'file',
+        :owner  => 'root',
         :group  => 'swift',
         :mode   => '0640',
         :tag    => 'swift-config-file'
@@ -241,8 +241,15 @@ describe 'swift::storage::server' do
       )}
 
       it { is_expected.to contain_file('/etc/swift/container-server.conf').with(
-        :ensure => 'present',
-        :owner  => 'swift',
+        :ensure => 'file',
+        :owner  => 'root',
+        :group  => 'swift',
+        :mode   => '0640',
+        :tag    => 'swift-config-file'
+      )}
+      it { is_expected.to contain_file('/etc/swift/container-sync-realms.conf').with(
+        :ensure => 'file',
+        :owner  => 'root',
         :group  => 'swift',
         :mode   => '0640',
         :tag    => 'swift-config-file'
@@ -435,8 +442,8 @@ describe 'swift::storage::server' do
       )}
 
       it { is_expected.to contain_file('/etc/swift/object-server.conf').with(
-        :ensure => 'present',
-        :owner  => 'swift',
+        :ensure => 'file',
+        :owner  => 'root',
         :group  => 'swift',
         :mode   => '0640',
         :tag    => 'swift-config-file'

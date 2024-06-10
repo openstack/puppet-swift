@@ -4,17 +4,11 @@ describe 'swift::memcache' do
   shared_examples 'swift::memcache' do
 
     describe 'when using default parameters' do
-
-      let :file_defaults do
-        {
-          :owner   => 'swift',
-          :group   => 'swift',
-          :mode    => '0640',
-        }
-      end
-
-      it {is_expected.to contain_file('/etc/swift/memcache.conf').with(
-         {:ensure => 'file'}.merge(file_defaults)
+      it { is_expected.to contain_file('/etc/swift/memcache.conf').with(
+        :ensure => 'file',
+        :owner  => 'root',
+        :group  => 'swift',
+        :mode   => '0640',
       )}
 
       it { is_expected.to contain_swift_memcache_config(

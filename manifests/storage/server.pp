@@ -407,8 +407,8 @@ define swift::storage::server(
       %>"), ',')
 
   file { $config_file_full_path:
-    ensure => present,
-    owner  => pick($owner, $::swift::params::user),
+    ensure => 'file',
+    owner  => 'root',
     group  => pick($group, $::swift::params::group),
     mode   => '0640',
     tag    => 'swift-config-file',
@@ -553,6 +553,15 @@ define swift::storage::server(
           'container-sharder/log_name'    => {'ensure' => absent},
         }
       }
+
+      file { '/etc/swift/container-sync-realms.conf':
+        ensure => 'file',
+        owner  => 'root',
+        group  => pick($group, $::swift::params::group),
+        mode   => '0640',
+        tag    => 'swift-config-file',
+      }
+      File['/etc/swift/container-sync-realms.conf'] -> Swift_container_sync_realms_config<||>
     }
     'object': {
       $type_opts = {

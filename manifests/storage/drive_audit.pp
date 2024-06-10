@@ -130,6 +130,17 @@ class swift::storage::drive_audit(
     purge => $purge_config,
   }
 
+  file { '/etc/swift/drive-audit.conf':
+    ensure  => 'file',
+    owner   => 'root',
+    group   => $::swift::params::group,
+    mode    => '0640',
+    require => Anchor['swift::config::begin'],
+    before  => Anchor['swift::config::end']
+  }
+  File['/etc/swift/drive-audit.conf'] -> Swift_drive_audit_config<||>
+
+
   swift_drive_audit_config {
     'drive-audit/log_name'    : value => $log_name;
     'drive-audit/log_facility': value => $log_facility;

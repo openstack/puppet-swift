@@ -12,6 +12,13 @@ describe 'swift::containerreconciler' do
 
   shared_examples 'swift::container::reconciler' do
     context 'with defaults' do
+      it { is_expected.to contain_file('/etc/swift/container-reconciler.conf').with(
+        :ensure => 'file',
+        :owner  => 'root',
+        :group  => 'swift',
+        :mode   => '0640',
+      )}
+
       it 'configures container-reconciler.conf' do
         is_expected.to contain_swift_container_reconciler_config(
           'pipeline:main/pipeline').with_value('catch_errors proxy-logging cache proxy-server')

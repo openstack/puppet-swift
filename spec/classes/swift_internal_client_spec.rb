@@ -12,6 +12,13 @@ describe 'swift::internal_client' do
     end
 
     context 'with defaults' do
+      it { is_expected.to contain_file('/etc/swift/internal-client.conf').with(
+        :ensure => 'file',
+        :owner  => 'root',
+        :group  => 'swift',
+        :mode   => '0640',
+      )}
+
       it 'should configure default values' do
         should contain_swift_internal_client_config('DEFAULT/user').with_value('swift')
         should contain_swift_internal_client_config('pipeline:main/pipeline').with_value('catch_errors proxy-logging cache proxy-server')

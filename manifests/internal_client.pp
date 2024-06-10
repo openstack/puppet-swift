@@ -65,6 +65,7 @@ class swift::internal_client (
 ) inherits swift::params {
 
   include swift::deps
+  include swift::params
 
   if $pipeline[-1] != 'proxy-server' {
     fail('proxy-server must be the last element in pipeline')
@@ -73,6 +74,16 @@ class swift::internal_client (
   resources { 'swift_internal_client_config':
     purge => $purge_config,
   }
+
+  file { '/etc/swift/internal-client.conf':
+    ensure  => 'file',
+    owner   => 'root',
+    group   => $::swift::params::group,
+    mode    => '0640',
+    require => Anchor['swift::config::begin'],
+    before  => Anchor['swift::config::end']
+  }
+  File['/etc/swift/internal-client.conf'] -> Swift_internal_client_config<||>
 
   swift_internal_client_config {
     'DEFAULT/user':                               value => $user;
