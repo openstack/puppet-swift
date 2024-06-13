@@ -17,6 +17,7 @@ describe 'swift::keymaster' do
         is_expected.to contain_swift_keymaster_config('kms_keymaster/project_name').with_value('services')
         is_expected.to contain_swift_keymaster_config('kms_keymaster/project_id').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_swift_keymaster_config('kms_keymaster/auth_endpoint').with_value('<SERVICE DEFAULT>')
+        is_expected.to contain_swift_keymaster_config('kms_keymaster/barbican_endpoint').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_swift_keymaster_config('kms_keymaster/project_domain_name').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_swift_keymaster_config('kms_keymaster/user_domain_name').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_swift_keymaster_config('kms_keymaster/project_domain_id').with_value('default')
@@ -31,6 +32,7 @@ describe 'swift::keymaster' do
           :api_class             => 'castellan.key_manager.barbican_key_manager.BarbicanKeyManager',
           :key_id                => 'dummy_key_id',
           :auth_endpoint         => 'http://127.0.0.1:5000',
+          :barbican_endpoint     => 'https://barbican.example.com/keymaster',
           :project_name          => 'barbican_swift_service',
           :project_domain_name   => 'Default',
           :user_domain_name      => 'Default',
@@ -43,6 +45,7 @@ describe 'swift::keymaster' do
         is_expected.to contain_swift_keymaster_config('kms_keymaster/key_id').with_value('dummy_key_id')
         is_expected.to contain_swift_keymaster_config('kms_keymaster/project_name').with_value('barbican_swift_service')
         is_expected.to contain_swift_keymaster_config('kms_keymaster/auth_endpoint').with_value('http://127.0.0.1:5000')
+        is_expected.to contain_swift_keymaster_config('kms_keymaster/barbican_endpoint').with_value('https://barbican.example.com/keymaster')
         is_expected.to contain_swift_keymaster_config('kms_keymaster/project_domain_name').with_value('Default')
         is_expected.to contain_swift_keymaster_config('kms_keymaster/user_domain_name').with_value('Default')
         is_expected.to contain_swift_keymaster_config('kms_keymaster/meta_version_to_write').with_value('3')

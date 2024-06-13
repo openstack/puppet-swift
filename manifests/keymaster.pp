@@ -40,6 +40,13 @@
 #   auth_url may be set according to the value of auth_uri in
 #   [filter:authtoken] in proxy-server.conf.
 #
+# [*barbican_endpoint*]
+#   (Optional) String. Endpoint of the barbican service. This is useful in
+#   a multi-region cluster, where Castellan otherwise doesn't know in what
+#   region is the key. If there is only a single region in the deployment,
+#   this value can be set to default.
+#   Defaults to $facts['os_service_default'].
+#
 # [*project_domain_name*]
 #   (Optional) String. The project domain name may optionally be specified.
 #
@@ -76,6 +83,7 @@ class swift::keymaster(
   $project_name          = 'services',
   $project_id            = $facts['os_service_default'],
   $auth_endpoint         = $facts['os_service_default'],
+  $barbican_endpoint     = $facts['os_service_default'],
   $project_domain_name   = $facts['os_service_default'],
   $user_domain_name      = $facts['os_service_default'],
   $project_domain_id     = 'default',
@@ -93,6 +101,7 @@ class swift::keymaster(
     'kms_keymaster/project_name':          value => $project_name;
     'kms_keymaster/project_id':            value => $project_id;
     'kms_keymaster/auth_endpoint':         value => $auth_endpoint;
+    'kms_keymaster/barbican_endpoint':     value => $barbican_endpoint;
     'kms_keymaster/project_domain_name':   value => $project_domain_name;
     'kms_keymaster/user_domain_name':      value => $user_domain_name;
     'kms_keymaster/project_domain_id':     value => $project_domain_id;
