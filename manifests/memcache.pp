@@ -85,11 +85,14 @@ class swift::memcache (
   }
 
   file { '/etc/swift/memcache.conf':
-    ensure => file,
-    owner  => $::swift::params::user,
-    group  => $::swift::params::group,
-    mode   => '0640',
+    ensure  => 'file',
+    owner   => 'root',
+    group   => $::swift::params::group,
+    mode    => '0640',
+    require => Anchor['swift::config::begin'],
+    before  => Anchor['swift::config::end']
   }
+  File['/etc/swift/memcache.conf'] -> Swift_memcache_config<||>
 
   swift_memcache_config {
     'memcache/memcache_servers':               value => join(any2array($memcache_servers), ',');

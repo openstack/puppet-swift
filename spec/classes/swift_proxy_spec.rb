@@ -46,6 +46,13 @@ describe 'swift::proxy' do
           :tag       => ['swift-service', 'swift-proxy-service'],
         )}
 
+        it { is_expected.to contain_file('/etc/swift/proxy-server.conf').with(
+          :ensure => 'file',
+          :owner  => 'root',
+          :group  => 'swift',
+          :mode   => '0640',
+        )}
+
         it { should contain_service('swift-proxy-server').that_subscribes_to('Anchor[swift::service::begin]') }
         it { should contain_service('swift-proxy-server').that_notifies('Anchor[swift::service::end]') }
         it { should contain_swift_proxy_config('DEFAULT/bind_port').with_value('8080') }

@@ -152,6 +152,16 @@ class swift::objectexpirer(
     purge => $purge_config,
   }
 
+  file { '/etc/swift/object-expirer.conf':
+    ensure  => 'file',
+    owner   => 'root',
+    group   => $::swift::params::group,
+    mode    => '0640',
+    require => Anchor['swift::config::begin'],
+    before  => Anchor['swift::config::end']
+  }
+  File['/etc/swift/object-expirer.conf'] -> Swift_object_expirer_config<||>
+
   if $pipeline[-1] != 'proxy-server' {
     fail('proxy-server must be the last element in pipeline')
   }

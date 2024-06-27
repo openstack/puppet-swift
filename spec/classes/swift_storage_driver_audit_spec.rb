@@ -4,6 +4,13 @@ describe 'swift::storage::drive_audit' do
   shared_examples 'swift::storage::drive_audit' do
 
     context 'with defaults' do
+      it { is_expected.to contain_file('/etc/swift/drive-audit.conf').with(
+        :ensure => 'file',
+        :owner  => 'root',
+        :group  => 'swift',
+        :mode   => '0640',
+      )}
+
       it 'should configure default values' do
         should contain_swift_drive_audit_config('drive-audit/log_name').with_value('drive-audit')
         should contain_swift_drive_audit_config('drive-audit/log_facility').with_value('LOG_LOCAL2')
@@ -51,6 +58,13 @@ describe 'swift::storage::drive_audit' do
           :regex_pattern         => {'1' => 'pattern1', '2' => 'pattern2'},
         }
       end
+
+      it { is_expected.to contain_file('/etc/swift/drive-audit.conf').with(
+        :ensure => 'file',
+        :owner  => 'root',
+        :group  => 'swift',
+        :mode   => '0640',
+      )}
 
       it 'should configure the given values' do
         should contain_swift_drive_audit_config('drive-audit/user').with_value('alt_swift')

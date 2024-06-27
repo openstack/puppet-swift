@@ -92,6 +92,17 @@ class swift::keymaster(
 ) {
 
   include swift::deps
+  include swift::params
+
+  file { '/etc/swift/keymaster.conf':
+    ensure  => 'file',
+    owner   => 'root',
+    group   => $::swift::params::group,
+    mode    => '0640',
+    require => Anchor['swift::config::begin'],
+    before  => Anchor['swift::config::end']
+  }
+  File['/etc/swift/keymaster.conf'] -> Swift_keymaster_config<||>
 
   swift_keymaster_config {
     'kms_keymaster/api_class':             value => $api_class;

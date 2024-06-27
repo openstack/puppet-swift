@@ -138,6 +138,16 @@ class swift::containerreconciler(
     purge => $purge_config,
   }
 
+  file { '/etc/swift/container-reconciler.conf':
+    ensure  => 'file',
+    owner   => 'root',
+    group   => $::swift::params::group,
+    mode    => '0640',
+    require => Anchor['swift::config::begin'],
+    before  => Anchor['swift::config::end']
+  }
+  File['/etc/swift/container-reconciler.conf'] -> Swift_container_reconciler_config<||>
+
   # only add memcache servers if 'cache' is included in the pipeline
   if !empty(grep(any2array($pipeline), 'cache')) {
 

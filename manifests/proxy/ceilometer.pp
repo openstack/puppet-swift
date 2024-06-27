@@ -215,8 +215,8 @@ class swift::proxy::ceilometer(
   }
 
   file { '/etc/swift/ceilometer.conf':
-    ensure  => present,
-    owner   => $::swift::params::user,
+    ensure  => 'file',
+    owner   => 'root',
     group   => $::swift::params::group,
     mode    => '0640',
     require => Anchor['swift::config::begin'],

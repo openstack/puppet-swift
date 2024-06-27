@@ -34,8 +34,8 @@ describe 'swift::proxy::ceilometer' do
       )}
 
       it { is_expected.to contain_file('/etc/swift/ceilometer.conf').with(
-        :ensure => 'present',
-        :owner  => 'swift',
+        :ensure => 'file',
+        :owner  => 'root',
         :group  => 'swift',
         :mode   => '0640',
       )}

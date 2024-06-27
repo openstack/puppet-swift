@@ -9,6 +9,13 @@ describe 'swift::keymaster' do
     end
 
     context "when using default parameters" do
+      it { is_expected.to contain_file('/etc/swift/keymaster.conf').with(
+        :ensure => 'file',
+        :owner  => 'root',
+        :group  => 'swift',
+        :mode   => '0640',
+      )}
+
       it 'configures keymaster options' do
         is_expected.to contain_swift_keymaster_config('kms_keymaster/api_class').with_value('barbican')
         is_expected.to contain_swift_keymaster_config('kms_keymaster/key_id').with_value('<SERVICE DEFAULT>')

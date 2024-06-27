@@ -225,11 +225,21 @@ class swift::proxy(
     purge => $purge_config,
   }
 
+  file { '/etc/swift/proxy-server.conf':
+    ensure  => 'file',
+    owner   => 'root',
+    group   => $::swift::params::group,
+    mode    => '0640',
+    require => Anchor['swift::config::begin'],
+    before  => Anchor['swift::config::end']
+  }
+  File['/etc/swift/proxy-server.conf'] -> Swift_proxy_config<||>
+
   swift_proxy_config {
     'DEFAULT/bind_port':                           value => $port;
     'DEFAULT/bind_ip':                             value => $proxy_local_net_ip;
     'DEFAULT/workers':                             value => $workers;
-    'DEFAULT/user':                                value => 'swift';
+    'DEFAULT/user':                                value => $::swift::params::user;
     'DEFAULT/log_name':                            value => $log_name;
     'DEFAULT/log_facility':                        value => $log_facility;
     'DEFAULT/log_level':                           value => $log_level;
