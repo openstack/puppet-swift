@@ -1,0 +1,4 @@
+---
+features:
+  - |
+    The new ``swift::proxy::allow_open_expired`` parameter has been added.

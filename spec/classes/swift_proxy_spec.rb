@@ -87,6 +87,7 @@ describe 'swift::proxy' do
         it { should contain_swift_proxy_config('app:proxy-server/write_affinity_node_count').with_value('<SERVICE DEFAULT>') }
         it { should contain_swift_proxy_config('app:proxy-server/node_timeout').with_value('<SERVICE DEFAULT>') }
         it { should contain_swift_proxy_config('app:proxy-server/recoverable_node_timeout').with_value('<SERVICE DEFAULT>') }
+        it { should contain_swift_proxy_config('app:proxy-server/allow_open_expired').with_value('<SERVICE DEFAULT>') }
         it { should contain_swift_proxy_config('DEFAULT/cors_allow_origin').with_value('<SERVICE DEFAULT>') }
         it { should contain_swift_proxy_config('DEFAULT/strict_cors_mode').with_value('<SERVICE DEFAULT>') }
 
@@ -149,6 +150,7 @@ describe 'swift::proxy' do
               :keepalive_timeout          => '121',
               :node_timeout               => '20',
               :recoverable_node_timeout   => '15',
+              :allow_open_expired         => false,
               :cors_allow_origin          => ['http://foo.bar:1234', 'https://foo.bar'],
               :strict_cors_mode           => true
             }
@@ -184,6 +186,7 @@ describe 'swift::proxy' do
           it { should contain_swift_proxy_config('app:proxy-server/write_affinity_node_count').with_value('2 * replicas') }
           it { should contain_swift_proxy_config('app:proxy-server/node_timeout').with_value('20') }
           it { should contain_swift_proxy_config('app:proxy-server/recoverable_node_timeout').with_value('15') }
+          it { should contain_swift_proxy_config('app:proxy-server/allow_open_expired').with_value(false) }
           it { should contain_swift_proxy_config('DEFAULT/cors_allow_origin').with_value('http://foo.bar:1234,https://foo.bar') }
           it { should contain_swift_proxy_config('DEFAULT/strict_cors_mode').with_value('true') }
         end

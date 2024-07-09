@@ -107,6 +107,11 @@
 #    (optional) Configures recoverable_node_timeout for swift proxy-server
 #    Defaults to $facts['os_service_default'].
 #
+#  [*allow_open_expired*]
+#    (optional) Allow access to an object that has expired but not yet been
+#    reaped, by setting the x-open-expired header.
+#    Defaults to $facts['os_service_default'].
+#
 #  [*enabled*]
 #    (optional) Should the service be enabled.
 #    Defaults to true
@@ -184,6 +189,7 @@ class swift::proxy(
   $keepalive_timeout                       = $facts['os_service_default'],
   $node_timeout                            = $facts['os_service_default'],
   $recoverable_node_timeout                = $facts['os_service_default'],
+  $allow_open_expired                      = $facts['os_service_default'],
   Boolean $manage_service                  = true,
   Boolean $enabled                         = true,
   $package_ensure                          = 'present',
@@ -264,6 +270,7 @@ class swift::proxy(
     'app:proxy-server/max_containers_whitelist':   value => $max_containers_whitelist;
     'app:proxy-server/node_timeout':               value => $node_timeout;
     'app:proxy-server/recoverable_node_timeout':   value => $recoverable_node_timeout;
+    'app:proxy-server/allow_open_expired':         value => $allow_open_expired;
   }
 
   swift_proxy_config {
