@@ -1,0 +1,4 @@
+---
+features:
+  - |
+    The new ``swift::proxy::cors_expose_headers`` parameter has been added.

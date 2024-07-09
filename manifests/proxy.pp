@@ -123,15 +123,20 @@
 #    Configures log_name for swift proxy-server.
 #    Optional. Defaults to proxy-server
 #
-# [*cors_allow_origin*]
-#   (optional) Origins to be allowed to make Cross Origin Requests.
-#   A comma separated list of full url (http://foo.bar:1234,https://foo.bar)
-#   Defaults to $facts['os_service_default'].
+#  [*cors_allow_origin*]
+#    (optional) Origins to be allowed to make Cross Origin Requests.
+#    A comma separated list of full url (http://foo.bar:1234,https://foo.bar)
+#    Defaults to $facts['os_service_default'].
 #
-# [*strict_cors_mode*]
-#   (optional) If True (default) then CORS requests are only allowed if their
-#   Origin header matches an allowed origin. Otherwise, any Origin is allowed.
-#   Defaults to $facts['os_service_default'].
+#  [*strict_cors_mode*]
+#    (optional) If True (default) then CORS requests are only allowed if their
+#    Origin header matches an allowed origin. Otherwise, any Origin is allowed.
+#    Defaults to $facts['os_service_default'].
+#
+#  [*cors_expose_headers*]
+#    (optional) List of headers to expose through Access-Control-Expose-Headers,
+#    in addition to the defaults and any headers set in container metadata.
+#    Defaults to $facts['os_service_default'].
 #
 #  [*service_provider*]
 #    (optional)
@@ -173,6 +178,7 @@ class swift::proxy(
   $log_name                                = 'proxy-server',
   $cors_allow_origin                       = $facts['os_service_default'],
   $strict_cors_mode                        = $facts['os_service_default'],
+  $cors_expose_headers                     = $facts['os_service_default'],
   $object_chunk_size                       = $facts['os_service_default'],
   $client_chunk_size                       = $facts['os_service_default'],
   $max_containers_per_account              = $facts['os_service_default'],
@@ -267,8 +273,9 @@ class swift::proxy(
   }
 
   swift_proxy_config {
-    'DEFAULT/cors_allow_origin': value => join(any2array($cors_allow_origin), ',');
-    'DEFAULT/strict_cors_mode':  value => $strict_cors_mode;
+    'DEFAULT/cors_allow_origin':   value => join(any2array($cors_allow_origin), ',');
+    'DEFAULT/strict_cors_mode':    value => $strict_cors_mode;
+    'DEFAULT/cors_expose_headers': value => join(any2array($cors_expose_headers), ',');
   }
 
   if $write_affinity {
