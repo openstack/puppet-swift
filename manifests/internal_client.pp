@@ -30,7 +30,7 @@
 #
 #  [*write_affinity*]
 #    (optional) Configures the write affinity of internal client.
-#    Defaults to $facts['os_service_default'].
+#    Defaults to undef.
 #
 #  [*write_affinity_node_count*]
 #    (optional) Configures write_affinity_node_count for internal client.
@@ -61,7 +61,7 @@ class swift::internal_client (
   $client_chunk_size                             = $facts['os_service_default'],
   Optional[Swift::SortingMethod] $sorting_method = undef,
   $read_affinity                                 = undef,
-  $write_affinity                                = $facts['os_service_default'],
+  $write_affinity                                = undef,
   $write_affinity_node_count                     = $facts['os_service_default'],
   $client_timeout                                = $facts['os_service_default'],
   $node_timeout                                  = $facts['os_service_default'],
@@ -97,18 +97,30 @@ class swift::internal_client (
     'app:proxy-server/account_autocreate':        value => true;
     'app:proxy-server/object_chunk_size':         value => $object_chunk_size;
     'app:proxy-server/client_chunk_size':         value => $client_chunk_size;
-    'app:proxy-server/write_affinity':            value => $write_affinity;
-    'app:proxy-server/write_affinity_node_count': value => $write_affinity_node_count;
     'app:proxy-server/client_timeout':            value => $client_timeout;
     'app:proxy-server/node_timeout':              value => $node_timeout;
     'app:proxy-server/recoverable_node_timeout':  value => $recoverable_node_timeout;
+  }
+
+  if $write_affinity {
+    swift_internal_client_config {
+      'app:proxy-server/write_affinity':            value => $write_affinity;
+      'app:proxy-server/write_affinity_node_count': value => $write_affinity_node_count;
+    }
+  } else {
+    if !is_service_default($write_affinity_node_count) {
+      fail('Usage of write_affinity_node_count requires write_affinity to be set')
+    }
+    swift_internal_client_config {
+      'app:proxy-server/write_affinity':            value => $facts['os_service_default'];
+      'app:proxy-server/write_affinity_node_count': value => $facts['os_service_default'];
+    }
   }
 
   if $read_affinity {
     if $sorting_method and $sorting_method != 'affinity' {
       fail('sorting_method should be \'affinity\' to use read affinity')
     }
-
     swift_internal_client_config {
       'app:proxy-server/sorting_method': value => 'affinity';
       'app:proxy-server/read_affinity':  value => $read_affinity;

@@ -210,10 +210,6 @@ class swift::proxy(
 
   include swift::deps
 
-  if (!is_service_default($write_affinity_node_count) and !$write_affinity) {
-    fail('Usage of write_affinity_node_count requires write_affinity to be set')
-  }
-
   if(member($pipeline, 'tempauth')) {
     $auth_type = 'tempauth'
   } elsif(member($pipeline, 'swauth')) {
@@ -296,6 +292,9 @@ class swift::proxy(
       'app:proxy-server/write_affinity_node_count': value => $write_affinity_node_count;
     }
   } else {
+    if !is_service_default($write_affinity_node_count) {
+      fail('Usage of write_affinity_node_count requires write_affinity to be set')
+    }
     swift_proxy_config {
       'app:proxy-server/write_affinity':            value => $facts['os_service_default'];
       'app:proxy-server/write_affinity_node_count': value => $facts['os_service_default'];
@@ -306,7 +305,6 @@ class swift::proxy(
     if $sorting_method and $sorting_method != 'affinity' {
       fail('sorting_method should be \'affinity\' to use read affinity')
     }
-
     swift_proxy_config {
       'app:proxy-server/sorting_method': value => 'affinity';
       'app:proxy-server/read_affinity':  value => $read_affinity;
