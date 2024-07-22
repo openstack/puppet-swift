@@ -20,6 +20,10 @@
 #    (optional) Chunk size to read from clients.
 #    Defaults to $facts['os_service_default'].
 #
+#  [*sorting_method*]
+#    (optional) Method to chose storage nodes during GET and HEAD requests.
+#    Defaults to undef.
+#
 #  [*read_affinity*]
 #    (optional) Configures the read affinity of internal client.
 #    Defaults to undef.
@@ -51,17 +55,18 @@
 #    Defaults to false.
 #
 class swift::internal_client (
-  $user                      = $::swift::params::user,
-  Swift::Pipeline $pipeline  = ['catch_errors', 'proxy-logging', 'cache', 'proxy-server'],
-  $object_chunk_size         = $facts['os_service_default'],
-  $client_chunk_size         = $facts['os_service_default'],
-  $read_affinity             = undef,
-  $write_affinity            = $facts['os_service_default'],
-  $write_affinity_node_count = $facts['os_service_default'],
-  $client_timeout            = $facts['os_service_default'],
-  $node_timeout              = $facts['os_service_default'],
-  $recoverable_node_timeout  = $facts['os_service_default'],
-  Boolean $purge_config      = false,
+  $user                                          = $::swift::params::user,
+  Swift::Pipeline $pipeline                      = ['catch_errors', 'proxy-logging', 'cache', 'proxy-server'],
+  $object_chunk_size                             = $facts['os_service_default'],
+  $client_chunk_size                             = $facts['os_service_default'],
+  Optional[Swift::SortingMethod] $sorting_method = undef,
+  $read_affinity                                 = undef,
+  $write_affinity                                = $facts['os_service_default'],
+  $write_affinity_node_count                     = $facts['os_service_default'],
+  $client_timeout                                = $facts['os_service_default'],
+  $node_timeout                                  = $facts['os_service_default'],
+  $recoverable_node_timeout                      = $facts['os_service_default'],
+  Boolean $purge_config                          = false,
 ) inherits swift::params {
 
   include swift::deps
@@ -100,13 +105,17 @@ class swift::internal_client (
   }
 
   if $read_affinity {
+    if $sorting_method and $sorting_method != 'affinity' {
+      fail('sorting_method should be \'affinity\' to use read affinity')
+    }
+
     swift_internal_client_config {
       'app:proxy-server/sorting_method': value => 'affinity';
       'app:proxy-server/read_affinity':  value => $read_affinity;
     }
   } else {
     swift_internal_client_config {
-      'app:proxy-server/sorting_method': value => $facts['os_service_default'];
+      'app:proxy-server/sorting_method': value => pick($sorting_method, $facts['os_service_default']);
       'app:proxy-server/read_affinity':  value => $facts['os_service_default'];
     }
   }

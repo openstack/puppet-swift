@@ -1,0 +1,8 @@
+---
+features:
+  - |
+    The new ``sorting_method`` parameter has been added to the following
+    classes.
+
+    - ``swift::proxy``
+    - ``swift::internal_client``

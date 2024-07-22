@@ -250,7 +250,19 @@ describe 'swift::proxy' do
             should raise_error(Puppet::Error, /write_affinity_node_count requires write_affinity/)
           end
         end
+      end
 
+      context 'with sorting_method' do
+        let :params do
+          {
+            :proxy_local_net_ip => '127.0.0.1',
+            :sorting_method     => 'timing'
+          }
+        end
+
+        it 'should configure the sorting_method option' do
+          should contain_swift_proxy_config('app:proxy-server/sorting_method').with_value('timing')
+        end
       end
     end
   end

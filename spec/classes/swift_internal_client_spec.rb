@@ -64,6 +64,18 @@ describe 'swift::internal_client' do
         should contain_swift_internal_client_config('app:proxy-server/recoverable_node_timeout').with_value('15')
       end
     end
+
+    context 'with sorting_method' do
+      let :params do
+        {
+          :sorting_method => 'timing'
+        }
+      end
+
+      it 'should configure the sorting_method option' do
+        should contain_swift_internal_client_config('app:proxy-server/sorting_method').with_value('timing')
+      end
+    end
   end
 
   on_supported_os({

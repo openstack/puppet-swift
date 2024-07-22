@@ -78,6 +78,10 @@
 #     (optional) This is a comma separated list of account hashes that ignore the max_containers_per_account cap.
 #     Default to $facts['os_service_default'].
 #
+#  [*sorting_method*]
+#    (optional) Method to chose storage nodes during GET and HEAD requests.
+#    Defaults to undef.
+#
 #  [*read_affinity*]
 #    (optional) Configures the read affinity of proxy-server.
 #    Defaults to undef.
@@ -166,41 +170,42 @@
 #
 class swift::proxy(
   $proxy_local_net_ip,
-  $port                                    = '8080',
-  Swift::Pipeline $pipeline                = [
+  $port                                          = '8080',
+  Swift::Pipeline $pipeline                      = [
     'catch_errors', 'gatekeeper', 'healthcheck', 'proxy-logging', 'cache',
     'listing_formats', 'tempauth', 'copy', 'proxy-logging', 'proxy-server'],
-  $workers                                 = $facts['os_workers'],
-  Boolean $allow_account_management        = true,
-  Boolean $account_autocreate              = true,
-  $log_headers                             = $facts['os_service_default'],
-  $log_udp_host                            = $facts['os_service_default'],
-  $log_udp_port                            = $facts['os_service_default'],
-  $log_address                             = '/dev/log',
-  $log_level                               = 'INFO',
-  $log_facility                            = 'LOG_LOCAL2',
-  $log_handoffs                            = $facts['os_service_default'],
-  $log_name                                = 'proxy-server',
-  $cors_allow_origin                       = $facts['os_service_default'],
-  $strict_cors_mode                        = $facts['os_service_default'],
-  $cors_expose_headers                     = $facts['os_service_default'],
-  $object_chunk_size                       = $facts['os_service_default'],
-  $client_chunk_size                       = $facts['os_service_default'],
-  $max_containers_per_account              = $facts['os_service_default'],
-  $max_containers_whitelist                = $facts['os_service_default'],
-  $read_affinity                           = undef,
-  $write_affinity                          = undef,
-  $write_affinity_node_count               = $facts['os_service_default'],
-  $client_timeout                          = $facts['os_service_default'],
-  $keepalive_timeout                       = $facts['os_service_default'],
-  $node_timeout                            = $facts['os_service_default'],
-  $recoverable_node_timeout                = $facts['os_service_default'],
-  $allow_open_expired                      = $facts['os_service_default'],
-  Boolean $manage_service                  = true,
-  Boolean $enabled                         = true,
-  $package_ensure                          = 'present',
-  Swift::ServiceProvider $service_provider = $::swift::params::service_provider,
-  Boolean $purge_config                    = false,
+  $workers                                       = $facts['os_workers'],
+  Boolean $allow_account_management              = true,
+  Boolean $account_autocreate                    = true,
+  $log_headers                                   = $facts['os_service_default'],
+  $log_udp_host                                  = $facts['os_service_default'],
+  $log_udp_port                                  = $facts['os_service_default'],
+  $log_address                                   = '/dev/log',
+  $log_level                                     = 'INFO',
+  $log_facility                                  = 'LOG_LOCAL2',
+  $log_handoffs                                  = $facts['os_service_default'],
+  $log_name                                      = 'proxy-server',
+  $cors_allow_origin                             = $facts['os_service_default'],
+  $strict_cors_mode                              = $facts['os_service_default'],
+  $cors_expose_headers                           = $facts['os_service_default'],
+  $object_chunk_size                             = $facts['os_service_default'],
+  $client_chunk_size                             = $facts['os_service_default'],
+  $max_containers_per_account                    = $facts['os_service_default'],
+  $max_containers_whitelist                      = $facts['os_service_default'],
+  Optional[Swift::SortingMethod] $sorting_method = undef,
+  $read_affinity                                 = undef,
+  $write_affinity                                = undef,
+  $write_affinity_node_count                     = $facts['os_service_default'],
+  $client_timeout                                = $facts['os_service_default'],
+  $keepalive_timeout                             = $facts['os_service_default'],
+  $node_timeout                                  = $facts['os_service_default'],
+  $recoverable_node_timeout                      = $facts['os_service_default'],
+  $allow_open_expired                            = $facts['os_service_default'],
+  Boolean $manage_service                        = true,
+  Boolean $enabled                               = true,
+  $package_ensure                                = 'present',
+  Swift::ServiceProvider $service_provider       = $::swift::params::service_provider,
+  Boolean $purge_config                          = false,
 ) inherits swift::params {
 
   include swift::deps
@@ -298,13 +303,17 @@ class swift::proxy(
   }
 
   if $read_affinity {
+    if $sorting_method and $sorting_method != 'affinity' {
+      fail('sorting_method should be \'affinity\' to use read affinity')
+    }
+
     swift_proxy_config {
       'app:proxy-server/sorting_method': value => 'affinity';
       'app:proxy-server/read_affinity':  value => $read_affinity;
     }
   } else {
     swift_proxy_config {
-      'app:proxy-server/sorting_method': value => $facts['os_service_default'];
+      'app:proxy-server/sorting_method': value => pick($sorting_method, $facts['os_service_default']);
       'app:proxy-server/read_affinity':  value => $facts['os_service_default'];
     }
   }
