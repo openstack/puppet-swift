@@ -1,0 +1,9 @@
+---
+features:
+  - |
+    The following new parameters have been added to the ``swift::proxy`` class
+    and the ``swift::internal_client`` class.
+
+    - ``timing_expiry``
+    - ``request_node_count``
+    - ``write_affinity_handoff_delete_count``

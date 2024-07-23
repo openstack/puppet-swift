@@ -27,9 +27,12 @@ describe 'swift::internal_client' do
         should contain_swift_internal_client_config('app:proxy-server/object_chunk_size').with_value('<SERVICE DEFAULT>')
         should contain_swift_internal_client_config('app:proxy-server/client_chunk_size').with_value('<SERVICE DEFAULT>')
         should contain_swift_internal_client_config('app:proxy-server/sorting_method').with_value('<SERVICE DEFAULT>')
+        should contain_swift_internal_client_config('app:proxy-server/timing_expiry').with_value('<SERVICE DEFAULT>')
+        should contain_swift_internal_client_config('app:proxy-server/request_node_count').with_value('<SERVICE DEFAULT>')
         should contain_swift_internal_client_config('app:proxy-server/read_affinity').with_value('<SERVICE DEFAULT>')
         should contain_swift_internal_client_config('app:proxy-server/write_affinity').with_value('<SERVICE DEFAULT>')
         should contain_swift_internal_client_config('app:proxy-server/write_affinity_node_count').with_value('<SERVICE DEFAULT>')
+        should contain_swift_internal_client_config('app:proxy-server/write_affinity_handoff_delete_count').with_value('<SERVICE DEFAULT>')
         should contain_swift_internal_client_config('app:proxy-server/client_timeout').with_value('<SERVICE DEFAULT>')
         should contain_swift_internal_client_config('app:proxy-server/node_timeout').with_value('<SERVICE DEFAULT>')
         should contain_swift_internal_client_config('app:proxy-server/recoverable_node_timeout').with_value('<SERVICE DEFAULT>')
@@ -39,15 +42,18 @@ describe 'swift::internal_client' do
     context 'with parameters' do
       let :params do
         {
-          :pipeline                   => ['catch_errors', 'proxy-logging', 'proxy-server'],
-          :object_chunk_size          => 65536,
-          :client_chunk_size          => 65535,
-          :read_affinity              => 'r1z1=100, r1=200',
-          :write_affinity             => 'r1',
-          :write_affinity_node_count  => '2 * replicas',
-          :client_timeout             => '120',
-          :node_timeout               => '20',
-          :recoverable_node_timeout   => '15',
+          :pipeline                            => ['catch_errors', 'proxy-logging', 'proxy-server'],
+          :object_chunk_size                   => 65536,
+          :client_chunk_size                   => 65535,
+          :timing_expiry                       => 300,
+          :request_node_count                  => '2 * replicas',
+          :read_affinity                       => 'r1z1=100, r1=200',
+          :write_affinity                      => 'r1',
+          :write_affinity_node_count           => '2 * replicas',
+          :write_affinity_handoff_delete_count => 'auto',
+          :client_timeout                      => '120',
+          :node_timeout                        => '20',
+          :recoverable_node_timeout            => '15',
         }
       end
 
@@ -56,9 +62,12 @@ describe 'swift::internal_client' do
         should contain_swift_internal_client_config('app:proxy-server/object_chunk_size').with_value(65536)
         should contain_swift_internal_client_config('app:proxy-server/client_chunk_size').with_value(65535)
         should contain_swift_internal_client_config('app:proxy-server/sorting_method').with_value('affinity')
+        should contain_swift_internal_client_config('app:proxy-server/timing_expiry').with_value(300)
+        should contain_swift_internal_client_config('app:proxy-server/request_node_count').with_value('2 * replicas')
         should contain_swift_internal_client_config('app:proxy-server/read_affinity').with_value('r1z1=100, r1=200')
         should contain_swift_internal_client_config('app:proxy-server/write_affinity').with_value('r1')
         should contain_swift_internal_client_config('app:proxy-server/write_affinity_node_count').with_value('2 * replicas')
+        should contain_swift_internal_client_config('app:proxy-server/write_affinity_handoff_delete_count').with_value('auto')
         should contain_swift_internal_client_config('app:proxy-server/client_timeout').with_value('120')
         should contain_swift_internal_client_config('app:proxy-server/node_timeout').with_value('20')
         should contain_swift_internal_client_config('app:proxy-server/recoverable_node_timeout').with_value('15')

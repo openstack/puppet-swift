@@ -83,8 +83,11 @@ describe 'swift::proxy' do
         it { should contain_swift_proxy_config('app:proxy-server/account_autocreate').with_value('true') }
         it { should contain_swift_proxy_config('app:proxy-server/max_containers_per_account').with_value('<SERVICE DEFAULT>') }
         it { should contain_swift_proxy_config('app:proxy-server/max_containers_whitelist').with_value('<SERVICE DEFAULT>') }
+        it { should contain_swift_proxy_config('app:proxy-server/timing_expiry').with_value('<SERVICE DEFAULT>') }
+        it { should contain_swift_proxy_config('app:proxy-server/request_node_count').with_value('<SERVICE DEFAULT>') }
         it { should contain_swift_proxy_config('app:proxy-server/write_affinity').with_value('<SERVICE DEFAULT>') }
         it { should contain_swift_proxy_config('app:proxy-server/write_affinity_node_count').with_value('<SERVICE DEFAULT>') }
+        it { should contain_swift_proxy_config('app:proxy-server/write_affinity_handoff_delete_count').with_value('<SERVICE DEFAULT>') }
         it { should contain_swift_proxy_config('app:proxy-server/node_timeout').with_value('<SERVICE DEFAULT>') }
         it { should contain_swift_proxy_config('app:proxy-server/recoverable_node_timeout').with_value('<SERVICE DEFAULT>') }
         it { should contain_swift_proxy_config('app:proxy-server/allow_open_expired').with_value('<SERVICE DEFAULT>') }
@@ -131,30 +134,33 @@ describe 'swift::proxy' do
 
           let :params do
             {
-              :proxy_local_net_ip         => '10.0.0.2',
-              :port                       => '80',
-              :workers                    => 3,
-              :pipeline                   => ['swauth', 'proxy-server'],
-              :allow_account_management   => false,
-              :account_autocreate         => false,
-              :log_level                  => 'DEBUG',
-              :log_headers                => false,
-              :log_name                   => 'swift-proxy-server',
-              :object_chunk_size          => '8192',
-              :client_chunk_size          => '8192',
-              :max_containers_per_account => 10,
-              :max_containers_whitelist   => 'project1,project2',
-              :read_affinity              => 'r1z1=100, r1=200',
-              :write_affinity             => 'r1',
-              :write_affinity_node_count  => '2 * replicas',
-              :client_timeout             => '120',
-              :keepalive_timeout          => '121',
-              :node_timeout               => '20',
-              :recoverable_node_timeout   => '15',
-              :allow_open_expired         => false,
-              :cors_allow_origin          => ['http://foo.bar:1234', 'https://foo.bar'],
-              :strict_cors_mode           => true,
-              :cors_expose_headers        => ['header-a', 'header-b'],
+              :proxy_local_net_ip                  => '10.0.0.2',
+              :port                                => '80',
+              :workers                             => 3,
+              :pipeline                            => ['swauth', 'proxy-server'],
+              :allow_account_management            => false,
+              :account_autocreate                  => false,
+              :log_level                           => 'DEBUG',
+              :log_headers                         => false,
+              :log_name                            => 'swift-proxy-server',
+              :object_chunk_size                   => '8192',
+              :client_chunk_size                   => '8192',
+              :max_containers_per_account          => 10,
+              :max_containers_whitelist            => 'project1,project2',
+              :timing_expiry                       => 300,
+              :request_node_count                  => '2 * replicas',
+              :read_affinity                       => 'r1z1=100, r1=200',
+              :write_affinity                      => 'r1',
+              :write_affinity_node_count           => '2 * replicas',
+              :write_affinity_handoff_delete_count => 'auto',
+              :client_timeout                      => '120',
+              :keepalive_timeout                   => '121',
+              :node_timeout                        => '20',
+              :recoverable_node_timeout            => '15',
+              :allow_open_expired                  => false,
+              :cors_allow_origin                   => ['http://foo.bar:1234', 'https://foo.bar'],
+              :strict_cors_mode                    => true,
+              :cors_expose_headers                 => ['header-a', 'header-b'],
             }
           end
 
@@ -182,10 +188,13 @@ describe 'swift::proxy' do
           it { should contain_swift_proxy_config('app:proxy-server/account_autocreate').with_value('false') }
           it { should contain_swift_proxy_config('app:proxy-server/max_containers_per_account').with_value(10) }
           it { should contain_swift_proxy_config('app:proxy-server/max_containers_whitelist').with_value('project1,project2') }
+          it { should contain_swift_proxy_config('app:proxy-server/timing_expiry').with_value(300) }
+          it { should contain_swift_proxy_config('app:proxy-server/request_node_count').with_value('2 * replicas') }
           it { should contain_swift_proxy_config('app:proxy-server/sorting_method').with_value('affinity') }
           it { should contain_swift_proxy_config('app:proxy-server/read_affinity').with_value('r1z1=100, r1=200') }
           it { should contain_swift_proxy_config('app:proxy-server/write_affinity').with_value('r1') }
           it { should contain_swift_proxy_config('app:proxy-server/write_affinity_node_count').with_value('2 * replicas') }
+          it { should contain_swift_proxy_config('app:proxy-server/write_affinity_handoff_delete_count').with_value('auto') }
           it { should contain_swift_proxy_config('app:proxy-server/node_timeout').with_value('20') }
           it { should contain_swift_proxy_config('app:proxy-server/recoverable_node_timeout').with_value('15') }
           it { should contain_swift_proxy_config('app:proxy-server/allow_open_expired').with_value(false) }
@@ -239,15 +248,30 @@ describe 'swift::proxy' do
             end
           end
 
-          let :params do
-            {
-              :proxy_local_net_ip        => '127.0.0.1',
-              :write_affinity_node_count => '2 * replicas'
-            }
+          context 'write_affinity_node_count set without write_affinity' do
+            let :params do
+              {
+                :proxy_local_net_ip        => '127.0.0.1',
+                :write_affinity_node_count => '2 * replicas'
+              }
+            end
+
+            it 'should fail if write_affinity_node_count is used without write_affinity' do
+              should raise_error(Puppet::Error, /write_affinity_node_count requires write_affinity/)
+            end
           end
 
-          it 'should fail if write_affinity_node_count is used without write_affinity' do
-            should raise_error(Puppet::Error, /write_affinity_node_count requires write_affinity/)
+          context 'write_affinity_handoff_delete_count set without write_affinity' do
+            let :params do
+              {
+                :proxy_local_net_ip                  => '127.0.0.1',
+                :write_affinity_handoff_delete_count => 'auto'
+              }
+            end
+
+            it 'should fail if write_affinity_handoff_delete_count is used without write_affinity' do
+              should raise_error(Puppet::Error, /write_affinity_handoff_delete_count requires write_affinity/)
+            end
           end
         end
       end

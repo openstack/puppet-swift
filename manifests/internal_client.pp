@@ -24,6 +24,15 @@
 #    (optional) Method to chose storage nodes during GET and HEAD requests.
 #    Defaults to undef.
 #
+#  [*timing_expiry*]
+#    (optional) If the "timing" sorting_method is used, the timings will only
+#    be valid for the number of seconds configured by timing_expiry.
+#    Defaults to $facts['os_service_default'].
+#
+#  [*request_node_count*]
+#    (optional) Number of nodes to contact for a normal request.
+#    Defaults to $facts['os_service_default'].
+#
 #  [*read_affinity*]
 #    (optional) Configures the read affinity of internal client.
 #    Defaults to undef.
@@ -34,6 +43,11 @@
 #
 #  [*write_affinity_node_count*]
 #    (optional) Configures write_affinity_node_count for internal client.
+#    Optional but requires write_affinity to be set.
+#    Defaults to $facts['os_service_default'].
+#
+#  [*write_affinity_handoff_delete_count*]
+#    (optional) Configures write_affinity_handoff_delete_count for proxy-server.
 #    Optional but requires write_affinity to be set.
 #    Defaults to $facts['os_service_default'].
 #
@@ -60,9 +74,12 @@ class swift::internal_client (
   $object_chunk_size                             = $facts['os_service_default'],
   $client_chunk_size                             = $facts['os_service_default'],
   Optional[Swift::SortingMethod] $sorting_method = undef,
+  $timing_expiry                                 = $facts['os_service_default'],
+  $request_node_count                            = $facts['os_service_default'],
   $read_affinity                                 = undef,
   $write_affinity                                = undef,
   $write_affinity_node_count                     = $facts['os_service_default'],
+  $write_affinity_handoff_delete_count           = $facts['os_service_default'],
   $client_timeout                                = $facts['os_service_default'],
   $node_timeout                                  = $facts['os_service_default'],
   $recoverable_node_timeout                      = $facts['os_service_default'],
@@ -95,6 +112,8 @@ class swift::internal_client (
     'pipeline:main/pipeline':                     value => join($pipeline, ' ');
     'app:proxy-server/use':                       value => 'egg:swift#proxy';
     'app:proxy-server/account_autocreate':        value => true;
+    'app:proxy-server/timing_expiry':             value => $timing_expiry;
+    'app:proxy-server/request_node_count':        value => $request_node_count;
     'app:proxy-server/object_chunk_size':         value => $object_chunk_size;
     'app:proxy-server/client_chunk_size':         value => $client_chunk_size;
     'app:proxy-server/client_timeout':            value => $client_timeout;
@@ -104,16 +123,21 @@ class swift::internal_client (
 
   if $write_affinity {
     swift_internal_client_config {
-      'app:proxy-server/write_affinity':            value => $write_affinity;
-      'app:proxy-server/write_affinity_node_count': value => $write_affinity_node_count;
+      'app:proxy-server/write_affinity':                      value => $write_affinity;
+      'app:proxy-server/write_affinity_node_count':           value => $write_affinity_node_count;
+      'app:proxy-server/write_affinity_handoff_delete_count': value => $write_affinity_handoff_delete_count;
     }
   } else {
     if !is_service_default($write_affinity_node_count) {
       fail('Usage of write_affinity_node_count requires write_affinity to be set')
     }
+    if !is_service_default($write_affinity_handoff_delete_count) {
+      fail('Usage of write_affinity_handoff_delete_count requires write_affinity to be set')
+    }
     swift_internal_client_config {
-      'app:proxy-server/write_affinity':            value => $facts['os_service_default'];
-      'app:proxy-server/write_affinity_node_count': value => $facts['os_service_default'];
+      'app:proxy-server/write_affinity':                      value => $facts['os_service_default'];
+      'app:proxy-server/write_affinity_node_count':           value => $facts['os_service_default'];
+      'app:proxy-server/write_affinity_handoff_delete_count': value => $facts['os_service_default'];
     }
   }
 
@@ -131,5 +155,4 @@ class swift::internal_client (
       'app:proxy-server/read_affinity':  value => $facts['os_service_default'];
     }
   }
-
 }
