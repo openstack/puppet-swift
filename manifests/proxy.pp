@@ -306,8 +306,9 @@ class swift::proxy(
   }
 
   if $write_affinity {
+    $write_affinity_real = join(any2array($write_affinity), ',')
     swift_proxy_config {
-      'app:proxy-server/write_affinity':                      value => $write_affinity;
+      'app:proxy-server/write_affinity':                      value => $write_affinity_real;
       'app:proxy-server/write_affinity_node_count':           value => $write_affinity_node_count;
       'app:proxy-server/write_affinity_handoff_delete_count': value => $write_affinity_handoff_delete_count;
     }
@@ -329,9 +330,14 @@ class swift::proxy(
     if $sorting_method and $sorting_method != 'affinity' {
       fail('sorting_method should be \'affinity\' to use read affinity')
     }
+    $read_affinity_real = $read_affinity ? {
+      Hash    => join(join_keys_to_values($read_affinity, '='), ','),
+      default => join(any2array($read_affinity), ',')
+    }
+
     swift_proxy_config {
       'app:proxy-server/sorting_method': value => 'affinity';
-      'app:proxy-server/read_affinity':  value => $read_affinity;
+      'app:proxy-server/read_affinity':  value => $read_affinity_real;
     }
   } else {
     swift_proxy_config {
