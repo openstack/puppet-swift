@@ -1,0 +1,5 @@
+---
+features:
+  - |
+    The ``swift::storage::filter::backend_ratelimite`` defined resource type
+    supports options for per-method rate limits.
