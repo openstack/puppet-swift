@@ -59,8 +59,13 @@
 #    Defaults to 'LOG_LOCAL2'.
 #
 #  [*log_handoffs*]
-#    (optional) If True, the proxy will log whenever it has to failover to a handoff node
+#    (optional) If True, the proxy will log whenever it has to failover to
+#    a handoff node
 #    Defaults to $facts['os_service_default'].
+#
+#  [*log_name*]
+#    (optional) Configures log_name for swift proxy-server.
+#    Defaults to proxy-server
 #
 #  [*object_chunk_size*]
 #    (optional) Chunk size to read from object servers.
@@ -71,12 +76,14 @@
 #    Defaults to $facts['os_service_default'].
 #
 #  [*max_containers_per_account*]
-#     (optional) If set to a positive value, will limit container number per account.
-#     Default to 0.
+#    (optional) If set to a positive value, will limit container number per
+#    account.
+#    Defaults to $facts['os_service_default'].
 #
 #  [*max_containers_whitelist*]
-#     (optional) This is a comma separated list of account hashes that ignore the max_containers_per_account cap.
-#     Default to $facts['os_service_default'].
+#    (optional) This is a comma separated list of account hashes that ignore
+#    the max_containers_per_account cap.
+#    Default to $facts['os_service_default'].
 #
 #  [*sorting_method*]
 #    (optional) Method to chose storage nodes during GET and HEAD requests.
@@ -141,10 +148,6 @@
 #  [*package_ensure*]
 #    (optional) Ensure state of the swift proxy package.
 #    Defaults to present.
-#
-#  [*log_name*]
-#    Configures log_name for swift proxy-server.
-#    Optional. Defaults to proxy-server
 #
 #  [*cors_allow_origin*]
 #    (optional) Origins to be allowed to make Cross Origin Requests.
