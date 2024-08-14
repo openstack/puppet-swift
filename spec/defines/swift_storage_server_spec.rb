@@ -98,6 +98,7 @@ describe 'swift::storage::server' do
         is_expected.to contain_swift_account_config('DEFAULT/log_statsd_sample_rate_factor').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_swift_account_config('DEFAULT/log_statsd_metric_prefix').with_value('<SERVICE DEFAULT>')
 
+        is_expected.to contain_swift_account_config('DEFAULT/db_preallocation').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_swift_account_config('account-auditor/').with_ensure('present')
         is_expected.to contain_swift_account_config('account-auditor/log_name').with_ensure('absent')
         is_expected.to contain_swift_account_config('account-replicator/').with_ensure('present')
@@ -287,6 +288,7 @@ describe 'swift::storage::server' do
         is_expected.to contain_swift_container_config('DEFAULT/log_statsd_sample_rate_factor').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_swift_container_config('DEFAULT/log_statsd_metric_prefix').with_value('<SERVICE DEFAULT>')
 
+        is_expected.to contain_swift_container_config('DEFAULT/db_preallocation').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_swift_container_config('DEFAULT/allowed_sync_hosts').with_value('127.0.0.1')
         is_expected.to contain_swift_container_config('container-auditor/').with_ensure('present')
         is_expected.to contain_swift_container_config('container-auditor/log_name').with_ensure('absent')

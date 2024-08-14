@@ -79,6 +79,11 @@
 #   all times. This option affects only <type>-server processes.
 #   Defaults to $facts['os_service_default'].
 #
+# [*db_preallocation*]
+#   (optional) Preallocate disk space with SQLite database to decrease
+#   fragmentation.
+#   Defaults to $facts['os_service_default'].
+#
 # [*servers_per_port*]
 #   (optional) Spawn multiple servers per device on different ports.
 #   Make object-server run this many worker processes per unique port of
@@ -296,6 +301,7 @@ define swift::storage::server(
   $disable_fallocate                                     = $facts['os_service_default'],
   $fallocate_reserve                                     = $facts['os_service_default'],
   $server_fallocate_reserve                              = $facts['os_service_default'],
+  $db_preallocation                                      = $facts['os_service_default'],
   $servers_per_port                                      = $facts['os_service_default'],
   $user                                                  = undef,
   $workers                                               = $facts['os_workers'],
@@ -480,6 +486,7 @@ define swift::storage::server(
   case $type {
     'account': {
       $type_opts = {
+        'DEFAULT/db_preallocation'        => {'value'  => $db_preallocation},
         # account-server
         # account-auditor
         # account-replicator
@@ -511,6 +518,7 @@ define swift::storage::server(
     }
     'container': {
       $type_opts = {
+        'DEFAULT/db_preallocation'          => {'value'  => $db_preallocation},
         'DEFAULT/allowed_sync_hosts'        => {'value'  => join($::swift::storage::container::allowed_sync_hosts, ',')},
         # container-server
         # container-auditor

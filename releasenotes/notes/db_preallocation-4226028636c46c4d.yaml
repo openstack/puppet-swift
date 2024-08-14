@@ -1,0 +1,5 @@
+---
+features:
+  - |
+    The new ``swift::storage::server::db_preallocation`` parameter has been
+    added.
