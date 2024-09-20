@@ -104,7 +104,7 @@ Puppet::Type.type(:swift_storage_policy).provide(:ruby) do
     end
     self.class.policy_settings.each do |property_name, setting_name|
       unless @property_flush[property_name].nil?
-        config.set_value(policy_title, setting_name, @property_flush[property_name])
+        config.set_value(policy_title, setting_name, '=', @property_flush[property_name])
       end
     end
     config.save
