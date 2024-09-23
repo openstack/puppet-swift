@@ -109,30 +109,30 @@
 #
 class swift::keystone::auth(
   String[1] $password,
-  $auth_name              = 'swift',
-  $tenant                 = 'services',
-  $roles                  = ['admin'],
-  $system_scope           = 'all',
-  $system_roles           = [],
-  $email                  = 'swift@localhost',
-  $region                 = 'RegionOne',
-  $operator_roles         = ['admin', 'SwiftOperator'],
-  $service_name           = 'swift',
-  $service_name_s3        = 'swift_s3',
-  $service_type           = 'object-store',
-  $service_type_s3        = 's3',
-  $service_description    = 'OpenStack Object-Store Service',
-  $service_description_s3 = 'OpenStack S3 Service',
-  $configure_endpoint     = true,
-  $configure_s3_endpoint  = true,
-  $configure_user         = true,
-  $configure_user_role    = true,
-  $public_url             = 'http://127.0.0.1:8080/v1/AUTH_%(tenant_id)s',
-  $admin_url              = 'http://127.0.0.1:8080',
-  $internal_url           = 'http://127.0.0.1:8080/v1/AUTH_%(tenant_id)s',
-  $public_url_s3          = 'http://127.0.0.1:8080',
-  $admin_url_s3           = 'http://127.0.0.1:8080',
-  $internal_url_s3        = 'http://127.0.0.1:8080',
+  String[1] $auth_name                       = 'swift',
+  String[1] $tenant                          = 'services',
+  Array[String[1]] $roles                    = ['admin'],
+  String[1] $system_scope                    = 'all',
+  Array[String[1]]$system_roles              = [],
+  String[1] $email                           = 'swift@localhost',
+  String[1] $region                          = 'RegionOne',
+  Array[String[1]] $operator_roles           = ['admin', 'SwiftOperator'],
+  String[1] $service_name                    = 'swift',
+  String[1] $service_name_s3                 = 'swift_s3',
+  String[1] $service_type                    = 'object-store',
+  String[1] $service_type_s3                 = 's3',
+  String[1] $service_description             = 'OpenStack Object-Store Service',
+  String[1] $service_description_s3          = 'OpenStack S3 Service',
+  Boolean $configure_endpoint                = true,
+  Boolean $configure_s3_endpoint             = true,
+  Boolean $configure_user                    = true,
+  Boolean $configure_user_role               = true,
+  Keystone::PublicEndpointUrl $public_url    = 'http://127.0.0.1:8080/v1/AUTH_%(tenant_id)s',
+  Keystone::EndpointUrl $admin_url           = 'http://127.0.0.1:8080',
+  Keystone::EndpointUrl $internal_url        = 'http://127.0.0.1:8080/v1/AUTH_%(tenant_id)s',
+  Keystone::PublicEndpointUrl $public_url_s3 = 'http://127.0.0.1:8080',
+  Keystone::EndpointUrl $admin_url_s3        = 'http://127.0.0.1:8080',
+  Keystone::EndpointUrl $internal_url_s3     = 'http://127.0.0.1:8080',
 ) {
 
   include swift::deps
@@ -178,7 +178,7 @@ class swift::keystone::auth(
     internal_url        => $internal_url_s3,
   }
 
-  if $operator_roles {
+  if !empty($operator_roles) {
     #Roles like "admin" may be defined elsewhere, so use ensure_resource
     ensure_resource('keystone_role', $operator_roles, { 'ensure' => 'present' })
   }
