@@ -10,6 +10,10 @@
             "version_requirement": ">=24.0.0 <25.0.0"
         },
         {
+            "name": "openstack/oslo",
+            "version_requirement": ">=24.0.0 <25.0.0"
+        },
+        {
             "name": "openstack/openstacklib",
             "version_requirement": ">=24.0.0 <25.0.0"
         },
