@@ -14,14 +14,6 @@ describe 'basic swift' do
       include openstack_integration::memcached
       include openstack_integration::keystone
 
-      exec { 'setenforce 0':
-        path   => '/bin:/sbin:/usr/bin:/usr/sbin',
-        onlyif => 'which setenforce && getenforce | grep Enforcing',
-        before => Class['::swift'],
-      }
-
-      package { 'curl': ensure => present }
-
       # Swift resources
       class { 'swift':
         # not sure how I want to deal with this shared secret
@@ -173,14 +165,6 @@ describe 'basic swift' do
       include openstack_integration::mysql
       include openstack_integration::memcached
       include openstack_integration::keystone
-
-      exec { 'setenforce 0':
-        path   => '/bin:/sbin:/usr/bin:/usr/sbin',
-        onlyif => 'which setenforce && getenforce | grep Enforcing',
-        before => Class['::swift'],
-      }
-
-      package { 'curl': ensure => present }
 
       # Swift resources
       class { 'swift':
