@@ -10,6 +10,14 @@
 #    (optional) The port to which the proxy server will bind.
 #    Defaults to 8080.
 #
+#  [*cert_file*]
+#    (optional) Certificate file to use for HTTPS
+#    Defaults to $facts['os_service_default'].
+#
+#  [*key_file*]
+#    (optional) Key file to use for HTTPS
+#    Defaults to $facts['os_service_default'].
+#
 #  [*pipeline*]
 #    (optional) The list of elements of the swift proxy pipeline.
 #    Currently supports healthcheck, cache, proxy-server, and
@@ -188,6 +196,8 @@
 class swift::proxy(
   $proxy_local_net_ip,
   $port                                          = '8080',
+  $cert_file                                     = $facts['os_service_default'],
+  $key_file                                      = $facts['os_service_default'],
   Swift::Pipeline $pipeline                      = [
     'catch_errors', 'gatekeeper', 'healthcheck', 'proxy-logging', 'cache',
     'listing_formats', 'tempauth', 'copy', 'proxy-logging', 'proxy-server'],
@@ -271,6 +281,8 @@ class swift::proxy(
   swift_proxy_config {
     'DEFAULT/bind_port':                           value => $port;
     'DEFAULT/bind_ip':                             value => $proxy_local_net_ip;
+    'DEFAULT/cert_file':                           value => $cert_file;
+    'DEFAULT/key_file':                            value => $key_file;
     'DEFAULT/workers':                             value => $workers;
     'DEFAULT/user':                                value => $::swift::params::user;
     'DEFAULT/log_name':                            value => $log_name;

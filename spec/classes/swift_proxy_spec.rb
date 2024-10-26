@@ -57,6 +57,8 @@ describe 'swift::proxy' do
         it { should contain_service('swift-proxy-server').that_notifies('Anchor[swift::service::end]') }
         it { should contain_swift_proxy_config('DEFAULT/bind_port').with_value('8080') }
         it { should contain_swift_proxy_config('DEFAULT/bind_ip').with_value('127.0.0.1') }
+        it { should contain_swift_proxy_config('DEFAULT/cert_file').with_value('<SERVICE DEFAULT>') }
+        it { should contain_swift_proxy_config('DEFAULT/key_file').with_value('<SERVICE DEFAULT>') }
         it { should contain_swift_proxy_config('DEFAULT/workers').with_value('2') }
         it { should contain_swift_proxy_config('DEFAULT/user').with_value('swift') }
         it { should contain_swift_proxy_config('DEFAULT/log_name').with_value('proxy-server') }
@@ -136,6 +138,8 @@ describe 'swift::proxy' do
             {
               :proxy_local_net_ip                  => '10.0.0.2',
               :port                                => '80',
+              :cert_file                           => '/path/to/cert',
+              :key_file                            => '/path/to/key',
               :workers                             => 3,
               :pipeline                            => ['swauth', 'proxy-server'],
               :allow_account_management            => false,
@@ -166,6 +170,8 @@ describe 'swift::proxy' do
 
           it { should contain_swift_proxy_config('DEFAULT/bind_port').with_value('80') }
           it { should contain_swift_proxy_config('DEFAULT/bind_ip').with_value('10.0.0.2') }
+          it { should contain_swift_proxy_config('DEFAULT/cert_file').with_value('/path/to/cert') }
+          it { should contain_swift_proxy_config('DEFAULT/key_file').with_value('/path/to/key') }
           it { should contain_swift_proxy_config('DEFAULT/workers').with_value('3') }
           it { should contain_swift_proxy_config('DEFAULT/user').with_value('swift') }
           it { should contain_swift_proxy_config('DEFAULT/log_name').with_value('swift-proxy-server') }

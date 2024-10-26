@@ -1,0 +1,5 @@
+---
+features:
+  - |
+    The ``cert_file`` parameter and the ``key_file`` parameter have been added
+    to the ``swift::proxy`` class.
