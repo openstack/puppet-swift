@@ -47,6 +47,8 @@ describe 'swift::objectexpirer' do
         is_expected.to contain_swift_object_expirer_config(
           'object-expirer/log_address').with_value('/dev/log')
         is_expected.to contain_swift_object_expirer_config(
+          'object-expirer/log_max_line_length').with_value('<SERVICE DEFAULT>')
+        is_expected.to contain_swift_object_expirer_config(
           'filter:cache/memcache_servers').with_value('127.0.0.1:11211')
         is_expected.to contain_swift_object_expirer_config(
           'filter:cache/tls_enabled').with_value('<SERVICE DEFAULT>')

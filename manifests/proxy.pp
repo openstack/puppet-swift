@@ -67,6 +67,10 @@
 #    (optional) Configures log_name for swift proxy-server.
 #    Defaults to proxy-server
 #
+#  [*log_max_line_length*]
+#    (optional) Caps the length of log lines to the value given.
+#    Defaults to $facts['os_service_default'].
+#
 #  [*object_chunk_size*]
 #    (optional) Chunk size to read from object servers.
 #    Defaults to $facts['os_service_default'].
@@ -202,6 +206,7 @@ class swift::proxy(
   $log_facility                                  = 'LOG_LOCAL2',
   $log_handoffs                                  = $facts['os_service_default'],
   $log_name                                      = 'proxy-server',
+  $log_max_line_length                           = $facts['os_service_default'],
   $cors_allow_origin                             = $facts['os_service_default'],
   $strict_cors_mode                              = $facts['os_service_default'],
   $cors_expose_headers                           = $facts['os_service_default'],
@@ -280,6 +285,7 @@ class swift::proxy(
     'DEFAULT/log_address':                         value => $log_address;
     'DEFAULT/log_udp_host':                        value => $log_udp_host;
     'DEFAULT/log_udp_port':                        value => $log_udp_port;
+    'DEFAULT/log_max_line_length':                 value => $log_max_line_length;
     'DEFAULT/client_timeout':                      value => $client_timeout;
     'DEFAULT/keepalive_timeout':                   value => $keepalive_timeout;
     'pipeline:main/pipeline':                      value => join($pipeline, ' ');

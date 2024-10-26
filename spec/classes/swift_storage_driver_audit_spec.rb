@@ -16,6 +16,7 @@ describe 'swift::storage::drive_audit' do
         should contain_swift_drive_audit_config('drive-audit/log_facility').with_value('LOG_LOCAL2')
         should contain_swift_drive_audit_config('drive-audit/log_level').with_value('INFO')
         should contain_swift_drive_audit_config('drive-audit/log_address').with_value('/dev/log')
+        should contain_swift_drive_audit_config('drive-audit/log_max_line_length').with_value('<SERVICE DEFAULT>')
         should contain_swift_drive_audit_config('drive-audit/log_udp_host').with_value('<SERVICE DEFAULT>')
         should contain_swift_drive_audit_config('drive-audit/log_udp_port').with_value('<SERVICE DEFAULT>')
 

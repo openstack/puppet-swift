@@ -103,6 +103,10 @@
 #    (optional) Location where syslog sends the logs to.
 #    Defaults to '/dev/log'.
 #
+#  [*log_max_line_length*]
+#    (optional) Caps the length of log lines to the value given.
+#    Defaults to $facts['os_service_default'].
+#
 #  [*purge_config*]
 #    (optional) Whether to set only the specified config options
 #    in the proxy config.
@@ -129,6 +133,7 @@ class swift::containerreconciler(
   $log_level                               = 'INFO',
   $log_facility                            = 'LOG_LOCAL2',
   $log_address                             = '/dev/log',
+  $log_max_line_length                     = $facts['os_service_default'],
   Boolean $purge_config                    = false,
 ) inherits swift::params {
 
@@ -186,17 +191,18 @@ class swift::containerreconciler(
   }
 
   swift_container_reconciler_config {
-    'pipeline:main/pipeline':             value => join($pipeline, ' ');
-    'container-reconciler/interval':      value => $interval;
-    'container-reconciler/concurrency':   value => $concurrency;
-    'container-reconciler/process':       value => $process;
-    'container-reconciler/processes':     value => $processes;
-    'container-reconciler/reclaim_age':   value => $reclaim_age;
-    'container-reconciler/request_tries': value => $request_tries;
-    'container-reconciler/log_name':      value => $log_name;
-    'container-reconciler/log_facility':  value => $log_facility;
-    'container-reconciler/log_level':     value => $log_level;
-    'container-reconciler/log_address':   value => $log_address;
+    'pipeline:main/pipeline':                   value => join($pipeline, ' ');
+    'container-reconciler/interval':            value => $interval;
+    'container-reconciler/concurrency':         value => $concurrency;
+    'container-reconciler/process':             value => $process;
+    'container-reconciler/processes':           value => $processes;
+    'container-reconciler/reclaim_age':         value => $reclaim_age;
+    'container-reconciler/request_tries':       value => $request_tries;
+    'container-reconciler/log_name':            value => $log_name;
+    'container-reconciler/log_facility':        value => $log_facility;
+    'container-reconciler/log_level':           value => $log_level;
+    'container-reconciler/log_address':         value => $log_address;
+    'container-reconciler/log_max_line_length': value => $log_max_line_length;
   }
 
   if $manage_service {
