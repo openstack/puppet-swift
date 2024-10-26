@@ -1,0 +1,7 @@
+---
+features:
+  - |
+    The new ``swift::objectexpirer::log_address`` option has been added.
+
+  - |
+    The new ``swift::containerreconciler::log_address`` option has been added.

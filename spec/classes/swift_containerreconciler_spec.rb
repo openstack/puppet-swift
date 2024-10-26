@@ -41,6 +41,8 @@ describe 'swift::containerreconciler' do
         is_expected.to contain_swift_container_reconciler_config(
           'container-reconciler/log_facility').with_value('LOG_LOCAL2')
         is_expected.to contain_swift_container_reconciler_config(
+          'container-reconciler/log_address').with_value('/dev/log')
+        is_expected.to contain_swift_container_reconciler_config(
           'filter:cache/memcache_servers').with_value('127.0.0.1:11211')
         is_expected.to contain_swift_container_reconciler_config(
           'filter:cache/tls_enabled').with_value('<SERVICE DEFAULT>')
