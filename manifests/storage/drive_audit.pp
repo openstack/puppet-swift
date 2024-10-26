@@ -47,11 +47,11 @@
 #
 # [*log_udp_host*]
 #   (Optional) If not set, the UDP receiver for syslog is disabled.
-#   Defaults to undef.
+#   Defaults to $facts['os_service_default'].
 #
 # [*log_udp_port*]
 #   (Optional) Port value for UDP receiver, if enabled.
-#   Defaults to undef.
+#   Defaults to $facts['os_service_default'].
 #
 # [*log_max_line_length*]
 #   (Optional) Caps the length of log lines to the value given.
@@ -114,8 +114,8 @@ class swift::storage::drive_audit(
   $log_level                                = 'INFO',
   $log_address                              = '/dev/log',
   $log_name                                 = 'drive-audit',
-  $log_udp_host                             = undef,
-  $log_udp_port                             = undef,
+  $log_udp_host                             = $facts['os_service_default'],
+  $log_udp_port                             = $facts['os_service_default'],
   $log_max_line_length                      = $facts['os_service_default'],
   $device_dir                               = '/srv/node',
   $minutes                                  = $facts['os_service_default'],
@@ -152,18 +152,8 @@ class swift::storage::drive_audit(
     'drive-audit/log_level'           : value => $log_level;
     'drive-audit/log_address'         : value => $log_address;
     'drive-audit/log_max_line_length' : value => $log_max_line_length;
-  }
-
-  if $log_udp_host {
-    swift_drive_audit_config {
-      'drive-audit/log_udp_host': value => $log_udp_host;
-      'drive-audit/log_udp_port': value => pick($log_udp_port, $facts['os_service_default']);
-    }
-  } else {
-    swift_drive_audit_config {
-      'drive-audit/log_udp_host': value => $facts['os_service_default'];
-      'drive-audit/log_udp_port': value => $facts['os_service_default'];
-    }
+    'drive-audit/log_udp_host'        : value => $log_udp_host;
+    'drive-audit/log_udp_port'        : value => $log_udp_port;
   }
 
   swift_drive_audit_config {
