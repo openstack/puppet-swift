@@ -53,6 +53,10 @@
 #   (Optional) Port value for UDP receiver, if enabled.
 #   Defaults to undef.
 #
+# [*log_max_line_length*]
+#   (Optional) Caps the length of log lines to the value given.
+#   Defaults to $facts['os_service_default'].
+#
 # [*device_dir*]
 #   (Optional) Directory devices are mounted under
 #   Defaults to $facts['os_service_default'].
@@ -112,6 +116,7 @@ class swift::storage::drive_audit(
   $log_name                                 = 'drive-audit',
   $log_udp_host                             = undef,
   $log_udp_port                             = undef,
+  $log_max_line_length                      = $facts['os_service_default'],
   $device_dir                               = '/srv/node',
   $minutes                                  = $facts['os_service_default'],
   $error_limit                              = $facts['os_service_default'],
@@ -142,10 +147,11 @@ class swift::storage::drive_audit(
 
 
   swift_drive_audit_config {
-    'drive-audit/log_name'    : value => $log_name;
-    'drive-audit/log_facility': value => $log_facility;
-    'drive-audit/log_level'   : value => $log_level;
-    'drive-audit/log_address' : value => $log_address;
+    'drive-audit/log_name'            : value => $log_name;
+    'drive-audit/log_facility'        : value => $log_facility;
+    'drive-audit/log_level'           : value => $log_level;
+    'drive-audit/log_address'         : value => $log_address;
+    'drive-audit/log_max_line_length' : value => $log_max_line_length;
   }
 
   if $log_udp_host {

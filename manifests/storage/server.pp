@@ -190,6 +190,10 @@
 #   (optional) Port value for UDP receiver, if enabled.
 #   Defaults to undef.
 #
+# [*log_max_line_length*]
+#   (optional) Caps the length of log lines to the value given.
+#   Defaults to $facts['os_service_default'].
+#
 # [*log_requests*]
 #   (optional) Whether or not log every request. reduces logging output if false,
 #   good for seeing errors if true
@@ -327,6 +331,7 @@ define swift::storage::server(
   $log_udp_host                                          = $facts['os_service_default'],
   $log_udp_port                                          = $facts['os_service_default'],
   $log_requests                                          = true,
+  $log_max_line_length                                   = $facts['os_service_default'],
   # this parameters needs to be specified after type and name
   Boolean $statsd_enabled                                = false,
   $log_statsd_host                                       = 'localhost',
@@ -443,6 +448,7 @@ define swift::storage::server(
     'DEFAULT/log_address'                  => {'value'  => $log_address},
     'DEFAULT/log_udp_host'                 => {'value'  => $log_udp_host},
     'DEFAULT/log_udp_port'                 => {'value'  => $log_udp_port},
+    'DEFAULT/log_max_line_length'          => {'value'  => $log_max_line_length},
     # pipeline
     'pipeline:main/pipeline'               => {'value'  => join($pipeline, ' ')},
     # server
