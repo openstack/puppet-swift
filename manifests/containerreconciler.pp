@@ -99,6 +99,10 @@
 #    (optional) Log level
 #    Defaults to 'LOG_LOCAL2'.
 #
+#  [*log_address*]
+#    (optional) Location where syslog sends the logs to.
+#    Defaults to '/dev/log'.
+#
 #  [*purge_config*]
 #    (optional) Whether to set only the specified config options
 #    in the proxy config.
@@ -124,6 +128,7 @@ class swift::containerreconciler(
   $log_name                                = $facts['os_service_default'],
   $log_level                               = 'INFO',
   $log_facility                            = 'LOG_LOCAL2',
+  $log_address                             = '/dev/log',
   Boolean $purge_config                    = false,
 ) inherits swift::params {
 
@@ -191,6 +196,7 @@ class swift::containerreconciler(
     'container-reconciler/log_name':      value => $log_name;
     'container-reconciler/log_facility':  value => $log_facility;
     'container-reconciler/log_level':     value => $log_level;
+    'container-reconciler/log_address':   value => $log_address;
   }
 
   if $manage_service {
