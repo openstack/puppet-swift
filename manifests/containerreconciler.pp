@@ -89,11 +89,11 @@
 #
 #  [*log_name*]
 #    (optional) Log name.
-#    Defaults to $facts['os_service_default'].
+#    Defaults to 'container-reconciler'.
 #
 #  [*log_level*]
 #    (optional) Log level.
-#    Defaults to $facts['os_service_default'].
+#    Defaults to 'INFO'.
 #
 #  [*log_facility*]
 #    (optional) Log level
@@ -129,7 +129,7 @@ class swift::containerreconciler(
   $cache_tls_cafile                        = $facts['os_service_default'],
   $cache_tls_certfile                      = $facts['os_service_default'],
   $cache_tls_keyfile                       = $facts['os_service_default'],
-  $log_name                                = $facts['os_service_default'],
+  $log_name                                = 'container-reconciler',
   $log_level                               = 'INFO',
   $log_facility                            = 'LOG_LOCAL2',
   $log_address                             = '/dev/log',

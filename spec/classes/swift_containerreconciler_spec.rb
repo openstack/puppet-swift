@@ -35,7 +35,7 @@ describe 'swift::containerreconciler' do
         is_expected.to contain_swift_container_reconciler_config(
           'container-reconciler/request_tries').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_swift_container_reconciler_config(
-          'container-reconciler/log_name').with_value('<SERVICE DEFAULT>')
+          'container-reconciler/log_name').with_value('container-reconciler')
         is_expected.to contain_swift_container_reconciler_config(
           'container-reconciler/log_level').with_value('INFO')
         is_expected.to contain_swift_container_reconciler_config(

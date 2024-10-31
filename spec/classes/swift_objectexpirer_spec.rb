@@ -39,7 +39,7 @@ describe 'swift::objectexpirer' do
         is_expected.to contain_swift_object_expirer_config(
           'object-expirer/report_interval').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_swift_object_expirer_config(
-          'object-expirer/log_name').with_value('<SERVICE DEFAULT>')
+          'object-expirer/log_name').with_value('object-expirer')
         is_expected.to contain_swift_object_expirer_config(
           'object-expirer/log_level').with_value('INFO')
         is_expected.to contain_swift_object_expirer_config(
