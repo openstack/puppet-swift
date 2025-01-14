@@ -21,7 +21,7 @@
 #  [*pipeline*]
 #    (optional) The list of elements of the swift proxy pipeline.
 #    Currently supports healthcheck, cache, proxy-server, and
-#    one of the following auth_types: tempauth, swauth, keystone.
+#    one of the following auth_types: tempauth, keystone.
 #    Each of the specified elements also need to be declared externally
 #    as a puppet class with the exception of proxy-server.
 #    Defaults to ['catch_errors', 'gatekeeper', 'healthcheck', 'proxy-logging',
@@ -247,8 +247,6 @@ class swift::proxy(
 
   if(member($pipeline, 'tempauth')) {
     $auth_type = 'tempauth'
-  } elsif(member($pipeline, 'swauth')) {
-    $auth_type = 'swauth'
   } elsif(member($pipeline, 'keystone')) {
     $auth_type = 'keystone'
   } else {

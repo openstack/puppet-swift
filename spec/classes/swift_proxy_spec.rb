@@ -130,8 +130,7 @@ describe 'swift::proxy' do
         describe 'when more parameters are set' do
           let :pre_condition do
             "class { memcached: max_memory => 1}
-             class { swift: swift_hash_path_suffix => string }
-             include swift::proxy::swauth"
+             class { swift: swift_hash_path_suffix => string }"
           end
 
           let :params do
@@ -141,7 +140,7 @@ describe 'swift::proxy' do
               :cert_file                           => '/path/to/cert',
               :key_file                            => '/path/to/key',
               :workers                             => 3,
-              :pipeline                            => ['swauth', 'proxy-server'],
+              :pipeline                            => ['proxy-server'],
               :allow_account_management            => false,
               :account_autocreate                  => false,
               :log_level                           => 'DEBUG',
@@ -181,7 +180,7 @@ describe 'swift::proxy' do
           it { should contain_swift_proxy_config('DEFAULT/log_address').with_value('/dev/log') }
           it { should contain_swift_proxy_config('DEFAULT/client_timeout').with_value('120') }
           it { should contain_swift_proxy_config('DEFAULT/keepalive_timeout').with_value('121') }
-          it { should contain_swift_proxy_config('pipeline:main/pipeline').with_value('swauth proxy-server') }
+          it { should contain_swift_proxy_config('pipeline:main/pipeline').with_value('proxy-server') }
           it { should contain_swift_proxy_config('app:proxy-server/use').with_value('egg:swift#proxy') }
           it { should contain_swift_proxy_config('app:proxy-server/set log_name').with_value('swift-proxy-server') }
           it { should contain_swift_proxy_config('app:proxy-server/set log_facility').with_value('LOG_LOCAL2') }
@@ -214,7 +213,7 @@ describe 'swift::proxy' do
             let :params do
               {
                 :proxy_local_net_ip => '10.0.0.2',
-                :pipeline           => ['swauth', 'proxy-server'],
+                :pipeline           => ['tempauth', 'proxy-server'],
                 :log_level          => 'DEBUG',
                 :log_name           => 'swift-proxy-server',
                 :log_udp_host       => '127.0.0.1',
@@ -226,7 +225,8 @@ describe 'swift::proxy' do
             let :pre_condition do
               "class { memcached: max_memory => 1}
                class { swift: swift_hash_path_suffix => string }
-               include swift::proxy::swauth"
+               include swift::proxy::tempauth
+               "
             end
 
             it { should contain_swift_proxy_config('DEFAULT/bind_ip').with_value('10.0.0.2') }
@@ -237,7 +237,7 @@ describe 'swift::proxy' do
             it { should contain_swift_proxy_config('DEFAULT/log_address').with_value('/dev/log') }
             it { should contain_swift_proxy_config('DEFAULT/log_udp_host').with_value('127.0.0.1') }
             it { should contain_swift_proxy_config('DEFAULT/log_udp_port').with_value('514') }
-            it { should contain_swift_proxy_config('pipeline:main/pipeline').with_value('swauth proxy-server') }
+            it { should contain_swift_proxy_config('pipeline:main/pipeline').with_value('tempauth proxy-server') }
             it { should contain_swift_proxy_config('app:proxy-server/use').with_value('egg:swift#proxy') }
             it { should contain_swift_proxy_config('app:proxy-server/set log_name').with_value('swift-proxy-server') }
             it { should contain_swift_proxy_config('app:proxy-server/set log_facility').with_value('LOG_LOCAL2') }

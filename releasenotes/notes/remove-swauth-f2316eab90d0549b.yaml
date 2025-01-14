@@ -1,0 +1,4 @@
+---
+upgrade:
+  - |
+    The ``swift::proxy::swauth`` class has been removed.
