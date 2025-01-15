@@ -253,6 +253,7 @@ class swift::proxy(
     $auth_type = 'keystone'
   } else {
     warning('no auth type provided in the pipeline')
+    $auth_type = undef
   }
 
   if $pipeline[-1] != 'proxy-server' {
