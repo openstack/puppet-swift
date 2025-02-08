@@ -1,0 +1,5 @@
+---
+deprecations:
+  - |
+    The ``swift::objectexpirer::expiring_objects_account_name`` parameter has
+    been deprecated and will be removed in a future release.

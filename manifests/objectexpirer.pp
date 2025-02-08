@@ -21,10 +21,6 @@
 #    (optional) Number of replication workers to spawn.
 #    Defaults to $facts['os_service_default'].
 #
-#  [*expiring_objects_account_name*]
-#    (optional) Account name used for expiring objects.
-#    Defaults to $facts['os_service_default'].
-#
 #  [*interval*]
 #    (optional) Minimum time for a pass to take, in seconds.
 #    Defaults to $facts['os_service_default'].
@@ -118,13 +114,18 @@
 #    in the object expirer config.
 #    Defaults to false.
 #
+# DEPRECATED PARAMETERS
+#
+#  [*expiring_objects_account_name*]
+#    (optional) Account name used for expiring objects.
+#    Defaults to undef.
+#
 class swift::objectexpirer(
   Boolean $manage_service                  = true,
   Boolean $enabled                         = true,
   $package_ensure                          = 'present',
   Swift::Pipeline $pipeline                = ['catch_errors', 'proxy-logging', 'cache', 'proxy-server'],
   $concurrency                             = $facts['os_service_default'],
-  $expiring_objects_account_name           = $facts['os_service_default'],
   $interval                                = $facts['os_service_default'],
   $process                                 = $facts['os_service_default'],
   $processes                               = $facts['os_service_default'],
@@ -143,10 +144,16 @@ class swift::objectexpirer(
   $log_address                             = '/dev/log',
   $log_max_line_length                     = $facts['os_service_default'],
   Boolean $purge_config                    = false,
+  # DEPRECATED PARAMETERS
+  $expiring_objects_account_name           = undef,
 ) inherits swift::params {
 
   include swift::deps
   Swift_object_expirer_config<||> ~> Service['swift-object-expirer']
+
+  if $expiring_objects_account_name != undef {
+    warning('The expiring_objects_account_name parameter is deprecated.')
+  }
 
   # On Red Hat platforms, it may be defined already,
   # because it is part of openstack-swift-proxy
@@ -211,7 +218,7 @@ class swift::objectexpirer(
   swift_object_expirer_config {
     'pipeline:main/pipeline':                       value => join($pipeline, ' ');
     'object-expirer/concurrency':                   value => $concurrency;
-    'object-expirer/expiring_objects_account_name': value => $expiring_objects_account_name;
+    'object-expirer/expiring_objects_account_name': value => pick($expiring_objects_account_name, $facts['os_service_default']);
     'object-expirer/interval':                      value => $interval;
     'object-expirer/process':                       value => $process;
     'object-expirer/processes':                     value => $processes;
