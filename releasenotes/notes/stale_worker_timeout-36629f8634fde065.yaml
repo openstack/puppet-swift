@@ -1,0 +1,4 @@
+---
+features:
+  - |
+    The new ``stale_worker_timeout`` parameter has been added.

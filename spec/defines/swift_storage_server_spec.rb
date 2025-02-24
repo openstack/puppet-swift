@@ -92,6 +92,7 @@ describe 'swift::storage::server' do
         is_expected.to contain_swift_account_config('app:account-server/set log_requests').with_value(true)
         is_expected.to contain_swift_account_config('app:account-server/set log_address').with_value('/dev/log')
         is_expected.to contain_swift_account_config('app:account-server/fallocate_reserve').with_value('<SERVICE DEFAULT>')
+        is_expected.to contain_swift_account_config('app:account-server/stale_worker_timeout').with_value('<SERVICE DEFAULT>')
 
         is_expected.to contain_swift_account_config('DEFAULT/log_statsd_host').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_swift_account_config('DEFAULT/log_statsd_port').with_value('<SERVICE DEFAULT>')
@@ -283,6 +284,7 @@ describe 'swift::storage::server' do
         is_expected.to contain_swift_container_config('app:container-server/set log_requests').with_value(true)
         is_expected.to contain_swift_container_config('app:container-server/set log_address').with_value('/dev/log')
         is_expected.to contain_swift_container_config('app:container-server/fallocate_reserve').with_value('<SERVICE DEFAULT>')
+        is_expected.to contain_swift_container_config('app:container-server/stale_worker_timeout').with_value('<SERVICE DEFAULT>')
 
         is_expected.to contain_swift_container_config('DEFAULT/log_statsd_host').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_swift_container_config('DEFAULT/log_statsd_port').with_value('<SERVICE DEFAULT>')
@@ -479,6 +481,7 @@ describe 'swift::storage::server' do
         is_expected.to contain_swift_object_config('app:object-server/set log_requests').with_value(true)
         is_expected.to contain_swift_object_config('app:object-server/set log_address').with_value('/dev/log')
         is_expected.to contain_swift_object_config('app:object-server/fallocate_reserve').with_value('<SERVICE DEFAULT>')
+        is_expected.to contain_swift_object_config('app:object-server/stale_worker_timeout').with_value('<SERVICE DEFAULT>')
 
         is_expected.to contain_swift_object_config('DEFAULT/log_statsd_host').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_swift_object_config('DEFAULT/log_statsd_port').with_value('<SERVICE DEFAULT>')

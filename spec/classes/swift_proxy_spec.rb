@@ -91,6 +91,7 @@ describe 'swift::proxy' do
         it { should contain_swift_proxy_config('app:proxy-server/write_affinity_node_count').with_value('<SERVICE DEFAULT>') }
         it { should contain_swift_proxy_config('app:proxy-server/write_affinity_handoff_delete_count').with_value('<SERVICE DEFAULT>') }
         it { should contain_swift_proxy_config('app:proxy-server/swift_owner_headers').with_value('<SERVICE DEFAULT>') }
+        it { should contain_swift_proxy_config('app:proxy-server/stale_worker_timeout').with_value('<SERVICE DEFAULT>') }
         it { should contain_swift_proxy_config('app:proxy-server/node_timeout').with_value('<SERVICE DEFAULT>') }
         it { should contain_swift_proxy_config('app:proxy-server/recoverable_node_timeout').with_value('<SERVICE DEFAULT>') }
         it { should contain_swift_proxy_config('app:proxy-server/allow_open_expired').with_value('<SERVICE DEFAULT>') }
@@ -158,6 +159,7 @@ describe 'swift::proxy' do
               :write_affinity_node_count           => '2 * replicas',
               :write_affinity_handoff_delete_count => 'auto',
               :swift_owner_headers                 => ['x-container-read', 'x-container-write'],
+              :stale_worker_timeout                => 86400,
               :client_timeout                      => '120',
               :keepalive_timeout                   => '121',
               :node_timeout                        => '20',
@@ -203,6 +205,7 @@ describe 'swift::proxy' do
           it { should contain_swift_proxy_config('app:proxy-server/write_affinity_node_count').with_value('2 * replicas') }
           it { should contain_swift_proxy_config('app:proxy-server/write_affinity_handoff_delete_count').with_value('auto') }
           it { should contain_swift_proxy_config('app:proxy-server/swift_owner_headers').with_value('x-container-read,x-container-write') }
+          it { should contain_swift_proxy_config('app:proxy-server/stale_worker_timeout').with_value(86400) }
           it { should contain_swift_proxy_config('app:proxy-server/node_timeout').with_value('20') }
           it { should contain_swift_proxy_config('app:proxy-server/recoverable_node_timeout').with_value('15') }
           it { should contain_swift_proxy_config('app:proxy-server/allow_open_expired').with_value(false) }

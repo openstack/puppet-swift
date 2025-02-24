@@ -79,6 +79,11 @@
 #   all times. This option affects only <type>-server processes.
 #   Defaults to $facts['os_service_default'].
 #
+# [*stale_worker_timeout*]
+#   (optional) The grace period (in seconds) after which the reloaded server
+#   will issue SIGKILLs to remaining stale workers.
+#   Defaults to $facts['os_service_default'].
+#
 # [*db_preallocation*]
 #   (optional) Preallocate disk space with SQLite database to decrease
 #   fragmentation.
@@ -305,6 +310,7 @@ define swift::storage::server(
   $disable_fallocate                                     = $facts['os_service_default'],
   $fallocate_reserve                                     = $facts['os_service_default'],
   $server_fallocate_reserve                              = $facts['os_service_default'],
+  $stale_worker_timeout                                  = $facts['os_service_default'],
   $db_preallocation                                      = $facts['os_service_default'],
   $servers_per_port                                      = $facts['os_service_default'],
   $user                                                  = undef,
@@ -432,38 +438,39 @@ define swift::storage::server(
 
   # common settings
   $common_opts = {
-    'DEFAULT/devices'                      => {'value'  => $devices},
-    'DEFAULT/bind_ip'                      => {'value'  => $storage_local_net_ip},
-    'DEFAULT/bind_port'                    => {'value'  => $bind_port},
-    'DEFAULT/mount_check'                  => {'value'  => $mount_check},
-    'DEFAULT/disable_fallocate'            => {'value'  => $disable_fallocate},
-    'DEFAULT/fallocate_reserve'            => {'value'  => $fallocate_reserve},
-    'DEFAULT/user'                         => {'value'  => $user_real},
-    'DEFAULT/workers'                      => {'value'  => $workers},
-    'DEFAULT/conn_timeout'                 => {'value'  => $conn_timeout},
-    'DEFAULT/node_timeout'                 => {'value'  => $node_timeout},
-    'DEFAULT/log_name'                     => {'value'  => $log_name},
-    'DEFAULT/log_facility'                 => {'value'  => $log_facility},
-    'DEFAULT/log_level'                    => {'value'  => $log_level},
-    'DEFAULT/log_address'                  => {'value'  => $log_address},
-    'DEFAULT/log_udp_host'                 => {'value'  => $log_udp_host},
-    'DEFAULT/log_udp_port'                 => {'value'  => $log_udp_port},
-    'DEFAULT/log_max_line_length'          => {'value'  => $log_max_line_length},
+    'DEFAULT/devices'                         => {'value'  => $devices},
+    'DEFAULT/bind_ip'                         => {'value'  => $storage_local_net_ip},
+    'DEFAULT/bind_port'                       => {'value'  => $bind_port},
+    'DEFAULT/mount_check'                     => {'value'  => $mount_check},
+    'DEFAULT/disable_fallocate'               => {'value'  => $disable_fallocate},
+    'DEFAULT/fallocate_reserve'               => {'value'  => $fallocate_reserve},
+    'DEFAULT/user'                            => {'value'  => $user_real},
+    'DEFAULT/workers'                         => {'value'  => $workers},
+    'DEFAULT/conn_timeout'                    => {'value'  => $conn_timeout},
+    'DEFAULT/node_timeout'                    => {'value'  => $node_timeout},
+    'DEFAULT/log_name'                        => {'value'  => $log_name},
+    'DEFAULT/log_facility'                    => {'value'  => $log_facility},
+    'DEFAULT/log_level'                       => {'value'  => $log_level},
+    'DEFAULT/log_address'                     => {'value'  => $log_address},
+    'DEFAULT/log_udp_host'                    => {'value'  => $log_udp_host},
+    'DEFAULT/log_udp_port'                    => {'value'  => $log_udp_port},
+    'DEFAULT/log_max_line_length'             => {'value'  => $log_max_line_length},
     # pipeline
-    'pipeline:main/pipeline'               => {'value'  => join($pipeline, ' ')},
+    'pipeline:main/pipeline'                  => {'value'  => join($pipeline, ' ')},
     # server
-    "app:${type}-server/use"               => {'value'  => "egg:swift#${type}"},
-    "app:${type}-server/set log_name"      => {'value'  => $log_name},
-    "app:${type}-server/set log_facility"  => {'value'  => $log_facility},
-    "app:${type}-server/set log_level"     => {'value'  => $log_level},
-    "app:${type}-server/set log_requests"  => {'value'  => $log_requests},
-    "app:${type}-server/set log_address"   => {'value'  => $log_address},
-    "app:${type}-server/fallocate_reserve" => {'value'  => $server_fallocate_reserve},
+    "app:${type}-server/use"                  => {'value'  => "egg:swift#${type}"},
+    "app:${type}-server/set log_name"         => {'value'  => $log_name},
+    "app:${type}-server/set log_facility"     => {'value'  => $log_facility},
+    "app:${type}-server/set log_level"        => {'value'  => $log_level},
+    "app:${type}-server/set log_requests"     => {'value'  => $log_requests},
+    "app:${type}-server/set log_address"      => {'value'  => $log_address},
+    "app:${type}-server/fallocate_reserve"    => {'value'  => $server_fallocate_reserve},
+    "app:${type}-server/stale_worker_timeout" => {'value'  => $stale_worker_timeout},
     # auditor
-    "${type}-auditor/"                     => {'ensure' => present},
+    "${type}-auditor/"                        => {'ensure' => present},
     # replicator
-    "${type}-replicator/"                  => {'ensure' => present},
-    "${type}-replicator/rsync_module"      => {'value'  => $rsync_module},
+    "${type}-replicator/"                     => {'ensure' => present},
+    "${type}-replicator/rsync_module"         => {'value'  => $rsync_module},
   }
 
   Anchor['swift::config::begin']
