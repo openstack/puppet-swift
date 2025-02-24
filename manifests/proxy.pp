@@ -128,6 +128,10 @@
 #    Optional but requires write_affinity to be set.
 #    Defaults to $facts['os_service_default'].
 #
+#  [*swift_owner_headers*]
+#    (optional) The headers whose values will only be shown to swift_owners.
+#    Defaults to $facts['os_service_default'].
+#
 #  [*client_timeout*]
 #    (optional) Configures client_timeout for swift proxy-server.
 #    Defaults to $facts['os_service_default'].
@@ -231,6 +235,7 @@ class swift::proxy(
   $write_affinity                                = undef,
   $write_affinity_node_count                     = $facts['os_service_default'],
   $write_affinity_handoff_delete_count           = $facts['os_service_default'],
+  $swift_owner_headers                           = $facts['os_service_default'],
   $client_timeout                                = $facts['os_service_default'],
   $keepalive_timeout                             = $facts['os_service_default'],
   $node_timeout                                  = $facts['os_service_default'],
@@ -314,6 +319,7 @@ class swift::proxy(
     'app:proxy-server/max_containers_whitelist':   value => $max_containers_whitelist;
     'app:proxy-server/timing_expiry':              value => $timing_expiry;
     'app:proxy-server/request_node_count':         value => $request_node_count;
+    'app:proxy-server/swift_owner_headers':        value => join(any2array($swift_owner_headers), ',');
     'app:proxy-server/node_timeout':               value => $node_timeout;
     'app:proxy-server/recoverable_node_timeout':   value => $recoverable_node_timeout;
     'app:proxy-server/allow_open_expired':         value => $allow_open_expired;

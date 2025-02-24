@@ -1,0 +1,4 @@
+---
+features:
+  - |
+    The new ``swift::proxy::swift_owner_headers`` parameter has been added.
