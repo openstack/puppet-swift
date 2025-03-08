@@ -62,7 +62,6 @@ describe 'swift::storage::server' do
         :owner  => 'root',
         :group  => 'swift',
         :mode   => '0640',
-        :tag    => 'swift-config-file'
       )}
 
       it {
@@ -248,14 +247,12 @@ describe 'swift::storage::server' do
         :owner  => 'root',
         :group  => 'swift',
         :mode   => '0640',
-        :tag    => 'swift-config-file'
       )}
       it { is_expected.to contain_file('/etc/swift/container-sync-realms.conf').with(
         :ensure => 'file',
         :owner  => 'root',
         :group  => 'swift',
         :mode   => '0640',
-        :tag    => 'swift-config-file'
       )}
 
       it {
@@ -452,7 +449,6 @@ describe 'swift::storage::server' do
         :owner  => 'root',
         :group  => 'swift',
         :mode   => '0640',
-        :tag    => 'swift-config-file'
       )}
 
       it {
