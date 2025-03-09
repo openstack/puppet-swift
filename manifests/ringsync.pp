@@ -15,6 +15,6 @@ define swift::ringsync(
   Exec { path => '/usr/bin' }
 
   rsync::get { "/etc/swift/${ring_type}.ring.gz":
-    source  => "rsync://${ring_server}/swift_server/${ring_type}.ring.gz",
+    source => "rsync://${ring_server}/swift_server/${ring_type}.ring.gz",
   }
 }
