@@ -8,7 +8,7 @@ describe 'swift::proxy' do
 
     describe 'with proper dependencies' do
       let :pre_condition do
-        "class { memcached: max_memory => 1}
+        "class { memcached: }
          class { swift: swift_hash_path_suffix => string }
          include swift::proxy::catch_errors
          include swift::proxy::gatekeeper
@@ -114,7 +114,7 @@ describe 'swift::proxy' do
         describe "when using swift_proxy_config resource" do
           let :pre_condition do
             "
-              class { memcached: max_memory => 1}
+              class { memcached: }
               class { swift: swift_hash_path_suffix => string }
               swift_proxy_config { 'foo/bar': value => 'foo' }
               include swift::proxy::catch_errors
@@ -131,7 +131,7 @@ describe 'swift::proxy' do
 
         describe 'when more parameters are set' do
           let :pre_condition do
-            "class { memcached: max_memory => 1}
+            "class { memcached: }
              class { swift: swift_hash_path_suffix => string }"
           end
 
@@ -229,7 +229,7 @@ describe 'swift::proxy' do
             end
 
             let :pre_condition do
-              "class { memcached: max_memory => 1}
+              "class { memcached: }
                class { swift: swift_hash_path_suffix => string }
                include swift::proxy::tempauth
                "
@@ -311,7 +311,7 @@ describe 'swift::proxy' do
     end
 
     let :pre_condition do
-      "class { memcached: max_memory => 1}
+      "class { memcached: }
        class { swift: swift_hash_path_suffix => string }
        include swift::proxy::catch_errors
        include swift::proxy::gatekeeper

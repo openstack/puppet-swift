@@ -4,7 +4,7 @@ describe 'swift::internal_client' do
   shared_examples 'swift::internal_client' do
 
     let :pre_condition do
-      "class { memcached: max_memory => 1}
+      "class { memcached: }
        class { swift: swift_hash_path_suffix => string }
        include swift::internal_client::catch_errors
        include swift::internal_client::proxy_logging

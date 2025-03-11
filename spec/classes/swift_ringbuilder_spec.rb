@@ -10,7 +10,7 @@ describe 'swift::ringbuilder' do
 
     describe 'when swift class is included' do
       let :pre_condition do
-        "class { memcached: max_memory => 1}
+        "class { memcached: }
          class { swift: swift_hash_path_suffix => string }"
       end
 
@@ -49,7 +49,7 @@ describe 'swift::ringbuilder' do
 
       describe 'when specifying ring devices' do
         let :pre_condition do
-           'class { memcached: max_memory => 1}
+           'class { memcached: }
             class { swift: swift_hash_path_suffix => string }
             ring_object_device { "127.0.0.1:6000/1":
             zone        => 1,

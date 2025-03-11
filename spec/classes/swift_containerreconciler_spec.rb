@@ -7,7 +7,7 @@ describe 'swift::containerreconciler' do
   end
 
   let :pre_condition do
-    'class { "memcached": max_memory => 1 }'
+    'class { "memcached": }'
   end
 
   shared_examples 'swift::container::reconciler' do

@@ -11,7 +11,7 @@ describe 'swift::proxy::cache' do
 
     describe 'with memcached dependency' do
       let :pre_condition do
-        'class { "memcached": max_memory => 1 }'
+        'class { "memcached": }'
       end
 
       describe 'with defaults' do
