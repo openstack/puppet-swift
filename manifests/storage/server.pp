@@ -428,7 +428,6 @@ define swift::storage::server(
     owner  => 'root',
     group  => pick($group, $::swift::params::group),
     mode   => '0640',
-    tag    => 'swift-config-file',
     before => $required_middlewares,
   }
 
@@ -576,11 +575,12 @@ define swift::storage::server(
       }
 
       file { '/etc/swift/container-sync-realms.conf':
-        ensure => 'file',
-        owner  => 'root',
-        group  => pick($group, $::swift::params::group),
-        mode   => '0640',
-        tag    => 'swift-config-file',
+        ensure  => 'file',
+        owner   => 'root',
+        group   => pick($group, $::swift::params::group),
+        mode    => '0640',
+        require => Anchor['swift::config::begin'],
+        before  => Anchor['swift::config::end']
       }
       File['/etc/swift/container-sync-realms.conf'] -> Swift_container_sync_realms_config<||>
     }
