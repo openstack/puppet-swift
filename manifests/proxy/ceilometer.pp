@@ -99,6 +99,28 @@
 #   option, you must wipe the RabbitMQ database. (boolean value)
 #   Defaults to $facts['os_service_default']
 #
+# [*rabbit_quorum_queue*]
+#   (Optional) Use quorum queues in RabbitMQ.
+#   Defaults to $facts['os_service_default']
+#
+# [*rabbit_transient_quorum_queue*]
+#   (Optional) Use quorum queues for transients queues in RabbitMQ.
+#   Defaults to $facts['os_service_default']
+#
+# [*rabbit_transient_queues_ttl*]
+#   (Optional) Positive integer representing duration in seconds for
+#   queue TTL (x-expires). Queues which are unused for the duration
+#   of the TTL are automatically deleted.
+#   The parameter affects only reply and fanout queues. (integer value)
+#   Min to 1
+#   Defaults to $facts['os_service_default']
+#
+# [*rabbit_quorum_delivery_limit*]
+#   (Optional) Each time a message is rdelivered to a consumer, a counter is
+#   incremented. Once the redelivery count exceeds the delivery limit
+#   the message gets dropped or dead-lettered.
+#   Defaults to $facts['os_service_default']
+#
 # [*rabbit_heartbeat_timeout_threshold*]
 #   (Optional) Number of seconds after which the Rabbit broker is
 #   considered down if heartbeat's keep-alive fails
@@ -116,6 +138,10 @@
 #
 # [*amqp_durable_queues*]
 #   (optional) Define queues as "durable" to rabbitmq.
+#   Defaults to $facts['os_service_default']
+#
+# [*amqp_auto_delete*]
+#   (Optional) Define if transient queues should be auto-deleted (boolean value)
 #   Defaults to $facts['os_service_default']
 #
 # [*kombu_reconnect_delay*]
@@ -184,10 +210,15 @@ class swift::proxy::ceilometer(
   $rabbit_use_ssl                     = $facts['os_service_default'],
   $kombu_ssl_version                  = $facts['os_service_default'],
   $rabbit_ha_queues                   = $facts['os_service_default'],
+  $rabbit_quorum_queue                = $facts['os_service_default'],
+  $rabbit_transient_quorum_queue      = $facts['os_service_default'],
+  $rabbit_transient_queues_ttl        = $facts['os_service_default'],
+  $rabbit_quorum_delivery_limit       = $facts['os_service_default'],
   $rabbit_heartbeat_timeout_threshold = $facts['os_service_default'],
   $rabbit_heartbeat_rate              = $facts['os_service_default'],
   $rabbit_qos_prefetch_count          = $facts['os_service_default'],
   $amqp_durable_queues                = $facts['os_service_default'],
+  $amqp_auto_delete                   = $facts['os_service_default'],
   $kombu_reconnect_delay              = $facts['os_service_default'],
   $kombu_failover_strategy            = $facts['os_service_default'],
   $kombu_compression                  = $facts['os_service_default'],
@@ -247,20 +278,25 @@ class swift::proxy::ceilometer(
 
   if $default_transport_url =~ /^rabbit.*/ {
     oslo::messaging::rabbit { 'swift_ceilometer_config':
-      rabbit_ha_queues            => $rabbit_ha_queues,
-      heartbeat_timeout_threshold => $rabbit_heartbeat_timeout_threshold,
-      heartbeat_rate              => $rabbit_heartbeat_rate,
-      heartbeat_in_pthread        => $rabbit_heartbeat_in_pthread,
-      rabbit_qos_prefetch_count   => $rabbit_qos_prefetch_count,
-      amqp_durable_queues         => $amqp_durable_queues,
-      kombu_ssl_ca_certs          => $notification_ssl_ca_file,
-      kombu_ssl_certfile          => $notification_ssl_cert_file,
-      kombu_ssl_keyfile           => $notification_ssl_key_file,
-      kombu_ssl_version           => $kombu_ssl_version,
-      rabbit_use_ssl              => $rabbit_use_ssl,
-      kombu_reconnect_delay       => $kombu_reconnect_delay,
-      kombu_failover_strategy     => $kombu_failover_strategy,
-      kombu_compression           => $kombu_compression,
+      rabbit_ha_queues              => $rabbit_ha_queues,
+      rabbit_quorum_queue           => $rabbit_quorum_queue,
+      rabbit_transient_quorum_queue => $rabbit_transient_quorum_queue,
+      rabbit_transient_queues_ttl   => $rabbit_transient_queues_ttl,
+      rabbit_quorum_delivery_limit  => $rabbit_quorum_delivery_limit,
+      heartbeat_timeout_threshold   => $rabbit_heartbeat_timeout_threshold,
+      heartbeat_rate                => $rabbit_heartbeat_rate,
+      heartbeat_in_pthread          => $rabbit_heartbeat_in_pthread,
+      rabbit_qos_prefetch_count     => $rabbit_qos_prefetch_count,
+      amqp_durable_queues           => $amqp_durable_queues,
+      amqp_auto_delete              => $amqp_auto_delete,
+      kombu_ssl_ca_certs            => $notification_ssl_ca_file,
+      kombu_ssl_certfile            => $notification_ssl_cert_file,
+      kombu_ssl_keyfile             => $notification_ssl_key_file,
+      kombu_ssl_version             => $kombu_ssl_version,
+      rabbit_use_ssl                => $rabbit_use_ssl,
+      kombu_reconnect_delay         => $kombu_reconnect_delay,
+      kombu_failover_strategy       => $kombu_failover_strategy,
+      kombu_compression             => $kombu_compression,
     }
   } elsif $default_transport_url =~ /^amqp.*/ {
     # TODO(tkajinam): Remove this check after 2025.1 release

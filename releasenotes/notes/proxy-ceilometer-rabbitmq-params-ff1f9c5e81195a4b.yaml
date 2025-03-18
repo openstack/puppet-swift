@@ -1,0 +1,6 @@
+---
+features:
+  - |
+    New parameters for the class ``swift::proxy::ceilometer`` have been added:
+    ``rabbit_quorum_queue``, ``rabbit_transient_quorum_queue`` and
+    ``rabbit_quorum_delivery_limit``.

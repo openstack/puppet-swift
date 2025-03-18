@@ -1,0 +1,5 @@
+---
+features:
+  - |
+    The class swift::proxy::ceilometer now has a new ``amqp_auto_delete``
+    parameter, so that transient queues are automatically deleted.
