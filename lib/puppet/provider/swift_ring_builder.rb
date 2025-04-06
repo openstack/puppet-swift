@@ -19,7 +19,7 @@ class Puppet::Provider::SwiftRingBuilder < Puppet::Provider
 
   def lookup_ring
     object_hash = {}
-    if File.exists?(builder_file_path(policy_index))
+    if File.exist?(builder_file_path(policy_index))
       if rows = swift_ring_builder(builder_file_path(policy_index)).split("\n")
         while row = rows.shift do
           if row.start_with?('Devices:')

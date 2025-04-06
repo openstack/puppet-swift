@@ -49,12 +49,12 @@ Devices:    id  region  zone    ip address:port       replic_ip:replic_port     
 
     it 'ring_account_device should exist when found in builder file' do
       allow(provider.class).to receive(:swift_ring_builder).and_return account_builder_output
-      expect(File).to receive(:exists?).with(builder_file_path).and_return(true)
+      expect(File).to receive(:exist?).with(builder_file_path).and_return(true)
       expect(provider.exists?).to eq({:id=>"1", :region=>"1", :zone=>"1", :weight=>"1.00", :partitions=>"262144", :balance=>"0.00", :meta=>"", :policy_index=>''})
     end
 
     it 'should be able to lookup the local ring' do
-      expect(File).to receive(:exists?).with(builder_file_path).and_return(true)
+      expect(File).to receive(:exist?).with(builder_file_path).and_return(true)
       expect(provider).to receive(:builder_file_path).twice.and_return(builder_file_path)
       expect(provider).to receive(:swift_ring_builder).and_return account_builder_output
       resources = provider.lookup_ring

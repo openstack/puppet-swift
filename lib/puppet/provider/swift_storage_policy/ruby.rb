@@ -217,7 +217,7 @@ Puppet::Type.type(:swift_storage_policy).provide(:ruby) do
   private
 
   def self.get_swift_conf_file
-    if File.exists? '/etc/swift/swift.conf'
+    if File.exist? '/etc/swift/swift.conf'
       file = '/etc/swift/swift.conf'
     else
       file = '/etc/swift/swift.conf'

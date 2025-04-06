@@ -58,12 +58,12 @@ Devices:    id  region  zone    ip address:port       replic_ip:replic_port     
 
     it 'ring_object_device should exist when found in builder file' do
       expect(provider).to receive(:swift_ring_builder).and_return object_builder_output
-      expect(File).to receive(:exists?).with(builder_file_path).and_return(true)
+      expect(File).to receive(:exist?).with(builder_file_path).and_return(true)
       expect(provider.exists?).to eq({:id=>"1", :region=>"1", :zone=>"1", :weight=>"1.00", :partitions=>"262144", :balance=>"0.00", :meta=>"", :policy_index=>''})
     end
 
     it 'should be able to lookup the local ring' do
-      expect(File).to receive(:exists?).with(builder_file_path).and_return(true)
+      expect(File).to receive(:exist?).with(builder_file_path).and_return(true)
       expect(provider).to receive(:builder_file_path).twice.and_return(builder_file_path)
       expect(provider).to receive(:swift_ring_builder).and_return object_builder_output
       resources = provider.lookup_ring
@@ -135,12 +135,12 @@ Devices:    id  region  zone    ip address:port       replic_ip:replic_port     
 
     it 'ring_object_device should exist when found in builder file with policy_index=1' do
       expect(provider_policy1).to receive(:swift_ring_builder).and_return object_builder_policy1_output
-      expect(File).to receive(:exists?).with(builder_file_path_policy1).and_return(true)
+      expect(File).to receive(:exist?).with(builder_file_path_policy1).and_return(true)
       expect(provider_policy1.exists?).to eq({:id=>"1", :region=>"1", :zone=>"1", :weight=>"1.00", :partitions=>"262144", :balance=>"0.00", :meta=>"", :policy_index=>"1"})
     end
 
     it 'lookup local ring and object resource names should start with policy_index if a policy is set' do
-      expect(File).to receive(:exists?).with(builder_file_path_policy1).and_return(true)
+      expect(File).to receive(:exist?).with(builder_file_path_policy1).and_return(true)
       expect(provider_policy1).to receive(:builder_file_path).twice.and_return(builder_file_path_policy1)
       expect(provider_policy1).to receive(:swift_ring_builder).and_return object_builder_output
       resources = provider_policy1.lookup_ring
