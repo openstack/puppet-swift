@@ -163,10 +163,6 @@
 #
 # DEPRECATED PARAMETERS
 #
-# [*amqp_ssl_key_password*]
-#   (Optional) Password for decrypting ssl_key_file (if encrypted)
-#   Defaults to undef
-#
 # [*rabbit_heartbeat_in_pthread*]
 #   (Optional) EXPERIMENTAL: Run the health check heartbeat thread
 #   through a native python thread. By default if this
@@ -223,17 +219,11 @@ class swift::proxy::ceilometer(
   $kombu_failover_strategy            = $facts['os_service_default'],
   $kombu_compression                  = $facts['os_service_default'],
   # DEPRECATED PARAMETERS
-  $amqp_ssl_key_password              = undef,
   $rabbit_heartbeat_in_pthread        = undef,
 ) inherits swift {
 
   include swift::deps
   include swift::params
-
-  # TODO(tkajinam): Remove this after 2025.1 release
-  if $amqp_ssl_key_password != undef {
-    warning('The amqp_ssl_key_password parameter has been deprecated and has no effect.')
-  }
 
   Package['python-ceilometermiddleware'] ~> Service<| title == 'swift-proxy-server' |>
 
@@ -298,9 +288,6 @@ class swift::proxy::ceilometer(
       kombu_failover_strategy       => $kombu_failover_strategy,
       kombu_compression             => $kombu_compression,
     }
-  } elsif $default_transport_url =~ /^amqp.*/ {
-    # TODO(tkajinam): Remove this check after 2025.1 release
-    fail('apqm1 driver support has been removed.')
   } else {
     oslo::messaging::rabbit { 'swift_ceilometer_config': }
   }
