@@ -7,10 +7,7 @@ Puppet::Type.type(:service).provide :swiftinit, :parent => :service do
   has_feature :enableable
   has_feature :refreshable
 
-  confine :any => [
-    Facter.value(:osfamily) == 'Debian',
-    Facter.value(:osfamily) == 'RedHat'
-  ]
+  confine 'os.family' => [:debian, :redhat]
 
   # Check if swift service is running using swift-init
   def status
