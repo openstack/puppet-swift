@@ -35,6 +35,10 @@ describe 'swift::objectexpirer' do
         is_expected.to contain_swift_object_expirer_config(
           'object-expirer/reclaim_age').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_swift_object_expirer_config(
+          'object-expirer/request_tries').with_value('<SERVICE DEFAULT>')
+        is_expected.to contain_swift_object_expirer_config(
+          'object-expirer/tasks_per_second').with_value('<SERVICE DEFAULT>')
+        is_expected.to contain_swift_object_expirer_config(
           'object-expirer/recon_cache_path').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_swift_object_expirer_config(
           'object-expirer/report_interval').with_value('<SERVICE DEFAULT>')
@@ -73,18 +77,24 @@ describe 'swift::objectexpirer' do
     context 'when overriding parameters' do
       before do
         params.merge!(
-          :interval    => '600',
-          :reclaim_age => '10000',
-          :concurrency => '3',
+          :concurrency      => 4,
+          :interval         => 600,
+          :reclaim_age      => 86400,
+          :request_tries    => 3,
+          :tasks_per_second => 50,
         )
       end
       it 'configures object-expirer.conf' do
         is_expected.to contain_swift_object_expirer_config(
-          'object-expirer/concurrency').with_value('3')
+          'object-expirer/concurrency').with_value(4)
         is_expected.to contain_swift_object_expirer_config(
           'object-expirer/interval').with_value('600')
         is_expected.to contain_swift_object_expirer_config(
-          'object-expirer/reclaim_age').with_value('10000')
+          'object-expirer/reclaim_age').with_value(86400)
+        is_expected.to contain_swift_object_expirer_config(
+          'object-expirer/request_tries').with_value(3)
+        is_expected.to contain_swift_object_expirer_config(
+          'object-expirer/tasks_per_second').with_value(50)
       end
     end
 

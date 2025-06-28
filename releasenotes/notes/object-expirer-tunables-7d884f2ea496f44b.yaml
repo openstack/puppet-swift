@@ -1,0 +1,7 @@
+---
+features:
+  - |
+    The ``swift::objectexpirer`` class now supports the following parameters.
+
+    - ``request_tries``
+    - ``tasks_per_second``

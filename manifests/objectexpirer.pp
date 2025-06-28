@@ -40,6 +40,15 @@
 #    reclaimed.
 #    Defaults to $facts['os_service_default'].
 #
+#  [*request_tries*]
+#    (optional) Server errors from requests will be retried by default
+#    Defaults to $facts['os_service_default']
+#
+#  [*tasks_per_second*]
+#    (optional) Deletes can be ratelimited to prevent the expirer from
+#    overwhelming the cluster
+#    Defaults to $facts['os_service_default']
+#
 #  [*recon_cache_path*]
 #    (optional) Directory where stats for a few items will be stored.
 #    Defaults to $facts['os_service_default'].
@@ -130,6 +139,8 @@ class swift::objectexpirer(
   $process                                 = $facts['os_service_default'],
   $processes                               = $facts['os_service_default'],
   $reclaim_age                             = $facts['os_service_default'],
+  $request_tries                           = $facts['os_service_default'],
+  $tasks_per_second                        = $facts['os_service_default'],
   $recon_cache_path                        = $facts['os_service_default'],
   $report_interval                         = $facts['os_service_default'],
   Swift::ServiceProvider $service_provider = $::swift::params::service_provider,
@@ -223,6 +234,8 @@ class swift::objectexpirer(
     'object-expirer/process':                       value => $process;
     'object-expirer/processes':                     value => $processes;
     'object-expirer/reclaim_age':                   value => $reclaim_age;
+    'object-expirer/request_tries':                 value => $request_tries;
+    'object-expirer/tasks_per_second':              value => $tasks_per_second;
     'object-expirer/recon_cache_path':              value => $recon_cache_path;
     'object-expirer/report_interval':               value => $report_interval;
     'object-expirer/log_name':                      value => $log_name;
