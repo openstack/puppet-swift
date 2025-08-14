@@ -6,6 +6,6 @@ class swift::xfs {
   include swift::deps
 
   $packages = ['xfsprogs', 'parted']
-  ensure_packages($packages)
+  stdlib::ensure_packages($packages)
 
 }

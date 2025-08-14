@@ -636,7 +636,7 @@ define swift::storage::server(
     }
   }
 
-  create_resources("swift_${type}_config", merge(
+  create_resources("swift_${type}_config", stdlib::merge(
     $common_opts,
     $log_statsd_opts,
     $type_opts,
