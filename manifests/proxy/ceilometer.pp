@@ -238,7 +238,7 @@ class swift::proxy::ceilometer(
   file { '/etc/swift/ceilometer.conf':
     ensure  => 'file',
     owner   => 'root',
-    group   => $::swift::params::group,
+    group   => $swift::params::group,
     mode    => '0640',
     require => Anchor['swift::config::begin'],
     before  => Anchor['swift::config::end'],
@@ -294,7 +294,7 @@ class swift::proxy::ceilometer(
 
   package { 'python-ceilometermiddleware':
     ensure => $ensure,
-    name   => $::swift::params::ceilometermiddleware_package_name,
+    name   => $swift::params::ceilometermiddleware_package_name,
     tag    => ['openstack', 'swift-support-package'],
   }
 

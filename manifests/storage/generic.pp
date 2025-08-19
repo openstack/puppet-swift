@@ -28,7 +28,7 @@
 #    service_provider to "swiftinit".  When enable is true the provider
 #    will populate boot files that start swift using swift-init at boot.
 #    See README for more details.
-#    Defaults to $::swift::params::service_provider.
+#    Defaults to $swift::params::service_provider.
 #
 # == Dependencies
 #  Requires Class[swift::storage]
@@ -39,7 +39,7 @@ define swift::storage::generic(
   Boolean $enabled                         = true,
   $package_ensure                          = 'present',
   String[1] $config_file_name              = "${name}-server.conf",
-  Swift::ServiceProvider $service_provider = $::swift::params::service_provider
+  Swift::ServiceProvider $service_provider = $swift::params::service_provider
 ) {
 
   include swift::deps
@@ -55,8 +55,8 @@ define swift::storage::generic(
 
   file { "/etc/swift/${type}-server/":
     ensure  => directory,
-    owner   => $::swift::params::user,
-    group   => $::swift::params::group,
+    owner   => $swift::params::user,
+    group   => $swift::params::group,
     require => Anchor['swift::config::begin'],
     before  => Anchor['swift::config::end'],
   }

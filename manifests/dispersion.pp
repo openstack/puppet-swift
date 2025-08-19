@@ -87,8 +87,8 @@ class swift::dispersion (
 
   file { '/etc/swift/dispersion.conf':
     ensure => file,
-    owner  => $::swift::params::user,
-    group  => $::swift::params::group,
+    owner  => $swift::params::user,
+    group  => $swift::params::group,
     mode   => '0640',
   }
 

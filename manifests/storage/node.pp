@@ -24,11 +24,11 @@
 #
 # [*owner*]
 #   (optional) Owner (uid) of rsync server.
-#   Defaults to $::swift::params::user.
+#   Defaults to $swift::params::user.
 #
 # [*group*]
 #   (optional) Group (gid) of rsync server.
-#   Defaults to $::swift::params::group.
+#   Defaults to $swift::params::group.
 #
 # [*max_connections*]
 #   (optional) maximum number of simultaneous connections allowed.
@@ -58,8 +58,8 @@ define swift::storage::node(
     storage_local_net_ip => $storage_local_net_ip,
     devices              => $mnt_base_dir,
     max_connections      => $max_connections,
-    owner                => pick($owner, $::swift::params::user),
-    group                => pick($group, $::swift::params::group),
+    owner                => pick($owner, $swift::params::user),
+    group                => pick($group, $swift::params::group),
   }
 
   swift::storage::server { "60${name}0":

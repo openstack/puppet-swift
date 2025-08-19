@@ -63,7 +63,7 @@
 #    service_provider to "swiftinit".  When enable is true the provider
 #    will populate boot files that start swift using swift-init at boot.
 #    See README for more details.
-#    Defaults to $::swift::params::service_provider.
+#    Defaults to $swift::params::service_provider.
 #
 #  [*memcache_servers*]
 #    (optional)
@@ -143,7 +143,7 @@ class swift::objectexpirer(
   $tasks_per_second                        = $facts['os_service_default'],
   $recon_cache_path                        = $facts['os_service_default'],
   $report_interval                         = $facts['os_service_default'],
-  Swift::ServiceProvider $service_provider = $::swift::params::service_provider,
+  Swift::ServiceProvider $service_provider = $swift::params::service_provider,
   $memcache_servers                        = ['127.0.0.1:11211'],
   $cache_tls_enabled                       = $facts['os_service_default'],
   $cache_tls_cafile                        = $facts['os_service_default'],
@@ -168,10 +168,10 @@ class swift::objectexpirer(
 
   # On Red Hat platforms, it may be defined already,
   # because it is part of openstack-swift-proxy
-  if $::swift::params::object_expirer_package_name != $::swift::params::proxy_package_name {
+  if $swift::params::object_expirer_package_name != $swift::params::proxy_package_name {
     package { 'swift-object-expirer':
       ensure => $package_ensure,
-      name   => $::swift::params::object_expirer_package_name,
+      name   => $swift::params::object_expirer_package_name,
       tag    => ['openstack', 'swift-package'],
     }
   }
@@ -183,10 +183,10 @@ class swift::objectexpirer(
   file { '/etc/swift/object-expirer.conf':
     ensure  => 'file',
     owner   => 'root',
-    group   => $::swift::params::group,
+    group   => $swift::params::group,
     mode    => '0640',
     require => Anchor['swift::config::begin'],
-    before  => Anchor['swift::config::end']
+    before  => Anchor['swift::config::end'],
   }
   File['/etc/swift/object-expirer.conf'] -> Swift_object_expirer_config<||>
 
@@ -253,7 +253,7 @@ class swift::objectexpirer(
     }
 
     swift::service { 'swift-object-expirer':
-      os_family_service_name => $::swift::params::object_expirer_service_name,
+      os_family_service_name => $swift::params::object_expirer_service_name,
       service_ensure         => $service_ensure,
       enabled                => $enabled,
       config_file_name       => 'object-expirer.conf',

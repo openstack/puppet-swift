@@ -29,7 +29,7 @@
 #   service_provider to "swiftinit".  When enable is true the provider
 #   will populate boot files that start swift using swift-init at boot.
 #   See README for more details.
-#   Defaults to $::swift::params::service_provider.
+#   Defaults to $swift::params::service_provider.
 #
 # [*service_subscribe*]
 # (optional) Parameter used to pass in resources that this service should
@@ -46,7 +46,7 @@ define swift::service(
   String[1] $config_file_name,
   $service_ensure                          = undef,
   Boolean $enabled                         = true,
-  Swift::ServiceProvider $service_provider = $::swift::params::service_provider,
+  Swift::ServiceProvider $service_provider = $swift::params::service_provider,
   $service_subscribe                       = undef,
   $service_require                         = undef,
   Optional[String[1]] $service_tag         = undef,
@@ -55,7 +55,7 @@ define swift::service(
   include swift::deps
   include swift::params
 
-  if(! member($::swift::params::swift_init_service_names, $name)) {
+  if(! member($swift::params::swift_init_service_names, $name)) {
     fail("swift::service name: ${name} is not a valid swift_init_service_name")
   }
 

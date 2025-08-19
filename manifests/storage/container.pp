@@ -29,7 +29,7 @@
 #    service_provider to "swiftinit".  When enable is true the provider
 #    will populate boot files that start swift using swift-init at boot.
 #    See README for more details.
-#    Defaults to $::swift::params::service_provider.
+#    Defaults to $swift::params::service_provider.
 #
 class swift::storage::container(
   Boolean $manage_service                  = true,
@@ -37,7 +37,7 @@ class swift::storage::container(
   $package_ensure                          = 'present',
   Array[String[1]] $allowed_sync_hosts     = ['127.0.0.1'],
   String[1] $config_file_name              = 'container-server.conf',
-  Swift::ServiceProvider $service_provider = $::swift::params::service_provider
+  Swift::ServiceProvider $service_provider = $swift::params::service_provider
 ) inherits swift::params {
 
   include swift::deps
@@ -47,7 +47,7 @@ class swift::storage::container(
     enabled          => $enabled,
     package_ensure   => $package_ensure,
     config_file_name => $config_file_name,
-    service_provider => $service_provider
+    service_provider => $service_provider,
   }
 
   if $manage_service {
@@ -58,7 +58,7 @@ class swift::storage::container(
     }
 
     swift::service { 'swift-container-updater':
-      os_family_service_name => $::swift::params::container_updater_service_name,
+      os_family_service_name => $swift::params::container_updater_service_name,
       service_ensure         => $service_ensure,
       enabled                => $enabled,
       config_file_name       => $config_file_name,
@@ -67,7 +67,7 @@ class swift::storage::container(
     }
 
     swift::service { 'swift-container-sync':
-      os_family_service_name => $::swift::params::container_sync_service_name,
+      os_family_service_name => $swift::params::container_sync_service_name,
       service_ensure         => $service_ensure,
       enabled                => $enabled,
       config_file_name       => $config_file_name,
@@ -76,7 +76,7 @@ class swift::storage::container(
     }
 
     swift::service { 'swift-container-sharder':
-      os_family_service_name => $::swift::params::container_sharder_service_name,
+      os_family_service_name => $swift::params::container_sharder_service_name,
       service_ensure         => $service_ensure,
       enabled                => $enabled,
       config_file_name       => $config_file_name,

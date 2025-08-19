@@ -71,8 +71,8 @@ define swift::storage::mount(
     before  => Anchor['swift::config::end'],
   }
 
-  $user = $::swift::params::user
-  $group = $::swift::params::group
+  $user = $swift::params::user
+  $group = $swift::params::group
 
   exec { "fix_mount_permissions_${name}":
     command     => ['chown', '-R', "${user}:${group}", "${mnt_base_dir}/${name}"],

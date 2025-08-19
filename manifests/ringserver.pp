@@ -32,13 +32,13 @@
 class swift::ringserver(
   $local_net_ip,
   $max_connections = 5,
-  $rsync_use_xinetd = $::swift::params::xinetd_available,
+  $rsync_use_xinetd = $swift::params::xinetd_available,
 ) inherits swift::params {
 
   include swift::deps
   Class['swift::ringbuilder'] -> Class['swift::ringserver']
 
-  if $rsync_use_xinetd and ! $::swift::params::xinetd_available {
+  if $rsync_use_xinetd and ! $swift::params::xinetd_available {
     fail('xinetd is not available in this distro')
   }
 
@@ -51,8 +51,8 @@ class swift::ringserver(
   rsync::server::module { 'swift_server':
     path            => '/etc/swift',
     lock_file       => '/var/lock/swift_server.lock',
-    uid             => $::swift::params::user,
-    gid             => $::swift::params::group,
+    uid             => $swift::params::user,
+    gid             => $swift::params::group,
     max_connections => $max_connections,
     read_only       => true,
   }

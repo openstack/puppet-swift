@@ -97,10 +97,10 @@ class swift::keymaster(
   file { '/etc/swift/keymaster.conf':
     ensure  => 'file',
     owner   => 'root',
-    group   => $::swift::params::group,
+    group   => $swift::params::group,
     mode    => '0640',
     require => Anchor['swift::config::begin'],
-    before  => Anchor['swift::config::end']
+    before  => Anchor['swift::config::end'],
   }
   File['/etc/swift/keymaster.conf'] -> Swift_keymaster_config<||>
 

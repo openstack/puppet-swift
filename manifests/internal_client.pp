@@ -6,7 +6,7 @@
 #
 # [*user*]
 #   (optional) User to run as
-#   Defaults to $::swift::params::user.
+#   Defaults to $swift::params::user.
 #
 #  [*pipeline*]
 #    (optional) The list of elements of the internal client pipeline.
@@ -69,7 +69,7 @@
 #    Defaults to false.
 #
 class swift::internal_client (
-  $user                                          = $::swift::params::user,
+  $user                                          = $swift::params::user,
   Swift::Pipeline $pipeline                      = ['catch_errors', 'proxy-logging', 'cache', 'proxy-server'],
   $object_chunk_size                             = $facts['os_service_default'],
   $client_chunk_size                             = $facts['os_service_default'],
@@ -100,10 +100,10 @@ class swift::internal_client (
   file { '/etc/swift/internal-client.conf':
     ensure  => 'file',
     owner   => 'root',
-    group   => $::swift::params::group,
+    group   => $swift::params::group,
     mode    => '0640',
     require => Anchor['swift::config::begin'],
-    before  => Anchor['swift::config::end']
+    before  => Anchor['swift::config::end'],
   }
   File['/etc/swift/internal-client.conf'] -> Swift_internal_client_config<||>
 

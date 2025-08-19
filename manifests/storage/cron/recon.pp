@@ -51,7 +51,7 @@ class swift::storage::cron::recon(
   $month      = '*',
   $weekday    = '*',
   $configfile = '/etc/swift/object-server.conf',
-  $user       = $::swift::params::user
+  $user       = $swift::params::user
 ) inherits swift::params {
 
   include swift::deps

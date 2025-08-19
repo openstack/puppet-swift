@@ -24,14 +24,14 @@
 #    service_provider to "swiftinit".  When enable is true the provider
 #    will populate boot files that start swift using swift-init at boot.
 #    See README for more details.
-#    Defaults to $::swift::params::service_provider.
+#    Defaults to $swift::params::service_provider.
 #
 class swift::storage::account(
   Boolean $manage_service                  = true,
   Boolean $enabled                         = true,
   $package_ensure                          = 'present',
   String[1] $config_file_name              = 'account-server.conf',
-  Swift::ServiceProvider $service_provider = $::swift::params::service_provider
+  Swift::ServiceProvider $service_provider = $swift::params::service_provider
 ) inherits swift::params {
 
   include swift::deps
@@ -41,7 +41,7 @@ class swift::storage::account(
     enabled          => $enabled,
     package_ensure   => $package_ensure,
     config_file_name => $config_file_name,
-    service_provider => $service_provider
+    service_provider => $service_provider,
   }
 
   if $manage_service {
@@ -52,7 +52,7 @@ class swift::storage::account(
     }
 
     swift::service { 'swift-account-reaper':
-      os_family_service_name => $::swift::params::account_reaper_service_name,
+      os_family_service_name => $swift::params::account_reaper_service_name,
       service_ensure         => $service_ensure,
       enabled                => $enabled,
       config_file_name       => $config_file_name,

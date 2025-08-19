@@ -30,11 +30,11 @@
 #
 # [*owner*]
 #   (optional) Owner (uid) of rsync server.
-#   Defaults to $::swift::params::user.
+#   Defaults to $swift::params::user.
 #
 # [*group*]
 #   (optional) Group (gid) of rsync server.
-#   Defaults to $::swift::params::group.
+#   Defaults to $swift::params::group.
 #
 # [*max_connections*]
 #   (optional) maximum number of simultaneous connections allowed.
@@ -99,7 +99,7 @@
 #
 # [*user*]
 #   (optional) User to run as
-#   Defaults to $::swift::params::user.
+#   Defaults to $swift::params::user.
 #
 # [*workers*]
 #   (optional) Override the number of pre-forked workers that will accept
@@ -366,7 +366,7 @@ define swift::storage::server(
   include swift::deps
   include swift::params
 
-  $user_real = pick($user, $::swift::params::user)
+  $user_real = pick($user, $swift::params::user)
 
   # Fail if ${type-server} isn't included in the pipeline
   if $pipeline[-1] != "${type}-server" {
@@ -386,8 +386,8 @@ define swift::storage::server(
       rsync::server::module { "${type}_${device_name}":
         path            => $devices,
         lock_file       => "/var/lock/${type}_${device_name}.lock",
-        uid             => pick($owner, $::swift::params::user),
-        gid             => pick($group, $::swift::params::group),
+        uid             => pick($owner, $swift::params::user),
+        gid             => pick($group, $swift::params::group),
         hosts_allow     => $hosts_allow,
         hosts_deny      => $hosts_deny,
         incoming_chmod  => $incoming_chmod,
@@ -401,8 +401,8 @@ define swift::storage::server(
     rsync::server::module { $type:
       path            => $devices,
       lock_file       => "/var/lock/${type}.lock",
-      uid             => pick($owner, $::swift::params::user),
-      gid             => pick($group, $::swift::params::group),
+      uid             => pick($owner, $swift::params::user),
+      gid             => pick($group, $swift::params::group),
       hosts_allow     => $hosts_allow,
       hosts_deny      => $hosts_deny,
       incoming_chmod  => $incoming_chmod,
@@ -426,7 +426,7 @@ define swift::storage::server(
   file { $config_file_full_path:
     ensure => 'file',
     owner  => 'root',
-    group  => pick($group, $::swift::params::group),
+    group  => pick($group, $swift::params::group),
     mode   => '0640',
     before => $required_middlewares,
   }
@@ -531,7 +531,7 @@ define swift::storage::server(
     'container': {
       $type_opts = {
         'DEFAULT/db_preallocation'          => {'value'  => $db_preallocation},
-        'DEFAULT/allowed_sync_hosts'        => {'value'  => join($::swift::storage::container::allowed_sync_hosts, ',')},
+        'DEFAULT/allowed_sync_hosts'        => {'value'  => join($swift::storage::container::allowed_sync_hosts, ',')},
         # container-server
         # container-auditor
         # container-replicator
@@ -577,10 +577,10 @@ define swift::storage::server(
       file { '/etc/swift/container-sync-realms.conf':
         ensure  => 'file',
         owner   => 'root',
-        group   => pick($group, $::swift::params::group),
+        group   => pick($group, $swift::params::group),
         mode    => '0640',
         require => Anchor['swift::config::begin'],
-        before  => Anchor['swift::config::end']
+        before  => Anchor['swift::config::end'],
       }
       File['/etc/swift/container-sync-realms.conf'] -> Swift_container_sync_realms_config<||>
     }

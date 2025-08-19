@@ -6,7 +6,7 @@
 #
 # [*user*]
 #   (Optional) User with access to swift files.
-#   Defaults to $::swift::params::user.
+#   Defaults to $swift::params::user.
 #
 # [*minute*]
 #   (Optional) Defaults to '1'.
@@ -102,7 +102,7 @@
 #
 class swift::storage::drive_audit(
   # cron options
-  $user                                     = $::swift::params::user,
+  $user                                     = $swift::params::user,
   $minute                                   = 1,
   $hour                                     = 0,
   $monthday                                 = '*',
@@ -138,10 +138,10 @@ class swift::storage::drive_audit(
   file { '/etc/swift/drive-audit.conf':
     ensure  => 'file',
     owner   => 'root',
-    group   => $::swift::params::group,
+    group   => $swift::params::group,
     mode    => '0640',
     require => Anchor['swift::config::begin'],
-    before  => Anchor['swift::config::end']
+    before  => Anchor['swift::config::end'],
   }
   File['/etc/swift/drive-audit.conf'] -> Swift_drive_audit_config<||>
 

@@ -87,5 +87,5 @@ class { 'swift::proxy::tempauth':
       'key'     => 'testing3',
       'groups'  => [],
     },
-  ]
+  ],
 }

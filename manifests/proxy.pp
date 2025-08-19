@@ -191,7 +191,7 @@
 #    service_provider to "swiftinit".  When enable is true the provider
 #    will populate boot files that start swift using swift-init at boot.
 #    See README for more details.
-#    Defaults to $::swift::params::service_provider.
+#    Defaults to $swift::params::service_provider.
 #
 #  [*purge_config*]
 #    (optional) Whether to set only the specified config options
@@ -250,7 +250,7 @@ class swift::proxy(
   Boolean $manage_service                        = true,
   Boolean $enabled                               = true,
   $package_ensure                                = 'present',
-  Swift::ServiceProvider $service_provider       = $::swift::params::service_provider,
+  Swift::ServiceProvider $service_provider       = $swift::params::service_provider,
   Boolean $purge_config                          = false,
 ) inherits swift::params {
 
@@ -275,7 +275,7 @@ class swift::proxy(
 
   package { 'swift-proxy':
     ensure => $package_ensure,
-    name   => $::swift::params::proxy_package_name,
+    name   => $swift::params::proxy_package_name,
     tag    => ['openstack', 'swift-package'],
   }
 
@@ -286,10 +286,10 @@ class swift::proxy(
   file { '/etc/swift/proxy-server.conf':
     ensure  => 'file',
     owner   => 'root',
-    group   => $::swift::params::group,
+    group   => $swift::params::group,
     mode    => '0640',
     require => Anchor['swift::config::begin'],
-    before  => Anchor['swift::config::end']
+    before  => Anchor['swift::config::end'],
   }
   File['/etc/swift/proxy-server.conf'] -> Swift_proxy_config<||>
 
@@ -299,7 +299,7 @@ class swift::proxy(
     'DEFAULT/cert_file':                           value => $cert_file;
     'DEFAULT/key_file':                            value => $key_file;
     'DEFAULT/workers':                             value => $workers;
-    'DEFAULT/user':                                value => $::swift::params::user;
+    'DEFAULT/user':                                value => $swift::params::user;
     'DEFAULT/log_name':                            value => $log_name;
     'DEFAULT/log_facility':                        value => $log_facility;
     'DEFAULT/log_level':                           value => $log_level;
@@ -398,7 +398,7 @@ class swift::proxy(
 
     # Require 'swift::proxy::' classes for each of the elements in pipeline.
     swift::service { 'swift-proxy-server':
-      os_family_service_name => $::swift::params::proxy_server_service_name,
+      os_family_service_name => $swift::params::proxy_server_service_name,
       service_ensure         => $service_ensure,
       enabled                => $enabled,
       config_file_name       => 'proxy-server.conf',

@@ -51,7 +51,7 @@
 #    set service_provider to "swiftinit".  When enable is true the provider
 #    will populate boot files that start swift using swift-init at boot.
 #    See README for more details.
-#    Defaults to $::swift::params::service_provider.
+#    Defaults to $swift::params::service_provider.
 #
 #  [*memcache_servers*]
 #    (optional) A list of the memcache servers to be used. Entries should be in
@@ -123,7 +123,7 @@ class swift::containerreconciler(
   $processes                               = $facts['os_service_default'],
   $reclaim_age                             = $facts['os_service_default'],
   $request_tries                           = $facts['os_service_default'],
-  Swift::ServiceProvider $service_provider = $::swift::params::service_provider,
+  Swift::ServiceProvider $service_provider = $swift::params::service_provider,
   $memcache_servers                        = ['127.0.0.1:11211'],
   $cache_tls_enabled                       = $facts['os_service_default'],
   $cache_tls_cafile                        = $facts['os_service_default'],
@@ -151,10 +151,10 @@ class swift::containerreconciler(
   file { '/etc/swift/container-reconciler.conf':
     ensure  => 'file',
     owner   => 'root',
-    group   => $::swift::params::group,
+    group   => $swift::params::group,
     mode    => '0640',
     require => Anchor['swift::config::begin'],
-    before  => Anchor['swift::config::end']
+    before  => Anchor['swift::config::end'],
   }
   File['/etc/swift/container-reconciler.conf'] -> Swift_container_reconciler_config<||>
 
@@ -214,7 +214,7 @@ class swift::containerreconciler(
   }
 
   swift::service { 'swift-container-reconciler':
-    os_family_service_name => $::swift::params::container_reconciler_service_name,
+    os_family_service_name => $swift::params::container_reconciler_service_name,
     service_ensure         => $service_ensure,
     enabled                => $enabled,
     config_file_name       => 'container-reconciler.conf',

@@ -174,7 +174,7 @@ class swift::storage::all(
   $rsync_timeout                  = $facts['os_service_default'],
   $rsync_bwlimit                  = $facts['os_service_default'],
   $splice                         = false,
-  $rsync_use_xinetd               = $::swift::params::xinetd_available,
+  $rsync_use_xinetd               = $swift::params::xinetd_available,
 ) inherits swift::params {
 
   include swift::deps
@@ -194,7 +194,7 @@ from 6001 to 6201 and will be changed in a later release")
 from 6002 to 6202 and will be changed in a later release")
   }
 
-  if $rsync_use_xinetd and ! $::swift::params::xinetd_available {
+  if $rsync_use_xinetd and ! $swift::params::xinetd_available {
     fail('xinetd is not available in this distro')
   }
 

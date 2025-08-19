@@ -26,12 +26,12 @@
 #
 class swift::storage(
   $storage_local_net_ip,
-  $rsync_use_xinetd = $::swift::params::xinetd_available,
+  $rsync_use_xinetd = $swift::params::xinetd_available,
 ) inherits swift::params {
 
   include swift::deps
 
-  if $rsync_use_xinetd and ! $::swift::params::xinetd_available {
+  if $rsync_use_xinetd and ! $swift::params::xinetd_available {
     fail('xinetd is not available in this distro')
   }
 

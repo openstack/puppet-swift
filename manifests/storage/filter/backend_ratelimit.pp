@@ -78,34 +78,34 @@ define swift::storage::filter::backend_ratelimit(
 
   create_resources($config_type, {
     'filter:backend_ratelimit/use'                                      => {
-      'value' => 'egg:swift#backend_ratelimit'
+      'value' => 'egg:swift#backend_ratelimit',
     },
     'filter:backend_ratelimit/requests_per_device_per_second'           => {
-      'value' => $requests_per_device_per_second
+      'value' => $requests_per_device_per_second,
     },
     'filter:backend_ratelimit/delete_requests_per_device_per_second'    => {
-      'value' => $delete_requests_per_device_per_second
+      'value' => $delete_requests_per_device_per_second,
     },
     'filter:backend_ratelimit/get_requests_per_device_per_second'       => {
-      'value' => $get_requests_per_device_per_second
+      'value' => $get_requests_per_device_per_second,
     },
     'filter:backend_ratelimit/head_requests_per_device_per_second'      => {
-      'value' => $head_requests_per_device_per_second
+      'value' => $head_requests_per_device_per_second,
     },
     'filter:backend_ratelimit/post_requests_per_device_per_second'      => {
-      'value' => $post_requests_per_device_per_second
+      'value' => $post_requests_per_device_per_second,
     },
     'filter:backend_ratelimit/put_requests_per_device_per_second'       => {
-      'value' => $put_requests_per_device_per_second
+      'value' => $put_requests_per_device_per_second,
     },
     'filter:backend_ratelimit/replicate_requests_per_device_per_second' => {
-      'value' => $replicate_requests_per_device_per_second
+      'value' => $replicate_requests_per_device_per_second,
     },
     'filter:backend_ratelimit/update_requests_per_device_per_second'    => {
-      'value' => $update_requests_per_device_per_second
+      'value' => $update_requests_per_device_per_second,
     },
     'filter:backend_ratelimit/requests_per_device_rate_buffer'          => {
-      'value' => $requests_per_device_rate_buffer
+      'value' => $requests_per_device_rate_buffer,
     }
   })
 
