@@ -81,7 +81,7 @@
 #
 # Copyright 2012 eNovance licensing@enovance.com
 #
-class swift::proxy::s3token(
+class swift::proxy::s3token (
   String[1] $password,
   $auth_uri              = 'http://127.0.0.1:5000',
   $reseller_prefix       = 'AUTH_',
@@ -96,7 +96,6 @@ class swift::proxy::s3token(
   $project_domain_id     = 'default',
   $system_scope          = $facts['os_service_default'],
 ) {
-
   include swift::deps
 
   if is_service_default($system_scope) {

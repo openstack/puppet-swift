@@ -71,7 +71,7 @@ class swift::proxy::tempauth (
       'user'    => 'admin',
       'account' => 'admin',
       'key'     => 'admin',
-      'groups'  => [ 'admin', 'reseller_admin' ],
+      'groups'  => ['admin', 'reseller_admin'],
     },
   ],
   Optional[String[1]] $reseller_prefix                           = undef,
@@ -80,10 +80,9 @@ class swift::proxy::tempauth (
   Optional[Boolean] $allow_overrides                             = undef,
   Optional[Enum['http', 'https', 'default']] $storage_url_scheme = undef,
 ) {
-
   include swift::deps
 
-  if ($reseller_prefix) {
+  if $reseller_prefix {
     $reseller_prefix_upcase = upcase($reseller_prefix)
   } else {
     $reseller_prefix_upcase = $reseller_prefix

@@ -67,7 +67,7 @@
 #   shi.yan@ardc.edu.au
 #
 #
-class swift::proxy::domain_remap(
+class swift::proxy::domain_remap (
   $log_name                = $facts['os_service_default'],
   $log_facility            = $facts['os_service_default'],
   $log_level               = $facts['os_service_default'],
@@ -79,7 +79,6 @@ class swift::proxy::domain_remap(
   $default_reseller_prefix = $facts['os_service_default'],
   $mangle_client_paths     = $facts['os_service_default'],
 ) {
-
   include swift::deps
 
   $reseller_prefixes_real = join(any2array($reseller_prefixes), ',')

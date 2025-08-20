@@ -29,10 +29,9 @@
 #
 # shi.yan@ardc.edu.au
 #
-class swift::proxy::symlink(
+class swift::proxy::symlink (
   $symloop_max = $facts['os_service_default'],
 ) {
-
   include swift::deps
 
   swift_proxy_config {

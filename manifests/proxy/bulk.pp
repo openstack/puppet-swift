@@ -52,7 +52,7 @@
 #   the connection alive while its processing the request.
 #   Defaults to $facts['os_service_default'].
 #
-class swift::proxy::bulk(
+class swift::proxy::bulk (
   $max_containers_per_extraction = $facts['os_service_default'],
   $max_failed_extractions        = $facts['os_service_default'],
   $max_failed_deletes            = $facts['os_service_default'],
@@ -61,7 +61,6 @@ class swift::proxy::bulk(
   $delete_concurrency            = $facts['os_service_default'],
   $yield_frequency               = $facts['os_service_default'],
 ) {
-
   include swift::deps
 
   swift_proxy_config {

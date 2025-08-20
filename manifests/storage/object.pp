@@ -26,14 +26,13 @@
 #    See README for more details.
 #    Defaults to $swift::params::service_provider.
 #
-class swift::storage::object(
+class swift::storage::object (
   Boolean $manage_service                  = true,
   Boolean $enabled                         = true,
   $package_ensure                          = 'present',
   String[1] $config_file_name              = 'object-server.conf',
   Swift::ServiceProvider $service_provider = $swift::params::service_provider
 ) inherits swift::params {
-
   include swift::deps
 
   swift::storage::generic { 'object':

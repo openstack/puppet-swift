@@ -85,7 +85,6 @@ class swift::internal_client (
   $recoverable_node_timeout                      = $facts['os_service_default'],
   Boolean $purge_config                          = false,
 ) inherits swift::params {
-
   include swift::deps
   include swift::params
 

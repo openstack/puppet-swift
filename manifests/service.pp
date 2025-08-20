@@ -41,7 +41,7 @@
 # [*service_tag*]
 # (optional) Additional tag to be added to the service resource
 #
-define swift::service(
+define swift::service (
   String[1] $os_family_service_name,
   String[1] $config_file_name,
   $service_ensure                          = undef,
@@ -51,11 +51,10 @@ define swift::service(
   $service_require                         = undef,
   Optional[String[1]] $service_tag         = undef,
 ) {
-
   include swift::deps
   include swift::params
 
-  if(! member($swift::params::swift_init_service_names, $name)) {
+  if !member($swift::params::swift_init_service_names, $name) {
     fail("swift::service name: ${name} is not a valid swift_init_service_name")
   }
 

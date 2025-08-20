@@ -47,7 +47,7 @@
 #
 # Copyright 2012 eNovance licensing@enovance.com
 #
-class swift::proxy::ratelimit(
+class swift::proxy::ratelimit (
   $clock_accuracy                   = $facts['os_service_default'],
   $max_sleep_time_seconds           = $facts['os_service_default'],
   $log_sleep_time_seconds           = $facts['os_service_default'],
@@ -56,7 +56,6 @@ class swift::proxy::ratelimit(
   Hash $container_ratelimit         = {},
   Hash $container_listing_ratelimit = {},
 ) {
-
   include swift::deps
 
   swift_proxy_config {

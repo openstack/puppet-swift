@@ -56,7 +56,6 @@ class swift::proxy::tempurl (
   $outgoing_allow_headers  = $facts['os_service_default'],
   $allowed_digests         = $facts['os_service_default'],
 ) {
-
   include swift::deps
 
   swift_proxy_config {

@@ -18,7 +18,6 @@
 class swift::proxy::copy (
   $object_post_as_copy = true
 ) {
-
   include swift::deps
 
   swift_proxy_config {

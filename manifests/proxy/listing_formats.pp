@@ -17,7 +17,6 @@
 #
 class swift::proxy::listing_formats (
 ) {
-
   include swift::deps
 
   swift_proxy_config {

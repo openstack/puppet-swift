@@ -79,7 +79,6 @@ class swift::dispersion (
   $concurrency   = 25,
   $dump_json     = 'no'
 ) {
-
   include swift::deps
   include swift::params
 
@@ -115,5 +114,4 @@ class swift::dispersion (
     # lint:endignore
     require   => Package['swiftclient'],
   }
-
 }

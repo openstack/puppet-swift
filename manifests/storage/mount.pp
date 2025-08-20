@@ -18,23 +18,22 @@
 #   (optional) The filesystem type.
 #   Defaults to 'xfs'.
 #
-define swift::storage::mount(
+define swift::storage::mount (
   Swift::MountDevice $device         = "/dev/${name}",
   Stdlib::Absolutepath $mnt_base_dir = '/srv/node',
   Boolean $loopback                  = false,
   String[1] $fstype                  = 'xfs'
 ) {
-
   include swift::deps
   include swift::params
 
-  if($loopback){
+  if $loopback {
     $options = 'noatime,nodiratime,nofail,loop'
   } else {
     $options = 'noatime,nodiratime,nofail'
   }
 
-  if($fstype == 'xfs'){
+  if $fstype == 'xfs' {
     $fsoptions = 'logbufs=8'
   } else {
     $fsoptions = 'user_xattr'

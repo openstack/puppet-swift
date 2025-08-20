@@ -47,7 +47,7 @@
 # Creates /srv/node if dir does not exist, formats sdbX with XFS unless
 # it already has an XFS FS, and mounts de FS in /srv/node/sdX
 #
-define swift::storage::xfs(
+define swift::storage::xfs (
   Stdlib::Absolutepath $device              = "/dev/${name}",
   $byte_size                                = '1024',
   Stdlib::Absolutepath $mnt_base_dir        = '/srv/node',
@@ -56,7 +56,6 @@ define swift::storage::xfs(
   Boolean $manage_filesystem                = true,
   String[1] $label                          = $name,
 ) {
-
   include swift::deps
   include swift::params
   include swift::xfs
@@ -81,7 +80,7 @@ define swift::storage::xfs(
     }
   }
 
-  if(!defined(File[$mnt_base_dir])) {
+  if !defined(File[$mnt_base_dir]) {
     file { $mnt_base_dir:
       ensure  => directory,
       owner   => 'root',

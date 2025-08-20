@@ -12,11 +12,10 @@
 #   (optional) Allow deletes.
 #   Defauls to $facts['os_service_default']
 #
-class swift::proxy::read_only(
+class swift::proxy::read_only (
   $read_only     = $facts['os_service_default'],
   $allow_deletes = $facts['os_service_default']
 ) {
-
   include swift::deps
 
   swift_proxy_config {

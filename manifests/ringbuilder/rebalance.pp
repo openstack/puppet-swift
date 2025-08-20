@@ -12,11 +12,10 @@
 # [*seed*]
 #   Optional. Seed value used to seed pythons pseudo-random for ringbuilding.
 #
-define swift::ringbuilder::rebalance(
+define swift::ringbuilder::rebalance (
   Swift::RingType $ring_type                            = $name,
   Optional[Variant[Integer[0], Pattern[/^\d+$/]]] $seed = undef
 ) {
-
   include swift::deps
 
   exec { "rebalance_${ring_type}":

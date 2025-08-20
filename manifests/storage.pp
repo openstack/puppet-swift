@@ -24,11 +24,10 @@
 #
 # Copyright 2011 Puppetlabs Inc, unless otherwise noted.
 #
-class swift::storage(
+class swift::storage (
   $storage_local_net_ip,
   $rsync_use_xinetd = $swift::params::xinetd_available,
 ) inherits swift::params {
-
   include swift::deps
 
   if $rsync_use_xinetd and ! $swift::params::xinetd_available {

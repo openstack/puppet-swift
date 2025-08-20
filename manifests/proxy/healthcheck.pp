@@ -13,8 +13,7 @@
 #
 # Copyright 2011 Puppetlabs Inc, unless otherwise noted.
 #
-class swift::proxy::healthcheck() {
-
+class swift::proxy::healthcheck {
   include swift::deps
 
   swift_proxy_config {

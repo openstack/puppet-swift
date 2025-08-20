@@ -72,7 +72,7 @@
 #   Override the default log routing for s3api middleware
 #   Defaults to $facts['os_service_default'].
 #
-class swift::proxy::s3api(
+class swift::proxy::s3api (
   $allow_no_owner                = $facts['os_service_default'],
   $location                      = $facts['os_service_default'],
   $dns_compliant_bucket_names    = $facts['os_service_default'],
@@ -90,7 +90,6 @@ class swift::proxy::s3api(
   $min_segment_size              = $facts['os_service_default'],
   $log_name                      = $facts['os_service_default'],
 ) {
-
   include swift::deps
 
   swift_proxy_config {

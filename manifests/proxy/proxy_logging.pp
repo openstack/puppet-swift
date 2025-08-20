@@ -6,7 +6,6 @@
 #   Joe Topjian joe@topjian.net
 #
 class swift::proxy::proxy_logging {
-
   include swift::deps
 
   swift_proxy_config {

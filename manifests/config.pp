@@ -54,7 +54,6 @@ class swift::config (
   Hash $swift_object_config                = {},
   Hash $swift_internal_client_config       = {},
 ) {
-
   include swift::deps
 
   create_resources('swift_config', $swift_config)

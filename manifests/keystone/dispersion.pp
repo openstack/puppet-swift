@@ -29,13 +29,12 @@
 #
 # Francois Charlier fcharlier@ploup.net
 #
-class swift::keystone::dispersion(
+class swift::keystone::dispersion (
   $auth_user = 'dispersion',
   $auth_pass = 'dispersion_password',
   $email     = 'swift@localhost',
   $tenant    = 'services'
 ) {
-
   include swift::deps
 
   keystone_user { $auth_user:
@@ -51,5 +50,4 @@ class swift::keystone::dispersion(
 
   Keystone_user<| title == $auth_user |>
   ~> Keystone_user_role<| title == "${auth_user}@${tenant}" |>
-
 }

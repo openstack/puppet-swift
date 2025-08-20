@@ -1,4 +1,4 @@
-# Class swift::storage::policy
+# Define swift::storage::policy
 #
 # Setting any optional parameter to undef will remove it
 # from the storage policy defined in swift.conf.
@@ -57,7 +57,7 @@
 #    feeding a segment into the encoder/decoder in bytes.
 #    Defaults to undef
 #
-define swift::storage::policy(
+define swift::storage::policy (
   $policy_name,
   $default_policy,
   $ensure                  = 'present',
@@ -70,7 +70,6 @@ define swift::storage::policy(
   $ec_num_parity_fragments = undef,
   $ec_object_segment_size  = undef,
 ) {
-
   include swift::deps
 
   Swift_storage_policy<| |> ~> Service<| tag == 'swift-service' |>
@@ -95,5 +94,4 @@ define swift::storage::policy(
     ec_num_parity_fragments => $ec_num_parity_fragments,
     ec_object_segment_size  => $ec_object_segment_size,
   }
-
 }

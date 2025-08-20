@@ -100,7 +100,7 @@
 #   audit config.
 #   Defaults to false.
 #
-class swift::storage::drive_audit(
+class swift::storage::drive_audit (
   # cron options
   $user                                     = $swift::params::user,
   $minute                                   = 1,
@@ -128,7 +128,6 @@ class swift::storage::drive_audit(
   Hash[String[1], String[1]] $regex_pattern = {},
   Boolean $purge_config                     = false,
 ) inherits swift::params {
-
   include swift::deps
 
   resources { 'swift_drive_audit_config':
@@ -144,7 +143,6 @@ class swift::storage::drive_audit(
     before  => Anchor['swift::config::end'],
   }
   File['/etc/swift/drive-audit.conf'] -> Swift_drive_audit_config<||>
-
 
   swift_drive_audit_config {
     'drive-audit/log_name'            : value => $log_name;

@@ -11,7 +11,6 @@
 class swift::client (
   $ensure = 'present',
 ) {
-
   include swift::deps
   include swift::params
 
@@ -20,5 +19,4 @@ class swift::client (
     name   => $swift::params::client_package,
     tag    => 'openstack',
   }
-
 }

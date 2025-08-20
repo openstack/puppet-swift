@@ -14,7 +14,6 @@
 class swift::proxy::crossdomain (
   $cross_domain_policy = '<allow-access-from domain="*" secure="false" />',
 ) {
-
   include swift::deps
 
   swift_proxy_config {

@@ -129,7 +129,7 @@
 #    (optional) Account name used for expiring objects.
 #    Defaults to undef.
 #
-class swift::objectexpirer(
+class swift::objectexpirer (
   Boolean $manage_service                  = true,
   Boolean $enabled                         = true,
   $package_ensure                          = 'present',
@@ -158,7 +158,6 @@ class swift::objectexpirer(
   # DEPRECATED PARAMETERS
   $expiring_objects_account_name           = undef,
 ) inherits swift::params {
-
   include swift::deps
   Swift_object_expirer_config<||> ~> Service['swift-object-expirer']
 
@@ -196,7 +195,6 @@ class swift::objectexpirer(
 
   # only add memcache servers if 'cache' is included in the pipeline
   if !empty(grep(any2array($pipeline), 'cache')) {
-
     swift_object_expirer_config {
       'filter:cache/memcache_servers': value => join(any2array($memcache_servers), ',');
       'filter:cache/tls_enabled':      value => $cache_tls_enabled;

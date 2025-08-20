@@ -17,8 +17,7 @@
 #
 # Configure Swift Account Quotas
 #
-class swift::proxy::account_quotas() {
-
+class swift::proxy::account_quotas {
   include swift::deps
 
   swift_proxy_config {

@@ -20,11 +20,10 @@
 class swift::wsgi::uwsgi_account (
   $processes         = $facts['os_workers'],
   $listen_queue_size = 100,
-){
-
+) {
   include swift::deps
 
-  if $facts['os']['name'] != 'Debian'{
+  if $facts['os']['name'] != 'Debian' {
     warning('This class is only valid for Debian, as other operating systems are not using uwsgi by default.')
   }
 

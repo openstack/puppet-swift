@@ -21,10 +21,9 @@
 #
 # Copyright 2012 eNovance licensing@enovance.com
 #
-class swift::proxy::formpost(
+class swift::proxy::formpost (
   $allowed_digests = $facts['os_service_default'],
 ) {
-
   include swift::deps
 
   swift_proxy_config {

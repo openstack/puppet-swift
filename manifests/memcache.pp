@@ -76,7 +76,6 @@ class swift::memcache (
   $io_timeout                     = $facts['os_service_default'],
   Boolean $purge_config           = false,
 ) {
-
   include swift::deps
   include swift::params
 

@@ -34,7 +34,6 @@ class swift::proxy::dlo (
   $rate_limit_segments_per_sec = $facts['os_service_default'],
   $max_get_time                = $facts['os_service_default'],
 ) {
-
   include swift::deps
 
   swift_proxy_config {

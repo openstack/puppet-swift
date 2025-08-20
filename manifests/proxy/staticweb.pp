@@ -22,10 +22,9 @@
 #
 # Copyright 2012 eNovance licensing@enovance.com
 #
-class swift::proxy::staticweb(
+class swift::proxy::staticweb (
   $url_base = $facts['os_service_default']
 ) {
-
   include swift::deps
 
   swift_proxy_config {

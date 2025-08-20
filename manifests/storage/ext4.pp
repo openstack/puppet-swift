@@ -34,7 +34,7 @@
 #   (optional) Filesystem label.
 #   Defaults to $name.
 #
-define swift::storage::ext4(
+define swift::storage::ext4 (
   Stdlib::Absolutepath $device              = "/dev/${name}",
   $byte_size                                = '1024',
   Stdlib::Absolutepath $mnt_base_dir        = '/srv/node',
@@ -43,7 +43,6 @@ define swift::storage::ext4(
   Boolean $manage_filesystem                = true,
   String[1] $label                          = $name,
 ) {
-
   include swift::deps
 
   case $mount_type {

@@ -107,13 +107,13 @@
 #   (optional) The endpoint's internal url. (Defaults to 'http://127.0.0.1:8080')
 #   This url should *not* contain any trailing '/'.
 #
-class swift::keystone::auth(
+class swift::keystone::auth (
   String[1] $password,
   String[1] $auth_name                       = 'swift',
   String[1] $tenant                          = 'services',
   Array[String[1]] $roles                    = ['admin'],
   String[1] $system_scope                    = 'all',
-  Array[String[1]]$system_roles              = [],
+  Array[String[1]] $system_roles             = [],
   String[1] $email                           = 'swift@localhost',
   String[1] $region                          = 'RegionOne',
   Array[String[1]] $operator_roles           = ['admin', 'SwiftOperator'],
@@ -134,7 +134,6 @@ class swift::keystone::auth(
   Keystone::EndpointUrl $admin_url_s3        = 'http://127.0.0.1:8080',
   Keystone::EndpointUrl $internal_url_s3     = 'http://127.0.0.1:8080',
 ) {
-
   include swift::deps
 
   if $service_name == $service_name_s3 {

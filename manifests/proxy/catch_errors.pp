@@ -15,8 +15,7 @@
 #
 # Copyright 2012 eNovance licensing@enovance.com
 #
-class swift::proxy::catch_errors() {
-
+class swift::proxy::catch_errors {
   include swift::deps
 
   swift_proxy_config {

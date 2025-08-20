@@ -82,7 +82,7 @@
 #   (Optional) Prefix used for hiddne auto-created accounts.
 #   Defaults to $facts['os_service_default']
 #
-class swift::constraints(
+class swift::constraints (
   $max_file_size              = $facts['os_service_default'],
   $max_meta_name_length       = $facts['os_service_default'],
   $max_meta_value_length      = $facts['os_service_default'],
@@ -98,7 +98,6 @@ class swift::constraints(
   $valid_api_versions         = $facts['os_service_default'],
   $auto_create_account_prefix = $facts['os_service_default'],
 ) {
-
   include swift::deps
   include swift::params
 

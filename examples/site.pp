@@ -21,14 +21,12 @@
 # this site manifest serves as an example of how to
 # deploy various swift environments
 
-
 #$swift_admin_password = 'admin_password'
 $swift_admin_password = hiera('admin_password', 'admin_password')
 
 # swift specific configurations
 #$swift_shared_secret = 'changeme'
 $swift_shared_secret = hiera('swift_shared_secret', 'changeme')
-
 
 #$swift_local_net_ip   = $ipaddress_eth0
 $swift_local_net_ip = hiera('swift_local_net_ip', $ipaddress_eth0)
@@ -67,7 +65,6 @@ $swift_keystone_admin_password = hiera('admin_password', 'ChangeMe')
 # This service only contains the credentials for authenticating
 # swift
 node 'swift-keystone' {
-
   # set up mysql server
   class { 'mysql::server':
     config_hash => {
@@ -108,7 +105,6 @@ node 'swift-keystone' {
     password       => $swift_admin_password,
     public_address => $swift_proxy_node,
   }
-
 }
 
 #
@@ -120,7 +116,6 @@ node 'swift-keystone' {
 # partitions
 #
 node /swift-storage/ {
-
   class { 'swift':
     # not sure how I want to deal with this shared secret
     swift_hash_path_suffix => $swift_shared_secret,
@@ -179,12 +174,9 @@ node /swift-storage/ {
 
   # collect resources for synchronizing the ring databases
   Swift::Ringsync<<||>>
-
 }
 
-
 node /swift-proxy/ {
-
   class { 'swift':
     # not sure how I want to deal with this shared secret
     swift_hash_path_suffix => $swift_shared_secret,
@@ -220,7 +212,7 @@ node /swift-proxy/ {
   }
 
   # configure all of the middlewares
-  class { [
+  class {[
     'swift::proxy::account_quotas',
     'swift::proxy::catch_errors',
     'swift::proxy::container_quotas',

@@ -73,7 +73,6 @@ class swift::proxy::slo (
   $yield_frequency             = $facts['os_service_default'],
   $allow_async_delete          = $facts['os_service_default'],
 ) {
-
   include swift::deps
 
   swift_proxy_config {

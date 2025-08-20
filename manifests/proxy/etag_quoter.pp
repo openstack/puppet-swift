@@ -24,7 +24,6 @@
 class swift::proxy::etag_quoter (
   $enabled_by_default      = $facts['os_service_default']
 ) {
-
   include swift::deps
 
   swift_proxy_config {

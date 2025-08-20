@@ -17,11 +17,10 @@
 #
 #   Denis Egorenko <degorenko@mirantis.com>
 #
-class swift::proxy::container_sync(
+class swift::proxy::container_sync (
   $allow_full_urls = $facts['os_service_default'],
   $current         = $facts['os_service_default'],
 ) {
-
   include swift::deps
 
   swift_proxy_config {

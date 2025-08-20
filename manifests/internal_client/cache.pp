@@ -47,7 +47,7 @@
 #
 # Copyright 2011 Puppetlabs Inc, unless otherwise noted.
 #
-class swift::internal_client::cache(
+class swift::internal_client::cache (
   $memcache_servers         = ['127.0.0.1:11211'],
   $tls_enabled              = $facts['os_service_default'],
   $tls_cafile               = $facts['os_service_default'],
@@ -55,7 +55,6 @@ class swift::internal_client::cache(
   $tls_keyfile              = $facts['os_service_default'],
   $memcache_max_connections = '2'
 ) {
-
   include swift::deps
 
   # require the memcached class if its on the same machine
@@ -72,5 +71,4 @@ class swift::internal_client::cache(
     'filter:cache/tls_keyfile':              value => $tls_keyfile;
     'filter:cache/memcache_max_connections': value => $memcache_max_connections;
   }
-
 }

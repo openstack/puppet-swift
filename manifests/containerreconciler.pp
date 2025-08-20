@@ -112,7 +112,7 @@
 #    in the proxy config.
 #    Defaults to false.
 #
-class swift::containerreconciler(
+class swift::containerreconciler (
   Boolean $manage_service                  = true,
   Boolean $enabled                         = true,
   $package_ensure                          = 'present',
@@ -136,7 +136,6 @@ class swift::containerreconciler(
   $log_max_line_length                     = $facts['os_service_default'],
   Boolean $purge_config                    = false,
 ) inherits swift::params {
-
   include swift::deps
   Swift_container_reconciler_config<||> ~> Service['swift-container-reconciler']
 
@@ -160,7 +159,6 @@ class swift::containerreconciler(
 
   # only add memcache servers if 'cache' is included in the pipeline
   if !empty(grep(any2array($pipeline), 'cache')) {
-
     swift_container_reconciler_config {
       'filter:cache/memcache_servers': value => join(any2array($memcache_servers), ',');
       'filter:cache/tls_enabled':      value => $cache_tls_enabled;
@@ -220,5 +218,4 @@ class swift::containerreconciler(
     config_file_name       => 'container-reconciler.conf',
     service_provider       => $service_provider,
   }
-
 }
