@@ -71,5 +71,4 @@ class swift::deps {
   # Installation or config changes will always restart services.
   Anchor['swift::install::end'] ~> Anchor['swift::service::begin']
   Anchor['swift::config::end']  ~> Anchor['swift::service::begin']
-
 }

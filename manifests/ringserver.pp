@@ -29,12 +29,11 @@
 #
 # Copyright 2011 Puppetlabs Inc, unless otherwise noted.
 #
-class swift::ringserver(
+class swift::ringserver (
   $local_net_ip,
   $max_connections = 5,
   $rsync_use_xinetd = $swift::params::xinetd_available,
 ) inherits swift::params {
-
   include swift::deps
   Class['swift::ringbuilder'] -> Class['swift::ringserver']
 

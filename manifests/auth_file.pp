@@ -24,7 +24,6 @@ class swift::auth_file (
   $admin_user      = 'admin',
   $auth_url        = 'http://127.0.0.1:5000/v3/'
 ) {
-
   include swift::deps
 
   file { '/root/swiftrc':
@@ -33,11 +32,9 @@ class swift::auth_file (
     group   => 'root',
     mode    => '0600',
     tag     => 'swift-file',
-    content =>
-  "
-  export ST_USER=${admin_tenant}:${admin_user}
-  export ST_KEY=${admin_password}
-  export ST_AUTH=${auth_url}
-  ",
+    content => "
+export ST_USER=${admin_tenant}:${admin_user}
+export ST_KEY=${admin_password}
+export ST_AUTH=${auth_url}",
   }
 }

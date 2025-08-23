@@ -24,16 +24,15 @@
 #
 # Copyright 2011 Puppetlabs Inc, unless otherwise noted.
 #
-class swift::ringbuilder(
-  $part_power = undef,
-  $replicas = undef,
+class swift::ringbuilder (
+  $part_power     = undef,
+  $replicas       = undef,
   $min_part_hours = undef
 ) {
-
   include swift::deps
   Class['swift'] -> Class['swift::ringbuilder']
 
-  swift::ringbuilder::create{ ['object', 'account', 'container']:
+  swift::ringbuilder::create { ['object', 'account', 'container']:
     part_power     => $part_power,
     replicas       => $replicas,
     min_part_hours => $min_part_hours,
@@ -45,6 +44,5 @@ class swift::ringbuilder(
 
   Swift::Ringbuilder::Create['account'] -> Ring_account_device <| |> ~> Swift::Ringbuilder::Rebalance['account']
 
-  swift::ringbuilder::rebalance{ ['object', 'account', 'container']: }
-
+  swift::ringbuilder::rebalance { ['object', 'account', 'container']: }
 }

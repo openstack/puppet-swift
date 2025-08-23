@@ -291,7 +291,7 @@
 #   in the config file.
 #   Defaults to false.
 #
-define swift::storage::server(
+define swift::storage::server (
   Swift::StorageServerType $type,
   $storage_local_net_ip,
   Pattern[/^\d+$/] $bind_port                            = $name,
@@ -361,8 +361,7 @@ define swift::storage::server(
   $container_sharder_conn_timeout                        = $facts['os_service_default'],
   $container_sharder_node_timeout                        = $facts['os_service_default'],
   Boolean $purge_config                                  = false,
-){
-
+) {
   include swift::deps
   include swift::params
 
@@ -437,39 +436,39 @@ define swift::storage::server(
 
   # common settings
   $common_opts = {
-    'DEFAULT/devices'                         => {'value'  => $devices},
-    'DEFAULT/bind_ip'                         => {'value'  => $storage_local_net_ip},
-    'DEFAULT/bind_port'                       => {'value'  => $bind_port},
-    'DEFAULT/mount_check'                     => {'value'  => $mount_check},
-    'DEFAULT/disable_fallocate'               => {'value'  => $disable_fallocate},
-    'DEFAULT/fallocate_reserve'               => {'value'  => $fallocate_reserve},
-    'DEFAULT/user'                            => {'value'  => $user_real},
-    'DEFAULT/workers'                         => {'value'  => $workers},
-    'DEFAULT/conn_timeout'                    => {'value'  => $conn_timeout},
-    'DEFAULT/node_timeout'                    => {'value'  => $node_timeout},
-    'DEFAULT/log_name'                        => {'value'  => $log_name},
-    'DEFAULT/log_facility'                    => {'value'  => $log_facility},
-    'DEFAULT/log_level'                       => {'value'  => $log_level},
-    'DEFAULT/log_address'                     => {'value'  => $log_address},
-    'DEFAULT/log_udp_host'                    => {'value'  => $log_udp_host},
-    'DEFAULT/log_udp_port'                    => {'value'  => $log_udp_port},
-    'DEFAULT/log_max_line_length'             => {'value'  => $log_max_line_length},
+    'DEFAULT/devices'                         => { 'value'  => $devices },
+    'DEFAULT/bind_ip'                         => { 'value'  => $storage_local_net_ip },
+    'DEFAULT/bind_port'                       => { 'value'  => $bind_port },
+    'DEFAULT/mount_check'                     => { 'value'  => $mount_check },
+    'DEFAULT/disable_fallocate'               => { 'value'  => $disable_fallocate },
+    'DEFAULT/fallocate_reserve'               => { 'value'  => $fallocate_reserve },
+    'DEFAULT/user'                            => { 'value'  => $user_real },
+    'DEFAULT/workers'                         => { 'value'  => $workers },
+    'DEFAULT/conn_timeout'                    => { 'value'  => $conn_timeout },
+    'DEFAULT/node_timeout'                    => { 'value'  => $node_timeout },
+    'DEFAULT/log_name'                        => { 'value'  => $log_name },
+    'DEFAULT/log_facility'                    => { 'value'  => $log_facility },
+    'DEFAULT/log_level'                       => { 'value'  => $log_level },
+    'DEFAULT/log_address'                     => { 'value'  => $log_address },
+    'DEFAULT/log_udp_host'                    => { 'value'  => $log_udp_host },
+    'DEFAULT/log_udp_port'                    => { 'value'  => $log_udp_port },
+    'DEFAULT/log_max_line_length'             => { 'value'  => $log_max_line_length },
     # pipeline
-    'pipeline:main/pipeline'                  => {'value'  => join($pipeline, ' ')},
+    'pipeline:main/pipeline'                  => { 'value'  => join($pipeline, ' ') },
     # server
-    "app:${type}-server/use"                  => {'value'  => "egg:swift#${type}"},
-    "app:${type}-server/set log_name"         => {'value'  => $log_name},
-    "app:${type}-server/set log_facility"     => {'value'  => $log_facility},
-    "app:${type}-server/set log_level"        => {'value'  => $log_level},
-    "app:${type}-server/set log_requests"     => {'value'  => $log_requests},
-    "app:${type}-server/set log_address"      => {'value'  => $log_address},
-    "app:${type}-server/fallocate_reserve"    => {'value'  => $server_fallocate_reserve},
-    "app:${type}-server/stale_worker_timeout" => {'value'  => $stale_worker_timeout},
+    "app:${type}-server/use"                  => { 'value'  => "egg:swift#${type}" },
+    "app:${type}-server/set log_name"         => { 'value'  => $log_name },
+    "app:${type}-server/set log_facility"     => { 'value'  => $log_facility },
+    "app:${type}-server/set log_level"        => { 'value'  => $log_level },
+    "app:${type}-server/set log_requests"     => { 'value'  => $log_requests },
+    "app:${type}-server/set log_address"      => { 'value'  => $log_address },
+    "app:${type}-server/fallocate_reserve"    => { 'value'  => $server_fallocate_reserve },
+    "app:${type}-server/stale_worker_timeout" => { 'value'  => $stale_worker_timeout },
     # auditor
-    "${type}-auditor/"                        => {'ensure' => present},
+    "${type}-auditor/"                        => { 'ensure' => present },
     # replicator
-    "${type}-replicator/"                     => {'ensure' => present},
-    "${type}-replicator/rsync_module"         => {'value'  => $rsync_module},
+    "${type}-replicator/"                     => { 'ensure' => present },
+    "${type}-replicator/rsync_module"         => { 'value'  => $rsync_module },
   }
 
   Anchor['swift::config::begin']
@@ -479,98 +478,98 @@ define swift::storage::server(
   # statsd
   if $statsd_enabled {
     $log_statsd_opts = {
-      'DEFAULT/log_statsd_host'                => {'value' => $log_statsd_host},
-      'DEFAULT/log_statsd_port'                => {'value' => $log_statsd_port},
-      'DEFAULT/log_statsd_default_sample_rate' => {'value' => $log_statsd_default_sample_rate},
-      'DEFAULT/log_statsd_sample_rate_factor'  => {'value' => $log_statsd_sample_rate_factor},
-      'DEFAULT/log_statsd_metric_prefix'       => {'value' => $log_statsd_metric_prefix},
+      'DEFAULT/log_statsd_host'                => { 'value' => $log_statsd_host },
+      'DEFAULT/log_statsd_port'                => { 'value' => $log_statsd_port },
+      'DEFAULT/log_statsd_default_sample_rate' => { 'value' => $log_statsd_default_sample_rate },
+      'DEFAULT/log_statsd_sample_rate_factor'  => { 'value' => $log_statsd_sample_rate_factor },
+      'DEFAULT/log_statsd_metric_prefix'       => { 'value' => $log_statsd_metric_prefix },
     }
   } else {
     $log_statsd_opts = {
-      'DEFAULT/log_statsd_host'                => {'value' => $facts['os_service_default']},
-      'DEFAULT/log_statsd_port'                => {'value' => $facts['os_service_default']},
-      'DEFAULT/log_statsd_default_sample_rate' => {'value' => $facts['os_service_default']},
-      'DEFAULT/log_statsd_sample_rate_factor'  => {'value' => $facts['os_service_default']},
-      'DEFAULT/log_statsd_metric_prefix'       => {'value' => $facts['os_service_default']},
+      'DEFAULT/log_statsd_host'                => { 'value' => $facts['os_service_default'] },
+      'DEFAULT/log_statsd_port'                => { 'value' => $facts['os_service_default'] },
+      'DEFAULT/log_statsd_default_sample_rate' => { 'value' => $facts['os_service_default'] },
+      'DEFAULT/log_statsd_sample_rate_factor'  => { 'value' => $facts['os_service_default'] },
+      'DEFAULT/log_statsd_metric_prefix'       => { 'value' => $facts['os_service_default'] },
     }
   }
 
   case $type {
     'account': {
       $type_opts = {
-        'DEFAULT/db_preallocation'        => {'value'  => $db_preallocation},
+        'DEFAULT/db_preallocation'        => { 'value'  => $db_preallocation },
         # account-server
         # account-auditor
         # account-replicator
-        'account-replicator/concurrency'  => {'value'  => $replicator_concurrency},
-        'account-replicator/interval'     => {'value'  => $replicator_interval},
-        'account-replicator/conn_timeout' => {'value'  => $replicator_conn_timeout},
-        'account-replicator/node_timeout' => {'value'  => $replicator_node_timeout},
+        'account-replicator/concurrency'  => { 'value'  => $replicator_concurrency },
+        'account-replicator/interval'     => { 'value'  => $replicator_interval },
+        'account-replicator/conn_timeout' => { 'value'  => $replicator_conn_timeout },
+        'account-replicator/node_timeout' => { 'value'  => $replicator_node_timeout },
         # account-reaper
-        'account-reaper/'                 => {'ensure' => present},
-        'account-reaper/concurrency'      => {'value'  => $reaper_concurrency},
-        'account-reaper/interval'         => {'value'  => $reaper_interval},
-        'account-reaper/conn_timeout'     => {'value'  => $reaper_conn_timeout},
-        'account-reaper/node_timeout'     => {'value'  => $reaper_node_timeout},
+        'account-reaper/'                 => { 'ensure' => present },
+        'account-reaper/concurrency'      => { 'value'  => $reaper_concurrency },
+        'account-reaper/interval'         => { 'value'  => $reaper_interval },
+        'account-reaper/conn_timeout'     => { 'value'  => $reaper_conn_timeout },
+        'account-reaper/node_timeout'     => { 'value'  => $reaper_node_timeout },
       }
 
       if $log_name_per_daemon {
         $log_name_opts = {
-          'account-auditor/log_name'    => {'value' => 'account-auditor'},
-          'account-replicator/log_name' => {'value' => 'account-replicator'},
-          'account-reaper/log_name'     => {'value' => 'account-reaper'},
+          'account-auditor/log_name'    => { 'value' => 'account-auditor' },
+          'account-replicator/log_name' => { 'value' => 'account-replicator' },
+          'account-reaper/log_name'     => { 'value' => 'account-reaper' },
         }
       } else {
         $log_name_opts = {
-          'account-auditor/log_name'    => {'ensure' => absent},
-          'account-replicator/log_name' => {'ensure' => absent},
-          'account-reaper/log_name'     => {'ensure' => absent},
+          'account-auditor/log_name'    => { 'ensure' => absent },
+          'account-replicator/log_name' => { 'ensure' => absent },
+          'account-reaper/log_name'     => { 'ensure' => absent },
         }
       }
     }
     'container': {
       $type_opts = {
-        'DEFAULT/db_preallocation'          => {'value'  => $db_preallocation},
-        'DEFAULT/allowed_sync_hosts'        => {'value'  => join($swift::storage::container::allowed_sync_hosts, ',')},
+        'DEFAULT/db_preallocation'          => { 'value'  => $db_preallocation },
+        'DEFAULT/allowed_sync_hosts'        => { 'value'  => join($swift::storage::container::allowed_sync_hosts, ',') },
         # container-server
         # container-auditor
         # container-replicator
-        'container-replicator/concurrency'  => {'value'  => $replicator_concurrency},
-        'container-replicator/interval'     => {'value'  => $replicator_interval},
-        'container-replicator/conn_timeout' => {'value'  => $replicator_conn_timeout},
-        'container-replicator/node_timeout' => {'value'  => $replicator_node_timeout},
+        'container-replicator/concurrency'  => { 'value'  => $replicator_concurrency },
+        'container-replicator/interval'     => { 'value'  => $replicator_interval },
+        'container-replicator/conn_timeout' => { 'value'  => $replicator_conn_timeout },
+        'container-replicator/node_timeout' => { 'value'  => $replicator_node_timeout },
         # container-updater
-        'container-updater/'                => {'ensure' => present},
-        'container-updater/concurrency'     => {'value'  => $updater_concurrency},
-        'container-updater/interval'        => {'value'  => $updater_interval},
-        'container-updater/conn_timeout'    => {'value'  => $updater_conn_timeout},
-        'container-updater/node_timeout'    => {'value'  => $updater_node_timeout},
+        'container-updater/'                => { 'ensure' => present },
+        'container-updater/concurrency'     => { 'value'  => $updater_concurrency },
+        'container-updater/interval'        => { 'value'  => $updater_interval },
+        'container-updater/conn_timeout'    => { 'value'  => $updater_conn_timeout },
+        'container-updater/node_timeout'    => { 'value'  => $updater_node_timeout },
         # container-sync
-        'container-sync/'                   => {'ensure' => present},
+        'container-sync/'                   => { 'ensure' => present },
         # container-sharder
-        'container-sharder/'                => {'ensure' => present},
-        'container-sharder/auto_shard'      => {'value'  => $container_sharder_auto_shard},
-        'container-sharder/concurrency'     => {'value'  => $container_sharder_concurrency},
-        'container-sharder/interval'        => {'value'  => $container_sharder_interval},
-        'container-sharder/conn_timeout'    => {'value'  => $container_sharder_conn_timeout},
-        'container-sharder/node_timeout'    => {'value'  => $container_sharder_node_timeout},
+        'container-sharder/'                => { 'ensure' => present },
+        'container-sharder/auto_shard'      => { 'value'  => $container_sharder_auto_shard },
+        'container-sharder/concurrency'     => { 'value'  => $container_sharder_concurrency },
+        'container-sharder/interval'        => { 'value'  => $container_sharder_interval },
+        'container-sharder/conn_timeout'    => { 'value'  => $container_sharder_conn_timeout },
+        'container-sharder/node_timeout'    => { 'value'  => $container_sharder_node_timeout },
       }
 
       if $log_name_per_daemon {
         $log_name_opts = {
-          'container-auditor/log_name'    => {'value' => 'container-auditor'},
-          'container-replicator/log_name' => {'value' => 'container-replicator'},
-          'container-updater/log_name'    => {'value' => 'container-updater'},
-          'container-sync/log_name'       => {'value' => 'container-sync'},
-          'container-sharder/log_name'    => {'value' => 'container-sharder'},
+          'container-auditor/log_name'    => { 'value' => 'container-auditor' },
+          'container-replicator/log_name' => { 'value' => 'container-replicator' },
+          'container-updater/log_name'    => { 'value' => 'container-updater' },
+          'container-sync/log_name'       => { 'value' => 'container-sync' },
+          'container-sharder/log_name'    => { 'value' => 'container-sharder' },
         }
       } else {
         $log_name_opts = {
-          'container-auditor/log_name'    => {'ensure' => absent},
-          'container-replicator/log_name' => {'ensure' => absent},
-          'container-updater/log_name'    => {'ensure' => absent},
-          'container-sync/log_name'       => {'ensure' => absent},
-          'container-sharder/log_name'    => {'ensure' => absent},
+          'container-auditor/log_name'    => { 'ensure' => absent },
+          'container-replicator/log_name' => { 'ensure' => absent },
+          'container-updater/log_name'    => { 'ensure' => absent },
+          'container-sync/log_name'       => { 'ensure' => absent },
+          'container-sharder/log_name'    => { 'ensure' => absent },
         }
       }
 
@@ -586,48 +585,48 @@ define swift::storage::server(
     }
     'object': {
       $type_opts = {
-        'DEFAULT/servers_per_port'        => {'value'  => $servers_per_port},
-        'DEFAULT/network_chunk_size'      => {'value'  => $network_chunk_size},
-        'DEFAULT/disk_chunk_size'         => {'value'  => $disk_chunk_size},
-        'DEFAULT/client_timeout'          => {'value'  => $client_timeout},
+        'DEFAULT/servers_per_port'        => { 'value'  => $servers_per_port },
+        'DEFAULT/network_chunk_size'      => { 'value'  => $network_chunk_size },
+        'DEFAULT/disk_chunk_size'         => { 'value'  => $disk_chunk_size },
+        'DEFAULT/client_timeout'          => { 'value'  => $client_timeout },
         # object-server
-        'app:object-server/splice'        => {'value'  => $splice},
-        'app:object-server/mb_per_sync'   => {'value'  => $object_server_mb_per_sync},
+        'app:object-server/splice'        => { 'value'  => $splice },
+        'app:object-server/mb_per_sync'   => { 'value'  => $object_server_mb_per_sync },
         # object-auditor
-        'object-auditor/disk_chunk_size'  => {'value'  => $auditor_disk_chunk_size},
+        'object-auditor/disk_chunk_size'  => { 'value'  => $auditor_disk_chunk_size },
         # object-replicator
-        'object-replicator/concurrency'   => {'value'  => $replicator_concurrency},
-        'object-replicator/conn_timeout'  => {'value'  => $replicator_conn_timeout},
-        'object-replicator/node_timeout'  => {'value'  => $replicator_node_timeout},
-        'object-replicator/rsync_timeout' => {'value'  => $rsync_timeout},
-        'object-replicator/rsync_bwlimit' => {'value'  => $rsync_bwlimit},
+        'object-replicator/concurrency'   => { 'value'  => $replicator_concurrency },
+        'object-replicator/conn_timeout'  => { 'value'  => $replicator_conn_timeout },
+        'object-replicator/node_timeout'  => { 'value'  => $replicator_node_timeout },
+        'object-replicator/rsync_timeout' => { 'value'  => $rsync_timeout },
+        'object-replicator/rsync_bwlimit' => { 'value'  => $rsync_bwlimit },
         # object-updater
-        'object-updater/'                 => {'ensure' => present},
-        'object-updater/concurrency'      => {'value'  => $updater_concurrency},
-        'object-updater/interval'         => {'value'  => $updater_interval},
-        'object-updater/conn_timeout'     => {'value'  => $updater_conn_timeout},
-        'object-updater/node_timeout'     => {'value'  => $updater_node_timeout},
+        'object-updater/'                 => { 'ensure' => present },
+        'object-updater/concurrency'      => { 'value'  => $updater_concurrency },
+        'object-updater/interval'         => { 'value'  => $updater_interval },
+        'object-updater/conn_timeout'     => { 'value'  => $updater_conn_timeout },
+        'object-updater/node_timeout'     => { 'value'  => $updater_node_timeout },
         # object-reconstructor
-        'object-reconstructor/'           => {'ensure' => present},
+        'object-reconstructor/'           => { 'ensure' => present },
         # object-relinker
-        'object-relinker/'                => {'ensure' => present},
+        'object-relinker/'                => { 'ensure' => present },
       }
 
       if $log_name_per_daemon {
         $log_name_opts = {
-          'object-auditor/log_name'       => {'value' => 'object-auditor'},
-          'object-replicator/log_name'    => {'value' => 'object-replicator'},
-          'object-updater/log_name'       => {'value' => 'object-updater'},
-          'object-reconstructor/log_name' => {'value' => 'object-reconstructor'},
-          'object-relinker/log_name'      => {'value' => 'object-relinker'},
+          'object-auditor/log_name'       => { 'value' => 'object-auditor' },
+          'object-replicator/log_name'    => { 'value' => 'object-replicator' },
+          'object-updater/log_name'       => { 'value' => 'object-updater' },
+          'object-reconstructor/log_name' => { 'value' => 'object-reconstructor' },
+          'object-relinker/log_name'      => { 'value' => 'object-relinker' },
         }
       } else {
         $log_name_opts = {
-          'object-auditor/log_name'       => {'ensure' => absent},
-          'object-replicator/log_name'    => {'ensure' => absent},
-          'object-updater/log_name'       => {'ensure' => absent},
-          'object-reconstructor/log_name' => {'ensure' => absent},
-          'object-relinker/log_name'      => {'ensure' => absent},
+          'object-auditor/log_name'       => { 'ensure' => absent },
+          'object-replicator/log_name'    => { 'ensure' => absent },
+          'object-updater/log_name'       => { 'ensure' => absent },
+          'object-reconstructor/log_name' => { 'ensure' => absent },
+          'object-relinker/log_name'      => { 'ensure' => absent },
         }
       }
     }

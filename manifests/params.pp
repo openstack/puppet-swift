@@ -72,6 +72,7 @@ class swift::params {
       fail("Unsupported osfamily: ${facts['os']['family']}")
     }
   }
+
   $swift_init_service_names = [
     'swift-proxy-server',
     'swift-object-auditor',

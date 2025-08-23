@@ -11,8 +11,7 @@
 #
 #   Adam Vinsh <adam.vinsh@charter.com>
 #
-define swift::proxy::tempauth_account() {
-
+define swift::proxy::tempauth_account {
   include swift::deps
 
   # strip white space and split string into array elements around ','

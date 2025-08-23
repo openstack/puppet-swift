@@ -183,7 +183,7 @@
 #
 # Copyright 2013 eNovance licensing@enovance.com
 #
-class swift::proxy::ceilometer(
+class swift::proxy::ceilometer (
   String[1] $password,
   String[1] $default_transport_url,
   $driver                             = $facts['os_service_default'],
@@ -221,7 +221,6 @@ class swift::proxy::ceilometer(
   # DEPRECATED PARAMETERS
   $rabbit_heartbeat_in_pthread        = undef,
 ) inherits swift {
-
   include swift::deps
   include swift::params
 
@@ -297,5 +296,4 @@ class swift::proxy::ceilometer(
     name   => $swift::params::ceilometermiddleware_package_name,
     tag    => ['openstack', 'swift-support-package'],
   }
-
 }

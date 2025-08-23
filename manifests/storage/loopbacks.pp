@@ -24,6 +24,9 @@
 # [*defaults*] A config hash
 #   Optional. Defaults to a empty hash
 #
-class swift::storage::loopbacks($args = {}, $defaults = {}) {
+class swift::storage::loopbacks (
+  $args     = {},
+  $defaults = {},
+) {
   create_resources(swift::storage::loopback, $args, $defaults)
 }

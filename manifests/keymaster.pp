@@ -75,7 +75,7 @@
 #
 #   Thiago da Silva thiago@redhat.com
 #
-class swift::keymaster(
+class swift::keymaster (
   String[1] $password,
   $api_class             = 'barbican',
   $key_id                = $facts['os_service_default'],
@@ -90,7 +90,6 @@ class swift::keymaster(
   $user_domain_id        = 'default',
   $meta_version_to_write = $facts['os_service_default'],
 ) {
-
   include swift::deps
   include swift::params
 
@@ -120,4 +119,3 @@ class swift::keymaster(
     'kms_keymaster/meta_version_to_write': value => $meta_version_to_write;
   }
 }
-

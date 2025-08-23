@@ -29,10 +29,9 @@
 #
 # shi.yan@ardc.edu.au
 #
-class swift::internal_client::symlink(
+class swift::internal_client::symlink (
   $symloop_max = $facts['os_service_default'],
 ) {
-
   include swift::deps
 
   swift_internal_client_config {

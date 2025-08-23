@@ -31,7 +31,7 @@
 #    See README for more details.
 #    Defaults to $swift::params::service_provider.
 #
-class swift::storage::container(
+class swift::storage::container (
   Boolean $manage_service                  = true,
   Boolean $enabled                         = true,
   $package_ensure                          = 'present',
@@ -39,7 +39,6 @@ class swift::storage::container(
   String[1] $config_file_name              = 'container-server.conf',
   Swift::ServiceProvider $service_provider = $swift::params::service_provider
 ) inherits swift::params {
-
   include swift::deps
 
   swift::storage::generic { 'container':

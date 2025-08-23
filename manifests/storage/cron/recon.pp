@@ -44,7 +44,7 @@
 #    Defaults to 'swift'.
 #
 
-class swift::storage::cron::recon(
+class swift::storage::cron::recon (
   $minute     = '*/5',
   $hour       = '*',
   $monthday   = '*',
@@ -53,7 +53,6 @@ class swift::storage::cron::recon(
   $configfile = '/etc/swift/object-server.conf',
   $user       = $swift::params::user
 ) inherits swift::params {
-
   include swift::deps
 
   cron { 'swift-recon-cron':

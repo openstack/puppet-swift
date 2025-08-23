@@ -24,6 +24,9 @@
 # [*defaults*] A config hash
 #   Optional. Defaults to a empty hash
 #
-class swift::storage::disks($args = {}, $defaults = {}) {
+class swift::storage::disks (
+  $args     = {},
+  $defaults = {}
+) {
   create_resources(swift::storage::disk, $args, $defaults)
 }

@@ -41,7 +41,7 @@
 #  [*policy_index*]
 #    (optional) storage policy index
 #    Defaults to undef
-define swift::storage::node(
+define swift::storage::node (
   $mnt_base_dir,
   Variant[Integer, Pattern[/^\d+$/]] $zone,
   $weight               = 1,
@@ -51,7 +51,6 @@ define swift::storage::node(
   $storage_local_net_ip = '127.0.0.1',
   $policy_index         = undef,
 ) {
-
   include swift::deps
 
   Swift::Storage::Server {
@@ -94,5 +93,4 @@ define swift::storage::node(
     zone   => $zone,
     weight => $weight,
   }
-
 }

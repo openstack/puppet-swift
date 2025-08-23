@@ -37,13 +37,12 @@
 #
 # Copyright 2011 Puppetlabs Inc, unless otherwise noted.
 #
-define swift::ringbuilder::policy_ring(
+define swift::ringbuilder::policy_ring (
   Pattern[/^\d+$/] $policy_id = $name,
   $part_power                 = undef,
   $replicas                   = undef,
   $min_part_hours             = undef,
 ) {
-
   include swift::deps
   Class['swift'] -> Swift::Ringbuilder::Policy_ring[$policy_id]
 
@@ -53,13 +52,12 @@ define swift::ringbuilder::policy_ring(
     $ring_builder = "object-${policy_id}"
   }
 
-  swift::ringbuilder::create{ $ring_builder :
+  swift::ringbuilder::create { $ring_builder :
     part_power     => $part_power,
     replicas       => $replicas,
     min_part_hours => $min_part_hours,
   }
-  swift::ringbuilder::rebalance{ $ring_builder: }
+  swift::ringbuilder::rebalance { $ring_builder: }
 
   Swift::Ringbuilder::Create[$ring_builder] -> Ring_object_device <| |> ~> Swift::Ringbuilder::Rebalance[$ring_builder]
-
 }

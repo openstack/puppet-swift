@@ -60,7 +60,7 @@
 #
 # Copyright 2022 Red Hat, unless otherwise noted.
 #
-define swift::storage::filter::backend_ratelimit(
+define swift::storage::filter::backend_ratelimit (
   $requests_per_device_per_second           = $facts['os_service_default'],
   $delete_requests_per_device_per_second    = $facts['os_service_default'],
   $get_requests_per_device_per_second       = $facts['os_service_default'],
@@ -71,7 +71,6 @@ define swift::storage::filter::backend_ratelimit(
   $update_requests_per_device_per_second    = $facts['os_service_default'],
   $requests_per_device_rate_buffer          = $facts['os_service_default'],
 ) {
-
   include swift::deps
 
   $config_type = "swift_${name}_config"
@@ -108,5 +107,4 @@ define swift::storage::filter::backend_ratelimit(
       'value' => $requests_per_device_rate_buffer,
     }
   })
-
 }

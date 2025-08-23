@@ -30,14 +30,13 @@
 #   (optional) The filesystem type.
 #   Defaults to 'xfs'.
 #
-define swift::storage::loopback(
+define swift::storage::loopback (
   $base_dir     = '/srv/loopback-device',
   $mnt_base_dir = '/srv/node',
   $byte_size    = '1024',
   $seek         = '25000',
   $fstype       = 'xfs'
 ) {
-
   include swift::deps
   include swift::params
 

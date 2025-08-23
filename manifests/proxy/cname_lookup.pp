@@ -42,7 +42,7 @@
 # Default to $facts['os_service_default']
 #
 #
-class swift::proxy::cname_lookup(
+class swift::proxy::cname_lookup (
   $log_name       = $facts['os_service_default'],
   $log_facility   = $facts['os_service_default'],
   $log_level      = $facts['os_service_default'],
@@ -52,7 +52,6 @@ class swift::proxy::cname_lookup(
   $lookup_depth   = $facts['os_service_default'],
   $nameservers    = $facts['os_service_default'],
 ) {
-
   include swift::deps
   include swift::params
 

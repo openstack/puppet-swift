@@ -17,8 +17,7 @@
 #
 # Configure Swift Container Quotas
 #
-class swift::proxy::container_quotas() {
-
+class swift::proxy::container_quotas {
   include swift::deps
 
   swift_proxy_config {

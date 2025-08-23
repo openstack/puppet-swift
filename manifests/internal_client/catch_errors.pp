@@ -15,8 +15,7 @@
 #
 # Copyright 2012 eNovance licensing@enovance.com
 #
-class swift::internal_client::catch_errors() {
-
+class swift::internal_client::catch_errors {
   include swift::deps
 
   swift_internal_client_config {

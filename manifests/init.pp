@@ -44,13 +44,12 @@
 #
 # Copyright 2011 Puppetlabs Inc, unless otherwise noted.
 #
-class swift(
+class swift (
   $swift_hash_path_suffix = $facts['os_service_default'],
   $swift_hash_path_prefix = $facts['os_service_default'],
   $package_ensure         = 'present',
   Boolean $purge_config   = false,
 ) {
-
   include swift::deps
   include swift::params
   include swift::client

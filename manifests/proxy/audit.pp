@@ -21,7 +21,6 @@ class swift::proxy::audit (
   $filter_factory = 'keystonemiddleware.audit:filter_factory',
   $audit_map_file = '/etc/pycadf/swift_api_audit_map.conf',
 ) {
-
   include swift::deps
 
   swift_proxy_config {

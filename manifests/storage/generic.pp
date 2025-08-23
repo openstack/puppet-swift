@@ -33,7 +33,7 @@
 # == Dependencies
 #  Requires Class[swift::storage]
 #
-define swift::storage::generic(
+define swift::storage::generic (
   Swift::StorageServerType $type           = $name,
   Boolean $manage_service                  = true,
   Boolean $enabled                         = true,
@@ -41,7 +41,6 @@ define swift::storage::generic(
   String[1] $config_file_name              = "${name}-server.conf",
   Swift::ServiceProvider $service_provider = $swift::params::service_provider
 ) {
-
   include swift::deps
   include swift::params
 

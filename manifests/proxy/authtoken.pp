@@ -92,7 +92,7 @@
 #
 # Copyright 2012 Puppetlabs Inc, unless otherwise noted.
 #
-class swift::proxy::authtoken(
+class swift::proxy::authtoken (
   String[1] $password,
   $delay_auth_decision          = 1,
   $cache                        = 'swift.cache',
@@ -111,7 +111,6 @@ class swift::proxy::authtoken(
   $service_type                 = $facts['os_service_default'],
   $interface                    = $facts['os_service_default'],
 ) inherits swift::params {
-
   include swift::deps
 
   if is_service_default($system_scope) {

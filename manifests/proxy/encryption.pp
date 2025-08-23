@@ -16,7 +16,6 @@
 class swift::proxy::encryption (
   $disable_encryption = false
 ) {
-
   include swift::deps
 
   swift_proxy_config {
@@ -24,4 +23,3 @@ class swift::proxy::encryption (
     'filter:encryption/disable_encryption': value => $disable_encryption;
   }
 }
-

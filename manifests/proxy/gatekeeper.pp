@@ -45,7 +45,7 @@
 #
 # Copyright 2014 UnitedStack licensing@unitedstack.com
 #
-class swift::proxy::gatekeeper(
+class swift::proxy::gatekeeper (
   $shunt_inbound_x_timestamp   = $facts['os_service_default'],
   $allow_reserved_names_header = $facts['os_service_default'],
   $log_name                    = 'gatekeeper',
@@ -54,7 +54,6 @@ class swift::proxy::gatekeeper(
   $log_headers                 = $facts['os_service_default'],
   $log_address                 = '/dev/log'
 ) {
-
   include swift::deps
 
   swift_proxy_config {

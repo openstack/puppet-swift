@@ -19,17 +19,15 @@
 #
 # Copyright 2011 Puppetlabs Inc, unless otherwise noted.
 #
-define swift::storage::filter::recon(
+define swift::storage::filter::recon (
   $cache_path = $facts['os_service_default'],
 ) {
-
   include swift::deps
 
   $config_type = "swift_${name}_config"
 
   create_resources($config_type, {
-    'filter:recon/use'              => {'value' => 'egg:swift#recon'},
-    'filter:recon/recon_cache_path' => {'value' => $cache_path},
+    'filter:recon/use'              => { 'value' => 'egg:swift#recon' },
+    'filter:recon/recon_cache_path' => { 'value' => $cache_path },
   })
-
 }

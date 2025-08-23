@@ -13,7 +13,6 @@
 class swift::proxy::kms_keymaster (
   $keymaster_config_path = '/etc/swift/keymaster.conf'
 ) {
-
   include swift::deps
 
   swift_proxy_config {
@@ -21,4 +20,3 @@ class swift::proxy::kms_keymaster (
     'filter:kms_keymaster/keymaster_config_path': value => $keymaster_config_path;
   }
 }
-

@@ -140,7 +140,7 @@
 #   (optional) Override whether to use xinetd to manage rsync service
 #   Defaults to swift::params::xinetd_available
 #
-class swift::storage::all(
+class swift::storage::all (
   $storage_local_net_ip,
   $devices                        = '/srv/node',
   $object_port                    = 6000,
@@ -176,7 +176,6 @@ class swift::storage::all(
   $splice                         = false,
   $rsync_use_xinetd               = $swift::params::xinetd_available,
 ) inherits swift::params {
-
   include swift::deps
 
   if ("${$object_port}" == '6000') {

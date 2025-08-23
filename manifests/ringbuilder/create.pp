@@ -35,14 +35,13 @@
 #
 # Copyright 2011 Puppetlabs Inc, unless otherwise noted.
 #
-define swift::ringbuilder::create(
+define swift::ringbuilder::create (
   Swift::RingType $ring_type = $name,
   $part_power                = 18,
   $replicas                  = 3,
   $min_part_hours            = 24,
   $user                      = 'root'
 ) {
-
   include swift::deps
 
   exec { "create_${ring_type}":
@@ -52,5 +51,4 @@ define swift::ringbuilder::create(
     creates => "/etc/swift/${ring_type}.builder",
     before  => Anchor['swift::config::end'],
   }
-
 }

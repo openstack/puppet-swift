@@ -37,14 +37,13 @@
 #  Dan Bode dan@puppetlabs.com
 #  Francois Charlier fcharlier@ploup.net
 #
-class swift::proxy::keystone(
+class swift::proxy::keystone (
   $operator_roles       = ['admin', 'SwiftOperator'],
   $reseller_prefix      = 'AUTH_',
   $reseller_admin_role  = undef,
   $project_reader_roles = $facts['os_service_default'],
   $system_reader_roles  = $facts['os_service_default'],
 ) {
-
   include swift::deps
 
   swift_proxy_config {

@@ -10,7 +10,6 @@ Exec { logoutput => true }
 
 package { 'curl': ensure => present }
 
-
 class { 'memcached':
   listen_ip => $swift_local_net_ip,
 }
@@ -41,7 +40,7 @@ swift::storage::node { '2':
   manage_ring          => true,
   zone                 => '2',
   storage_local_net_ip => $swift_local_net_ip,
-  require              => Swift::Storage::Loopback[2] ,
+  require              => Swift::Storage::Loopback[2],
 }
 
 class { 'swift::ringbuilder':
@@ -51,7 +50,6 @@ class { 'swift::ringbuilder':
   require        => Class['swift'],
 }
 
-
 # TODO should I enable swath in the default config?
 class { 'swift::proxy':
   proxy_local_net_ip => $swift_local_net_ip,
@@ -59,7 +57,8 @@ class { 'swift::proxy':
   account_autocreate => true,
   require            => Class['swift::ringbuilder'],
 }
-class { ['swift::proxy::healthcheck', 'swift::proxy::cache']: }
+
+class {['swift::proxy::healthcheck', 'swift::proxy::cache']: }
 
 class { 'swift::proxy::tempauth':
   account_user_list => [
@@ -67,7 +66,7 @@ class { 'swift::proxy::tempauth':
       'user'    => 'admin',
       'account' => 'admin',
       'key'     => 'admin',
-      'groups'  => [ 'admin', 'reseller_admin' ],
+      'groups'  => ['admin', 'reseller_admin'],
     },
     {
       'user'    => 'tester',

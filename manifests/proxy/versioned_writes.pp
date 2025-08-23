@@ -14,7 +14,6 @@
 class swift::proxy::versioned_writes (
   $allow_versioned_writes = false
 ) {
-
   include swift::deps
 
   swift_proxy_config {

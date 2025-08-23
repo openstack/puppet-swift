@@ -82,8 +82,7 @@ class swift::bench (
   $num_gets          = '10000',
   $num_containers    = '20',
   $delete            = 'yes',
-){
-
+) {
   include swift::deps
 
   swift_bench_config {

@@ -73,7 +73,7 @@
 #
 # TODO(yuxcer): maybe we can remove param $base_dir
 #
-define swift::storage::disk(
+define swift::storage::disk (
   Stdlib::Absolutepath $base_dir            = '/dev',
   Stdlib::Absolutepath $mnt_base_dir        = '/srv/node',
   $byte_size                                = '1024',
@@ -84,7 +84,6 @@ define swift::storage::disk(
   Boolean $manage_filesystem                = true,
   String[1] $label                          = $name,
 ) {
-
   include swift::deps
   include swift::params
 
@@ -113,14 +112,15 @@ define swift::storage::disk(
     }
   }
 
-  create_resources("swift::storage::${filesystem_type}", { $name => {
-    'device'            => "${base_dir}/${name}",
-    'mnt_base_dir'      => $mnt_base_dir,
-    'byte_size'         => $byte_size,
-    'loopback'          => false,
-    'mount_type'        => $mount_type,
-    'manage_filesystem' => $manage_filesystem,
-    'label'             => $label,
-  }})
-
+  create_resources("swift::storage::${filesystem_type}", {
+    $name => {
+      'device'            => "${base_dir}/${name}",
+      'mnt_base_dir'      => $mnt_base_dir,
+      'byte_size'         => $byte_size,
+      'loopback'          => false,
+      'mount_type'        => $mount_type,
+      'manage_filesystem' => $manage_filesystem,
+      'label'             => $label,
+    },
+  })
 }

@@ -206,7 +206,7 @@
 #
 # Copyright 2011 Puppetlabs Inc, unless otherwise noted.
 #
-class swift::proxy(
+class swift::proxy (
   $proxy_local_net_ip,
   $port                                          = '8080',
   $cert_file                                     = $facts['os_service_default'],
@@ -253,12 +253,11 @@ class swift::proxy(
   Swift::ServiceProvider $service_provider       = $swift::params::service_provider,
   Boolean $purge_config                          = false,
 ) inherits swift::params {
-
   include swift::deps
 
-  if(member($pipeline, 'tempauth')) {
+  if member($pipeline, 'tempauth') {
     $auth_type = 'tempauth'
-  } elsif(member($pipeline, 'keystone')) {
+  } elsif member($pipeline, 'keystone') {
     $auth_type = 'keystone'
   } else {
     warning('no auth type provided in the pipeline')
@@ -269,7 +268,7 @@ class swift::proxy(
     fail('proxy-server must be the last element in pipeline')
   }
 
-  if($auth_type == 'tempauth' and ! $account_autocreate ){
+  if $auth_type == 'tempauth' and !$account_autocreate {
     fail('account_autocreate must be set to true when auth_type is tempauth')
   }
 
