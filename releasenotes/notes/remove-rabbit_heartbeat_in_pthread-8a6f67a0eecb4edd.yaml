@@ -1,0 +1,5 @@
+---
+upgrade:
+  - |
+    The ``swift::proxy::ceilometer::rabbit_heartbeat_in_pthread`` parameter has
+    been removed.

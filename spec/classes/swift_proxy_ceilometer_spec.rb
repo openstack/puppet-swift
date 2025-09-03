@@ -83,7 +83,6 @@ describe 'swift::proxy::ceilometer' do
         :rabbit_transient_quorum_queue => '<SERVICE DEFAULT>',
         :heartbeat_timeout_threshold   => '<SERVICE DEFAULT>',
         :heartbeat_rate                => '<SERVICE DEFAULT>',
-        :heartbeat_in_pthread          => nil,
         :rabbit_qos_prefetch_count     => '<SERVICE DEFAULT>',
         :amqp_durable_queues           => '<SERVICE DEFAULT>',
         :amqp_auto_delete              => '<SERVICE DEFAULT>',
