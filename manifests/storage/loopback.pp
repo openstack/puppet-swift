@@ -76,6 +76,6 @@ define swift::storage::loopback (
   }
   # NOTE(mgagne) Puppet does not allow hash keys to be bare variables.
   #              Keep double-quotes to avoid parse errors.
-  $device_config_hash = { "${name}" => $storage_params }
+  $device_config_hash = { $name => $storage_params }
   create_resources("swift::storage::${fstype}", $device_config_hash)
 }

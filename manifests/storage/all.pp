@@ -178,17 +178,17 @@ class swift::storage::all (
 ) inherits swift::params {
   include swift::deps
 
-  if ("${$object_port}" == '6000') {
+  if ("${$object_port}" == '6000') { # lint:ignore:only_variable_string
     warning("The default port for the object storage server has changed \
 from 6000 to 6200 and will be changed in a later release")
   }
 
-  if ("${container_port}" == '6001') {
+  if ("${container_port}" == '6001') { # lint:ignore:only_variable_string
     warning("The default port for the container storage server has changed \
 from 6001 to 6201 and will be changed in a later release")
   }
 
-  if ("${$account_port}" == '6002') {
+  if ("${$account_port}" == '6002') { # lint:ignore:only_variable_string
     warning("The default port for the account storage server has changed \
 from 6002 to 6202 and will be changed in a later release")
   }
@@ -225,19 +225,19 @@ from 6002 to 6202 and will be changed in a later release")
     outgoing_chmod                 => $outgoing_chmod,
   }
 
-  swift::storage::server { "${account_port}":
+  swift::storage::server { "${account_port}": # lint:ignore:only_variable_string
     type     => 'account',
     pipeline => $account_pipeline,
     workers  => $account_server_workers,
   }
 
-  swift::storage::server { "${container_port}":
+  swift::storage::server { "${container_port}": # lint:ignore:only_variable_string
     type     => 'container',
     pipeline => $container_pipeline,
     workers  => $container_server_workers,
   }
 
-  swift::storage::server { "${object_port}":
+  swift::storage::server { "${object_port}": # lint:ignore:only_variable_string
     type                      => 'object',
     pipeline                  => $object_pipeline,
     workers                   => $object_server_workers,
