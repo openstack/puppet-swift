@@ -41,6 +41,16 @@ describe 'swift::proxy::cname_lookup' do
       it { is_expected.to contain_swift_proxy_config('filter:cname_lookup/lookup_depth').with_value('2') }
       it { is_expected.to contain_swift_proxy_config('filter:cname_lookup/nameservers').with_value('8.8.8.8') }
     end
+
+    describe "when nameservers parameter accept an array" do
+      let :params do
+        {
+          :nameservers => ['8.8.8.8', '8.8.4.4'],
+        }
+      end
+
+      it { is_expected.to contain_swift_proxy_config('filter:cname_lookup/nameservers').with_value('8.8.8.8,8.8.4.4') }
+    end
   end
 
   on_supported_os({

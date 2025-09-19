@@ -66,7 +66,7 @@ class swift::proxy::cname_lookup (
     'filter:cname_lookup/set log_address':  value => $log_address;
     'filter:cname_lookup/storage_domain' :  value => $storage_domain;
     'filter:cname_lookup/lookup_depth' :    value => $lookup_depth;
-    'filter:cname_lookup/nameservers' :     value => $nameservers;
+    'filter:cname_lookup/nameservers' :     value => join(any2array($nameservers), ',');
   }
 
   package { 'python-dnspython':
