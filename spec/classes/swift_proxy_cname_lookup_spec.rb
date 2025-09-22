@@ -23,7 +23,7 @@ describe 'swift::proxy::cname_lookup' do
         {
           :log_name       => 'newcname_lookup',
           :log_facility   => 'LOG_LOCAL3',
-          :log_level      => 'WARN',
+          :log_level      => 'WARNING',
           :log_headers    => 'True',
           :log_address    => '/var/log',
           :storage_domain => 'example.com',
@@ -34,7 +34,7 @@ describe 'swift::proxy::cname_lookup' do
 
       it { is_expected.to contain_swift_proxy_config('filter:cname_lookup/set log_name').with_value('newcname_lookup') }
       it { is_expected.to contain_swift_proxy_config('filter:cname_lookup/set log_facility').with_value('LOG_LOCAL3') }
-      it { is_expected.to contain_swift_proxy_config('filter:cname_lookup/set log_level').with_value('WARN') }
+      it { is_expected.to contain_swift_proxy_config('filter:cname_lookup/set log_level').with_value('WARNING') }
       it { is_expected.to contain_swift_proxy_config('filter:cname_lookup/set log_headers').with_value('True') }
       it { is_expected.to contain_swift_proxy_config('filter:cname_lookup/set log_address').with_value('/var/log') }
       it { is_expected.to contain_swift_proxy_config('filter:cname_lookup/storage_domain').with_value('example.com') }

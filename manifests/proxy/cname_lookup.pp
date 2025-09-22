@@ -43,25 +43,34 @@
 #
 #
 class swift::proxy::cname_lookup (
-  $log_name       = $facts['os_service_default'],
-  $log_facility   = $facts['os_service_default'],
-  $log_level      = $facts['os_service_default'],
-  $log_headers    = $facts['os_service_default'],
-  $log_address    = $facts['os_service_default'],
-  $storage_domain = $facts['os_service_default'],
-  $lookup_depth   = $facts['os_service_default'],
-  $nameservers    = $facts['os_service_default'],
+  $log_name                                  = $facts['os_service_default'],
+  Optional[Swift::LogFacility] $log_facility = undef,
+  Optional[Swift::LogLevel] $log_level       = undef,
+  $log_headers                               = $facts['os_service_default'],
+  $log_address                               = $facts['os_service_default'],
+  $storage_domain                            = $facts['os_service_default'],
+  $lookup_depth                              = $facts['os_service_default'],
+  $nameservers                               = $facts['os_service_default'],
 ) {
   include swift::deps
   include swift::params
 
   Package['python3-dnspython'] ~> Service<| tag == 'swift-proxy-service' |>
 
+  $log_facility_real = $log_facility ? {
+    undef   => $facts['os_service_default'],
+    default => $log_facility,
+  }
+  $log_level_real = $log_level ? {
+    undef   => $facts['os_service_default'],
+    default => $log_level,
+  }
+
   swift_proxy_config {
     'filter:cname_lookup/use':              value => 'egg:swift#cname_lookup';
     'filter:cname_lookup/set log_name':     value => $log_name;
-    'filter:cname_lookup/set log_facility': value => $log_facility;
-    'filter:cname_lookup/set log_level':    value => $log_level;
+    'filter:cname_lookup/set log_facility': value => $log_facility_real;
+    'filter:cname_lookup/set log_level':    value => $log_level_real;
     'filter:cname_lookup/set log_headers':  value => $log_headers;
     'filter:cname_lookup/set log_address':  value => $log_address;
     'filter:cname_lookup/storage_domain' :  value => $storage_domain;

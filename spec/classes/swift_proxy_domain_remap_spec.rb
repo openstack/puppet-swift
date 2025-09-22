@@ -21,7 +21,7 @@ describe 'swift::proxy::domain_remap' do
         {
           :log_name                => 'newdomain_remap',
           :log_facility            => 'LOG_LOCAL3',
-          :log_level               => 'WARN',
+          :log_level               => 'WARNING',
           :log_headers             => 'True',
           :log_address             => '/var/log',
           :storage_domain          => 'example.com',
@@ -34,7 +34,7 @@ describe 'swift::proxy::domain_remap' do
 
       it { is_expected.to contain_swift_proxy_config('filter:domain_remap/set log_name').with_value('newdomain_remap') }
       it { is_expected.to contain_swift_proxy_config('filter:domain_remap/set log_facility').with_value('LOG_LOCAL3') }
-      it { is_expected.to contain_swift_proxy_config('filter:domain_remap/set log_level').with_value('WARN') }
+      it { is_expected.to contain_swift_proxy_config('filter:domain_remap/set log_level').with_value('WARNING') }
       it { is_expected.to contain_swift_proxy_config('filter:domain_remap/set log_headers').with_value('True') }
       it { is_expected.to contain_swift_proxy_config('filter:domain_remap/set log_address').with_value('/var/log') }
       it { is_expected.to contain_swift_proxy_config('filter:domain_remap/storage_domain').with_value('example.com') }

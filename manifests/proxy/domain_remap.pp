@@ -68,26 +68,35 @@
 #
 #
 class swift::proxy::domain_remap (
-  $log_name                = $facts['os_service_default'],
-  $log_facility            = $facts['os_service_default'],
-  $log_level               = $facts['os_service_default'],
-  $log_headers             = $facts['os_service_default'],
-  $log_address             = $facts['os_service_default'],
-  $storage_domain          = $facts['os_service_default'],
-  $path_root               = $facts['os_service_default'],
-  $reseller_prefixes       = $facts['os_service_default'],
-  $default_reseller_prefix = $facts['os_service_default'],
-  $mangle_client_paths     = $facts['os_service_default'],
+  $log_name                                  = $facts['os_service_default'],
+  Optional[Swift::LogFacility] $log_facility = undef,
+  Optional[Swift::LogLevel] $log_level       = undef,
+  $log_headers                               = $facts['os_service_default'],
+  $log_address                               = $facts['os_service_default'],
+  $storage_domain                            = $facts['os_service_default'],
+  $path_root                                 = $facts['os_service_default'],
+  $reseller_prefixes                         = $facts['os_service_default'],
+  $default_reseller_prefix                   = $facts['os_service_default'],
+  $mangle_client_paths                       = $facts['os_service_default'],
 ) {
   include swift::deps
 
   $reseller_prefixes_real = join(any2array($reseller_prefixes), ',')
 
+  $log_facility_real = $log_facility ? {
+    undef   => $facts['os_service_default'],
+    default => $log_facility,
+  }
+  $log_level_real = $log_level ? {
+    undef   => $facts['os_service_default'],
+    default => $log_level,
+  }
+
   swift_proxy_config {
     'filter:domain_remap/use':                      value => 'egg:swift#domain_remap';
     'filter:domain_remap/set log_name':             value => $log_name;
-    'filter:domain_remap/set log_facility':         value => $log_facility;
-    'filter:domain_remap/set log_level':            value => $log_level;
+    'filter:domain_remap/set log_facility':         value => $log_facility_real;
+    'filter:domain_remap/set log_level':            value => $log_level_real;
     'filter:domain_remap/set log_headers':          value => $log_headers;
     'filter:domain_remap/set log_address':          value => $log_address;
     'filter:domain_remap/storage_domain' :          value => $storage_domain;

@@ -66,22 +66,22 @@
 #   Defaults to 'yes'
 #
 class swift::bench (
-  $auth_url          = 'http://localhost:8080/auth/v1.0',
-  $swift_user        = 'test:tester',
-  $swift_key         = 'testing',
-  $auth_version      = '1.0',
-  $log_level         = 'INFO',
-  $test_timeout      = '10',
-  $put_concurrency   = '10',
-  $get_concurrency   = '10',
-  $del_concurrency   = '10',
-  $lower_object_size = '10',
-  $upper_object_size = '10',
-  $object_size       = '1',
-  $num_objects       = '1000',
-  $num_gets          = '10000',
-  $num_containers    = '20',
-  $delete            = 'yes',
+  $auth_url                  = 'http://localhost:8080/auth/v1.0',
+  $swift_user                = 'test:tester',
+  $swift_key                 = 'testing',
+  $auth_version              = '1.0',
+  Swift::LogLevel $log_level = 'INFO',
+  $test_timeout              = '10',
+  $put_concurrency           = '10',
+  $get_concurrency           = '10',
+  $del_concurrency           = '10',
+  $lower_object_size         = '10',
+  $upper_object_size         = '10',
+  $object_size               = '1',
+  $num_objects               = '1000',
+  $num_gets                  = '10000',
+  $num_containers            = '20',
+  $delete                    = 'yes',
 ) {
   include swift::deps
 
