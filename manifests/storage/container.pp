@@ -34,7 +34,7 @@
 class swift::storage::container (
   Boolean $manage_service                  = true,
   Boolean $enabled                         = true,
-  $package_ensure                          = 'present',
+  Stdlib::Ensure::Package $package_ensure  = 'present',
   Array[String[1]] $allowed_sync_hosts     = ['127.0.0.1'],
   String[1] $config_file_name              = 'container-server.conf',
   Swift::ServiceProvider $service_provider = $swift::params::service_provider

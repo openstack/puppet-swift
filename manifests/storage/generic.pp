@@ -37,7 +37,7 @@ define swift::storage::generic (
   Swift::StorageServerType $type           = $name,
   Boolean $manage_service                  = true,
   Boolean $enabled                         = true,
-  $package_ensure                          = 'present',
+  Stdlib::Ensure::Package $package_ensure  = 'present',
   String[1] $config_file_name              = "${name}-server.conf",
   Swift::ServiceProvider $service_provider = $swift::params::service_provider
 ) {

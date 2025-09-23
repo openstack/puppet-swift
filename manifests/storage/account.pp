@@ -29,7 +29,7 @@
 class swift::storage::account (
   Boolean $manage_service                  = true,
   Boolean $enabled                         = true,
-  $package_ensure                          = 'present',
+  Stdlib::Ensure::Package $package_ensure  = 'present',
   String[1] $config_file_name              = 'account-server.conf',
   Swift::ServiceProvider $service_provider = $swift::params::service_provider
 ) inherits swift::params {

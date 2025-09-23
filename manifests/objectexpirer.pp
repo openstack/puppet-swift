@@ -132,7 +132,7 @@
 class swift::objectexpirer (
   Boolean $manage_service                  = true,
   Boolean $enabled                         = true,
-  $package_ensure                          = 'present',
+  Stdlib::Ensure::Package $package_ensure  = 'present',
   Swift::Pipeline $pipeline                = ['catch_errors', 'proxy-logging', 'cache', 'proxy-server'],
   $concurrency                             = $facts['os_service_default'],
   $interval                                = $facts['os_service_default'],
