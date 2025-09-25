@@ -60,15 +60,15 @@
 define swift::storage::policy (
   $policy_name,
   $default_policy,
-  $ensure                  = 'present',
-  $policy_aliases          = undef,
-  $policy_index            = $name,
-  $policy_type             = 'replication',
-  $deprecated              = undef,
-  $ec_type                 = undef,
-  $ec_num_data_fragments   = undef,
-  $ec_num_parity_fragments = undef,
-  $ec_object_segment_size  = undef,
+  Enum['present', 'absent'] $ensure = 'present',
+  $policy_aliases                   = undef,
+  $policy_index                     = $name,
+  $policy_type                      = 'replication',
+  $deprecated                       = undef,
+  $ec_type                          = undef,
+  $ec_num_data_fragments            = undef,
+  $ec_num_parity_fragments          = undef,
+  $ec_object_segment_size           = undef,
 ) {
   include swift::deps
 

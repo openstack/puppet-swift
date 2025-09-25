@@ -249,7 +249,7 @@ class swift::proxy (
   $allow_open_expired                            = $facts['os_service_default'],
   Boolean $manage_service                        = true,
   Boolean $enabled                               = true,
-  $package_ensure                                = 'present',
+  Stdlib::Ensure::Package $package_ensure        = 'present',
   Swift::ServiceProvider $service_provider       = $swift::params::service_provider,
   Boolean $purge_config                          = false,
 ) inherits swift::params {

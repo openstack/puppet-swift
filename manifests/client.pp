@@ -9,7 +9,7 @@
 #   Defaults to 'present'.
 #
 class swift::client (
-  $ensure = 'present',
+  Stdlib::Ensure::Package $ensure = 'present',
 ) {
   include swift::deps
   include swift::params

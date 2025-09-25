@@ -177,7 +177,7 @@ class swift::proxy::ceilometer (
   $driver                             = $facts['os_service_default'],
   $topic                              = $facts['os_service_default'],
   $control_exchange                   = $facts['os_service_default'],
-  $ensure                             = 'present',
+  Stdlib::Ensure::Package $ensure     = 'present',
   $nonblocking_notify                 = $facts['os_service_default'],
   $ignore_projects                    = ['services'],
   $auth_url                           = 'http://127.0.0.1:5000',
